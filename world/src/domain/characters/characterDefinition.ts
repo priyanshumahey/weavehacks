@@ -6,6 +6,12 @@ import type {
   CharacterMovementMode,
   NormalizedCharacterDefinition,
 } from "../../types/character";
+import {
+  CHARACTER_CONTROLLER_TYPES,
+  CHARACTER_KINDS,
+  CHARACTER_MOVEMENT_MODES,
+  ENTITY_KINDS,
+} from "../../world/worldState";
 
 const DEFAULT_APPEARANCE = {
   color: "#f4f1de",
@@ -14,7 +20,7 @@ const DEFAULT_APPEARANCE = {
 } as const;
 
 const DEFAULT_MOVEMENT = {
-  mode: "idle",
+  mode: CHARACTER_MOVEMENT_MODES.idle,
   speed: 180,
 } as const;
 
@@ -39,15 +45,17 @@ function normalizeNumber(value: unknown, fallback: number, fieldName: string): n
 }
 
 function isMovementMode(value: unknown): value is CharacterMovementMode {
-  return value === "idle" || value === "player";
+  return Object.values(CHARACTER_MOVEMENT_MODES).includes(value as CharacterMovementMode);
 }
 
 function isControllerType(value: unknown): value is CharacterControllerType {
-  return value === "player" || value === "script" || value === "agent";
+  return Object.values(CHARACTER_CONTROLLER_TYPES).includes(value as CharacterControllerType);
 }
 
 function getDefaultController(kind: CharacterKind): CharacterControllerType {
-  return kind === "player" ? "player" : "script";
+  return kind === CHARACTER_KINDS.player
+    ? CHARACTER_CONTROLLER_TYPES.player
+    : CHARACTER_CONTROLLER_TYPES.script;
 }
 
 export function normalizeCharacterDefinition(
@@ -55,7 +63,10 @@ export function normalizeCharacterDefinition(
 ): NormalizedCharacterDefinition {
   const id = assertString(definition.id, "id");
   const name = assertString(definition.name, "name");
-  const kind = definition.kind === "player" ? "player" : "npc";
+  const kind =
+    definition.kind === CHARACTER_KINDS.player
+      ? CHARACTER_KINDS.player
+      : CHARACTER_KINDS.npc;
   const controller = definition.controller ?? getDefaultController(kind);
   const appearance = {
     ...DEFAULT_APPEARANCE,
@@ -112,7 +123,7 @@ export function createCharacterInstance(definition: CharacterDefinition): Charac
 
   return {
     ...normalized,
-    entityKind: "character",
+    entityKind: ENTITY_KINDS.character,
     blocksMovement: true,
     interactable: normalized.dialogueId != null,
     velocity: {

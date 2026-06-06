@@ -23,6 +23,12 @@ Treat `world/ARCHITECTURE.md` as the canonical architecture document for:
 - input or state model changes
 - new architectural subsystems
 
+## Type Safety Rule
+
+Do not introduce new enum-like magic strings in `world/src/`. For domains such as action types, scene keys, entity kinds, character kinds, movement modes, and controller types, define or reuse shared exported `const` objects and derive the TypeScript union types from them.
+
+When touching existing code that compares or constructs these values, prefer the shared constants over inline string literals.
+
 ## Commit Rule
 
 Use this commit format for changes in `world/`:

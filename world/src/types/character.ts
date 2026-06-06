@@ -6,6 +6,7 @@ import type {
   Vector2,
   WorldBounds,
 } from "../world/worldState";
+import { ENTITY_KINDS } from "../world/worldState";
 
 export type { CharacterKind, CharacterControllerType, CharacterMovementMode, WorldBounds };
 
@@ -52,7 +53,7 @@ export interface NormalizedCharacterDefinition {
 
 export interface CharacterInstance
   extends NormalizedCharacterDefinition {
-  entityKind: "character";
+  entityKind: typeof ENTITY_KINDS.character;
   blocksMovement: boolean;
   interactable: boolean;
   velocity: Vector2;

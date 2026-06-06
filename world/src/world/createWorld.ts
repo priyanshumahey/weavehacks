@@ -1,5 +1,6 @@
 import { createCharacterInstance } from "../domain/characters/characterDefinition";
 import type { CharacterDefinition, WorldBounds } from "../types/character";
+import { CHARACTER_CONTROLLER_TYPES, ENTITY_KINDS } from "./worldState";
 import type { CharacterState, WorldState } from "./worldState";
 
 interface CreateWorldOptions {
@@ -13,7 +14,7 @@ function toCharacterState(definition: CharacterDefinition): CharacterState {
 
   return {
     id: instance.id,
-    kind: "character",
+    kind: ENTITY_KINDS.character,
     name: instance.name,
     position: {
       x: instance.x,
@@ -48,7 +49,7 @@ export function createWorld({
   let playerId: string | null = null;
 
   for (const character of Object.values(characters)) {
-    if (character.controller === "player") {
+    if (character.controller === CHARACTER_CONTROLLER_TYPES.player) {
       playerId = character.id;
       break;
     }

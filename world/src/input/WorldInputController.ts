@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import type { WorldAction } from "../world/worldActions";
+import { WORLD_ACTION_TYPES, type WorldAction } from "../world/worldActions";
 
 export class WorldInputController {
   private readonly cursors: Phaser.Types.Input.Keyboard.CursorKeys | null;
@@ -34,7 +34,7 @@ export class WorldInputController {
 
     const actions: WorldAction[] = [
       {
-        type: "move",
+        type: WORLD_ACTION_TYPES.move,
         entityId,
         intent: { x, y },
       },
@@ -45,7 +45,7 @@ export class WorldInputController {
 
     if (isInteractPressed && !this.wasInteractPressed) {
       actions.push({
-        type: "interact",
+        type: WORLD_ACTION_TYPES.interact,
         entityId,
       });
     }

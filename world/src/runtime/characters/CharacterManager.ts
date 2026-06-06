@@ -4,6 +4,7 @@ import type {
   CharacterInstance,
   WorldBounds,
 } from "../../types/character";
+import { CHARACTER_KINDS } from "../../world/worldState";
 
 function clamp(value: number, min: number, max: number): number {
   return Math.min(Math.max(value, min), max);
@@ -33,7 +34,7 @@ export class CharacterManager {
 
   getPlayer(): CharacterInstance | null {
     for (const character of this.characters.values()) {
-      if (character.kind === "player") {
+      if (character.kind === CHARACTER_KINDS.player) {
         return character;
       }
     }

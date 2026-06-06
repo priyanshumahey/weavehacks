@@ -10,10 +10,37 @@ export interface WorldBounds {
   maxY: number;
 }
 
-export type EntityKind = "character" | "prop" | "trigger";
-export type CharacterKind = "player" | "npc";
-export type CharacterMovementMode = "idle" | "player";
-export type CharacterControllerType = "player" | "script" | "agent";
+export const ENTITY_KINDS = {
+  character: "character",
+  prop: "prop",
+  trigger: "trigger",
+} as const;
+
+export type EntityKind = (typeof ENTITY_KINDS)[keyof typeof ENTITY_KINDS];
+
+export const CHARACTER_KINDS = {
+  player: "player",
+  npc: "npc",
+} as const;
+
+export type CharacterKind = (typeof CHARACTER_KINDS)[keyof typeof CHARACTER_KINDS];
+
+export const CHARACTER_MOVEMENT_MODES = {
+  idle: "idle",
+  player: "player",
+} as const;
+
+export type CharacterMovementMode =
+  (typeof CHARACTER_MOVEMENT_MODES)[keyof typeof CHARACTER_MOVEMENT_MODES];
+
+export const CHARACTER_CONTROLLER_TYPES = {
+  player: "player",
+  script: "script",
+  agent: "agent",
+} as const;
+
+export type CharacterControllerType =
+  (typeof CHARACTER_CONTROLLER_TYPES)[keyof typeof CHARACTER_CONTROLLER_TYPES];
 
 export interface EntityAppearance {
   color: string;
@@ -39,7 +66,7 @@ export interface WorldEntityState {
 }
 
 export interface CharacterState extends WorldEntityState {
-  kind: "character";
+  kind: typeof ENTITY_KINDS.character;
   characterKind: CharacterKind;
   controller: CharacterControllerType;
   appearance: EntityAppearance;

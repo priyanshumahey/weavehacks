@@ -7,6 +7,11 @@ import { WorldRenderer } from "../rendering/world/WorldRenderer";
 import { getWorldBounds } from "../rendering/world/getWorldBounds";
 import { createWorld } from "../world/createWorld";
 import { WorldRuntime } from "../world/WorldRuntime";
+import { CHARACTER_CONTROLLER_TYPES } from "../world/worldState";
+
+export const SCENE_KEYS = {
+  world: "world",
+} as const;
 
 export class WorldScene extends Phaser.Scene {
   private worldRuntime: WorldRuntime | null = null;
@@ -15,7 +20,7 @@ export class WorldScene extends Phaser.Scene {
   private agents: CharacterAgent[] = [];
 
   constructor() {
-    super("world");
+    super(SCENE_KEYS.world);
   }
 
   create(): void {
@@ -40,7 +45,7 @@ export class WorldScene extends Phaser.Scene {
 
     if (player) {
       for (const action of this.inputController.readActions(player.id)) {
-        this.worldRuntime.dispatch(action, "player");
+        this.worldRuntime.dispatch(action, CHARACTER_CONTROLLER_TYPES.player);
       }
     }
 
@@ -52,7 +57,7 @@ export class WorldScene extends Phaser.Scene {
       }
 
       for (const action of agent.decide(observation)) {
-        this.worldRuntime.dispatch(action, "agent");
+        this.worldRuntime.dispatch(action, CHARACTER_CONTROLLER_TYPES.agent);
       }
     }
 

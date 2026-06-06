@@ -1,4 +1,5 @@
 import type { CharacterState, WorldState } from "../worldState";
+import { CHARACTER_MOVEMENT_MODES } from "../worldState";
 
 const EPSILON = 0.0001;
 
@@ -15,8 +16,8 @@ function separatePair(first: CharacterState, second: CharacterState): void {
   const overlap = minimumDistance - distance;
   const normalX = distance > EPSILON ? dx / distance : 1;
   const normalY = distance > EPSILON ? dy / distance : 0;
-  const firstCanDrive = first.movement.mode === "player";
-  const secondCanDrive = second.movement.mode === "player";
+  const firstCanDrive = first.movement.mode === CHARACTER_MOVEMENT_MODES.player;
+  const secondCanDrive = second.movement.mode === CHARACTER_MOVEMENT_MODES.player;
 
   if (firstCanDrive && !secondCanDrive) {
     first.position.x += normalX * overlap;

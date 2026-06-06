@@ -9,6 +9,7 @@ import type {
   WorldState,
 } from "./worldState";
 import type { MovementIntent, WorldAction } from "./worldActions";
+import { WORLD_ACTION_TYPES } from "./worldActions";
 import { boundsSystem } from "./systems/boundsSystem";
 import { collisionSystem } from "./systems/collisionSystem";
 import {
@@ -43,10 +44,10 @@ export class WorldRuntime {
     }
 
     switch (action.type) {
-      case "move":
+      case WORLD_ACTION_TYPES.move:
         this.applyMoveIntent(action.entityId, action.intent);
         break;
-      case "interact":
+      case WORLD_ACTION_TYPES.interact:
         attemptInteractionSystem(this.state, action.entityId);
         break;
     }
