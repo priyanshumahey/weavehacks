@@ -32,6 +32,8 @@ function toCharacterState(definition: CharacterDefinition): CharacterState {
     movement: instance.movement,
     velocity: instance.velocity,
     moveIntent: instance.moveIntent,
+    facing: instance.facing,
+    animation: instance.animation,
     dialogueId: instance.dialogueId,
   };
 }

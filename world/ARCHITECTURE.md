@@ -64,13 +64,19 @@ Normalized runtime character state always includes a complete `sprite` object wi
 
 ### Character Sprite Rendering
 
-`CharacterSprite` now renders characters as Phaser sprites backed by registry textures instead of colored circles:
+`CharacterSprite` renders characters as Phaser sprites backed by registry textures:
 
-- `src/rendering/characters/characterSpritesheet.ts`: resolves spritesheet frame dimensions from texture size (single-row square strips such as `192x192` cells in `1152x192` sheets) and authored frame metadata, maps row/column animation coordinates to frame indices, and derives display scale from authored scale plus resolved frame height
-- `src/rendering/characters/resolveCharacterFacing.ts`: derives the current facing from normalized `moveIntent`, preserving the last facing while idle
-- `src/rendering/characters/characterSpriteAnimations.ts`: registers Phaser animations from authored sprite metadata, resolves idle vs walk texture keys, and applies playback with `sprite.play()` plus `setFlipX()` for single-row side-view sheets
-- `src/entities/CharacterSprite.ts`: promotes registry textures into spritesheets at render time, creates a `Phaser.GameObjects.Sprite` per character, drives idle/walk animation and facing from runtime movement state, and keeps name labels plus selection rings derived from runtime sprite metadata and UI state
+- `src/rendering/characters/characterSpritesheet.ts`: resolves spritesheet frame dimensions from texture size and authored frame metadata, maps row/column animation coordinates to frame indices, and derives display scale from authored scale plus resolved frame height
+- `src/entities/CharacterSprite.ts`: promotes registry textures into spritesheets at render time, creates a `Phaser.GameObjects.Sprite` per character, registers animations through Phaser's `AnimationManager` (`scene.anims.create`, `generateFrameNumbers`), and plays them via `sprite.play()` from authoritative runtime `facing` and `animation` state; uses `setFlipX()` for single-row side-view sheets
 - `CharacterRenderer`: unchanged orchestration boundary; still mirrors authoritative `WorldRuntime` character positions each frame
+
+### Character Animation and Facing
+
+Facing and idle/walk selection are authoritative runtime state, not renderer logic:
+
+- `src/domain/characters/resolveCharacterFacing.ts`: derives facing from normalized `moveIntent` (dominant axis, retains last facing when idle) and resolves `idle` vs `walk` animation keys
+- `animationSystem` in `src/world/systems/animationSystem.ts`: updates `CharacterState.facing` and `CharacterState.animation` each tick after movement integration
+- `CharacterState` carries `facing` and `animation` alongside `moveIntent` and `velocity`
 
 ### Terrain Base Layer
 
@@ -150,7 +156,7 @@ The shared model is intentionally plain data:
 
 - `WorldState`: top-level container for `characters`, `entities`, `zones`, `ui`, `time`, `bounds`, `playerId`, and `seed`
 - `WorldEntityState`: base interface for world objects with identity, position, tags, traits, zone membership, and interaction flags
-- `CharacterState`: character-specific extension with movement, dialogue, controller ownership, appearance, sprite metadata, velocity, and move intent
+- `CharacterState`: character-specific extension with movement, dialogue, controller ownership, appearance, sprite metadata, velocity, move intent, facing, and animation
 - `ZoneState`: named world partitions with bounds and entity membership
 - `UiState`: prompt, dialogue, inspection, and selection state
 - `WorldTimeState`: elapsed time, tick counter, and time scale
@@ -188,7 +194,7 @@ Per frame, the current runtime flow is:
 1. `WorldInputController` reads Phaser keyboard state and returns world actions for the current player.
 2. `WorldScene` forwards those actions into `WorldRuntime` with the `player` controller type.
 3. `WorldScene` also updates lightweight character agents by reading observations from `WorldRuntime` and forwarding their returned actions with the `agent` controller type.
-4. `WorldRuntime` stores move intent on the authoritative character state and runs focused systems for movement, collisions, bounds, and interactions.
+4. `WorldRuntime` stores move intent on the authoritative character state and runs focused systems for movement, animation facing, collisions, bounds, and interactions.
 5. `WorldRenderer` reads the current runtime state, syncs Phaser display objects, and projects UI state through dedicated UI renderers.
 
 When non-player controllers are introduced, they are expected to read character-scoped observations from `WorldRuntime` rather than the raw mutable `WorldState`.
@@ -198,6 +204,7 @@ When non-player controllers are introduced, they are expected to read character-
 The runtime now splits core gameplay rules into focused Phaser-independent system modules:
 
 - `movementSystem`: integrates move intent into velocity and position
+- `animationSystem`: derives facing and idle/walk animation from move intent
 - `collisionSystem`: prevents overlapping blocking characters
 - `boundsSystem`: clamps characters back into world bounds
 - `interactionSystem`: resolves nearby interaction targets and maintains prompt, inspection, and dialogue state

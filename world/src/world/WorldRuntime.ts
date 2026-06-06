@@ -16,6 +16,7 @@ import {
   attemptInteractionSystem,
   syncInteractionSystem,
 } from "./systems/interactionSystem";
+import { animationSystem } from "./systems/animationSystem";
 import { movementSystem } from "./systems/movementSystem";
 
 function normalizeIntent(intent: MovementIntent): MovementIntent {
@@ -59,6 +60,7 @@ export class WorldRuntime {
     const scaledDeltaMs = deltaMs * this.state.time.timeScale;
 
     movementSystem(this.state, scaledDeltaMs);
+    animationSystem(this.state);
     collisionSystem(this.state);
     boundsSystem(this.state);
     syncInteractionSystem(this.state);

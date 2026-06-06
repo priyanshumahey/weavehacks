@@ -1,32 +1,26 @@
 import Phaser from "phaser";
 import {
-  applyCharacterSpritePlayback,
-  resolveCharacterSpritePlayback,
-} from "../rendering/characters/characterSpriteAnimations";
-import {
   ensureCharacterSpritesheet,
   resolveCharacterDisplayScale,
+  resolveCharacterFrameIndex,
   resolveSpritesheetFrameDimensions,
 } from "../rendering/characters/characterSpritesheet";
 import {
-  isCharacterMoving,
-  resolveCharacterFacing,
-} from "../rendering/characters/resolveCharacterFacing";
-import {
-  CHARACTER_SPRITE_ANIMATION_KEYS,
   CHARACTER_SPRITE_FACING,
+  type CharacterSpriteAnimationKey,
   type CharacterSpriteFacing,
+  type CharacterSpriteMetadata,
 } from "../types/characterSprite";
 import { CHARACTER_KINDS, type CharacterState } from "../world/worldState";
 
 const SELECTION_STROKE_COLOR = 0xf6bd60;
 const SELECTION_STROKE_WIDTH = 3;
+const SIDE_VIEW_CANONICAL_FACING = CHARACTER_SPRITE_FACING.down;
 
 export class CharacterSprite extends Phaser.GameObjects.Container {
   private readonly bodySprite: Phaser.GameObjects.Sprite;
   private readonly selectionRing: Phaser.GameObjects.Arc;
   private readonly label: Phaser.GameObjects.Text;
-  private lastFacing: CharacterSpriteFacing = CHARACTER_SPRITE_FACING.down;
   readonly characterId: string;
 
   constructor(scene: Phaser.Scene, character: CharacterState) {
@@ -34,7 +28,7 @@ export class CharacterSprite extends Phaser.GameObjects.Container {
 
     this.characterId = character.id;
 
-    const { textureKey } = character.sprite;
+    const textureKey = this.resolveTextureKey(character.sprite, character.animation);
     const hasTexture = scene.textures.exists(textureKey);
 
     this.bodySprite = scene.add.sprite(0, 0, hasTexture ? textureKey : "__MISSING");
@@ -85,56 +79,158 @@ export class CharacterSprite extends Phaser.GameObjects.Container {
   }
 
   private applyBodyAnimation(character: CharacterState): void {
-    const { textureKey, frame, scale } = character.sprite;
-    const animationKey = isCharacterMoving(character.moveIntent)
-      ? CHARACTER_SPRITE_ANIMATION_KEYS.walk
-      : CHARACTER_SPRITE_ANIMATION_KEYS.idle;
-
-    this.lastFacing = resolveCharacterFacing(character.moveIntent, this.lastFacing);
+    const { sprite, animation, facing } = character;
+    const textureKey = this.resolveTextureKey(sprite, animation);
 
     if (!this.scene.textures.exists(textureKey)) {
       this.bodySprite.setTexture("__MISSING");
       this.bodySprite.setFrame(0);
-      this.bodySprite.setScale(scale);
+      this.bodySprite.setScale(sprite.scale);
       this.bodySprite.anims.stop();
       return;
     }
 
-    const playback = resolveCharacterSpritePlayback(
-      character.sprite,
-      animationKey,
-      this.lastFacing,
-      this.scene,
+    const texture = this.scene.textures.get(textureKey);
+    const resolvedFrame = resolveSpritesheetFrameDimensions(
+      texture,
+      sprite.frame.width,
+      sprite.frame.height,
     );
 
-    if (!playback) {
+    if (
+      !ensureCharacterSpritesheet(
+        this.scene,
+        textureKey,
+        resolvedFrame.frameWidth,
+        resolvedFrame.frameHeight,
+      )
+    ) {
       this.bodySprite.setTexture(textureKey);
-      this.bodySprite.setScale(scale);
+      this.bodySprite.setScale(sprite.scale);
       this.bodySprite.anims.stop();
       return;
     }
 
-    const texture = this.scene.textures.get(playback.textureKey);
-    const resolvedFrame = resolveSpritesheetFrameDimensions(texture, frame.width, frame.height);
-    ensureCharacterSpritesheet(
-      this.scene,
-      playback.textureKey,
-      resolvedFrame.frameWidth,
+    const spritesheet = this.scene.textures.get(textureKey);
+    const presentation = this.resolvePresentationFacing(
+      spritesheet,
       resolvedFrame.frameHeight,
+      facing,
     );
+    const frameMapping =
+      sprite.animations[animation]?.[presentation.facing] ??
+      sprite.animations[animation]?.[CHARACTER_SPRITE_FACING.down];
+
     const displayScale = resolveCharacterDisplayScale(
       resolvedFrame.frameHeight,
       character.appearance.radius,
-      scale,
+      sprite.scale,
     );
 
-    applyCharacterSpritePlayback(
-      this.bodySprite,
-      this.scene,
+    this.bodySprite.setTexture(textureKey);
+    this.bodySprite.setScale(displayScale);
+    this.bodySprite.setFlipX(presentation.flipX);
+
+    if (!frameMapping) {
+      this.bodySprite.anims.stop();
+      return;
+    }
+
+    const phaserAnimationKey = this.ensurePhaserAnimation(
       character.id,
-      character.sprite,
-      playback,
-      displayScale,
+      sprite,
+      textureKey,
+      animation,
+      presentation.facing,
+      resolvedFrame.frameWidth,
+      frameMapping,
     );
+
+    if (phaserAnimationKey) {
+      this.bodySprite.play(phaserAnimationKey, true);
+      return;
+    }
+
+    this.bodySprite.anims.stop();
+    this.bodySprite.setFrame(
+      resolveCharacterFrameIndex(
+        spritesheet,
+        resolvedFrame.frameWidth,
+        frameMapping.row,
+        frameMapping.column,
+      ),
+    );
+  }
+
+  private resolveTextureKey(
+    sprite: CharacterSpriteMetadata,
+    animationKey: CharacterSpriteAnimationKey,
+  ): string {
+    return sprite.animationTextureKeys?.[animationKey] ?? sprite.textureKey;
+  }
+
+  private resolvePresentationFacing(
+    texture: Phaser.Textures.Texture,
+    frameHeight: number,
+    facing: CharacterSpriteFacing,
+  ): { facing: CharacterSpriteFacing; flipX: boolean } {
+    if (texture.source[0].height > frameHeight) {
+      return { facing, flipX: false };
+    }
+
+    return {
+      facing: SIDE_VIEW_CANONICAL_FACING,
+      flipX: facing === CHARACTER_SPRITE_FACING.left,
+    };
+  }
+
+  private buildPhaserAnimationKey(
+    characterId: string,
+    textureKey: string,
+    animationKey: CharacterSpriteAnimationKey,
+    facing: CharacterSpriteFacing,
+  ): string {
+    return `${characterId}:${textureKey}:${animationKey}:${facing}`;
+  }
+
+  private ensurePhaserAnimation(
+    characterId: string,
+    sprite: CharacterSpriteMetadata,
+    textureKey: string,
+    animationKey: CharacterSpriteAnimationKey,
+    facing: CharacterSpriteFacing,
+    frameWidth: number,
+    frameMapping: NonNullable<
+      CharacterSpriteMetadata["animations"][CharacterSpriteAnimationKey]
+    >[CharacterSpriteFacing],
+  ): string | null {
+    const phaserAnimationKey = this.buildPhaserAnimationKey(
+      characterId,
+      textureKey,
+      animationKey,
+      facing,
+    );
+
+    if (this.scene.anims.exists(phaserAnimationKey)) {
+      return phaserAnimationKey;
+    }
+
+    const texture = this.scene.textures.get(textureKey);
+    const columnsPerRow = Math.max(1, Math.floor(texture.source[0].width / frameWidth));
+    const start = frameMapping.row * columnsPerRow + frameMapping.column;
+    const end = Math.min(start + columnsPerRow - 1, texture.frameTotal - 1);
+
+    if (start > end) {
+      return null;
+    }
+
+    this.scene.anims.create({
+      key: phaserAnimationKey,
+      frames: this.scene.anims.generateFrameNumbers(textureKey, { start, end }),
+      frameRate: frameMapping.frameRate,
+      repeat: frameMapping.repeat,
+    });
+
+    return phaserAnimationKey;
   }
 }

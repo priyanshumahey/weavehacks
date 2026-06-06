@@ -1,4 +1,8 @@
-import type { CharacterSpriteMetadata } from "../types/characterSprite";
+import type {
+  CharacterSpriteAnimationKey,
+  CharacterSpriteFacing,
+  CharacterSpriteMetadata,
+} from "../types/characterSprite";
 
 export interface Vector2 {
   x: number;
@@ -76,6 +80,8 @@ export interface CharacterState extends WorldEntityState {
   movement: CharacterMovementState;
   velocity: Vector2;
   moveIntent: Vector2;
+  facing: CharacterSpriteFacing;
+  animation: CharacterSpriteAnimationKey;
   dialogueId: string | null;
 }
 

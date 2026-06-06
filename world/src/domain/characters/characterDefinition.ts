@@ -12,6 +12,10 @@ import {
   CHARACTER_MOVEMENT_MODES,
   ENTITY_KINDS,
 } from "../../world/worldState";
+import {
+  CHARACTER_SPRITE_ANIMATION_KEYS,
+  CHARACTER_SPRITE_FACING,
+} from "../../types/characterSprite";
 import { normalizeCharacterSprite } from "./characterSprite";
 
 const DEFAULT_APPEARANCE = {
@@ -142,6 +146,8 @@ export function createCharacterInstance(definition: CharacterDefinition): Charac
       x: 0,
       y: 0,
     },
+    facing: CHARACTER_SPRITE_FACING.down,
+    animation: CHARACTER_SPRITE_ANIMATION_KEYS.idle,
     x: normalized.position.x,
     y: normalized.position.y,
   };

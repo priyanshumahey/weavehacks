@@ -8,7 +8,9 @@ import type {
 } from "../world/worldState";
 import { ENTITY_KINDS } from "../world/worldState";
 import type {
+  CharacterSpriteAnimationKey,
   CharacterSpriteDefinition,
+  CharacterSpriteFacing,
   CharacterSpriteMetadata,
 } from "./characterSprite";
 
@@ -74,6 +76,8 @@ export interface CharacterInstance
   interactable: boolean;
   velocity: Vector2;
   moveIntent: Vector2;
+  facing: CharacterSpriteFacing;
+  animation: CharacterSpriteAnimationKey;
   kind: CharacterKind;
   x: number;
   y: number;
