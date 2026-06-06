@@ -1,0 +1,284 @@
+{
+  "frames": {
+    "down_0": {
+      "frame": {
+        "x": 180,
+        "y": 15,
+        "w": 139,
+        "h": 207
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 2,
+        "y": 0,
+        "w": 139,
+        "h": 207
+      },
+      "sourceSize": {
+        "w": 142,
+        "h": 207
+      }
+    },
+    "down_1": {
+      "frame": {
+        "x": 447,
+        "y": 15,
+        "w": 137,
+        "h": 201
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 1,
+        "y": 0,
+        "w": 137,
+        "h": 201
+      },
+      "sourceSize": {
+        "w": 138,
+        "h": 207
+      }
+    },
+    "down_2": {
+      "frame": {
+        "x": 707,
+        "y": 16,
+        "w": 132,
+        "h": 206
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 4,
+        "y": 1,
+        "w": 132,
+        "h": 206
+      },
+      "sourceSize": {
+        "w": 136,
+        "h": 207
+      }
+    },
+    "left_0": {
+      "frame": {
+        "x": 181,
+        "y": 250,
+        "w": 139,
+        "h": 198
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 3,
+        "y": 0,
+        "w": 139,
+        "h": 198
+      },
+      "sourceSize": {
+        "w": 142,
+        "h": 198
+      }
+    },
+    "left_1": {
+      "frame": {
+        "x": 446,
+        "y": 250,
+        "w": 136,
+        "h": 198
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 136,
+        "h": 198
+      },
+      "sourceSize": {
+        "w": 138,
+        "h": 198
+      }
+    },
+    "left_2": {
+      "frame": {
+        "x": 706,
+        "y": 251,
+        "w": 133,
+        "h": 197
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 3,
+        "y": 1,
+        "w": 133,
+        "h": 197
+      },
+      "sourceSize": {
+        "w": 136,
+        "h": 198
+      }
+    },
+    "right_0": {
+      "frame": {
+        "x": 178,
+        "y": 485,
+        "w": 132,
+        "h": 198
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 132,
+        "h": 198
+      },
+      "sourceSize": {
+        "w": 142,
+        "h": 198
+      }
+    },
+    "right_1": {
+      "frame": {
+        "x": 454,
+        "y": 485,
+        "w": 126,
+        "h": 198
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 8,
+        "y": 0,
+        "w": 126,
+        "h": 198
+      },
+      "sourceSize": {
+        "w": 138,
+        "h": 198
+      }
+    },
+    "right_2": {
+      "frame": {
+        "x": 703,
+        "y": 487,
+        "w": 131,
+        "h": 196
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 2,
+        "w": 131,
+        "h": 196
+      },
+      "sourceSize": {
+        "w": 136,
+        "h": 198
+      }
+    },
+    "up_0": {
+      "frame": {
+        "x": 180,
+        "y": 717,
+        "w": 134,
+        "h": 232
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 2,
+        "y": 0,
+        "w": 134,
+        "h": 232
+      },
+      "sourceSize": {
+        "w": 142,
+        "h": 232
+      }
+    },
+    "up_1": {
+      "frame": {
+        "x": 447,
+        "y": 718,
+        "w": 130,
+        "h": 223
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 1,
+        "y": 1,
+        "w": 130,
+        "h": 223
+      },
+      "sourceSize": {
+        "w": 138,
+        "h": 232
+      }
+    },
+    "up_2": {
+      "frame": {
+        "x": 706,
+        "y": 719,
+        "w": 126,
+        "h": 229
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 3,
+        "y": 2,
+        "w": 126,
+        "h": 229
+      },
+      "sourceSize": {
+        "w": 136,
+        "h": 232
+      }
+    }
+  },
+  "meta": {
+    "image": "theon greyjoy.png",
+    "size": {
+      "w": 1024,
+      "h": 1024
+    },
+    "scale": "1",
+    "rowBands": [
+      [
+        15,
+        221
+      ],
+      [
+        250,
+        447
+      ],
+      [
+        485,
+        682
+      ],
+      [
+        717,
+        948
+      ]
+    ],
+    "colBands": [
+      [
+        178,
+        319
+      ],
+      [
+        446,
+        583
+      ],
+      [
+        703,
+        838
+      ]
+    ]
+  }
+}

@@ -1,0 +1,284 @@
+{
+  "frames": {
+    "down_0": {
+      "frame": {
+        "x": 153,
+        "y": 18,
+        "w": 196,
+        "h": 223
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 196,
+        "h": 223
+      },
+      "sourceSize": {
+        "w": 196,
+        "h": 223
+      }
+    },
+    "down_1": {
+      "frame": {
+        "x": 422,
+        "y": 18,
+        "w": 179,
+        "h": 217
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 179,
+        "h": 217
+      },
+      "sourceSize": {
+        "w": 179,
+        "h": 223
+      }
+    },
+    "down_2": {
+      "frame": {
+        "x": 669,
+        "y": 19,
+        "w": 185,
+        "h": 222
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 1,
+        "w": 185,
+        "h": 222
+      },
+      "sourceSize": {
+        "w": 185,
+        "h": 223
+      }
+    },
+    "left_0": {
+      "frame": {
+        "x": 179,
+        "y": 257,
+        "w": 145,
+        "h": 210
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 26,
+        "y": 0,
+        "w": 145,
+        "h": 210
+      },
+      "sourceSize": {
+        "w": 196,
+        "h": 211
+      }
+    },
+    "left_1": {
+      "frame": {
+        "x": 458,
+        "y": 257,
+        "w": 122,
+        "h": 211
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 36,
+        "y": 0,
+        "w": 122,
+        "h": 211
+      },
+      "sourceSize": {
+        "w": 179,
+        "h": 211
+      }
+    },
+    "left_2": {
+      "frame": {
+        "x": 686,
+        "y": 257,
+        "w": 150,
+        "h": 211
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 17,
+        "y": 0,
+        "w": 150,
+        "h": 211
+      },
+      "sourceSize": {
+        "w": 185,
+        "h": 211
+      }
+    },
+    "right_0": {
+      "frame": {
+        "x": 169,
+        "y": 489,
+        "w": 145,
+        "h": 211
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 16,
+        "y": 0,
+        "w": 145,
+        "h": 211
+      },
+      "sourceSize": {
+        "w": 196,
+        "h": 212
+      }
+    },
+    "right_1": {
+      "frame": {
+        "x": 441,
+        "y": 490,
+        "w": 117,
+        "h": 210
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 19,
+        "y": 1,
+        "w": 117,
+        "h": 210
+      },
+      "sourceSize": {
+        "w": 179,
+        "h": 212
+      }
+    },
+    "right_2": {
+      "frame": {
+        "x": 689,
+        "y": 490,
+        "w": 144,
+        "h": 211
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 20,
+        "y": 1,
+        "w": 144,
+        "h": 211
+      },
+      "sourceSize": {
+        "w": 185,
+        "h": 212
+      }
+    },
+    "up_0": {
+      "frame": {
+        "x": 163,
+        "y": 724,
+        "w": 167,
+        "h": 243
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 10,
+        "y": 0,
+        "w": 167,
+        "h": 243
+      },
+      "sourceSize": {
+        "w": 196,
+        "h": 244
+      }
+    },
+    "up_1": {
+      "frame": {
+        "x": 425,
+        "y": 724,
+        "w": 172,
+        "h": 238
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 3,
+        "y": 0,
+        "w": 172,
+        "h": 238
+      },
+      "sourceSize": {
+        "w": 179,
+        "h": 244
+      }
+    },
+    "up_2": {
+      "frame": {
+        "x": 672,
+        "y": 724,
+        "w": 169,
+        "h": 244
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 3,
+        "y": 0,
+        "w": 169,
+        "h": 244
+      },
+      "sourceSize": {
+        "w": 185,
+        "h": 244
+      }
+    }
+  },
+  "meta": {
+    "image": "robert baratheon.png",
+    "size": {
+      "w": 1024,
+      "h": 1024
+    },
+    "scale": "1",
+    "rowBands": [
+      [
+        18,
+        240
+      ],
+      [
+        257,
+        467
+      ],
+      [
+        489,
+        700
+      ],
+      [
+        724,
+        967
+      ]
+    ],
+    "colBands": [
+      [
+        153,
+        348
+      ],
+      [
+        422,
+        600
+      ],
+      [
+        669,
+        853
+      ]
+    ]
+  }
+}

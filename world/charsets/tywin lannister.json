@@ -1,0 +1,284 @@
+{
+  "frames": {
+    "down_0": {
+      "frame": {
+        "x": 191,
+        "y": 19,
+        "w": 135,
+        "h": 201
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 6,
+        "y": 0,
+        "w": 135,
+        "h": 201
+      },
+      "sourceSize": {
+        "w": 141,
+        "h": 201
+      }
+    },
+    "down_1": {
+      "frame": {
+        "x": 442,
+        "y": 19,
+        "w": 135,
+        "h": 197
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 1,
+        "y": 0,
+        "w": 135,
+        "h": 197
+      },
+      "sourceSize": {
+        "w": 136,
+        "h": 201
+      }
+    },
+    "down_2": {
+      "frame": {
+        "x": 696,
+        "y": 19,
+        "w": 135,
+        "h": 201
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 135,
+        "h": 201
+      },
+      "sourceSize": {
+        "w": 136,
+        "h": 201
+      }
+    },
+    "left_0": {
+      "frame": {
+        "x": 202,
+        "y": 259,
+        "w": 124,
+        "h": 200
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 17,
+        "y": 1,
+        "w": 124,
+        "h": 200
+      },
+      "sourceSize": {
+        "w": 141,
+        "h": 201
+      }
+    },
+    "left_1": {
+      "frame": {
+        "x": 452,
+        "y": 259,
+        "w": 116,
+        "h": 200
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 11,
+        "y": 1,
+        "w": 116,
+        "h": 200
+      },
+      "sourceSize": {
+        "w": 136,
+        "h": 201
+      }
+    },
+    "left_2": {
+      "frame": {
+        "x": 705,
+        "y": 258,
+        "w": 127,
+        "h": 200
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 9,
+        "y": 0,
+        "w": 127,
+        "h": 200
+      },
+      "sourceSize": {
+        "w": 136,
+        "h": 201
+      }
+    },
+    "right_0": {
+      "frame": {
+        "x": 185,
+        "y": 498,
+        "w": 124,
+        "h": 199
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 124,
+        "h": 199
+      },
+      "sourceSize": {
+        "w": 141,
+        "h": 199
+      }
+    },
+    "right_1": {
+      "frame": {
+        "x": 446,
+        "y": 498,
+        "w": 115,
+        "h": 199
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 5,
+        "y": 0,
+        "w": 115,
+        "h": 199
+      },
+      "sourceSize": {
+        "w": 136,
+        "h": 199
+      }
+    },
+    "right_2": {
+      "frame": {
+        "x": 696,
+        "y": 498,
+        "w": 123,
+        "h": 199
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 123,
+        "h": 199
+      },
+      "sourceSize": {
+        "w": 136,
+        "h": 199
+      }
+    },
+    "up_0": {
+      "frame": {
+        "x": 190,
+        "y": 738,
+        "w": 133,
+        "h": 221
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 5,
+        "y": 0,
+        "w": 133,
+        "h": 221
+      },
+      "sourceSize": {
+        "w": 141,
+        "h": 222
+      }
+    },
+    "up_1": {
+      "frame": {
+        "x": 441,
+        "y": 738,
+        "w": 136,
+        "h": 220
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 136,
+        "h": 220
+      },
+      "sourceSize": {
+        "w": 136,
+        "h": 222
+      }
+    },
+    "up_2": {
+      "frame": {
+        "x": 698,
+        "y": 738,
+        "w": 133,
+        "h": 222
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 2,
+        "y": 0,
+        "w": 133,
+        "h": 222
+      },
+      "sourceSize": {
+        "w": 136,
+        "h": 222
+      }
+    }
+  },
+  "meta": {
+    "image": "tywin lannister.png",
+    "size": {
+      "w": 1024,
+      "h": 1024
+    },
+    "scale": "1",
+    "rowBands": [
+      [
+        19,
+        219
+      ],
+      [
+        258,
+        458
+      ],
+      [
+        498,
+        696
+      ],
+      [
+        738,
+        959
+      ]
+    ],
+    "colBands": [
+      [
+        185,
+        325
+      ],
+      [
+        441,
+        576
+      ],
+      [
+        696,
+        831
+      ]
+    ]
+  }
+}

@@ -1,0 +1,284 @@
+{
+  "frames": {
+    "down_0": {
+      "frame": {
+        "x": 222,
+        "y": 30,
+        "w": 110,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 5,
+        "y": 0,
+        "w": 110,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 122,
+        "h": 192
+      }
+    },
+    "down_1": {
+      "frame": {
+        "x": 452,
+        "y": 30,
+        "w": 111,
+        "h": 183
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 9,
+        "y": 0,
+        "w": 111,
+        "h": 183
+      },
+      "sourceSize": {
+        "w": 120,
+        "h": 192
+      }
+    },
+    "down_2": {
+      "frame": {
+        "x": 680,
+        "y": 30,
+        "w": 111,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 7,
+        "y": 0,
+        "w": 111,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 118,
+        "h": 192
+      }
+    },
+    "left_0": {
+      "frame": {
+        "x": 224,
+        "y": 266,
+        "w": 115,
+        "h": 179
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 7,
+        "y": 0,
+        "w": 115,
+        "h": 179
+      },
+      "sourceSize": {
+        "w": 122,
+        "h": 179
+      }
+    },
+    "left_1": {
+      "frame": {
+        "x": 450,
+        "y": 266,
+        "w": 113,
+        "h": 179
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 7,
+        "y": 0,
+        "w": 113,
+        "h": 179
+      },
+      "sourceSize": {
+        "w": 120,
+        "h": 179
+      }
+    },
+    "left_2": {
+      "frame": {
+        "x": 677,
+        "y": 266,
+        "w": 114,
+        "h": 179
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 4,
+        "y": 0,
+        "w": 114,
+        "h": 179
+      },
+      "sourceSize": {
+        "w": 118,
+        "h": 179
+      }
+    },
+    "right_0": {
+      "frame": {
+        "x": 217,
+        "y": 502,
+        "w": 113,
+        "h": 178
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 113,
+        "h": 178
+      },
+      "sourceSize": {
+        "w": 122,
+        "h": 178
+      }
+    },
+    "right_1": {
+      "frame": {
+        "x": 443,
+        "y": 502,
+        "w": 114,
+        "h": 178
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 114,
+        "h": 178
+      },
+      "sourceSize": {
+        "w": 120,
+        "h": 178
+      }
+    },
+    "right_2": {
+      "frame": {
+        "x": 673,
+        "y": 502,
+        "w": 111,
+        "h": 178
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 111,
+        "h": 178
+      },
+      "sourceSize": {
+        "w": 118,
+        "h": 178
+      }
+    },
+    "up_0": {
+      "frame": {
+        "x": 222,
+        "y": 733,
+        "w": 106,
+        "h": 204
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 5,
+        "y": 0,
+        "w": 106,
+        "h": 204
+      },
+      "sourceSize": {
+        "w": 122,
+        "h": 204
+      }
+    },
+    "up_1": {
+      "frame": {
+        "x": 450,
+        "y": 733,
+        "w": 104,
+        "h": 198
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 7,
+        "y": 0,
+        "w": 104,
+        "h": 198
+      },
+      "sourceSize": {
+        "w": 120,
+        "h": 204
+      }
+    },
+    "up_2": {
+      "frame": {
+        "x": 678,
+        "y": 733,
+        "w": 111,
+        "h": 204
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 5,
+        "y": 0,
+        "w": 111,
+        "h": 204
+      },
+      "sourceSize": {
+        "w": 118,
+        "h": 204
+      }
+    }
+  },
+  "meta": {
+    "image": "daenerys targaryen.png",
+    "size": {
+      "w": 1024,
+      "h": 1024
+    },
+    "scale": "1",
+    "rowBands": [
+      [
+        30,
+        221
+      ],
+      [
+        266,
+        444
+      ],
+      [
+        502,
+        679
+      ],
+      [
+        733,
+        936
+      ]
+    ],
+    "colBands": [
+      [
+        217,
+        338
+      ],
+      [
+        443,
+        562
+      ],
+      [
+        673,
+        790
+      ]
+    ]
+  }
+}

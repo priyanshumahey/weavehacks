@@ -1,0 +1,284 @@
+{
+  "frames": {
+    "down_0": {
+      "frame": {
+        "x": 187,
+        "y": 22,
+        "w": 138,
+        "h": 195
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 138,
+        "h": 195
+      },
+      "sourceSize": {
+        "w": 138,
+        "h": 195
+      }
+    },
+    "down_1": {
+      "frame": {
+        "x": 443,
+        "y": 22,
+        "w": 138,
+        "h": 190
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 138,
+        "h": 190
+      },
+      "sourceSize": {
+        "w": 138,
+        "h": 195
+      }
+    },
+    "down_2": {
+      "frame": {
+        "x": 698,
+        "y": 22,
+        "w": 138,
+        "h": 195
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 138,
+        "h": 195
+      },
+      "sourceSize": {
+        "w": 138,
+        "h": 195
+      }
+    },
+    "left_0": {
+      "frame": {
+        "x": 202,
+        "y": 254,
+        "w": 119,
+        "h": 183
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 15,
+        "y": 0,
+        "w": 119,
+        "h": 183
+      },
+      "sourceSize": {
+        "w": 138,
+        "h": 183
+      }
+    },
+    "left_1": {
+      "frame": {
+        "x": 460,
+        "y": 254,
+        "w": 116,
+        "h": 183
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 17,
+        "y": 0,
+        "w": 116,
+        "h": 183
+      },
+      "sourceSize": {
+        "w": 138,
+        "h": 183
+      }
+    },
+    "left_2": {
+      "frame": {
+        "x": 716,
+        "y": 254,
+        "w": 117,
+        "h": 183
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 18,
+        "y": 0,
+        "w": 117,
+        "h": 183
+      },
+      "sourceSize": {
+        "w": 138,
+        "h": 183
+      }
+    },
+    "right_0": {
+      "frame": {
+        "x": 188,
+        "y": 475,
+        "w": 117,
+        "h": 182
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 1,
+        "y": 0,
+        "w": 117,
+        "h": 182
+      },
+      "sourceSize": {
+        "w": 138,
+        "h": 182
+      }
+    },
+    "right_1": {
+      "frame": {
+        "x": 446,
+        "y": 475,
+        "w": 116,
+        "h": 182
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 3,
+        "y": 0,
+        "w": 116,
+        "h": 182
+      },
+      "sourceSize": {
+        "w": 138,
+        "h": 182
+      }
+    },
+    "right_2": {
+      "frame": {
+        "x": 702,
+        "y": 475,
+        "w": 116,
+        "h": 182
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 4,
+        "y": 0,
+        "w": 116,
+        "h": 182
+      },
+      "sourceSize": {
+        "w": 138,
+        "h": 182
+      }
+    },
+    "up_0": {
+      "frame": {
+        "x": 191,
+        "y": 705,
+        "w": 129,
+        "h": 204
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 4,
+        "y": 0,
+        "w": 129,
+        "h": 204
+      },
+      "sourceSize": {
+        "w": 138,
+        "h": 204
+      }
+    },
+    "up_1": {
+      "frame": {
+        "x": 448,
+        "y": 705,
+        "w": 128,
+        "h": 204
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 5,
+        "y": 0,
+        "w": 128,
+        "h": 204
+      },
+      "sourceSize": {
+        "w": 138,
+        "h": 204
+      }
+    },
+    "up_2": {
+      "frame": {
+        "x": 703,
+        "y": 705,
+        "w": 128,
+        "h": 204
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 5,
+        "y": 0,
+        "w": 128,
+        "h": 204
+      },
+      "sourceSize": {
+        "w": 138,
+        "h": 204
+      }
+    }
+  },
+  "meta": {
+    "image": "davos seaworth.png",
+    "size": {
+      "w": 1024,
+      "h": 1024
+    },
+    "scale": "1",
+    "rowBands": [
+      [
+        22,
+        216
+      ],
+      [
+        254,
+        436
+      ],
+      [
+        475,
+        656
+      ],
+      [
+        705,
+        908
+      ]
+    ],
+    "colBands": [
+      [
+        187,
+        324
+      ],
+      [
+        443,
+        580
+      ],
+      [
+        698,
+        835
+      ]
+    ]
+  }
+}
