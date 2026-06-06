@@ -32,6 +32,33 @@ canvas {
   display: block;
 }
 
+.world-character-labels {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.world-character-label {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: rgb(0 0 0 / 88%);
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  line-height: 1;
+  color: #fff;
+  white-space: nowrap;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.world-character-label:not(.world-character-label--selected) {
+  opacity: 0.92;
+}
+
 .world-ui {
   position: absolute;
   inset: 0;
