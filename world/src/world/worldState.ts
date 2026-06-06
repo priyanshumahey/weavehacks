@@ -13,6 +13,7 @@ export interface WorldBounds {
 export type EntityKind = "character" | "prop" | "trigger";
 export type CharacterKind = "player" | "npc";
 export type CharacterMovementMode = "idle" | "player";
+export type CharacterControllerType = "player" | "script" | "agent";
 
 export interface EntityAppearance {
   color: string;
@@ -40,6 +41,7 @@ export interface WorldEntityState {
 export interface CharacterState extends WorldEntityState {
   kind: "character";
   characterKind: CharacterKind;
+  controller: CharacterControllerType;
   appearance: EntityAppearance;
   movement: CharacterMovementState;
   velocity: Vector2;

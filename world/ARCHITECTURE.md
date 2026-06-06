@@ -44,6 +44,7 @@ Characters and world UI are file-backed and split into focused layers:
 - `src/data/characters/`: authored JSON definitions, one file per character
 - `src/domain/characters/`: normalization and validation of character definitions into a stable runtime shape
 - `src/world/`: `createWorld()` and `WorldRuntime`, the authoritative world-state layer responsible for state creation, action handling, and frame stepping
+- `src/agents/`: agent-facing read-only observation builders derived from authoritative runtime state
 - `src/rendering/characters/`: Phaser-facing rendering adapters such as `CharacterRenderer`
 - `src/rendering/world/`: world bounds helpers, scene frame creation, and the top-level `WorldRenderer`
 - `src/rendering/ui/`: Phaser-facing prompt, dialogue, and inspection rendering
@@ -84,6 +85,7 @@ Current state is split as follows:
 - `WorldInputController`: input polling and intent creation
 - `createWorld()`: serializable world-state construction from authored definitions
 - `WorldRuntime`: authoritative state mutation, action application, and per-frame simulation
+- `buildAgentObservation()`: filtered, character-scoped perception queries for future agent controllers
 - `src/world/systems/`: deterministic simulation passes for movement, bounds, collisions, and interactions
 - `WorldRenderer`: top-level Phaser-facing renderer for the world frame and character rendering passes
 - `WorldUiRenderer` and `buildWorldUiViewModel()`: player-facing prompt, dialogue, and inspection presentation
@@ -97,21 +99,32 @@ The shared model is intentionally plain data:
 
 - `WorldState`: top-level container for `characters`, `entities`, `zones`, `ui`, `time`, `bounds`, `playerId`, and `seed`
 - `WorldEntityState`: base interface for world objects with identity, position, tags, traits, zone membership, and interaction flags
-- `CharacterState`: character-specific extension with movement, dialogue, appearance, velocity, and move intent
+- `CharacterState`: character-specific extension with movement, dialogue, controller ownership, appearance, velocity, and move intent
 - `ZoneState`: named world partitions with bounds and entity membership
 - `UiState`: prompt, dialogue, inspection, and selection state
 - `WorldTimeState`: elapsed time, tick counter, and time scale
 
 Existing character definition and instance types in `src/types/character.ts` are compatibility contracts layered on top of this shared model so current gameplay code can keep moving while the broader runtime is built out.
 
+Character controller ownership is now an explicit part of authored and runtime state:
+
+- Character definitions may declare a controller type of `player`, `script`, or `agent`
+- Character normalization defaults controller ownership by role when not authored explicitly
+- `createWorld()` derives `playerId` from the first character owned by the `player` controller
+- `WorldRuntime.dispatch(action, controller)` validates that the caller matches the character's assigned controller before mutating state
+- `WorldRuntime.getObservation(entityId)` derives a cloned, read-only observation scoped to one character for future agent decision-making
+- Scene input uses the `player` controller path, while future scripted and agent systems are expected to use the same runtime dispatch boundary with their own controller type
+
 ### Runtime Flow
 
 Per frame, the current runtime flow is:
 
 1. `WorldInputController` reads Phaser keyboard state and returns world actions for the current player.
-2. `WorldScene` forwards those actions into `WorldRuntime`.
+2. `WorldScene` forwards those actions into `WorldRuntime` with the `player` controller type.
 3. `WorldRuntime` stores move intent on the authoritative character state and runs focused systems for movement, collisions, bounds, and interactions.
 4. `WorldRenderer` reads the current runtime state, syncs Phaser display objects, and projects UI state through dedicated UI renderers.
+
+When non-player controllers are introduced, they are expected to read character-scoped observations from `WorldRuntime` rather than the raw mutable `WorldState`.
 
 ### Simulation Systems
 

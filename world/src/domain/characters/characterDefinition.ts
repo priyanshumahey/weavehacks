@@ -1,5 +1,7 @@
 import type {
   CharacterDefinition,
+  CharacterKind,
+  CharacterControllerType,
   CharacterInstance,
   CharacterMovementMode,
   NormalizedCharacterDefinition,
@@ -40,12 +42,21 @@ function isMovementMode(value: unknown): value is CharacterMovementMode {
   return value === "idle" || value === "player";
 }
 
+function isControllerType(value: unknown): value is CharacterControllerType {
+  return value === "player" || value === "script" || value === "agent";
+}
+
+function getDefaultController(kind: CharacterKind): CharacterControllerType {
+  return kind === "player" ? "player" : "script";
+}
+
 export function normalizeCharacterDefinition(
   definition: CharacterDefinition,
 ): NormalizedCharacterDefinition {
   const id = assertString(definition.id, "id");
   const name = assertString(definition.name, "name");
   const kind = definition.kind === "player" ? "player" : "npc";
+  const controller = definition.controller ?? getDefaultController(kind);
   const appearance = {
     ...DEFAULT_APPEARANCE,
     ...(definition.appearance ?? {}),
@@ -61,10 +72,17 @@ export function normalizeCharacterDefinition(
     );
   }
 
+  if (!isControllerType(controller)) {
+    throw new Error(
+      `Character "${id}" has unsupported controller "${String(controller)}".`,
+    );
+  }
+
   return {
     id,
     name,
     kind,
+    controller,
     position: {
       x: normalizeNumber(definition.position?.x, 0, "position.x"),
       y: normalizeNumber(definition.position?.y, 0, "position.y"),

@@ -1,17 +1,19 @@
 import type {
   CharacterKind,
+  CharacterControllerType,
   CharacterMovementMode,
   EntityAppearance,
   Vector2,
   WorldBounds,
 } from "../world/worldState";
 
-export type { CharacterKind, CharacterMovementMode, WorldBounds };
+export type { CharacterKind, CharacterControllerType, CharacterMovementMode, WorldBounds };
 
 export interface CharacterDefinition {
   id: string;
   name: string;
   kind?: CharacterKind;
+  controller?: CharacterControllerType;
   zoneId?: string | null;
   position?: {
     x?: number;
@@ -35,6 +37,7 @@ export interface NormalizedCharacterDefinition {
   id: string;
   name: string;
   kind: CharacterKind;
+  controller: CharacterControllerType;
   position: Vector2;
   appearance: EntityAppearance;
   movement: {

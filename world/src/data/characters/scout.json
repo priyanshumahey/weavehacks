@@ -2,6 +2,7 @@
   "id": "scout",
   "name": "Scout",
   "kind": "npc",
+  "controller": "script",
   "position": {
     "x": 700,
     "y": 320

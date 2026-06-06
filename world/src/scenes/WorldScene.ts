@@ -36,7 +36,7 @@ export class WorldScene extends Phaser.Scene {
 
     if (player) {
       for (const action of this.inputController.readActions(player.id)) {
-        this.worldRuntime.dispatch(action);
+        this.worldRuntime.dispatch(action, "player");
       }
     }
 

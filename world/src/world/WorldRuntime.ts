@@ -1,4 +1,13 @@
-import type { CharacterState, WorldState } from "./worldState";
+import {
+  buildAgentObservation,
+  type AgentObservation,
+  type AgentObservationOptions,
+} from "../agents/buildAgentObservation";
+import type {
+  CharacterControllerType,
+  CharacterState,
+  WorldState,
+} from "./worldState";
 import type { MovementIntent, WorldAction } from "./worldActions";
 import { boundsSystem } from "./systems/boundsSystem";
 import { collisionSystem } from "./systems/collisionSystem";
@@ -28,7 +37,11 @@ export class WorldRuntime {
     this.state = initialState;
   }
 
-  dispatch(action: WorldAction): void {
+  dispatch(action: WorldAction, controller: CharacterControllerType): boolean {
+    if (!this.canDispatch(action.entityId, controller)) {
+      return false;
+    }
+
     switch (action.type) {
       case "move":
         this.applyMoveIntent(action.entityId, action.intent);
@@ -37,6 +50,8 @@ export class WorldRuntime {
         attemptInteractionSystem(this.state, action.entityId);
         break;
     }
+
+    return true;
   }
 
   step(deltaMs: number): void {
@@ -61,6 +76,29 @@ export class WorldRuntime {
     }
 
     return this.state.characters[this.state.playerId] ?? null;
+  }
+
+  getObservation(
+    entityId: string,
+    options?: AgentObservationOptions,
+  ): AgentObservation | null {
+    return buildAgentObservation(this.state, entityId, options);
+  }
+
+  getCharactersByController(controller: CharacterControllerType): CharacterState[] {
+    return Object.values(this.state.characters).filter((character) => {
+      return character.controller === controller;
+    });
+  }
+
+  canDispatch(entityId: string, controller: CharacterControllerType): boolean {
+    const character = this.state.characters[entityId];
+
+    if (!character) {
+      return false;
+    }
+
+    return character.controller === controller;
   }
 
   private applyMoveIntent(entityId: string, intent: MovementIntent): void {

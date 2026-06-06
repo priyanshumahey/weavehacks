@@ -2,6 +2,7 @@
   "id": "innkeeper",
   "name": "Innkeeper",
   "kind": "npc",
+  "controller": "script",
   "position": {
     "x": 280,
     "y": 220

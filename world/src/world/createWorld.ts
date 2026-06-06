@@ -25,6 +25,7 @@ function toCharacterState(definition: CharacterDefinition): CharacterState {
     blocksMovement: instance.blocksMovement,
     interactable: instance.interactable,
     characterKind: instance.kind,
+    controller: instance.controller,
     appearance: instance.appearance,
     movement: instance.movement,
     velocity: instance.velocity,
@@ -47,7 +48,7 @@ export function createWorld({
   let playerId: string | null = null;
 
   for (const character of Object.values(characters)) {
-    if (character.characterKind === "player") {
+    if (character.controller === "player") {
       playerId = character.id;
       break;
     }
