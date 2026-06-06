@@ -130,7 +130,7 @@ The current world is a minimal prototype scene composed of:
 - Keyboard input is handled through Phaser cursor keys
 - `WorldInputController` is the input adapter boundary for Phaser input devices
 - Arrow keys are translated into a `move` world action with normalized directional intent
-- `E` and space are translated into an edge-triggered `interact` world action
+- `E` and space are translated into an edge-triggered `interact` world action via `Phaser.Input.Keyboard.JustDown()`
 - The scene forwards adapter-produced actions into `WorldRuntime` and does not construct movement commands itself
 
 ### State Model

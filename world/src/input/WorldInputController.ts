@@ -4,7 +4,6 @@ import { WORLD_ACTION_TYPES, type WorldAction } from "../world/worldActions";
 export class WorldInputController {
   private readonly cursors: Phaser.Types.Input.Keyboard.CursorKeys | null;
   private readonly interactKey: Phaser.Input.Keyboard.Key | null;
-  private wasInteractPressed = false;
 
   constructor(scene: Phaser.Scene) {
     this.cursors = scene.input.keyboard?.createCursorKeys() ?? null;
@@ -40,17 +39,16 @@ export class WorldInputController {
       },
     ];
 
-    const isInteractPressed =
-      (this.interactKey?.isDown ?? false) || (this.cursors?.space?.isDown ?? false);
+    const interactJustPressed =
+      (this.interactKey && Phaser.Input.Keyboard.JustDown(this.interactKey)) ||
+      (this.cursors?.space && Phaser.Input.Keyboard.JustDown(this.cursors.space));
 
-    if (isInteractPressed && !this.wasInteractPressed) {
+    if (interactJustPressed) {
       actions.push({
         type: WORLD_ACTION_TYPES.interact,
         entityId,
       });
     }
-
-    this.wasInteractPressed = isInteractPressed;
 
     return actions;
   }
