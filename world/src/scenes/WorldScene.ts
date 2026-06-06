@@ -35,14 +35,11 @@ export class WorldScene extends Phaser.Scene {
     }
 
     const player = this.worldRuntime.getPlayer();
-    const intent = this.inputController.readMovementIntent();
 
     if (player) {
-      this.worldRuntime.dispatch({
-        type: "move",
-        entityId: player.id,
-        intent: intent ?? { x: 0, y: 0 },
-      });
+      for (const action of this.inputController.readActions(player.id)) {
+        this.worldRuntime.dispatch(action);
+      }
     }
 
     this.worldRuntime.step(delta);

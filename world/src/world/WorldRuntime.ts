@@ -1,12 +1,5 @@
-import type { MovementIntent } from "../input/WorldInputController";
 import type { CharacterState, WorldState } from "./worldState";
-
-export type WorldAction =
-  | {
-      type: "move";
-      entityId: string;
-      intent: MovementIntent;
-    };
+import type { MovementIntent, WorldAction } from "./worldActions";
 
 function clamp(value: number, min: number, max: number): number {
   return Math.min(Math.max(value, min), max);
@@ -36,6 +29,9 @@ export class WorldRuntime {
     switch (action.type) {
       case "move":
         this.applyMoveIntent(action.entityId, action.intent);
+        break;
+      case "interact":
+        this.applyInteract(action.entityId);
         break;
     }
   }
@@ -71,6 +67,63 @@ export class WorldRuntime {
     }
 
     character.moveIntent = normalizeIntent(intent);
+  }
+
+  private applyInteract(entityId: string): void {
+    const source = this.state.characters[entityId];
+
+    if (!source) {
+      return;
+    }
+
+    const target = this.findNearestInteractable(source);
+
+    this.state.ui.selectedEntityId = target?.id ?? entityId;
+    this.state.ui.prompt = target
+      ? {
+          entityId: target.id,
+          text: `Talk to ${target.name}`,
+        }
+      : null;
+    this.state.ui.dialogue = target?.dialogueId
+      ? {
+          entityId: target.id,
+          dialogueId: target.dialogueId,
+          visible: true,
+        }
+      : null;
+    this.state.ui.inspection = target
+      ? {
+          entityId: target.id,
+          visible: true,
+        }
+      : null;
+  }
+
+  private findNearestInteractable(source: CharacterState): CharacterState | null {
+    const maxInteractionDistance = source.appearance.radius + 48;
+    let nearest: CharacterState | null = null;
+    let nearestDistance = Number.POSITIVE_INFINITY;
+
+    for (const candidate of Object.values(this.state.characters)) {
+      if (candidate.id === source.id || !candidate.interactable) {
+        continue;
+      }
+
+      const distance = Math.hypot(
+        candidate.position.x - source.position.x,
+        candidate.position.y - source.position.y,
+      );
+
+      if (distance > maxInteractionDistance || distance >= nearestDistance) {
+        continue;
+      }
+
+      nearest = candidate;
+      nearestDistance = distance;
+    }
+
+    return nearest;
   }
 
   private stepCharacter(character: CharacterState, deltaMs: number): void {

@@ -4,7 +4,7 @@ This file tracks the major implementation tasks for the `world/` game engine.
 
 ## Tasks
 
-### 1. Boot
+### 1. Boot [Completed]
 
 Scope:
 - Set up Phaser config, game creation, and scene registration
@@ -13,7 +13,7 @@ Scope:
 Outcome:
 - Game startup is isolated from world behavior
 
-### 2. Scene Shell
+### 2. Scene Shell [Completed]
 
 Scope:
 - Keep `WorldScene` focused on Phaser lifecycle methods
@@ -22,7 +22,7 @@ Scope:
 Outcome:
 - The scene acts as a thin shell instead of owning game rules
 
-### 3. World Model
+### 3. World Model [Completed]
 
 Scope:
 - Define the core state shapes for world, characters, entities, zones, UI, and time
@@ -31,7 +31,7 @@ Scope:
 Outcome:
 - The game has a clear, shared data model
 
-### 4. World Runtime
+### 4. World Runtime [Completed]
 
 Scope:
 - Own authoritative world state
@@ -42,7 +42,7 @@ Scope:
 Outcome:
 - All state mutation happens in one place
 
-### 5. Input Adapter
+### 5. Input Adapter [Completed]
 
 Scope:
 - Read Phaser keyboard or controller input

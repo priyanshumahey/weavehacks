@@ -65,9 +65,10 @@ The current world is a minimal prototype scene composed of:
 ### Input Model
 
 - Keyboard input is handled through Phaser cursor keys
-- Arrow keys move the player character on the X/Y axes
-- Input is translated into movement commands for the character manager
-- Final render positions are synchronized into Phaser entities after state updates
+- `WorldInputController` is the input adapter boundary for Phaser input devices
+- Arrow keys are translated into a `move` world action with normalized directional intent
+- `E` and space are translated into an edge-triggered `interact` world action
+- The scene forwards adapter-produced actions into `WorldRuntime` and does not construct movement commands itself
 
 ### State Model
 
@@ -100,9 +101,9 @@ Existing character definition and instance types in `src/types/character.ts` are
 
 Per frame, the current runtime flow is:
 
-1. `WorldInputController` reads Phaser keyboard state and returns a movement intent.
-2. `WorldScene` dispatches a `move` action into `WorldRuntime`.
-3. `WorldRuntime` stores move intent on the authoritative character state, advances movement and time, and clamps positions to world bounds.
+1. `WorldInputController` reads Phaser keyboard state and returns world actions for the current player.
+2. `WorldScene` forwards those actions into `WorldRuntime`.
+3. `WorldRuntime` stores move intent on the authoritative character state, resolves interaction targets, advances movement and time, and clamps positions to world bounds.
 4. `CharacterRenderer` reads the current runtime state and syncs Phaser objects to it.
 
 ## Recommended Target Architecture
