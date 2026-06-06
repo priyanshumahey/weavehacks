@@ -227,13 +227,38 @@ The runtime now has a first-pass character agent interface in `src/agents/`:
 - `characterAgent.ts`: stable contract for agents that accept an observation and return `WorldAction[]`
 - `ScoutGreeterAgent.ts`: lightweight scripted agent used to validate the contract against the live runtime
 
-The current integration is intentionally minimal:
+Agent interaction uses a **separate adapter path** parallel to player input. Player and agent controllers converge only at the runtime dispatch boundary; decision logic must not be shared or merged across layers.
 
-- `WorldScene` owns a temporary validation harness for agent updates
+#### Separation constraints
+
+- **Agent orchestration and decision logic** live in `src/agents/` only. The orchestrator (task 12) belongs under `src/agents/orchestrator/`.
+- **Player input** lives in `src/input/` only. `WorldInputController` reads Phaser devices and returns `WorldAction[]` for the player controller; it must not call `decide()`, read observations, or branch on agent state.
+- **World rules** live in `src/world/` only. Simulation systems resolve action outcomes; they must not call agents, host LLM logic, or contain agent-specific decision branches.
+- **Scenes** wire collaborators and forward frame ticks. `WorldScene` must not own long-term agent instances, implement scheduling, or embed agent decision loops once the orchestrator exists.
+- **Read path**: `WorldRuntime.getObservation(entityId)` returns a cloned, character-scoped, read-only view. Agents must not read or mutate the authoritative `WorldState` directly.
+- **Write path**: `WorldRuntime.dispatch(action, "agent")` with controller ownership validation. All agent output is expressed as `WorldAction[]`, same contract as the player path.
+- **Action extensions** for agents (task 14) add shared types and system handlers in `src/world/`; agent choice logic stays in `src/agents/` and reaches the runtime only through `decide()` → `dispatch()`.
+
+#### Module layout
+
+```text
+src/agents/
+  characterAgent.ts
+  buildAgentObservation.ts
+  orchestrator/
+    AgentOrchestrator.ts
+    createCharacterAgents.ts
+  ScoutGreeterAgent.ts
+  ...
+```
+
+#### Orchestrator integration
+
+- `AgentOrchestrator` owns agent instances and runs the observation → `decide()` → `dispatch()` loop each tick
+- `createCharacterAgents()` maps `controller: "agent"` characters from world state to concrete `CharacterAgent` implementations
+- `WorldScene` constructs the orchestrator at `create()` and calls `agentOrchestrator.tick(worldRuntime)` each frame before `step()`
 - agents consume read-only observations from `WorldRuntime.getObservation(entityId)`
-- all agent output still flows through `WorldRuntime.dispatch(action, "agent")`
-
-This keeps the action boundary stable while the dedicated orchestrator and scheduling layers are still pending.
+- all agent output flows through `WorldRuntime.dispatch(action, "agent")`
 
 ### Runtime Flow
 
@@ -241,7 +266,7 @@ Per frame, the current runtime flow is:
 
 1. `WorldInputController` reads Phaser keyboard state and returns world actions for the current player.
 2. `WorldScene` forwards those actions into `WorldRuntime` with the `player` controller type.
-3. `WorldScene` also updates lightweight character agents by reading observations from `WorldRuntime` and forwarding their returned actions with the `agent` controller type.
+3. `AgentOrchestrator` reads observations from `WorldRuntime`, runs each agent's `decide()` pass, and forwards returned actions with the `agent` controller type.
 4. `WorldRuntime` stores move intent on the authoritative character state and runs focused systems for movement, animation facing, collisions, bounds, and interactions.
 5. `WorldRenderer` reads the current runtime state, syncs Phaser display objects, and projects UI state through dedicated UI renderers.
 
@@ -280,6 +305,7 @@ This keeps Phaser as the rendering/input engine, not the place where game rules 
 - Prefer small domain-specific modules over a general ECS until scale requires it
 - Make input produce intent, not direct object mutation
 - Make rendering consume state, not define it
+- Keep agent decision logic in `src/agents/` on a parallel adapter path; share only `WorldAction` dispatch with player input, never merged control flow
 
 ### Recommended Module Boundaries
 
@@ -575,6 +601,8 @@ Apply this in small steps:
 
 ### 2026-06-06
 
+- Added `AgentOrchestrator` and `createCharacterAgents()` under `src/agents/orchestrator/`; `WorldScene` now delegates agent updates to `agentOrchestrator.tick(runtime)` instead of an inline loop
+- Documented agent interface separation constraints: orchestration in `src/agents/orchestrator/`, no agent logic in scenes, input, or simulation systems; shared boundary is `WorldAction` dispatch only
 - Created this architecture document as the canonical record for the `world/` engine
 - Documented the current single-scene Phaser setup and the rule to update this file with architecture changes
 - Refactored the single-scene prototype into a small character architecture with file-backed definitions, a domain normalization layer, a runtime manager, and Phaser entity wrappers

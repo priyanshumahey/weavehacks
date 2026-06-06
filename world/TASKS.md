@@ -15,6 +15,7 @@ All major `world/` engine tasks are complete.
 - 9. Control Ownership Layer
 - 10. Agent Perception Layer
 - 11. Character Agent Interface
+- 12. Agent Orchestrator
 - 16. Asset Loading and Registry
 - 17. Character Sprite Metadata
 - 18. Sprite-Backed Character Renderer
@@ -26,17 +27,25 @@ All major `world/` engine tasks are complete.
 
 ## Planned: Agent Interaction Layer
 
-- 12. Agent Orchestrator
-  Build an orchestration layer that owns agent instances, updates them on a controlled cadence, collects their actions, and dispatches those actions into `WorldRuntime` without letting agents mutate state directly.
+### Boundary rules
+
+Agent interaction must stay on a **separate adapter path** parallel to player input — not merged into scene, input, or simulation logic.
+
+- **Agent code lives in `src/agents/`** (orchestrator under `src/agents/orchestrator/`). Scenes wire collaborators only; they do not call `decide()`, own agent instances long-term, or implement scheduling.
+- **Player code stays in `src/input/`**. `WorldInputController` must not branch on agent behavior or read agent observations.
+- **World rules stay in `src/world/`**. Simulation systems resolve action outcomes; they do not embed agent decision logic or LLM calls.
+- **Shared contract only at the runtime boundary**: both paths produce `WorldAction[]` and call `WorldRuntime.dispatch(action, controller)`. Convergence is intentional; shared decision logic is not.
+- **Read path**: agents consume `WorldRuntime.getObservation()` (cloned, read-only). **Write path**: `WorldRuntime.dispatch(..., "agent")` with controller ownership checks. Agents never mutate `WorldState` directly.
+- **Task 14 extensions** add action types and system handlers in `src/world/`; agent-specific *choice* logic remains in `src/agents/`. No agent-only branches in `WorldScene`, `WorldInputController`, or renderers.
 
 - 13. Agent Scheduling and Safety Rules
-  Add guardrails for tick rate, action budgets, invalid action rejection, and fallback behavior so multiple agents can run predictably without stalling the simulation or spamming commands every frame.
+  Add guardrails in the orchestrator layer for tick rate, action budgets, invalid action rejection, and fallback behavior so multiple agents can run predictably without stalling the simulation or spamming commands every frame.
 
 - 14. Interaction Extensions for Agents
-  Extend the action and interaction model as needed for agent-driven play, such as explicit facing, inspect/select actions, or richer dialogue initiation, while preserving the current deterministic runtime flow.
+  Extend the shared action and interaction model as needed for agent-driven play, such as explicit facing, inspect/select actions, or richer dialogue initiation. New handlers live in `src/world/`; agents consume the extensions through `decide()` → `dispatch()` only.
 
 - 15. Debug and Visibility Tooling
-  Add development-facing debugging support for agent-controlled characters, such as current controller type, latest observation summary, last chosen action, and any rejected commands.
+  Add development-facing debugging under `src/agents/` (or a dev-only submodule) for agent-controlled characters: current controller type, latest observation summary, last chosen action, and rejected commands. Must not couple to player input or gameplay UI renderers.
 
 ## Planned: Asset Integration Layer
 

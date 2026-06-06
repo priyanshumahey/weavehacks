@@ -1,6 +1,6 @@
 import Phaser from "phaser";
-import type { CharacterAgent } from "../agents/characterAgent";
-import { ScoutGreeterAgent } from "../agents/ScoutGreeterAgent";
+import { AgentOrchestrator } from "../agents/orchestrator/AgentOrchestrator";
+import { createCharacterAgents } from "../agents/orchestrator/createCharacterAgents";
 import { preloadWorldAssets } from "../assets/worldAssetRegistry";
 import { characterDefinitions } from "../data/characters";
 import { propDefinitions } from "../data/props";
@@ -23,7 +23,7 @@ export class WorldScene extends Phaser.Scene {
   private worldRuntime: WorldRuntime | null = null;
   private worldRenderer: WorldRenderer | null = null;
   private inputController: WorldInputController | null = null;
-  private agents: CharacterAgent[] = [];
+  private agentOrchestrator: AgentOrchestrator | null = null;
 
   constructor() {
     super(SCENE_KEYS.world);
@@ -45,11 +45,16 @@ export class WorldScene extends Phaser.Scene {
     this.worldRenderer = new WorldRenderer(this);
     this.worldRenderer.create(this.worldRuntime.getState());
     this.inputController = new WorldInputController(this);
-    this.agents = world.characters.scout ? [new ScoutGreeterAgent("scout")] : [];
+    this.agentOrchestrator = new AgentOrchestrator(createCharacterAgents(world.characters));
   }
 
   update(_time: number, delta: number): void {
-    if (!this.inputController || !this.worldRuntime || !this.worldRenderer) {
+    if (
+      !this.inputController ||
+      !this.worldRuntime ||
+      !this.worldRenderer ||
+      !this.agentOrchestrator
+    ) {
       return;
     }
 
@@ -61,17 +66,7 @@ export class WorldScene extends Phaser.Scene {
       }
     }
 
-    for (const agent of this.agents) {
-      const observation = this.worldRuntime.getObservation(agent.characterId);
-
-      if (!observation) {
-        continue;
-      }
-
-      for (const action of agent.decide(observation)) {
-        this.worldRuntime.dispatch(action, CHARACTER_CONTROLLER_TYPES.agent);
-      }
-    }
+    this.agentOrchestrator.tick(this.worldRuntime);
 
     this.worldRuntime.step(delta);
     this.worldRenderer.render(this.worldRuntime.getState());
