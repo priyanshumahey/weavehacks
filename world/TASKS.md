@@ -44,7 +44,7 @@ All major `world/` engine tasks are complete.
 - 19. Character Animation and Facing ✓
   Drive idle and movement animations from runtime state, including choosing the correct row or animation for player and NPC movement without letting renderer logic become the source of truth.
 
-- 20. Terrain Base Layer
+- 20. Terrain Base Layer ✓
   Replace the placeholder world rectangle with a tile- or image-based terrain layer derived from the terrain sprites, with a clear approach for scaling, repetition, and camera-safe bounds.
 
 - 21. Props and Building Placement

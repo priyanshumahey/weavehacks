@@ -72,6 +72,22 @@ Normalized runtime character state always includes a complete `sprite` object wi
 - `src/entities/CharacterSprite.ts`: promotes registry textures into spritesheets at render time, creates a `Phaser.GameObjects.Sprite` per character, drives idle/walk animation and facing from runtime movement state, and keeps name labels plus selection rings derived from runtime sprite metadata and UI state
 - `CharacterRenderer`: unchanged orchestration boundary; still mirrors authoritative `WorldRuntime` character positions each frame
 
+### Terrain Base Layer
+
+The playfield background is now a Phaser tilemap layer instead of a solid rectangle:
+
+- `src/types/terrain.ts`: shared terrain constants, tileset/layer ids, and authored layer definition contracts
+- `src/data/terrain/defaultTerrain.ts`: default grass fill tile and registry texture key for `Tilemap_color1.png`
+- `src/rendering/terrain/TerrainRenderer.ts`: builds a blank `Phaser.Tilemaps.Tilemap` sized to `WorldBounds`, registers the tileset via `addTilesetImage()`, creates a `TilemapLayer` with `createBlankLayer()`, fills it with `layer.fill()`, and clips overflow with a `GeometryMask` aligned to the playfield
+
+Terrain rendering rules:
+
+- Tile size is the native 32×32 px grid from the tileset image (576×384 → 18 columns)
+- Layer origin is the top-left playfield corner at `(bounds.minX, bounds.minY)`
+- Tile columns and rows are `ceil(boundsWidth / tileSize)` and `ceil(boundsHeight / tileSize)`
+- `WorldBounds` remain simulation-authoritative; terrain is presentation-only and masked to the same rectangle used by `boundsSystem`
+- `createWorldFrame()` now owns only the camera background color
+
 Rendered character positions always come from runtime state. The renderer does not write back into `WorldRuntime`.
 
 ### Character Architecture
@@ -97,11 +113,9 @@ The scene does not treat Phaser game objects as the source of truth for characte
 The current world is a minimal prototype scene composed of:
 
 - A solid background color
-- A bordered playfield rectangle
-- A title label
+- A Phaser tilemap grass base layer clipped to the playfield bounds
 - A set of sprite-backed character markers rendered from JSON definitions
 - Selection highlighting derived from UI state
-- A movement instruction label
 - Prompt, dialogue, and inspection panels derived from the runtime UI state
 
 ### Input Model
@@ -127,7 +141,7 @@ Current state is split as follows:
 - `WorldRenderer`: top-level Phaser-facing renderer for the world frame and character rendering passes
 - `WorldUiRenderer` and `buildWorldUiViewModel()`: player-facing prompt, dialogue, and inspection presentation
 - `CharacterRenderer` and `CharacterSprite`: sprite-backed visual representation for each character with labels and selection highlighting
-- `createWorldFrame()` and `getWorldBounds()`: static world presentation and scene-derived bounds setup
+- `TerrainRenderer`, `createWorldFrame()`, and `getWorldBounds()`: terrain tilemap presentation, camera background, and scene-derived bounds setup
 - `worldState.ts`: serializable interfaces for world bounds, entities, characters, zones, UI, and time
 
 The only scene-local mutable state required is references to its collaborators.
