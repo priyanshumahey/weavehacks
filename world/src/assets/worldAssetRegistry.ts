@@ -16,7 +16,7 @@ function toSourcePath(modulePath: string): string {
   return modulePath.replace(/^..\/..\/sprites\//, "");
 }
 
-function toTextureKey(sourcePath: string): string {
+export function deriveWorldTextureKey(sourcePath: string): string {
   const normalizedPath = sourcePath
     .replace(/\.png$/i, "")
     .split("/")
@@ -39,7 +39,7 @@ function buildWorldTextureAssets(): WorldTextureAsset[] {
       const sourcePath = toSourcePath(modulePath);
 
       return {
-        key: toTextureKey(sourcePath),
+        key: deriveWorldTextureKey(sourcePath),
         sourcePath,
         url,
       };

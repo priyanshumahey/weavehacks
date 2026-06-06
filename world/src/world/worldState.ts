@@ -1,3 +1,5 @@
+import type { CharacterSpriteMetadata } from "../types/characterSprite";
+
 export interface Vector2 {
   x: number;
   y: number;
@@ -70,6 +72,7 @@ export interface CharacterState extends WorldEntityState {
   characterKind: CharacterKind;
   controller: CharacterControllerType;
   appearance: EntityAppearance;
+  sprite: CharacterSpriteMetadata;
   movement: CharacterMovementState;
   velocity: Vector2;
   moveIntent: Vector2;

@@ -12,6 +12,7 @@ import {
   CHARACTER_MOVEMENT_MODES,
   ENTITY_KINDS,
 } from "../../world/worldState";
+import { normalizeCharacterSprite } from "./characterSprite";
 
 const DEFAULT_APPEARANCE = {
   color: "#f4f1de",
@@ -89,6 +90,16 @@ export function normalizeCharacterDefinition(
     );
   }
 
+  const normalizedAppearance = {
+    color: appearance.color,
+    radius: normalizeNumber(
+      appearance.radius,
+      DEFAULT_APPEARANCE.radius,
+      "appearance.radius",
+    ),
+    labelColor: appearance.labelColor,
+  };
+
   return {
     id,
     name,
@@ -98,21 +109,18 @@ export function normalizeCharacterDefinition(
       x: normalizeNumber(definition.position?.x, 0, "position.x"),
       y: normalizeNumber(definition.position?.y, 0, "position.y"),
     },
-    appearance: {
-      color: appearance.color,
-      radius: normalizeNumber(
-        appearance.radius,
-        DEFAULT_APPEARANCE.radius,
-        "appearance.radius",
-      ),
-      labelColor: appearance.labelColor,
-    },
+    appearance: normalizedAppearance,
     movement: {
       mode: movement.mode,
       speed: normalizeNumber(movement.speed, DEFAULT_MOVEMENT.speed, "movement.speed"),
     },
     dialogueId: definition.dialogueId ?? null,
     zoneId: definition.zoneId ?? null,
+    sprite: normalizeCharacterSprite(
+      id,
+      definition.sprite,
+      normalizedAppearance.radius,
+    ),
     tags: Array.isArray(definition.tags) ? definition.tags : [],
     traits: Array.isArray(definition.traits) ? definition.traits : [],
   };

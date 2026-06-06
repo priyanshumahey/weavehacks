@@ -35,7 +35,7 @@ All major `world/` engine tasks are complete.
 - 16. Asset Loading and Registry
   Add a dedicated preload/registration path for `world/sprites` assets so scenes and renderers use stable texture keys instead of hard-coded file paths.
 
-- 17. Character Sprite Metadata
+- 17. Character Sprite Metadata ✓
   Extend authored character definitions and normalized runtime types with sprite metadata such as texture key, frame dimensions, scale, label offset, and optional animation mappings.
 
 - 18. Sprite-Backed Character Renderer

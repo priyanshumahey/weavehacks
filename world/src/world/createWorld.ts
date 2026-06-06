@@ -28,6 +28,7 @@ function toCharacterState(definition: CharacterDefinition): CharacterState {
     characterKind: instance.kind,
     controller: instance.controller,
     appearance: instance.appearance,
+    sprite: instance.sprite,
     movement: instance.movement,
     velocity: instance.velocity,
     moveIntent: instance.moveIntent,

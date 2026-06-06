@@ -7,8 +7,22 @@ import type {
   WorldBounds,
 } from "../world/worldState";
 import { ENTITY_KINDS } from "../world/worldState";
+import type {
+  CharacterSpriteDefinition,
+  CharacterSpriteMetadata,
+} from "./characterSprite";
 
 export type { CharacterKind, CharacterControllerType, CharacterMovementMode, WorldBounds };
+export type {
+  CharacterSpriteAnimationKey,
+  CharacterSpriteAnimationMapping,
+  CharacterSpriteAnimations,
+  CharacterSpriteDefinition,
+  CharacterSpriteFacing,
+  CharacterSpriteFrameDimensions,
+  CharacterSpriteLabelOffset,
+  CharacterSpriteMetadata,
+} from "./characterSprite";
 
 export interface CharacterDefinition {
   id: string;
@@ -30,6 +44,7 @@ export interface CharacterDefinition {
     speed?: number;
   };
   dialogueId?: string | null;
+  sprite?: CharacterSpriteDefinition;
   tags?: string[];
   traits?: string[];
 }
@@ -47,6 +62,7 @@ export interface NormalizedCharacterDefinition {
   };
   dialogueId: string | null;
   zoneId: string | null;
+  sprite: CharacterSpriteMetadata;
   tags: string[];
   traits: string[];
 }

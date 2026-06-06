@@ -47,6 +47,21 @@ World art assets now have a dedicated preload and registration path:
 
 Texture consumers are expected to reference stable texture keys from the asset registry rather than hard-coded filesystem paths.
 
+### Character Sprite Metadata
+
+Character definitions now carry normalized sprite metadata alongside the existing circle-based appearance fields:
+
+- `src/types/characterSprite.ts`: shared contracts for frame dimensions, label offsets, facing directions, animation keys, and animation row mappings
+- `src/domain/characters/characterSprite.ts`: normalization and defaults for authored sprite metadata
+- `deriveWorldTextureKey()` in `src/assets/worldAssetRegistry.ts`: derives stable texture keys from sprite-relative source paths without requiring the asset to already be registered
+
+Authored character JSON may declare sprite metadata with either:
+
+- `textureKey`: a stable registry key such as `world/characters/player`
+- `textureSourcePath`: a path relative to `world/sprites/`, normalized into the same key format at definition load time
+
+Normalized runtime character state always includes a complete `sprite` object with texture key, frame size, display scale, label offset, and optional idle/walk animation mappings per facing direction. Circle `appearance` fields remain authoritative for collision and interaction radius until sprite-backed rendering validation lands in later asset tasks.
+
 ### Character Architecture
 
 Characters and world UI are file-backed and split into focused layers:
@@ -109,7 +124,7 @@ The shared model is intentionally plain data:
 
 - `WorldState`: top-level container for `characters`, `entities`, `zones`, `ui`, `time`, `bounds`, `playerId`, and `seed`
 - `WorldEntityState`: base interface for world objects with identity, position, tags, traits, zone membership, and interaction flags
-- `CharacterState`: character-specific extension with movement, dialogue, controller ownership, appearance, velocity, and move intent
+- `CharacterState`: character-specific extension with movement, dialogue, controller ownership, appearance, sprite metadata, velocity, and move intent
 - `ZoneState`: named world partitions with bounds and entity membership
 - `UiState`: prompt, dialogue, inspection, and selection state
 - `WorldTimeState`: elapsed time, tick counter, and time scale

@@ -12,6 +12,18 @@
     "radius": 18,
     "labelColor": "#d9fff5"
   },
+  "sprite": {
+    "textureSourcePath": "characters/innkeeper.png",
+    "frame": {
+      "width": 32,
+      "height": 32
+    },
+    "scale": 1.125,
+    "labelOffset": {
+      "x": 0,
+      "y": 32
+    }
+  },
   "movement": {
     "mode": "idle"
   },
