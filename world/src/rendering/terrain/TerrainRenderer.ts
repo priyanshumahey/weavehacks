@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import { defaultTerrainLayer, resolveTerrainTileIndex } from "../../data/terrain/defaultTerrain";
+import { RENDER_LAYERS } from "../renderDepth";
 import type { WorldBounds } from "../../world/worldState";
 
 export class TerrainRenderer {
@@ -59,7 +60,7 @@ export class TerrainRenderer {
 
     const fillTileIndex = resolveTerrainTileIndex(config, config.fillTile);
     layer.fill(fillTileIndex, 0, 0, tileCols, tileRows);
-    layer.setDepth(0);
+    layer.setDepth(RENDER_LAYERS.terrain);
     this.applyBoundsMask(layer, bounds);
 
     this.hasCreated = true;

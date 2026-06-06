@@ -114,7 +114,6 @@ Prop rendering rules:
 - Props load through the shared asset registry (`textureSourcePath` or `textureKey`)
 - Default origin is bottom-center `(0.5, 1)` so building feet align to authored positions
 - Default `collisionRadius` is derived from registry texture dimensions when not authored
-- Render depth uses Y-position (`1 + y` for props, `y + 0.5` for characters) for basic overlap ordering until explicit depth rules land in task 22
 - Props remain presentation and collision metadata in state; Phaser objects mirror `WorldRuntime` rather than owning it
 
 Authored prop JSON may declare sprite metadata with either:
@@ -123,6 +122,24 @@ Authored prop JSON may declare sprite metadata with either:
 - `textureSourcePath`: a path relative to `world/sprites/`, normalized into the same key format at definition load time
 
 Rendered character positions always come from runtime state. The renderer does not write back into `WorldRuntime`.
+
+### Render Layering and Depth Rules
+
+World presentation uses Phaser `setDepth()` with explicit layer bands and foot-based Y-sorting:
+
+- `src/rendering/renderDepth.ts`: shared layer constants (`RENDER_LAYERS`), tie-break priorities (`RENDER_DEPTH_PRIORITY`), and helpers that convert authored sprite origins into sort-Y values
+- `TerrainRenderer`: terrain tilemap layer at `RENDER_LAYERS.terrain` (always behind world objects)
+- `PropSprite`: depth from the sprite foot using authored `origin`, scaled texture height, and `RENDER_DEPTH_PRIORITY.prop`
+- `CharacterSprite`: depth from the sprite foot using resolved frame height and display scale, with `RENDER_DEPTH_PRIORITY.character` so characters draw above props at the same foot Y
+- `WorldUiRenderer`: prompt, dialogue, and inspection panels at `RENDER_LAYERS.uiOverlay` with `setScrollFactor(0)` so camera-fixed UI stays above the world
+
+Depth rules:
+
+- Sort Y is the world-space foot of each sprite, not its container center
+- Props with bottom-center origin `(0.5, 1)` sort at their authored position; non-default origins adjust foot Y by `(1 - origin.y) * displayHeight`
+- Characters sort at `position.y + displayHeight * 0.5` because the body sprite uses center origin `(0.5, 0.5)`
+- Selection rings and name badges live inside the character container and inherit the same depth as the body
+- World depth values stay well below the UI overlay band so prompts and panels never clip behind terrain or props
 
 ### Character Architecture
 

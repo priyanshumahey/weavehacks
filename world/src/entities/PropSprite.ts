@@ -1,7 +1,11 @@
 import Phaser from "phaser";
+import {
+  RENDER_DEPTH_PRIORITY,
+  resolvePropSortY,
+  resolveTextureDisplayHeight,
+  resolveWorldRenderDepth,
+} from "../rendering/renderDepth";
 import type { PropState } from "../world/worldState";
-
-const PROP_BASE_DEPTH = 1;
 
 export class PropSprite extends Phaser.GameObjects.Container {
   private readonly bodySprite: Phaser.GameObjects.Sprite;
@@ -17,7 +21,7 @@ export class PropSprite extends Phaser.GameObjects.Container {
 
     this.bodySprite = scene.add.sprite(0, 0, hasTexture ? textureKey : "__MISSING");
     this.applySpritePresentation(prop);
-    this.setDepth(PROP_BASE_DEPTH + prop.position.y);
+    this.applyRenderDepth(prop);
 
     this.add(this.bodySprite);
     scene.add.existing(this);
@@ -25,8 +29,32 @@ export class PropSprite extends Phaser.GameObjects.Container {
 
   sync(prop: PropState): void {
     this.setPosition(prop.position.x, prop.position.y);
-    this.setDepth(PROP_BASE_DEPTH + prop.position.y);
     this.applySpritePresentation(prop);
+    this.applyRenderDepth(prop);
+  }
+
+  private applyRenderDepth(prop: PropState): void {
+    const displayHeight = this.resolveDisplayHeight(prop);
+    const sortY = resolvePropSortY(
+      prop.position.y,
+      displayHeight,
+      prop.sprite.origin.y,
+    );
+
+    this.setDepth(
+      resolveWorldRenderDepth(sortY, RENDER_DEPTH_PRIORITY.prop),
+    );
+  }
+
+  private resolveDisplayHeight(prop: PropState): number {
+    const { textureKey, scale } = prop.sprite;
+
+    if (!this.scene.textures.exists(textureKey)) {
+      return 0;
+    }
+
+    const texture = this.scene.textures.get(textureKey);
+    return resolveTextureDisplayHeight(texture.source[0].height, scale);
   }
 
   private applySpritePresentation(prop: PropState): void {

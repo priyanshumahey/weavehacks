@@ -21,6 +21,7 @@ All major `world/` engine tasks are complete.
 - 19. Character Animation and Facing
 - 20. Terrain Base Layer
 - 21. Props and Building Placement
+- 22. Render Layering and Depth Rules
 
 ## Planned: Agent Interaction Layer
 
@@ -37,9 +38,6 @@ All major `world/` engine tasks are complete.
   Add development-facing debugging support for agent-controlled characters, such as current controller type, latest observation summary, last chosen action, and any rejected commands.
 
 ## Planned: Asset Integration Layer
-
-- 22. Render Layering and Depth Rules
-  Add explicit depth ordering for terrain, props, characters, UI markers, and overlays so tall sprites render correctly and do not visually break movement or selection.
 
 - 23. Asset Rendering Validation
   Verify collision radius, interaction distance, visual scale, and screen readability after the art migration, and document any runtime or architecture adjustments required by sprite-backed rendering.

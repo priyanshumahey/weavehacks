@@ -1,4 +1,5 @@
 import type Phaser from "phaser";
+import { RENDER_LAYERS } from "../renderDepth";
 import type { WorldState } from "../../world/worldState";
 import {
   buildWorldUiViewModel,
@@ -31,7 +32,7 @@ export class WorldUiRenderer {
       })
       .setOrigin(0.5)
       .setScrollFactor(0)
-      .setDepth(20)
+      .setDepth(RENDER_LAYERS.uiOverlay)
       .setVisible(false);
 
     const dialogueBackground = scene.add
@@ -53,7 +54,7 @@ export class WorldUiRenderer {
     this.dialoguePanel = scene.add
       .container(0, 0, [dialogueBackground, this.dialogueTitle, this.dialogueBody])
       .setScrollFactor(0)
-      .setDepth(20)
+      .setDepth(RENDER_LAYERS.uiOverlay)
       .setVisible(false);
 
     const inspectionBackground = scene.add
@@ -79,7 +80,7 @@ export class WorldUiRenderer {
         this.inspectionBody,
       ])
       .setScrollFactor(0)
-      .setDepth(20)
+      .setDepth(RENDER_LAYERS.uiOverlay)
       .setVisible(false);
   }
 

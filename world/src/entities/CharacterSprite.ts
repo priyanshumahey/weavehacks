@@ -5,6 +5,11 @@ import {
   resolveSpritesheetFrameDimensions,
 } from "../rendering/characters/characterSpritesheet";
 import {
+  RENDER_DEPTH_PRIORITY,
+  resolveCharacterSortY,
+  resolveWorldRenderDepth,
+} from "../rendering/renderDepth";
+import {
   CHARACTER_SPRITE_FACING,
   type CharacterSpriteAnimationKey,
   type CharacterSpriteFacing,
@@ -75,8 +80,8 @@ export class CharacterSprite extends Phaser.GameObjects.Container {
 
   sync(character: CharacterState, isSelected = false): void {
     this.setPosition(character.position.x, character.position.y);
-    this.setDepth(character.position.y + 0.5);
     this.applyBodyAnimation(character);
+    this.applyRenderDepth(character);
     const showSelectionRing =
       isSelected && character.characterKind !== CHARACTER_KINDS.player;
 
@@ -88,6 +93,38 @@ export class CharacterSprite extends Phaser.GameObjects.Container {
     );
     this.updateLabelPosition(character);
     this.labelBadge.setAlpha(isSelected ? 1 : 0.92);
+  }
+
+  private applyRenderDepth(character: CharacterState): void {
+    const displayHeight = this.resolveDisplayHeight(character);
+    const sortY = resolveCharacterSortY(character.position.y, displayHeight);
+
+    this.setDepth(
+      resolveWorldRenderDepth(sortY, RENDER_DEPTH_PRIORITY.character),
+    );
+  }
+
+  private resolveDisplayHeight(character: CharacterState): number {
+    const { sprite, animation } = character;
+    const textureKey = this.resolveTextureKey(sprite, animation);
+
+    if (!this.scene.textures.exists(textureKey)) {
+      return character.appearance.radius * 2;
+    }
+
+    const texture = this.scene.textures.get(textureKey);
+    const resolvedFrame = resolveSpritesheetFrameDimensions(
+      texture,
+      sprite.frame.width,
+      sprite.frame.height,
+    );
+    const displayScale = resolveCharacterDisplayScale(
+      resolvedFrame.frameHeight,
+      character.appearance.radius,
+      sprite.scale,
+    );
+
+    return resolvedFrame.frameHeight * displayScale;
   }
 
   private updateLabelPosition(character: CharacterState): void {
