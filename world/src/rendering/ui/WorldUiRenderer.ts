@@ -1,188 +1,123 @@
-import type Phaser from "phaser";
-import { RENDER_LAYERS } from "../renderDepth";
 import type { WorldState } from "../../world/worldState";
 import {
   buildWorldUiViewModel,
   type WorldUiViewModel,
 } from "../../ui/WorldUiPresenter";
 
-const SELECTOR_HEIGHT = 52;
 const SELECTOR_VISIBLE_COUNT = 8;
-const OPTION_WIDTH = 78;
-const OPTION_HEIGHT = 28;
-const OPTION_GAP = 6;
-const SELECTOR_PADDING_X = 12;
 
 interface AppearanceOptionButton {
   id: string;
-  background: Phaser.GameObjects.Rectangle;
-  label: Phaser.GameObjects.Text;
+  button: HTMLButtonElement;
+  label: HTMLSpanElement;
 }
 
 export class WorldUiRenderer {
-  private readonly promptText: Phaser.GameObjects.Text;
-  private readonly dialoguePanel: Phaser.GameObjects.Container;
-  private readonly dialogueTitle: Phaser.GameObjects.Text;
-  private readonly dialogueBody: Phaser.GameObjects.Text;
-  private readonly inspectionPanel: Phaser.GameObjects.Container;
-  private readonly inspectionTitle: Phaser.GameObjects.Text;
-  private readonly inspectionBody: Phaser.GameObjects.Text;
-  private readonly selectorPanel: Phaser.GameObjects.Container;
-  private readonly selectorTitle: Phaser.GameObjects.Text;
-  private readonly scrollBackButton: Phaser.GameObjects.Text;
-  private readonly scrollForwardButton: Phaser.GameObjects.Text;
+  private readonly root: HTMLDivElement;
+  private readonly promptEl: HTMLDivElement;
+  private readonly dialoguePanel: HTMLElement;
+  private readonly dialogueTitle: HTMLHeadingElement;
+  private readonly dialogueBody: HTMLParagraphElement;
+  private readonly inspectionPanel: HTMLElement;
+  private readonly inspectionTitle: HTMLHeadingElement;
+  private readonly inspectionBody: HTMLDivElement;
+  private readonly scrollBackButton: HTMLButtonElement;
+  private readonly scrollForwardButton: HTMLButtonElement;
   private readonly optionButtons: AppearanceOptionButton[] = [];
   private scrollOffset = 0;
   private onPlayerAppearanceSelect: ((appearanceId: string) => void) | null = null;
 
-  constructor(scene: Phaser.Scene) {
-    const camera = scene.cameras.main;
-    const { width, height } = camera;
-    const promptY = height - SELECTOR_HEIGHT - 28;
+  constructor(parent: HTMLElement = document.getElementById("app") ?? document.body) {
+    this.root = document.createElement("div");
+    this.root.id = "world-ui";
+    this.root.className = "world-ui";
 
-    this.promptText = scene.add
-      .text(width / 2, promptY, "", {
-        fontFamily: "Georgia",
-        fontSize: "18px",
-        color: "#f4f1de",
-        backgroundColor: "#10212bcc",
-        padding: {
-          x: 14,
-          y: 8,
-        },
-      })
-      .setOrigin(0.5)
-      .setScrollFactor(0)
-      .setDepth(RENDER_LAYERS.uiOverlay)
-      .setVisible(false);
+    this.promptEl = document.createElement("div");
+    this.promptEl.className = "world-ui__prompt";
+    this.promptEl.hidden = true;
 
-    const dialogueBackground = scene.add
-      .rectangle(164, promptY - 64, 248, 128, 0x0b1419, 0.92)
-      .setOrigin(0, 0.5)
-      .setStrokeStyle(2, 0xf6bd60, 1);
-    this.dialogueTitle = scene.add.text(180, promptY - 106, "", {
-      fontFamily: "Georgia",
-      fontSize: "20px",
-      color: "#f6bd60",
+    this.dialoguePanel = document.createElement("aside");
+    this.dialoguePanel.className = "world-ui__dialogue";
+    this.dialoguePanel.hidden = true;
+    this.dialogueTitle = document.createElement("h2");
+    this.dialogueTitle.className = "world-ui__dialogue-title";
+    this.dialogueBody = document.createElement("p");
+    this.dialogueBody.className = "world-ui__dialogue-body";
+    this.dialoguePanel.append(this.dialogueTitle, this.dialogueBody);
+
+    this.inspectionPanel = document.createElement("aside");
+    this.inspectionPanel.className = "world-ui__inspection";
+    this.inspectionPanel.hidden = true;
+    this.inspectionTitle = document.createElement("h2");
+    this.inspectionTitle.className = "world-ui__inspection-title";
+    this.inspectionBody = document.createElement("div");
+    this.inspectionBody.className = "world-ui__inspection-body";
+    this.inspectionPanel.append(this.inspectionTitle, this.inspectionBody);
+
+    const selectorPanel = document.createElement("nav");
+    selectorPanel.className = "world-ui__selector";
+    selectorPanel.setAttribute("aria-label", "Character appearance");
+
+    const selectorTitle = document.createElement("span");
+    selectorTitle.className = "world-ui__selector-label";
+    selectorTitle.textContent = "Character";
+
+    this.scrollBackButton = document.createElement("button");
+    this.scrollBackButton.type = "button";
+    this.scrollBackButton.className = "world-ui__scroll-button";
+    this.scrollBackButton.setAttribute("aria-label", "Scroll characters back");
+    this.scrollBackButton.textContent = "◀";
+    this.scrollBackButton.addEventListener("click", () => {
+      this.scrollOffset = Math.max(0, this.scrollOffset - 1);
     });
-    this.dialogueBody = scene.add.text(180, promptY - 78, "", {
-      fontFamily: "Georgia",
-      fontSize: "16px",
-      color: "#f4f1de",
-      wordWrap: { width: 212 },
-      lineSpacing: 4,
-    });
-    this.dialoguePanel = scene.add
-      .container(0, 0, [dialogueBackground, this.dialogueTitle, this.dialogueBody])
-      .setScrollFactor(0)
-      .setDepth(RENDER_LAYERS.uiOverlay)
-      .setVisible(false);
 
-    const inspectionBackground = scene.add
-      .rectangle(width - 292, 116, 248, 112, 0x0b1419, 0.92)
-      .setOrigin(0, 0)
-      .setStrokeStyle(2, 0x4fc3a1, 1);
-    this.inspectionTitle = scene.add.text(width - 276, 132, "", {
-      fontFamily: "Georgia",
-      fontSize: "18px",
-      color: "#4fc3a1",
-    });
-    this.inspectionBody = scene.add.text(width - 276, 162, "", {
-      fontFamily: "Georgia",
-      fontSize: "15px",
-      color: "#d9fff5",
-      wordWrap: { width: 216 },
-      lineSpacing: 6,
-    });
-    this.inspectionPanel = scene.add
-      .container(0, 0, [
-        inspectionBackground,
-        this.inspectionTitle,
-        this.inspectionBody,
-      ])
-      .setScrollFactor(0)
-      .setDepth(RENDER_LAYERS.uiOverlay)
-      .setVisible(false);
-
-    const selectorBackground = scene.add
-      .rectangle(width / 2, height - SELECTOR_HEIGHT / 2, width, SELECTOR_HEIGHT, 0x09161d, 0.94)
-      .setStrokeStyle(1, 0x244052, 1);
-    this.selectorTitle = scene.add.text(SELECTOR_PADDING_X, height - SELECTOR_HEIGHT / 2, "Character", {
-      fontFamily: "Georgia",
-      fontSize: "13px",
-      color: "#8aa0ad",
-    }).setOrigin(0, 0.5);
-
-    const optionsStartX = 96;
-    const optionsY = height - SELECTOR_HEIGHT / 2;
+    const optionsContainer = document.createElement("div");
+    optionsContainer.className = "world-ui__options";
 
     for (let index = 0; index < SELECTOR_VISIBLE_COUNT; index += 1) {
-      const x = optionsStartX + index * (OPTION_WIDTH + OPTION_GAP) + OPTION_WIDTH / 2;
-      const background = scene.add
-        .rectangle(x, optionsY, OPTION_WIDTH, OPTION_HEIGHT, 0x10212b, 0.95)
-        .setStrokeStyle(1, 0x355066, 1);
-      const label = scene.add
-        .text(x, optionsY, "", {
-          fontFamily: "Arial, sans-serif",
-          fontSize: "11px",
-          color: "#f4f1de",
-        })
-        .setOrigin(0.5);
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "world-ui__option";
+      button.hidden = true;
 
-      background.setInteractive({ useHandCursor: true });
-      background.on("pointerdown", () => {
+      const label = document.createElement("span");
+      label.className = "world-ui__option-label";
+      button.append(label);
+
+      button.addEventListener("click", () => {
         const option = this.optionButtons[index];
         if (option?.id) {
           this.onPlayerAppearanceSelect?.(option.id);
         }
       });
 
-      this.optionButtons.push({
-        id: "",
-        background,
-        label,
-      });
+      optionsContainer.append(button);
+      this.optionButtons.push({ id: "", button, label });
     }
 
-    this.scrollBackButton = scene.add
-      .text(optionsStartX - 18, optionsY, "◀", {
-        fontFamily: "Arial, sans-serif",
-        fontSize: "14px",
-        color: "#8aa0ad",
-      })
-      .setOrigin(0.5)
-      .setInteractive({ useHandCursor: true });
-    this.scrollBackButton.on("pointerdown", () => {
-      this.scrollOffset = Math.max(0, this.scrollOffset - 1);
-    });
-
-    this.scrollForwardButton = scene.add
-      .text(
-        optionsStartX + SELECTOR_VISIBLE_COUNT * (OPTION_WIDTH + OPTION_GAP) - OPTION_GAP + 18,
-        optionsY,
-        "▶",
-        {
-          fontFamily: "Arial, sans-serif",
-          fontSize: "14px",
-          color: "#8aa0ad",
-        },
-      )
-      .setOrigin(0.5)
-      .setInteractive({ useHandCursor: true });
-    this.scrollForwardButton.on("pointerdown", () => {
+    this.scrollForwardButton = document.createElement("button");
+    this.scrollForwardButton.type = "button";
+    this.scrollForwardButton.className = "world-ui__scroll-button";
+    this.scrollForwardButton.setAttribute("aria-label", "Scroll characters forward");
+    this.scrollForwardButton.textContent = "▶";
+    this.scrollForwardButton.addEventListener("click", () => {
       this.scrollOffset += 1;
     });
 
-    this.selectorPanel = scene.add
-      .container(0, 0, [
-        selectorBackground,
-        this.selectorTitle,
-        this.scrollBackButton,
-        this.scrollForwardButton,
-        ...this.optionButtons.flatMap((option) => [option.background, option.label]),
-      ])
-      .setScrollFactor(0)
-      .setDepth(RENDER_LAYERS.uiOverlay);
+    selectorPanel.append(
+      selectorTitle,
+      this.scrollBackButton,
+      optionsContainer,
+      this.scrollForwardButton,
+    );
+
+    this.root.append(
+      this.promptEl,
+      this.dialoguePanel,
+      this.inspectionPanel,
+      selectorPanel,
+    );
+    parent.append(this.root);
   }
 
   setOnPlayerAppearanceSelect(callback: (appearanceId: string) => void): void {
@@ -197,18 +132,18 @@ export class WorldUiRenderer {
     this.scrollOffset = viewModel.playerAppearanceScrollOffset;
 
     const hasPrompt = Boolean(viewModel.promptText);
-    this.promptText.setText(viewModel.promptText ?? "");
-    this.promptText.setVisible(hasPrompt);
+    this.promptEl.textContent = viewModel.promptText ?? "";
+    this.promptEl.hidden = !hasPrompt;
 
     const hasDialogue = Boolean(viewModel.dialogueTitle && viewModel.dialogueBody);
-    this.dialogueTitle.setText(viewModel.dialogueTitle ?? "");
-    this.dialogueBody.setText(viewModel.dialogueBody ?? "");
-    this.dialoguePanel.setVisible(hasDialogue);
+    this.dialogueTitle.textContent = viewModel.dialogueTitle ?? "";
+    this.dialogueBody.textContent = viewModel.dialogueBody ?? "";
+    this.dialoguePanel.hidden = !hasDialogue;
 
     const hasInspection = Boolean(viewModel.inspectionTitle);
-    this.inspectionTitle.setText(viewModel.inspectionTitle ?? "");
-    this.inspectionBody.setText(viewModel.inspectionLines.join("\n"));
-    this.inspectionPanel.setVisible(hasInspection);
+    this.inspectionTitle.textContent = viewModel.inspectionTitle ?? "";
+    this.inspectionBody.textContent = viewModel.inspectionLines.join("\n");
+    this.inspectionPanel.hidden = !hasInspection;
 
     this.syncPlayerAppearanceSelector(viewModel);
   }
@@ -219,8 +154,8 @@ export class WorldUiRenderer {
       viewModel.playerAppearanceScrollOffset + viewModel.playerAppearanceVisibleCount,
     );
 
-    this.scrollBackButton.setAlpha(viewModel.canScrollPlayerAppearanceBack ? 1 : 0.35);
-    this.scrollForwardButton.setAlpha(viewModel.canScrollPlayerAppearanceForward ? 1 : 0.35);
+    this.scrollBackButton.disabled = !viewModel.canScrollPlayerAppearanceBack;
+    this.scrollForwardButton.disabled = !viewModel.canScrollPlayerAppearanceForward;
 
     for (let index = 0; index < this.optionButtons.length; index += 1) {
       const button = this.optionButtons[index];
@@ -228,18 +163,14 @@ export class WorldUiRenderer {
 
       if (!option) {
         button.id = "";
-        button.background.setVisible(false);
-        button.label.setVisible(false);
+        button.button.hidden = true;
         continue;
       }
 
       button.id = option.id;
-      button.label.setText(option.label);
-      button.background.setVisible(true);
-      button.label.setVisible(true);
-      button.background.setFillStyle(option.selected ? 0x244052 : 0x10212b, 0.95);
-      button.background.setStrokeStyle(option.selected ? 2 : 1, option.selected ? 0xf6bd60 : 0x355066, 1);
-      button.label.setColor(option.selected ? "#f6bd60" : "#f4f1de");
+      button.label.textContent = option.label;
+      button.button.hidden = false;
+      button.button.classList.toggle("world-ui__option--selected", option.selected);
     }
   }
 }

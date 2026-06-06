@@ -15,7 +15,7 @@ Rule: every architecture change in `world/` must be reflected in this file in th
 
 ### Entry Flow
 
-1. `world/index.html` provides the `#app` mount point.
+1. `world/index.html` provides the `#app` mount point for the Phaser canvas and the HTML UI overlay.
 2. `world/src/main.ts` imports global styles and calls `createGame()`.
 3. `world/src/game/config.ts` builds the Phaser config and registers `WorldScene` from `src/scenes/WorldScene.ts`.
 4. `world/src/game/createGame.ts` creates the `Phaser.Game` instance.
@@ -143,7 +143,7 @@ World presentation uses Phaser `setDepth()` with explicit layer bands and foot-b
 - `TerrainRenderer`: terrain tilemap layer at `RENDER_LAYERS.terrain` (always behind world objects)
 - `PropSprite`: depth from the sprite foot using authored `origin`, scaled texture height, and `RENDER_DEPTH_PRIORITY.prop`
 - `CharacterSprite`: depth from the sprite foot using resolved frame height and display scale, with `RENDER_DEPTH_PRIORITY.character` so characters draw above props at the same foot Y
-- `WorldUiRenderer`: prompt, dialogue, inspection, and player appearance selector panels at `RENDER_LAYERS.uiOverlay` with `setScrollFactor(0)` so camera-fixed UI stays above the world
+- `WorldUiRenderer`: HTML overlay (`#world-ui`) for prompt, dialogue, inspection, and player appearance selector panels, positioned above the Phaser canvas with CSS and `pointer-events: none` on the root so only interactive controls capture clicks
 
 Depth rules:
 
@@ -151,7 +151,7 @@ Depth rules:
 - Props with bottom-center origin `(0.5, 1)` sort at their authored position; non-default origins adjust foot Y by `(1 - origin.y) * displayHeight`
 - Characters sort with the same foot-based formula as props: `position.y + displayHeight * (1 - origin.y)`
 - Selection rings and name badges live inside the character container and inherit the same depth as the body
-- World depth values stay well below the UI overlay band so prompts and panels never clip behind terrain or props
+- World depth values stay in the world band; player-facing UI is rendered in a separate HTML layer above the canvas
 
 ### Character Architecture
 
@@ -165,7 +165,7 @@ Characters and world UI are file-backed and split into focused layers:
 - `src/rendering/characters/`: Phaser-facing rendering adapters such as `CharacterRenderer`
 - `src/rendering/props/`: Phaser-facing prop rendering adapters such as `PropRenderer`
 - `src/rendering/world/`: world bounds helpers, scene frame creation, and the top-level `WorldRenderer`
-- `src/rendering/ui/`: Phaser-facing prompt, dialogue, and inspection rendering
+- `src/rendering/ui/`: DOM-based prompt, dialogue, inspection, and character selector rendering
 - `src/input/`: input readers that convert Phaser APIs into scene-level intent
 - `src/ui/`: presentation logic that derives player-facing copy from authoritative world state
 - `src/entities/`: Phaser-facing wrappers such as `CharacterSprite` and `PropSprite`
@@ -205,7 +205,7 @@ Current state is split as follows:
 - `buildAgentObservation()`: filtered, character-scoped perception queries for future agent controllers
 - `src/world/systems/`: deterministic simulation passes for movement, bounds, collisions, and interactions
 - `WorldRenderer`: top-level Phaser-facing renderer for the world frame and character rendering passes
-- `WorldUiRenderer` and `buildWorldUiViewModel()`: player-facing prompt, dialogue, inspection, and bottom-of-screen character appearance selector pinned to the camera via `setScrollFactor(0)`
+- `WorldUiRenderer` and `buildWorldUiViewModel()`: player-facing prompt, dialogue, inspection, and bottom-of-screen character appearance selector rendered as an HTML overlay synced each frame from `WorldState.ui`
 - `CharacterRenderer` and `CharacterSprite`: sprite-backed visual representation for each character with labels and selection highlighting
 - `TerrainRenderer`, `createWorldFrame()`, and `getWorldBounds()`: terrain tilemap presentation, camera background, and playfield bounds derived from the main camera viewport
 - `worldState.ts`: serializable interfaces for world bounds, entities, characters, zones, UI, and time

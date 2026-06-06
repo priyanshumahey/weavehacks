@@ -17,7 +17,7 @@ export class WorldRenderer {
     this.terrainRenderer = new TerrainRenderer(scene);
     this.propRenderer = new PropRenderer(scene);
     this.characterRenderer = new CharacterRenderer(scene);
-    this.uiRenderer = new WorldUiRenderer(scene);
+    this.uiRenderer = new WorldUiRenderer();
   }
 
   create(state: WorldState): void {

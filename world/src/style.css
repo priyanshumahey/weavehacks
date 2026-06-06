@@ -21,6 +21,7 @@ body {
 }
 
 #app {
+  position: relative;
   width: 100vw;
   height: 100vh;
   overflow: hidden;
@@ -29,4 +30,169 @@ body {
 
 canvas {
   display: block;
+}
+
+.world-ui {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  font-family: Georgia, "Times New Roman", serif;
+  color: #f4f1de;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.world-ui__selector,
+.world-ui__option,
+.world-ui__scroll-button {
+  pointer-events: auto;
+}
+
+.world-ui__prompt {
+  position: absolute;
+  left: 50%;
+  bottom: 80px;
+  transform: translateX(-50%);
+  max-width: min(90vw, 480px);
+  padding: 8px 14px;
+  border-radius: 4px;
+  background: rgb(16 33 43 / 80%);
+  font-size: 18px;
+  line-height: 1.4;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.world-ui__dialogue {
+  position: absolute;
+  left: max(16px, 4vw);
+  bottom: 140px;
+  width: min(248px, calc(100vw - 32px));
+  padding: 16px 18px;
+  border: 2px solid #f6bd60;
+  border-radius: 4px;
+  background: rgb(11 20 25 / 92%);
+}
+
+.world-ui__dialogue-title {
+  margin: 0 0 8px;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: #f6bd60;
+}
+
+.world-ui__dialogue-body {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #f4f1de;
+}
+
+.world-ui__inspection {
+  position: absolute;
+  top: 116px;
+  right: max(16px, 4vw);
+  width: min(248px, calc(100vw - 32px));
+  padding: 16px 18px;
+  border: 2px solid #4fc3a1;
+  border-radius: 4px;
+  background: rgb(11 20 25 / 92%);
+}
+
+.world-ui__inspection-title {
+  margin: 0 0 10px;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: #4fc3a1;
+}
+
+.world-ui__inspection-body {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #d9fff5;
+  white-space: pre-line;
+}
+
+.world-ui__selector {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: grid;
+  grid-template-columns: auto auto 1fr auto;
+  align-items: center;
+  gap: 8px;
+  height: 52px;
+  padding: 0 12px;
+  border-top: 1px solid #244052;
+  background: rgb(9 22 29 / 94%);
+}
+
+.world-ui__selector-label {
+  font-size: 13px;
+  color: #8aa0ad;
+  white-space: nowrap;
+}
+
+.world-ui__options {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.world-ui__option {
+  flex: 0 0 78px;
+  height: 28px;
+  padding: 0 6px;
+  border: 1px solid #355066;
+  border-radius: 3px;
+  background: rgb(16 33 43 / 95%);
+  cursor: pointer;
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  color: #f4f1de;
+}
+
+.world-ui__option:hover {
+  border-color: #4a6a80;
+}
+
+.world-ui__option--selected {
+  border-width: 2px;
+  border-color: #f6bd60;
+  color: #f6bd60;
+}
+
+.world-ui__option-label {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.world-ui__scroll-button {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  border-radius: 3px;
+  background: transparent;
+  cursor: pointer;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  color: #8aa0ad;
+}
+
+.world-ui__scroll-button:hover:not(:disabled) {
+  color: #c5d4dc;
+}
+
+.world-ui__scroll-button:disabled {
+  cursor: default;
+  opacity: 0.35;
 }
