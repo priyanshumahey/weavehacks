@@ -31,12 +31,20 @@ const LABEL_PADDING_Y = 4;
 const LABEL_BORDER_RADIUS = 4;
 const LABEL_GAP_ABOVE_SPRITE = 10;
 
+interface AppliedBodyPresentation {
+  textureKey: string;
+  displayScale: number;
+  flipX: boolean;
+  presentationKey: string;
+}
+
 export class CharacterSprite extends Phaser.GameObjects.Container {
   private readonly bodySprite: Phaser.GameObjects.Sprite;
   private readonly selectionRing: Phaser.GameObjects.Arc;
   private readonly labelBadge: Phaser.GameObjects.Container;
   private readonly labelBackground: Phaser.GameObjects.Graphics;
   private readonly labelText: Phaser.GameObjects.Text;
+  private appliedBodyPresentation: AppliedBodyPresentation | null = null;
   readonly characterId: string;
 
   constructor(scene: Phaser.Scene, character: CharacterState) {
@@ -157,10 +165,7 @@ export class CharacterSprite extends Phaser.GameObjects.Container {
     const textureKey = this.resolveTextureKey(sprite, animation);
 
     if (!this.scene.textures.exists(textureKey)) {
-      this.bodySprite.setTexture("__MISSING");
-      this.bodySprite.setFrame(0);
-      this.bodySprite.setScale(sprite.scale);
-      this.bodySprite.anims.stop();
+      this.applyMissingBodyPresentation(sprite.scale);
       return;
     }
 
@@ -187,12 +192,13 @@ export class CharacterSprite extends Phaser.GameObjects.Container {
       sprite.scale,
     );
 
-    this.bodySprite.setTexture(textureKey);
-    this.bodySprite.setScale(displayScale);
-    this.bodySprite.setFlipX(presentation.flipX);
-
     if (!frameMapping) {
-      this.bodySprite.anims.stop();
+      this.applyStaticBodyPresentation({
+        textureKey,
+        displayScale,
+        flipX: presentation.flipX,
+        frameIndex: 0,
+      });
       return;
     }
 
@@ -207,18 +213,136 @@ export class CharacterSprite extends Phaser.GameObjects.Container {
     );
 
     if (phaserAnimationKey) {
-      this.bodySprite.play(phaserAnimationKey, true);
+      this.applyAnimatedBodyPresentation({
+        textureKey,
+        displayScale,
+        flipX: presentation.flipX,
+        phaserAnimationKey,
+      });
       return;
     }
 
-    this.bodySprite.anims.stop();
-    this.bodySprite.setFrame(
-      resolveCharacterFrameIndex(
+    this.applyStaticBodyPresentation({
+      textureKey,
+      displayScale,
+      flipX: presentation.flipX,
+      frameIndex: resolveCharacterFrameIndex(
         spritesheet,
         resolvedFrame.frameWidth,
         frameMapping.row,
         frameMapping.column,
       ),
+    });
+  }
+
+  private applyMissingBodyPresentation(scale: number): void {
+    const presentationKey = "missing:0";
+
+    if (
+      this.appliedBodyPresentation?.textureKey === "__MISSING" &&
+      this.appliedBodyPresentation.displayScale === scale &&
+      this.appliedBodyPresentation.flipX === false &&
+      this.appliedBodyPresentation.presentationKey === presentationKey
+    ) {
+      return;
+    }
+
+    this.bodySprite.setTexture("__MISSING");
+    this.bodySprite.setFrame(0);
+    this.bodySprite.setScale(scale);
+    this.bodySprite.anims.stop();
+    this.appliedBodyPresentation = {
+      textureKey: "__MISSING",
+      displayScale: scale,
+      flipX: false,
+      presentationKey,
+    };
+  }
+
+  private applyAnimatedBodyPresentation(presentation: {
+    textureKey: string;
+    displayScale: number;
+    flipX: boolean;
+    phaserAnimationKey: string;
+  }): void {
+    if (this.isBodyPresentationApplied(presentation, presentation.phaserAnimationKey)) {
+      return;
+    }
+
+    if (this.appliedBodyPresentation?.textureKey !== presentation.textureKey) {
+      this.bodySprite.setTexture(presentation.textureKey);
+    }
+
+    if (this.appliedBodyPresentation?.displayScale !== presentation.displayScale) {
+      this.bodySprite.setScale(presentation.displayScale);
+    }
+
+    if (this.appliedBodyPresentation?.flipX !== presentation.flipX) {
+      this.bodySprite.setFlipX(presentation.flipX);
+    }
+
+    if (this.appliedBodyPresentation?.presentationKey !== presentation.phaserAnimationKey) {
+      this.bodySprite.play(presentation.phaserAnimationKey);
+    }
+
+    this.appliedBodyPresentation = {
+      textureKey: presentation.textureKey,
+      displayScale: presentation.displayScale,
+      flipX: presentation.flipX,
+      presentationKey: presentation.phaserAnimationKey,
+    };
+  }
+
+  private applyStaticBodyPresentation(presentation: {
+    textureKey: string;
+    displayScale: number;
+    flipX: boolean;
+    frameIndex: number;
+  }): void {
+    const presentationKey = `static:${presentation.frameIndex}`;
+
+    if (this.isBodyPresentationApplied(presentation, presentationKey)) {
+      return;
+    }
+
+    if (this.appliedBodyPresentation?.textureKey !== presentation.textureKey) {
+      this.bodySprite.setTexture(presentation.textureKey);
+    }
+
+    if (this.appliedBodyPresentation?.displayScale !== presentation.displayScale) {
+      this.bodySprite.setScale(presentation.displayScale);
+    }
+
+    if (this.appliedBodyPresentation?.flipX !== presentation.flipX) {
+      this.bodySprite.setFlipX(presentation.flipX);
+    }
+
+    if (this.appliedBodyPresentation?.presentationKey !== presentationKey) {
+      this.bodySprite.anims.stop();
+      this.bodySprite.setFrame(presentation.frameIndex, false, false);
+    }
+
+    this.appliedBodyPresentation = {
+      textureKey: presentation.textureKey,
+      displayScale: presentation.displayScale,
+      flipX: presentation.flipX,
+      presentationKey,
+    };
+  }
+
+  private isBodyPresentationApplied(
+    presentation: {
+      textureKey: string;
+      displayScale: number;
+      flipX: boolean;
+    },
+    presentationKey: string,
+  ): boolean {
+    return (
+      this.appliedBodyPresentation?.textureKey === presentation.textureKey &&
+      this.appliedBodyPresentation.displayScale === presentation.displayScale &&
+      this.appliedBodyPresentation.flipX === presentation.flipX &&
+      this.appliedBodyPresentation.presentationKey === presentationKey
     );
   }
 

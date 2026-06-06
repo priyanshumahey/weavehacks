@@ -68,7 +68,7 @@ Normalized runtime character state always includes a complete `sprite` object wi
 
 - `src/rendering/characters/preloadCharacterSpritesheets.ts`: queues character textures as `load.spritesheet()` during scene preload using authored frame dimensions from character definitions
 - `src/rendering/characters/characterSpritesheet.ts`: resolves spritesheet frame dimensions from texture size and authored frame metadata, maps row/column animation coordinates to frame indices, and derives display scale from authored scale plus resolved frame height
-- `src/entities/CharacterSprite.ts`: creates a `Phaser.GameObjects.Sprite` per character from preloaded spritesheets, registers animations through Phaser's `AnimationManager` (`scene.anims.create`, `generateFrameNumbers`), and plays them via `sprite.play()` from authoritative runtime `facing` and `animation` state; uses `setFlipX()` for single-row side-view sheets
+- `src/entities/CharacterSprite.ts`: creates a `Phaser.GameObjects.Sprite` per character from preloaded spritesheets, registers animations through Phaser's `AnimationManager` (`scene.anims.create`, `generateFrameNumbers`), and plays them via `sprite.play()` from authoritative runtime `facing` and `animation` state; uses `setFlipX()` for single-row side-view sheets; gates `setTexture` / `setScale` / `play()` so idle and walk clips keep advancing instead of resetting every sync tick
 - `CharacterRenderer`: unchanged orchestration boundary; still mirrors authoritative `WorldRuntime` character positions each frame
 
 ### Character Animation and Facing
@@ -104,7 +104,7 @@ Placed world props and buildings are now file-backed entities in authoritative s
 - `src/domain/props/propSprite.ts`: normalization and defaults for authored prop sprite metadata
 - `src/domain/props/propDefinition.ts`: validation and normalization of prop definitions into runtime instances
 - `src/data/props/placements.json`: authored world layout for buildings, resources, and decorations
-- `src/entities/PropSprite.ts`: creates a `Phaser.GameObjects.Sprite` inside a `Container`, applies authored origin/scale via Phaser APIs, and Y-sorts with `setDepth()`
+- `src/entities/PropSprite.ts`: creates a `Phaser.GameObjects.Image` inside a `Container` (static props do not need Sprite animation overhead), applies authored origin/scale via Phaser APIs, and Y-sorts with `setDepth()`
 - `src/rendering/props/PropRenderer.ts`: mirrors authoritative prop entities from `WorldState.entities` each frame
 - `createWorld()`: loads normalized props into `WorldState.entities`
 - `collisionSystem`: separates player-driven characters from blocking props using circle overlap, same as character-character separation

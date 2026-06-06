@@ -8,7 +8,7 @@ import {
 import type { PropState } from "../world/worldState";
 
 export class PropSprite extends Phaser.GameObjects.Container {
-  private readonly bodySprite: Phaser.GameObjects.Sprite;
+  private readonly bodyImage: Phaser.GameObjects.Image;
   readonly propId: string;
 
   constructor(scene: Phaser.Scene, prop: PropState) {
@@ -19,11 +19,11 @@ export class PropSprite extends Phaser.GameObjects.Container {
     const textureKey = prop.sprite.textureKey;
     const hasTexture = scene.textures.exists(textureKey);
 
-    this.bodySprite = scene.add.sprite(0, 0, hasTexture ? textureKey : "__MISSING");
+    this.bodyImage = scene.add.image(0, 0, hasTexture ? textureKey : "__MISSING");
     this.applySpritePresentation(prop);
     this.applyRenderDepth(prop);
 
-    this.add(this.bodySprite);
+    this.add(this.bodyImage);
     scene.add.existing(this);
   }
 
@@ -61,16 +61,16 @@ export class PropSprite extends Phaser.GameObjects.Container {
     const { sprite } = prop;
     const textureKey = sprite.textureKey;
 
-    this.bodySprite.setOrigin(sprite.origin.x, sprite.origin.y);
+    this.bodyImage.setOrigin(sprite.origin.x, sprite.origin.y);
 
     if (!this.scene.textures.exists(textureKey)) {
-      this.bodySprite.setTexture("__MISSING");
-      this.bodySprite.setFrame(0);
-      this.bodySprite.setScale(sprite.scale);
+      this.bodyImage.setTexture("__MISSING");
+      this.bodyImage.setFrame(0);
+      this.bodyImage.setScale(sprite.scale);
       return;
     }
 
-    this.bodySprite.setTexture(textureKey);
-    this.bodySprite.setScale(sprite.scale);
+    this.bodyImage.setTexture(textureKey);
+    this.bodyImage.setScale(sprite.scale);
   }
 }
