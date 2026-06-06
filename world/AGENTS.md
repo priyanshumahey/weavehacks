@@ -23,6 +23,27 @@ Treat `world/ARCHITECTURE.md` as the canonical architecture document for:
 - input or state model changes
 - new architectural subsystems
 
+## Phaser-First Rule
+
+Always prefer Phaser's built-in APIs over custom implementations when Phaser provides a suitable feature. Consult the [Phaser API documentation](https://docs.phaser.io/api-documentation/api-documentation) before writing new rendering, input, physics, animation, tilemap, camera, or geometry code.
+
+Default to Phaser for:
+
+- **Input** — `createCursorKeys()`, `JustDown()`, keyboard/gamepad events
+- **Physics** — Arcade Physics bodies, velocity, collisions, world bounds, overlap callbacks
+- **Animation** — `scene.anims.create()`, `sprite.play()`, animation state from runtime facing/velocity
+- **Loading** — `load.image()`, `load.spritesheet()`, `load.tilemapTiledJSON()` in preload; avoid runtime texture surgery when frame dimensions are known at load time
+- **Tilemaps** — `Tilemap`, `TilemapLayer`, and tile collision layers for terrain and props
+- **Geometry** — `Phaser.Geom.*`, `Phaser.Math.Distance`, circle/rectangle overlap helpers
+- **Game objects** — `Sprite`, `Container`, `Text`, `TileSprite`, depth/layer ordering via `setDepth()` or display lists
+- **Cameras** — bounds, follow, culling, and scroll factors instead of manual viewport math
+
+Do not reimplement Phaser features (manual frame-index math, hand-rolled collision separation, rising-edge key flags, runtime texture remove/re-add, etc.) unless there is a documented reason Phaser cannot be used.
+
+This rule applies at the **Phaser adapter boundary** — scenes, renderers, input controllers, and entity wrappers under `src/scenes/`, `src/rendering/`, `src/input/`, and `src/entities/`. Game rules and authoritative state still live in `WorldRuntime` per [ARCHITECTURE.md](/Users/alekkarp/Projects/weavehacks/weavehacks/world/ARCHITECTURE.md); when using Phaser Physics or overlap, read results back into `WorldState` rather than letting Phaser objects become the source of truth.
+
+When replacing an existing custom solution with a Phaser API, note the change in [ARCHITECTURE.md](/Users/alekkarp/Projects/weavehacks/weavehacks/world/ARCHITECTURE.md) if it affects runtime boundaries or data flow.
+
 ## Type Safety Rule
 
 Do not introduce new enum-like magic strings in `world/src/`. For domains such as action types, scene keys, entity kinds, character kinds, movement modes, and controller types, define or reuse shared exported `const` objects and derive the TypeScript union types from them.
