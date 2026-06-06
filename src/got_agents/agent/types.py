@@ -54,3 +54,20 @@ class Appraisal:
     drive_deltas: dict[str, float] = field(default_factory=dict)
     memory: str = ""
     concepts: tuple[str, ...] = ()
+
+
+@dataclass(frozen=True, slots=True)
+class Reflection:
+    """Episode-end consolidation (A.3 step 9): a durable self-summary + rules.
+
+    ``summary`` is one or two sentences compressing the episode from the
+    character's point of view; ``rules`` are behavioral lessons it draws for
+    itself; ``relationships`` maps another character's name to a short updated
+    read on them (lightweight ToM). The summary is encoded as a high-importance
+    memory so it surfaces in future recall.
+    """
+
+    summary: str
+    rules: tuple[str, ...] = ()
+    relationships: dict[str, str] = field(default_factory=dict)
+    concepts: tuple[str, ...] = ()

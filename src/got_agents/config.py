@@ -10,6 +10,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+# Repo root = three levels up from this file (src/got_agents/config.py).
+_REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 
 @dataclass(frozen=True)
 class Settings:
@@ -21,6 +24,7 @@ class Settings:
     wandb_api_key: str | None = os.environ.get("WANDB_API_KEY")
     weave_project: str = os.environ.get("WEAVE_PROJECT", "weavehacks/got-agents")
     embedding_dim: int = int(os.environ.get("EMBEDDING_DIM", "1536"))
+    data_dir: str = os.environ.get("GOT_DATA_DIR", os.path.join(_REPO_ROOT, "data"))
 
 
 @lru_cache(maxsize=1)

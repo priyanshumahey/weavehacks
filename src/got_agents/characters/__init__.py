@@ -22,13 +22,37 @@ _REGISTRY: dict[str, CharacterSpec] = {
 
 
 def get_character(key: str) -> CharacterSpec:
-    try:
+    if key in _REGISTRY:
         return _REGISTRY[key]
-    except KeyError as exc:
-        raise KeyError(
-            f"unknown character {key!r}; known: {sorted(_REGISTRY)}"
-        ) from exc
+    # Fall back to a pipeline-authored core on disk (PART E). The load path is
+    # pure JSON -> genome (no LLM), so the chatbot test still holds.
+    from got_agents.data_pipeline import cores
+
+    if cores.core_exists(key):
+        core = cores.load_core(key)
+        return CharacterSpec(core.genome, core.seed_memories())
+    raise KeyError(
+        f"unknown character {key!r}; known: {sorted(_REGISTRY)} "
+        f"(and no authored core at data/cores/{cores.slug(key)}.json)"
+    )
 
 
 def known() -> list[str]:
     return sorted(_REGISTRY)
+
+
+def key_for_name(name: str) -> str | None:
+    """Map a character's full name (e.g. "Eddard Stark") to its registry key.
+
+    Chronicles record speakers by ``genome.name``; scorers/loaders need the key
+    (``"ned"`` for "Eddard Stark"). Matches the full name first, then a
+    first-name fallback for pipeline-authored cores.
+    """
+    target = name.strip().lower()
+    for key, spec in _REGISTRY.items():
+        if spec.genome.name.strip().lower() == target:
+            return key
+    first = target.split()[0] if target else ""
+    if first in _REGISTRY:
+        return first
+    return None

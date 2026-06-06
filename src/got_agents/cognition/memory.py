@@ -14,8 +14,8 @@ import time
 
 import weave
 from redisvl.index import SearchIndex
-from redisvl.query import VectorQuery
-from redisvl.query.filter import Tag
+from redisvl.query import FilterQuery, VectorQuery
+from redisvl.query.filter import Num, Tag
 from redisvl.redis.utils import array_to_buffer
 from redisvl.schema import IndexSchema
 
@@ -80,6 +80,20 @@ class MemoryStore:
     def is_empty(self) -> bool:
         return self.count() == 0
 
+    def all(self, *, limit: int = 1000) -> list[Memory]:
+        """Return every stored memory (unscored), newest canon-time first.
+
+        For inspection/debugging — surfaces the character's whole memory stream,
+        not just what a cue retrieves.
+        """
+        query = FilterQuery(
+            return_fields=_RETURN_FIELDS, num_results=limit
+        )
+        rows = self.index.query(query)
+        memories = [self._row_to_memory(row) for row in rows]
+        memories.sort(key=lambda m: m.timestamp, reverse=True)
+        return memories
+
     def encode(self, memory: Memory) -> None:
         """Embed and upsert a memory (idempotent by ``memory.id``)."""
         record = {
@@ -101,6 +115,7 @@ class MemoryStore:
         concepts: tuple[str, ...] | None = None,
         candidates: int = 20,
         now: float | None = None,
+        as_of: float | None = None,
     ) -> list[Memory]:
         """Return the top-``k`` memories for ``cue`` by the weighted score.
 
@@ -108,16 +123,40 @@ class MemoryStore:
         similarity AND a Fixed-Bag ``concepts`` TAG filter (spreading
         activation). If nothing matches the tags, it falls back to an unfiltered
         vector search so recall never starves.
+
+        ``as_of`` is the **knowledge horizon**: when set (a canon timestamp),
+        memories stamped *after* it are excluded entirely, so a Lord loaded at a
+        past story point cannot recall things it has not yet lived. Conversation
+        memories (real wall-clock stamps) sort after any canon point and so fall
+        outside a past horizon automatically.
         """
         vector = llm.embed(cue)
-        tag_filter = Tag("concepts") == list(concepts) if concepts else None
+        filters = []
+        if concepts:
+            filters.append(Tag("concepts") == list(concepts))
+        if as_of is not None:
+            filters.append(Num("timestamp") <= as_of)
+        tag_filter = self._combine(filters)
         rows = self._search(vector, candidates, tag_filter)
-        if tag_filter is not None and not rows:
-            rows = self._search(vector, candidates, None)
+        if concepts and not rows:
+            # Recall starved on the concept tags; retry without them but keep the
+            # as-of horizon so a past Lord still never sees the future.
+            horizon = Num("timestamp") <= as_of if as_of is not None else None
+            rows = self._search(vector, candidates, horizon)
         now = now or time.time()
         scored = [self._score(row, now) for row in rows]
         scored.sort(key=lambda memory: memory.score or 0.0, reverse=True)
         return scored[:k]
+
+    @staticmethod
+    def _combine(filters: list) -> object | None:
+        if not filters:
+            return None
+        combined = filters[0]
+        for extra in filters[1:]:
+            combined = combined & extra
+        return combined
+
 
     def _search(
         self,
@@ -149,6 +188,17 @@ class MemoryStore:
             timestamp=timestamp,
             concepts=concepts,
             score=score,
+        )
+
+    @staticmethod
+    def _row_to_memory(row: dict[str, object]) -> Memory:
+        concepts = tuple(c for c in str(row.get("concepts", "")).split(",") if c)
+        return Memory(
+            id=str(row["id"]),
+            text=str(row["text"]),
+            importance=float(row.get("importance", 0.0)),
+            timestamp=float(row.get("timestamp", 0.0)),
+            concepts=concepts,
         )
 
     @staticmethod

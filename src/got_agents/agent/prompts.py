@@ -131,3 +131,27 @@ def appraise_messages(
         {"role": "system", "content": system},
         {"role": "user", "content": "How do you take stock?"},
     ]
+
+
+def reflect_messages(
+    identity: Identity,
+    drives: Drives,
+    trigger: str,
+    episode_digest: str,
+) -> list[Message]:
+    system = (
+        f"You are {identity.name}, looking back at the close of {trigger}. "
+        "Consolidate what happened into durable self-knowledge — speak in the "
+        "first person, in your own voice, honest with yourself.\n"
+        f"What you lived through this episode:\n{episode_digest}\n\n"
+        "Respond with a JSON object and nothing else, with these keys:\n"
+        '  "summary": one or two sentences capturing this episode for you,\n'
+        '  "rules": up to three short behavioral lessons you take forward,\n'
+        '  "relationships": an object mapping a person you dealt with to one '
+        "short sentence on where you now stand with them,\n"
+        '  "concepts": up to three short concept tags for this memory.'
+    )
+    return [
+        {"role": "system", "content": system},
+        {"role": "user", "content": "What do you carry forward?"},
+    ]

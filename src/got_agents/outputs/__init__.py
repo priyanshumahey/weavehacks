@@ -1,4 +1,15 @@
 from got_agents.outputs.chronicle import write_run
+from got_agents.outputs.episode_chronicle import (
+    render_text as render_episode,
+    to_dict as episode_to_dict,
+    write_episode,
+)
+from got_agents.outputs.fidelity import (
+    CharacterFidelity,
+    EpisodeFidelity,
+    score_episode_fidelity,
+)
+from got_agents.outputs.replay import load_chronicle, replay_chronicle
 from got_agents.outputs.scorers import (
     SceneDeception,
     TurnDeception,
@@ -6,8 +17,16 @@ from got_agents.outputs.scorers import (
 )
 
 __all__ = [
+    "CharacterFidelity",
+    "EpisodeFidelity",
     "SceneDeception",
     "TurnDeception",
+    "episode_to_dict",
+    "load_chronicle",
+    "render_episode",
+    "replay_chronicle",
     "score_deception_scene",
+    "score_episode_fidelity",
+    "write_episode",
     "write_run",
 ]

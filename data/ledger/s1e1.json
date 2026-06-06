@@ -1,0 +1,133 @@
+{
+  "episode": "s1e1",
+  "title": "Winter Is Coming",
+  "events": [
+    {
+      "id": "s1e1-walkers-return",
+      "point": "s1e1",
+      "order": 0,
+      "type": "omen",
+      "summary": "Beyond the Wall, rangers of the Night's Watch find proof the White Walkers have returned; only one ranger escapes south.",
+      "participants": ["will"],
+      "visibility": "public",
+      "effects": []
+    },
+    {
+      "id": "s1e1-twincest-secret",
+      "point": "s1e1",
+      "order": 1,
+      "type": "secret",
+      "summary": "Queen Cersei's three children are fathered by her twin Jaime, not King Robert.",
+      "participants": ["cersei lannister", "jaime lannister"],
+      "visibility": "secret",
+      "known_to": ["cersei lannister", "jaime lannister"],
+      "effects": [
+        {
+          "op": "secret",
+          "secret": "royal-parentage",
+          "fact": "Cersei's children are Jaime's, not Robert's; if known it means death for them all.",
+          "known_to": ["cersei lannister", "jaime lannister"]
+        }
+      ]
+    },
+    {
+      "id": "s1e1-arryn-knew",
+      "point": "s1e1",
+      "order": 2,
+      "type": "reveal",
+      "summary": "Jon Arryn, the late Hand, had uncovered the truth of the royal children's parentage.",
+      "participants": ["jon arryn"],
+      "visibility": "secret",
+      "effects": [
+        {"op": "learn", "secret": "royal-parentage", "who": "jon arryn"}
+      ]
+    },
+    {
+      "id": "s1e1-arryn-dies",
+      "point": "s1e1",
+      "order": 3,
+      "type": "death",
+      "summary": "Jon Arryn, Hand of the King, dies of a sudden sickness.",
+      "participants": ["jon arryn"],
+      "visibility": "public",
+      "effects": [
+        {"op": "kill", "who": "jon arryn"}
+      ]
+    },
+    {
+      "id": "s1e1-daenerys-drogo-marriage",
+      "point": "s1e1",
+      "order": 4,
+      "type": "marriage",
+      "summary": "Viserys Targaryen brokers the marriage of his sister Daenerys to the Dothraki warlord Khal Drogo to buy an army.",
+      "participants": ["viserys", "daenerys targaryen", "khal drogo", "illyrio"],
+      "visibility": "public",
+      "effects": [
+        {"op": "marry", "who": ["daenerys targaryen", "khal drogo"]}
+      ]
+    },
+    {
+      "id": "s1e1-ned-made-hand",
+      "point": "s1e1",
+      "order": 5,
+      "type": "title",
+      "summary": "King Robert travels to Winterfell and names his old friend Eddard Stark the new Hand of the King; Ned reluctantly accepts.",
+      "participants": ["robert baratheon", "eddard stark"],
+      "visibility": "public",
+      "effects": [
+        {"op": "title", "who": "eddard stark", "title": "Hand of the King"},
+        {"op": "oath", "by": "eddard stark", "to": "robert baratheon", "terms": "serve as Hand of the King"}
+      ]
+    },
+    {
+      "id": "s1e1-sansa-joffrey-betrothal",
+      "point": "s1e1",
+      "order": 6,
+      "type": "betrothal",
+      "summary": "Robert proposes betrothing Ned's daughter Sansa to Prince Joffrey to join their houses.",
+      "participants": ["robert baratheon", "eddard stark", "sansa stark", "joffrey"],
+      "visibility": "public",
+      "effects": []
+    },
+    {
+      "id": "s1e1-lysa-accusation",
+      "point": "s1e1",
+      "order": 7,
+      "type": "rumor",
+      "summary": "Lysa Arryn secretly warns her sister Catelyn that the Lannisters murdered Jon Arryn.",
+      "participants": ["lysa arryn", "catelyn stark"],
+      "visibility": "secret",
+      "known_to": ["catelyn stark", "lysa arryn"],
+      "effects": [
+        {
+          "op": "secret",
+          "secret": "arryn-murder-suspicion",
+          "fact": "Lysa accuses the Lannisters of poisoning Jon Arryn.",
+          "known_to": ["catelyn stark", "lysa arryn"]
+        }
+      ]
+    },
+    {
+      "id": "s1e1-bran-witnesses",
+      "point": "s1e1",
+      "order": 8,
+      "type": "reveal",
+      "summary": "Climbing a tower, Bran Stark sees Cersei and Jaime together and learns their secret.",
+      "participants": ["bran stark", "cersei lannister", "jaime lannister"],
+      "visibility": "secret",
+      "effects": [
+        {"op": "learn", "secret": "royal-parentage", "who": "bran stark"}
+      ]
+    },
+    {
+      "id": "s1e1-jaime-pushes-bran",
+      "point": "s1e1",
+      "order": 9,
+      "type": "attack",
+      "summary": "To keep the secret, Jaime shoves Bran from the tower window, gravely wounding the boy.",
+      "participants": ["jaime lannister", "bran stark"],
+      "visibility": "secret",
+      "effects": []
+    }
+  ]
+}

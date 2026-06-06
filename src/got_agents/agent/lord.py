@@ -7,7 +7,8 @@ import weave
 
 from got_agents.agent import prompts
 from got_agents.agent.genome import Genome
-from got_agents.agent.types import ACTION_VOCAB, Appraisal, Decision, Perception
+from got_agents.agent.types import ACTION_VOCAB, Appraisal, Decision, Perception, Reflection
+from got_agents.cognition import canon_time
 from got_agents.cognition.memory import MemoryStore
 from got_agents.cognition.types import Memory
 from got_agents.infra import llm
@@ -24,6 +25,7 @@ class Lord:
         self.genome = genome
         self.memory = memory
         self.at_time = at_time
+        self.as_of = canon_time.to_timestamp(at_time) if at_time else None
         self.identity = genome.identity()
         self.drives = genome.drives()
 
@@ -41,7 +43,13 @@ class Lord:
 
     @weave.op
     def recall(self, cue: str, k: int = 5) -> list[Memory]:
-        return self.memory.retrieve(cue, k, concepts=self.identity.fixed_bag)
+        return self.memory.retrieve(
+            cue,
+            k,
+            concepts=self.identity.fixed_bag,
+            now=self.as_of,
+            as_of=self.as_of,
+        )
 
     @weave.op
     def chat(self, message: str) -> str:
@@ -127,5 +135,52 @@ class Lord:
             emotion=str(raw.get("emotion") or ""),
             drive_deltas=deltas,
             memory=str(raw.get("memory") or ""),
+            concepts=concepts,
+        )
+
+    @weave.op
+    def reflect(self, trigger: str, episode_digest: str) -> Reflection:
+        """A.3 step 9 — consolidate an episode into durable self-knowledge.
+
+        Encodes the consolidated summary as a high-importance memory so it
+        surfaces in later recall; the episode's many scene memories thus compress
+        into one identity-level takeaway.
+        """
+        messages = prompts.reflect_messages(
+            self.identity, self.drives, trigger, episode_digest
+        )
+        raw = llm.complete_json(messages)
+        reflection = self._parse_reflection(raw)
+        if reflection.summary:
+            self.memory.encode(
+                Memory(
+                    id=f"reflect:{uuid.uuid4().hex}",
+                    text=reflection.summary,
+                    importance=0.85,
+                    timestamp=time.time(),
+                    concepts=reflection.concepts or ("reflection",),
+                )
+            )
+        return reflection
+
+    @staticmethod
+    def _parse_reflection(raw: dict) -> Reflection:
+        rules_raw = raw.get("rules") or ()
+        rules = tuple(
+            str(r) for r in rules_raw if isinstance(rules_raw, (list, tuple)) and r
+        )
+        rel_raw = raw.get("relationships") or {}
+        relationships: dict[str, str] = {}
+        if isinstance(rel_raw, dict):
+            for name, note in rel_raw.items():
+                relationships[str(name)] = str(note)
+        concepts_raw = raw.get("concepts") or ()
+        concepts = tuple(
+            str(c) for c in concepts_raw if isinstance(concepts_raw, (list, tuple))
+        )
+        return Reflection(
+            summary=str(raw.get("summary") or ""),
+            rules=rules,
+            relationships=relationships,
             concepts=concepts,
         )

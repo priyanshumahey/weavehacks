@@ -5,6 +5,7 @@ from got_agents.agent.types import (
     Appraisal,
     Decision,
     Perception,
+    Reflection,
     SceneLine,
 )
 
@@ -15,5 +16,6 @@ __all__ = [
     "Genome",
     "Lord",
     "Perception",
+    "Reflection",
     "SceneLine",
 ]

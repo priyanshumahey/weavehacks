@@ -1,0 +1,24 @@
+{
+  "episode": "s1e1",
+  "title": "Winter Is Coming — the lions come to Winterfell",
+  "beats": [
+    {
+      "setting": "the Winterfell feast hall the night the royal court arrives",
+      "stakes": "King Robert means to name Eddard Stark his Hand. Cersei watches the Starks and weighs how far northern honor can be bent before it breaks.",
+      "cast": ["ned", "cersei"],
+      "max_rounds": 2
+    },
+    {
+      "setting": "a shadowed alcove off the Winterfell guest wing, away from the feast",
+      "stakes": "With the old Hand dead and a new one rising, Littlefinger feels out the queen: each offers the other use, and each means to keep the upper hand.",
+      "cast": ["cersei", "littlefinger"],
+      "max_rounds": 2
+    },
+    {
+      "setting": "the lord's solar at Winterfell, the morning after the feast",
+      "stakes": "Before the court rides south, the powers in the room test one another: who will hold the king's ear, who his gold, and who his trust.",
+      "cast": ["ned", "cersei", "littlefinger"],
+      "max_rounds": 2
+    }
+  ]
+}

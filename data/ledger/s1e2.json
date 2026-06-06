@@ -1,0 +1,228 @@
+{
+  "episode": "s1e2",
+  "title": "s1e2",
+  "events": [
+    {
+      "id": "s1e2-jorah-exile-slaving",
+      "point": "s1e2",
+      "type": "reveal",
+      "summary": "Jorah tells Viserys he was exiled for selling poachers into slavery.",
+      "participants": [
+        "jorah mormont",
+        "viserys targaryen"
+      ],
+      "effects": [
+        {
+          "op": "secret",
+          "secret": "jorah-exile-slaving",
+          "fact": "Jorah Mormont was exiled by Ned Stark for selling poachers to a slaver.",
+          "known_to": [
+            "jorah mormont",
+            "viserys targaryen"
+          ]
+        }
+      ],
+      "visibility": "secret",
+      "known_to": [
+        "jorah mormont",
+        "viserys targaryen"
+      ],
+      "order": 1
+    },
+    {
+      "id": "s1e2-ned-promises-jon-mother",
+      "point": "s1e2",
+      "type": "oath",
+      "summary": "Ned promises Jon he will tell him about his mother when they meet again.",
+      "participants": [
+        "eddard stark",
+        "jon snow"
+      ],
+      "effects": [
+        {
+          "op": "oath",
+          "by": "eddard stark",
+          "to": "jon snow",
+          "terms": "tell Jon about his mother when they meet again"
+        }
+      ],
+      "visibility": "secret",
+      "known_to": [
+        "eddard stark",
+        "jon snow"
+      ],
+      "order": 2
+    },
+    {
+      "id": "s1e2-sansa-joffrey-betrothal",
+      "point": "s1e2",
+      "type": "betrothal",
+      "summary": "Sansa is publicly treated as betrothed to Prince Joffrey.",
+      "participants": [
+        "sansa stark",
+        "joffrey baratheon"
+      ],
+      "effects": [],
+      "visibility": "public",
+      "known_to": [],
+      "order": 3
+    },
+    {
+      "id": "s1e2-catspaw-assassin-killed",
+      "point": "s1e2",
+      "type": "death",
+      "summary": "Bran's direwolf kills the catspaw assassin sent to murder Bran.",
+      "participants": [
+        "bran stark",
+        "catelyn stark",
+        "catspaw assassin",
+        "summer"
+      ],
+      "effects": [
+        {
+          "op": "kill",
+          "who": "catspaw assassin"
+        }
+      ],
+      "visibility": "secret",
+      "known_to": [
+        "bran stark",
+        "catelyn stark",
+        "robb stark",
+        "maester luwin",
+        "rodrik cassel",
+        "theon greyjoy"
+      ],
+      "order": 4
+    },
+    {
+      "id": "s1e2-bran-attack-lannister-suspicion",
+      "point": "s1e2",
+      "type": "secret",
+      "summary": "Catelyn privately concludes the Lannisters were involved in Bran's fall and the assassination attempt.",
+      "participants": [
+        "catelyn stark",
+        "robb stark",
+        "maester luwin",
+        "rodrik cassel",
+        "theon greyjoy"
+      ],
+      "effects": [
+        {
+          "op": "secret",
+          "secret": "bran-attack-lannister-suspicion",
+          "fact": "Catelyn suspects the Lannisters caused Bran's fall and tried to have him killed.",
+          "known_to": [
+            "catelyn stark",
+            "robb stark",
+            "maester luwin",
+            "rodrik cassel",
+            "theon greyjoy"
+          ]
+        }
+      ],
+      "visibility": "secret",
+      "known_to": [
+        "catelyn stark",
+        "robb stark",
+        "maester luwin",
+        "rodrik cassel",
+        "theon greyjoy"
+      ],
+      "order": 5
+    },
+    {
+      "id": "s1e2-joffrey-nymeria-lie",
+      "point": "s1e2",
+      "type": "secret",
+      "summary": "Joffrey gives a false account of the fight with Arya, Mycah, and Nymeria.",
+      "participants": [
+        "joffrey baratheon",
+        "arya stark",
+        "sansa stark",
+        "mycah"
+      ],
+      "effects": [
+        {
+          "op": "secret",
+          "secret": "joffrey-nymeria-lie",
+          "fact": "Joffrey's account of Nymeria attacking him unprovoked is false.",
+          "known_to": [
+            "joffrey baratheon",
+            "arya stark",
+            "sansa stark",
+            "mycah"
+          ]
+        }
+      ],
+      "visibility": "secret",
+      "known_to": [
+        "joffrey baratheon",
+        "arya stark",
+        "sansa stark",
+        "mycah"
+      ],
+      "order": 6
+    },
+    {
+      "id": "s1e2-sansa-withholds-arya-defense",
+      "point": "s1e2",
+      "type": "betrayal",
+      "summary": "Sansa refuses to support Arya's account of the incident with Joffrey.",
+      "participants": [
+        "sansa stark",
+        "arya stark",
+        "joffrey baratheon",
+        "eddard stark",
+        "robert baratheon",
+        "cersei lannister"
+      ],
+      "effects": [],
+      "visibility": "public",
+      "known_to": [],
+      "order": 7
+    },
+    {
+      "id": "s1e2-mycah-killed",
+      "point": "s1e2",
+      "type": "death",
+      "summary": "Sandor Clegane kills Mycah while acting for Prince Joffrey.",
+      "participants": [
+        "sandor clegane",
+        "mycah",
+        "joffrey baratheon"
+      ],
+      "effects": [
+        {
+          "op": "kill",
+          "who": "mycah"
+        }
+      ],
+      "visibility": "public",
+      "known_to": [],
+      "order": 8
+    },
+    {
+      "id": "s1e2-lady-killed",
+      "point": "s1e2",
+      "type": "death",
+      "summary": "Ned kills Sansa's direwolf Lady after Robert accepts Cersei's demand for a direwolf's death.",
+      "participants": [
+        "eddard stark",
+        "sansa stark",
+        "lady",
+        "robert baratheon",
+        "cersei lannister"
+      ],
+      "effects": [
+        {
+          "op": "kill",
+          "who": "lady"
+        }
+      ],
+      "visibility": "public",
+      "known_to": [],
+      "order": 9
+    }
+  ]
+}

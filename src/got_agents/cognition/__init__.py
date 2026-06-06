@@ -5,9 +5,10 @@ loop. **Shared value types live here (L1), never in ``world/``** — that is wha
 keeps ``Lord`` usable as a standalone chatbot without importing upward.
 """
 
+from got_agents.cognition import canon_time
 from got_agents.cognition.drives import Drives
 from got_agents.cognition.identity import Identity
 from got_agents.cognition.memory import MemoryStore
 from got_agents.cognition.types import Memory
 
-__all__ = ["Drives", "Identity", "Memory", "MemoryStore"]
+__all__ = ["Drives", "Identity", "Memory", "MemoryStore", "canon_time"]

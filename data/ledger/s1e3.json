@@ -1,0 +1,354 @@
+{
+  "episode": "s1e3",
+  "title": "s1e3",
+  "events": [
+    {
+      "id": "s1e3-jaime-killed-aerys",
+      "point": "s1e3",
+      "type": "reveal",
+      "summary": "Jaime's killing of Aerys Targaryen as a Kingsguard is discussed with Ned.",
+      "participants": [
+        "jaime lannister",
+        "aerys targaryen",
+        "eddard stark"
+      ],
+      "effects": [
+        {
+          "op": "kill",
+          "who": "aerys targaryen"
+        }
+      ],
+      "visibility": "public",
+      "known_to": [
+        "jaime lannister",
+        "eddard stark"
+      ],
+      "order": 1
+    },
+    {
+      "id": "s1e3-ned-hand-small-council",
+      "point": "s1e3",
+      "type": "title",
+      "summary": "Ned takes his place in King's Landing as Hand of the King.",
+      "participants": [
+        "eddard stark",
+        "robert baratheon"
+      ],
+      "effects": [
+        {
+          "op": "title",
+          "who": "eddard stark",
+          "title": "hand of the king"
+        }
+      ],
+      "visibility": "public",
+      "known_to": [
+        "eddard stark",
+        "robert baratheon",
+        "renly baratheon",
+        "varys",
+        "grand maester pycelle",
+        "petyr baelish"
+      ],
+      "order": 2
+    },
+    {
+      "id": "s1e3-crown-debt-lannisters",
+      "point": "s1e3",
+      "type": "secret",
+      "summary": "Ned learns the crown is deeply indebted to House Lannister.",
+      "participants": [
+        "eddard stark",
+        "petyr baelish",
+        "renly baratheon",
+        "varys",
+        "grand maester pycelle",
+        "tywin lannister"
+      ],
+      "effects": [
+        {
+          "op": "secret",
+          "secret": "crown-debt-lannisters",
+          "fact": "the crown owes tywin lannister millions of gold dragons",
+          "known_to": [
+            "eddard stark",
+            "petyr baelish",
+            "renly baratheon",
+            "varys",
+            "grand maester pycelle"
+          ]
+        }
+      ],
+      "visibility": "secret",
+      "known_to": [
+        "eddard stark",
+        "petyr baelish",
+        "renly baratheon",
+        "varys",
+        "grand maester pycelle"
+      ],
+      "order": 3
+    },
+    {
+      "id": "s1e3-bran-attack-lannister-suspicion-reaches-ned",
+      "point": "s1e3",
+      "type": "reveal",
+      "summary": "Catelyn brings Ned the suspicion that the Lannisters were behind Bran's fall and the later assassination attempt.",
+      "participants": [
+        "catelyn stark",
+        "eddard stark",
+        "petyr baelish",
+        "varys",
+        "rodrik cassel"
+      ],
+      "effects": [
+        {
+          "op": "learn",
+          "secret": "bran-attack-lannister-suspicion",
+          "who": "eddard stark"
+        },
+        {
+          "op": "learn",
+          "secret": "bran-attack-lannister-suspicion",
+          "who": "petyr baelish"
+        },
+        {
+          "op": "learn",
+          "secret": "bran-attack-lannister-suspicion",
+          "who": "varys"
+        }
+      ],
+      "visibility": "secret",
+      "known_to": [
+        "catelyn stark",
+        "eddard stark",
+        "petyr baelish",
+        "varys",
+        "rodrik cassel"
+      ],
+      "order": 4
+    },
+    {
+      "id": "s1e3-catspaw-dagger-tyrion-claim",
+      "point": "s1e3",
+      "type": "secret",
+      "summary": "Littlefinger claims the catspaw dagger passed from him to Tyrion.",
+      "participants": [
+        "petyr baelish",
+        "tyrion lannister",
+        "catelyn stark",
+        "eddard stark",
+        "varys",
+        "rodrik cassel"
+      ],
+      "effects": [
+        {
+          "op": "secret",
+          "secret": "catspaw-dagger-tyrion-claim",
+          "fact": "petyr baelish says tyrion lannister won the catspaw dagger from him",
+          "known_to": [
+            "petyr baelish",
+            "catelyn stark",
+            "eddard stark",
+            "varys",
+            "rodrik cassel"
+          ]
+        }
+      ],
+      "visibility": "secret",
+      "known_to": [
+        "petyr baelish",
+        "catelyn stark",
+        "eddard stark",
+        "varys",
+        "rodrik cassel"
+      ],
+      "order": 5
+    },
+    {
+      "id": "s1e3-ned-littlefinger-investigation-alliance",
+      "point": "s1e3",
+      "type": "alliance",
+      "summary": "Ned agrees to work with Littlefinger to investigate the attack on Bran.",
+      "participants": [
+        "eddard stark",
+        "petyr baelish"
+      ],
+      "effects": [
+        {
+          "op": "ally",
+          "who": [
+            "eddard stark",
+            "petyr baelish"
+          ]
+        }
+      ],
+      "visibility": "secret",
+      "known_to": [
+        "eddard stark",
+        "petyr baelish",
+        "catelyn stark"
+      ],
+      "order": 6
+    },
+    {
+      "id": "s1e3-sansa-joffrey-betrothal-reaffirmed",
+      "point": "s1e3",
+      "type": "betrothal",
+      "summary": "Ned reminds Arya that Sansa is expected to marry Joffrey.",
+      "participants": [
+        "sansa stark",
+        "joffrey baratheon",
+        "eddard stark",
+        "arya stark"
+      ],
+      "effects": [],
+      "visibility": "public",
+      "known_to": [
+        "sansa stark",
+        "joffrey baratheon",
+        "eddard stark",
+        "arya stark"
+      ],
+      "order": 7
+    },
+    {
+      "id": "s1e3-tyrion-night-watch-plea",
+      "point": "s1e3",
+      "type": "oath",
+      "summary": "Tyrion agrees to ask his family for more support for the Night's Watch.",
+      "participants": [
+        "tyrion lannister",
+        "jeor mormont",
+        "cersei lannister",
+        "jaime lannister"
+      ],
+      "effects": [
+        {
+          "op": "oath",
+          "by": "tyrion lannister",
+          "to": "jeor mormont",
+          "terms": "ask cersei and jaime for more men for the night's watch"
+        }
+      ],
+      "visibility": "secret",
+      "known_to": [
+        "tyrion lannister",
+        "jeor mormont"
+      ],
+      "order": 8
+    },
+    {
+      "id": "s1e3-jon-tyrion-friendship",
+      "point": "s1e3",
+      "type": "alliance",
+      "summary": "Jon accepts Tyrion as a friend before Tyrion leaves the Wall.",
+      "participants": [
+        "jon snow",
+        "tyrion lannister"
+      ],
+      "effects": [
+        {
+          "op": "ally",
+          "who": [
+            "jon snow",
+            "tyrion lannister"
+          ]
+        }
+      ],
+      "visibility": "public",
+      "known_to": [
+        "jon snow",
+        "tyrion lannister"
+      ],
+      "order": 9
+    },
+    {
+      "id": "s1e3-daenerys-jorah-alignment",
+      "point": "s1e3",
+      "type": "alliance",
+      "summary": "Jorah's respect and loyalty toward Daenerys strengthens.",
+      "participants": [
+        "daenerys targaryen",
+        "jorah mormont"
+      ],
+      "effects": [
+        {
+          "op": "ally",
+          "who": [
+            "daenerys targaryen",
+            "jorah mormont"
+          ]
+        }
+      ],
+      "visibility": "public",
+      "known_to": [
+        "daenerys targaryen",
+        "jorah mormont"
+      ],
+      "order": 10
+    },
+    {
+      "id": "s1e3-daenerys-pregnancy",
+      "point": "s1e3",
+      "type": "secret",
+      "summary": "Irri discovers that Daenerys is pregnant and Jorah is told.",
+      "participants": [
+        "daenerys targaryen",
+        "irri",
+        "jorah mormont"
+      ],
+      "effects": [
+        {
+          "op": "secret",
+          "secret": "daenerys-pregnancy",
+          "fact": "daenerys targaryen is pregnant",
+          "known_to": [
+            "daenerys targaryen",
+            "irri",
+            "jorah mormont"
+          ]
+        }
+      ],
+      "visibility": "secret",
+      "known_to": [
+        "daenerys targaryen",
+        "irri",
+        "jorah mormont"
+      ],
+      "order": 11
+    },
+    {
+      "id": "s1e3-drogo-learns-daenerys-pregnancy",
+      "point": "s1e3",
+      "type": "reveal",
+      "summary": "Daenerys tells Drogo about their unborn son.",
+      "participants": [
+        "daenerys targaryen",
+        "khal drogo"
+      ],
+      "effects": [
+        {
+          "op": "learn",
+          "secret": "daenerys-pregnancy",
+          "who": "khal drogo"
+        },
+        {
+          "op": "secret",
+          "secret": "daenerys-child-male",
+          "fact": "daenerys believes her child with khal drogo is a boy",
+          "known_to": [
+            "daenerys targaryen",
+            "khal drogo"
+          ]
+        }
+      ],
+      "visibility": "secret",
+      "known_to": [
+        "daenerys targaryen",
+        "khal drogo"
+      ],
+      "order": 12
+    }
+  ]
+}

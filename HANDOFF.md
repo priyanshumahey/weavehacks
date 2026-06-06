@@ -1,7 +1,7 @@
 ---
 title: A Game of Agents — Engineering Handoff
 tags: [handoff, agents, status]
-status: step-1-complete
+status: step-4-complete
 updated: 2026-06-06
 spec: AGENT_SYSTEM_DESIGN.md
 ---
@@ -15,26 +15,124 @@ actually built versus that spec.
 
 ## Where we are
 
-Steps 0 and 1 of the 7-step build (Steps 0–6) are **done and validated**. We have
-the bottom-up cognitive slice *plus* the first behavior layer: standalone Lords
-that `act` in a scene (emitting the public/private deception schema) and a
-reusable L3 council flow that drives two authored Lords through a round-robin
-and appraises them afterward — closing the drive loop. Still **no world loop**.
+Steps 0–4 of the 7-step build (Steps 0–6) are **done and validated**. The entire
+offline vertical slice runs end-to-end: author (tiered cores + canon ledger) →
+simulate (Director schedules scenes over a folded world; Lords `act`; decisions
+**resolve into live world state**; end-of-episode `reflect` consolidates) →
+render (a durable **chronicle** on disk, a programmatic **replay**, and the first
+**Weave fidelity scorer**). Time is first-class on two axes — `fold(ledger, T)`
+for the world and an **as-of memory horizon** per Lord.
 
 ```
-[Step 0] chatable Lord + grounded memory   <- DONE
-[Step 1] Lord.act + council flow + appraisal <- DONE (here)
- Step 2  world + canon `fold` (event ledger -> state)
- Step 3  Director episode spine
- Step 4  full episode -> chronicle -> replay + scorer
- Step 5  scale S1 -> S7
- Step 6  evolution loop
+[Step 0] chatable Lord + grounded memory      <- DONE
+[Step 1] Lord.act + council flow + appraisal  <- DONE
+[Step 2] world + canon `fold` + timeline      <- DONE
+[Step 3] Director episode spine (lean)        <- DONE
+[Step 4] full episode -> chronicle + replay + fidelity scorer + reflect  <- DONE
+ Step 5  scale S1 -> S7  (harness DONE; S1E1-E3 ledgers+memories landed)  <- IN PROGRESS
+ Step 6  evolution / training loop
 ```
+
+Validated: **61 tests collected** (pure-logic + infra-gated e2e), ruff clean,
+down-only imports intact. A live S1E1 episode produces a clean chronicle and a
+fidelity baseline (Ned 0.90 / Cersei 0.80 / Littlefinger 0.90, mean **0.87**).
 
 **Deferred from the spec's Step 1 line (PART H), by choice, non-blocking:**
 `flows/dialogue` (the 1:1 private-pact flow — we built only `council`) and the
-A.8 per-episode **intention/planning** step. Neither blocks Step 2 (world +
-`fold`); both can land when an episode actually needs them.
+A.8 per-episode **intention/planning** step. Neither has blocked anything yet;
+both can land when an episode actually needs them.
+
+**Deferred from the heavy Stage Manager (PART B.2), by choice:** a Redis-backed
+persistent world store, a membership-filtered event bus, emergent (drive-driven)
+scene insertion, and per-tick chronicle snapshots. The lean in-memory path
+(`fold` → mutable `WorldSnapshot` → `resolve`) covers Steps 3–4; these land if
+and when scale demands them.
+
+## What Steps 2–4 ship (summary)
+
+Still layered down-only; `agent/` and below never import `flows/world/orchestration`.
+
+- **L1 cognition** — `canon_time.py`: one monotonic story-point axis
+  (`s1e5` → code `105` → a synthetic canon timestamp kept below wall-clock so
+  conversation memories always sort after canon). `memory.py`: `retrieve()`
+  gains an **as-of horizon** (`Num("timestamp") <= as_of`) and `all()` for
+  inspection.
+- **L2 agent** — `Lord.load(at_time=T)` now *reads* the horizon
+  (`recall → retrieve(as_of)`), so a Lord only recalls what it would know by T.
+  `Lord.reflect(trigger, digest) -> Reflection` (A.3 step 9): episode-end
+  consolidation, encoded as a high-importance memory.
+- **L4 world** — `world/types.py` (`LedgerEvent`, `WorldSnapshot` with a shared
+  `apply`/`apply_all`, `Oath`, `Secret`), `fold.py` (`fold(ledger, T)` pure),
+  `ledger.py` (load per-episode JSON), `resolution.py` (`resolve(decision,
+  speaker, world)` maps a typed-core action → EFFECT_OPS and mutates the live
+  world — `ally`/`swear_oath`/`share_secret` finally change shared state).
+- **L4 orchestration** — `orchestration/types.py` (`Beat`, `EpisodeSkeleton`,
+  `SceneResult`, `EpisodeResult`), `director.py` (`Director` walks a seed
+  skeleton, runs `run_council` per beat, resolves decisions into one live world,
+  then reflects), `skeleton.py` (load `data/skeletons/<pt>.json`).
+- **L5 outputs** — `episode_chronicle.py` (`write_episode` →
+  `logs/episodes/<stamp>-<pt>.{json,txt}`), `fidelity.py`
+  (`score_episode_fidelity(chronicle) -> per-character 0–1 + mean`, the first
+  training fitness signal), `replay.py` (`replay_chronicle(path)` renders a saved
+  artifact — the offline artifact→replay loop).
+- **data_pipeline (PART E)** — `sources.py` (CSV/synopsis readers + line-count
+  **tiers**), `cores.py` (`author_core` → `data/cores/<key>.json`),
+  `ledger_extract.py` (synopsis+script → ledger JSON), `ingest.py`
+  (`ingest_episode` ties it together, smoke-tested).
+- **data** — hand-authored `data/ledger/s1e1.json` and `data/skeletons/s1e1.json`.
+- **tooling** — `scripts/peek.py` (`characters`/`lord`/`recall`/`world`/
+  `episode`/`council` inspectors) and `scripts/run_episode.py` (the Step-4 batch).
+
+### Ledger→memory bridge — BUILT (canon-aware agents)
+
+`data_pipeline/canon_memory.py::seed_episode_memories(point)` fans the canon
+ledger into each entitled character's **memory stream** (it previously fed world
+state only). Membership-correct per PART B.2: **secret** events reach only their
+`known_to`; **public** events reach the episode's speakers plus named
+participants. Memories are **canon-dated** (the event's story point, so the as-of
+horizon hides future events) and concept-grounded in each character's Fixed Bag.
+Idempotent (stable ids `{key}:ledger:{event.id}`). Wired into `ingest_episode`
+(step 4, `seed_memories=True`) so scaling S1→S7 seeds canon memory for free;
+runnable directly via `peek.py seed-memories <point>`. Verified live: Cersei
+recalls the parentage secret as an S1E1 memory; Ned does **not** receive it.
+
+**Still open (separate task, pre-existing):** hand-authored seed memories
+(`characters/*.py`) still share one backstory `_SEED_TS`, so the as-of horizon
+cannot hide spoilers authored into them (e.g. Ned's seed already "knows" the
+parentage truth he canonically learns in S1E7). The bridge is correct; this is
+the seed-dating chore noted in the timeline section below.
+
+## Step 5 — scaling harness (IN PROGRESS)
+
+The incremental, smoke-tested ingest is built and running:
+
+- `data_pipeline/season.py::ingest_season(points)` — walks story points in canon
+  order; per episode it extracts the ledger, **smoke-tests** the cumulative
+  world, and seeds canon memories to that episode's present cast. Stops on the
+  first smoke failure (drift can't compound).
+- `data_pipeline/smoke.py::smoke_test_episode` — pure checks: folds clean, no
+  dead character holds a title, **secret-slug continuity** (every `learn`
+  references a registered `secret`), monotonic deaths, parseable points.
+- `ledger_extract.known_secrets_before()` + `extract_episode(known_secrets=...)`
+  — carries earlier secret slugs forward so a later reveal reuses the same slug
+  instead of minting a new one.
+- `scripts/ingest_season.py s1e2 s1e3` (or `--season 1 --through 5`).
+
+**Landed so far:** S1E1–E3 ledgers + canon memories. Verified the **cumulative
+horizon** — Cersei's visible memories grow 11 → 15 → 20 across S1E1 → E2 → E3.
+Extraction quality is high (Lady, Mycah, the catspaw assassin; correct `known_to`
+sets; the `royal-parentage` slug carried from E1). One known quirk: the LLM
+sometimes over-extracts a **backstory** death into the current window (e.g. Aerys
+Targaryen dated S1E2 from a flashback line) — harmless for world state since he
+is dead at every S1 point, but the date is wrong; worth a cleanup pass when
+authoring deeper.
+
+**Remaining for Step 5:** continue episodes through S1 (and beyond), author a
+per-episode **skeleton** where we want to *simulate* that episode (skeletons are
+only needed to run scenes, not to seed memory), and add breadth cores only if a
+scene needs a non-authored speaker.
+
+
 
 ## What Step 1 ships
 
