@@ -96,7 +96,7 @@ canvas {
 .world-ui__dialogue-layout {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(100px, 22vw) minmax(0, 1fr);
+  grid-template-columns: minmax(120px, 26vw) minmax(0, 1fr);
   align-items: end;
   gap: 0;
   width: min(1280px, 96vw);
@@ -117,15 +117,26 @@ canvas {
   }
 }
 
-.world-ui__dialogue-portrait {
+.world-ui__dialogue-portrait-frame {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   align-self: end;
-  width: min(28vw, 280px);
-  max-height: min(46vh, 420px);
-  margin-right: -48px;
-  object-fit: contain;
-  object-position: bottom center;
+  flex-shrink: 0;
+  width: min(38vw, 440px);
+  height: min(46vh, 400px);
+  margin-right: -96px;
+  margin-left: -16px;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.world-ui__dialogue-portrait {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: none;
+  transform: scale(1.9);
+  transform-origin: top center;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
   pointer-events: none;
@@ -178,13 +189,18 @@ canvas {
 
 @media (max-width: 720px) {
   .world-ui__dialogue-layout {
-    grid-template-columns: minmax(88px, 34vw) minmax(0, 1fr);
+    grid-template-columns: minmax(100px, 32vw) minmax(0, 1fr);
+  }
+
+  .world-ui__dialogue-portrait-frame {
+    width: min(36vw, 260px);
+    height: min(40vh, 280px);
+    margin-right: -64px;
+    margin-left: -12px;
   }
 
   .world-ui__dialogue-portrait {
-    width: min(34vw, 180px);
-    max-height: min(38vh, 280px);
-    margin-right: -28px;
+    transform: scale(1.75);
   }
 
   .world-ui__dialogue-panel {

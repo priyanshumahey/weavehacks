@@ -1,4 +1,4 @@
-const CHARACTER_PORTRAIT_MODULES = import.meta.glob("../../../assets/sprites/*.png", {
+const CHARACTER_PORTRAIT_MODULES = import.meta.glob("../../sprites/Characters/*.png", {
   eager: true,
   import: "default",
 }) as Record<string, string>;

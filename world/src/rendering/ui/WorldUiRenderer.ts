@@ -17,6 +17,7 @@ export class WorldUiRenderer {
   private readonly promptEl: HTMLDivElement;
   private readonly dialogueStage: HTMLDivElement;
   private readonly dialogueBackdrop: HTMLDivElement;
+  private readonly dialoguePortraitFrame: HTMLDivElement;
   private readonly dialoguePortrait: HTMLImageElement;
   private readonly dialoguePanel: HTMLElement;
   private readonly dialogueName: HTMLHeadingElement;
@@ -47,10 +48,14 @@ export class WorldUiRenderer {
     this.dialogueBackdrop.className = "world-ui__dialogue-backdrop";
     this.dialogueBackdrop.setAttribute("aria-hidden", "true");
 
+    this.dialoguePortraitFrame = document.createElement("div");
+    this.dialoguePortraitFrame.className = "world-ui__dialogue-portrait-frame";
+
     this.dialoguePortrait = document.createElement("img");
     this.dialoguePortrait.className = "world-ui__dialogue-portrait";
     this.dialoguePortrait.alt = "";
     this.dialoguePortrait.decoding = "async";
+    this.dialoguePortraitFrame.append(this.dialoguePortrait);
 
     this.dialoguePanel = document.createElement("aside");
     this.dialoguePanel.className = "world-ui__dialogue-panel";
@@ -66,7 +71,7 @@ export class WorldUiRenderer {
 
     const dialogueLayout = document.createElement("div");
     dialogueLayout.className = "world-ui__dialogue-layout";
-    dialogueLayout.append(this.dialoguePortrait, this.dialoguePanel);
+    dialogueLayout.append(this.dialoguePortraitFrame, this.dialoguePanel);
 
     this.dialogueStage.append(this.dialogueBackdrop, dialogueLayout);
 
@@ -186,7 +191,7 @@ export class WorldUiRenderer {
     this.dialogueBody.textContent = dialogue.body;
 
     const hasPortrait = Boolean(dialogue.portraitUrl);
-    this.dialoguePortrait.hidden = !hasPortrait;
+    this.dialoguePortraitFrame.hidden = !hasPortrait;
     this.dialoguePortrait.alt = dialogue.name;
 
     if (dialogue.portraitUrl) {

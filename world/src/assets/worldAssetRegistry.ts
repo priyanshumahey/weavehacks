@@ -7,14 +7,20 @@ const WORLD_SPRITE_MODULES = import.meta.glob("../../sprites/**/*.png", {
   import: "default",
 }) as Record<string, string>;
 
-const WORLD_CHARSET_MODULES = import.meta.glob("../../charsets/sprites/**/*.png", {
-  eager: true,
-  import: "default",
-}) as Record<string, string>;
+function isDialoguePortraitModule(modulePath: string): boolean {
+  return modulePath.includes("/sprites/Characters/");
+}
 
 const WORLD_TEXTURE_MODULES = {
-  ...WORLD_SPRITE_MODULES,
-  ...WORLD_CHARSET_MODULES,
+  ...Object.fromEntries(
+    Object.entries(WORLD_SPRITE_MODULES).filter(
+      ([modulePath]) => !isDialoguePortraitModule(modulePath),
+    ),
+  ),
+  ...import.meta.glob("../../charsets/sprites/**/*.png", {
+    eager: true,
+    import: "default",
+  }),
 };
 
 export interface WorldTextureAsset {
