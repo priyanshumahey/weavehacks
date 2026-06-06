@@ -81,6 +81,7 @@ Current state is split as follows:
 - `WorldInputController`: input polling and intent creation
 - `createWorld()`: serializable world-state construction from authored definitions
 - `WorldRuntime`: authoritative state mutation, action application, and per-frame simulation
+- `src/world/systems/`: deterministic simulation passes for movement, bounds, collisions, and interactions
 - `WorldRenderer`: top-level Phaser-facing renderer for the world frame and character rendering passes
 - `CharacterRenderer` and `CharacterSprite`: visual representation for each character
 - `createWorldFrame()` and `getWorldBounds()`: static world presentation and scene-derived bounds setup
@@ -105,8 +106,19 @@ Per frame, the current runtime flow is:
 
 1. `WorldInputController` reads Phaser keyboard state and returns world actions for the current player.
 2. `WorldScene` forwards those actions into `WorldRuntime`.
-3. `WorldRuntime` stores move intent on the authoritative character state, resolves interaction targets, advances movement and time, and clamps positions to world bounds.
+3. `WorldRuntime` stores move intent on the authoritative character state and runs focused systems for movement, collisions, bounds, and interactions.
 4. `WorldRenderer` reads the current runtime state and syncs Phaser display objects to it.
+
+### Simulation Systems
+
+The runtime now splits core gameplay rules into focused Phaser-independent system modules:
+
+- `movementSystem`: integrates move intent into velocity and position
+- `collisionSystem`: prevents overlapping blocking characters
+- `boundsSystem`: clamps characters back into world bounds
+- `interactionSystem`: resolves nearby interaction targets and maintains prompt, inspection, and dialogue state
+
+`WorldRuntime.step()` orchestrates these systems in a deterministic order. Scene code and renderers consume the results but do not implement the rules themselves.
 
 ## Recommended Target Architecture
 

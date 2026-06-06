@@ -51,7 +51,7 @@ Scope:
 Outcome:
 - Input becomes intent-driven rather than directly mutating objects
 
-### 6. Simulation Systems
+### 6. Simulation Systems [Completed]
 
 Scope:
 - Implement movement, bounds, collisions, and interactions

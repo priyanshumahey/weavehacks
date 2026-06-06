@@ -1,9 +1,12 @@
 import type { CharacterState, WorldState } from "./worldState";
 import type { MovementIntent, WorldAction } from "./worldActions";
-
-function clamp(value: number, min: number, max: number): number {
-  return Math.min(Math.max(value, min), max);
-}
+import { boundsSystem } from "./systems/boundsSystem";
+import { collisionSystem } from "./systems/collisionSystem";
+import {
+  attemptInteractionSystem,
+  syncInteractionSystem,
+} from "./systems/interactionSystem";
+import { movementSystem } from "./systems/movementSystem";
 
 function normalizeIntent(intent: MovementIntent): MovementIntent {
   const magnitude = Math.hypot(intent.x, intent.y);
@@ -31,7 +34,7 @@ export class WorldRuntime {
         this.applyMoveIntent(action.entityId, action.intent);
         break;
       case "interact":
-        this.applyInteract(action.entityId);
+        attemptInteractionSystem(this.state, action.entityId);
         break;
     }
   }
@@ -39,9 +42,10 @@ export class WorldRuntime {
   step(deltaMs: number): void {
     const scaledDeltaMs = deltaMs * this.state.time.timeScale;
 
-    for (const character of Object.values(this.state.characters)) {
-      this.stepCharacter(character, scaledDeltaMs);
-    }
+    movementSystem(this.state, scaledDeltaMs);
+    collisionSystem(this.state);
+    boundsSystem(this.state);
+    syncInteractionSystem(this.state);
 
     this.state.time.elapsedMs += scaledDeltaMs;
     this.state.time.tick += 1;
@@ -67,86 +71,5 @@ export class WorldRuntime {
     }
 
     character.moveIntent = normalizeIntent(intent);
-  }
-
-  private applyInteract(entityId: string): void {
-    const source = this.state.characters[entityId];
-
-    if (!source) {
-      return;
-    }
-
-    const target = this.findNearestInteractable(source);
-
-    this.state.ui.selectedEntityId = target?.id ?? entityId;
-    this.state.ui.prompt = target
-      ? {
-          entityId: target.id,
-          text: `Talk to ${target.name}`,
-        }
-      : null;
-    this.state.ui.dialogue = target?.dialogueId
-      ? {
-          entityId: target.id,
-          dialogueId: target.dialogueId,
-          visible: true,
-        }
-      : null;
-    this.state.ui.inspection = target
-      ? {
-          entityId: target.id,
-          visible: true,
-        }
-      : null;
-  }
-
-  private findNearestInteractable(source: CharacterState): CharacterState | null {
-    const maxInteractionDistance = source.appearance.radius + 48;
-    let nearest: CharacterState | null = null;
-    let nearestDistance = Number.POSITIVE_INFINITY;
-
-    for (const candidate of Object.values(this.state.characters)) {
-      if (candidate.id === source.id || !candidate.interactable) {
-        continue;
-      }
-
-      const distance = Math.hypot(
-        candidate.position.x - source.position.x,
-        candidate.position.y - source.position.y,
-      );
-
-      if (distance > maxInteractionDistance || distance >= nearestDistance) {
-        continue;
-      }
-
-      nearest = candidate;
-      nearestDistance = distance;
-    }
-
-    return nearest;
-  }
-
-  private stepCharacter(character: CharacterState, deltaMs: number): void {
-    const velocity = {
-      x: character.moveIntent.x * character.movement.speed,
-      y: character.moveIntent.y * character.movement.speed,
-    };
-
-    character.velocity = velocity;
-
-    const deltaSeconds = deltaMs / 1000;
-    const radius = character.appearance.radius;
-    const { bounds } = this.state;
-
-    character.position.x = clamp(
-      character.position.x + velocity.x * deltaSeconds,
-      bounds.minX + radius,
-      bounds.maxX - radius,
-    );
-    character.position.y = clamp(
-      character.position.y + velocity.y * deltaSeconds,
-      bounds.minY + radius,
-      bounds.maxY - radius,
-    );
   }
 }
