@@ -125,6 +125,32 @@ satisfaction loop closure, scene starvation in `next_scene()`, the
 cast-selection relevance function, and the dual perception-channel authority
 rule.
 
+### Timeline / point-in-time recall (not built — Step 2)
+
+You **cannot** currently ask a Lord "as of" a past story point; characters are
+timeless. Two senses of time matter:
+
+- **Recency decay** (older memories weigh less) — partially wired: `retrieve`
+  has a `now` param, but `Lord.recall` never passes it, so it always uses
+  wall-clock now.
+- **Knowledge horizon / as-of cutoff** (hide everything that happens after T) —
+  not implemented at all.
+
+Current dead seams left for this: `Lord.load(at_time=...)` stores `self.at_time`
+but nothing reads it; every Cersei seed shares one constant timestamp
+(`_SEED_TS`), so there is no per-memory canon date; `retrieve` uses `timestamp`
+only as a weight, never as a filter.
+
+To enable "ask Cersei at S1E5" (Step 2, alongside the canon timeline / `fold`):
+1. give each memory a real **canon timestamp** (when it happened / when she
+   learned it) instead of one `_SEED_TS` — an authoring decision per character;
+2. add an **as-of filter** to `retrieve` (`Num("timestamp") <= as_of`, combined
+   with the concept Tag filter) so future memories are excluded;
+3. plumb `at_time` -> `recall` -> `retrieve(now=as_of, as_of=as_of)` so recency
+   is measured relative to the story point, not wall-clock. Conversation
+   memories (stamped at real `time.time()`) then fall outside any past horizon
+   automatically.
+
 ## Conventions / gotchas
 
 - **Layering is load-bearing.** Shared types (`Memory`, `Identity`, `Drives`)
