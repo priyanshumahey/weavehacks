@@ -75,6 +75,7 @@ export class CharacterSprite extends Phaser.GameObjects.Container {
 
   sync(character: CharacterState, isSelected = false): void {
     this.setPosition(character.position.x, character.position.y);
+    this.setDepth(character.position.y + 0.5);
     this.applyBodyAnimation(character);
     const showSelectionRing =
       isSelected && character.characterKind !== CHARACTER_KINDS.player;

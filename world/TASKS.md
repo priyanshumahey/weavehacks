@@ -15,6 +15,12 @@ All major `world/` engine tasks are complete.
 - 9. Control Ownership Layer
 - 10. Agent Perception Layer
 - 11. Character Agent Interface
+- 16. Asset Loading and Registry
+- 17. Character Sprite Metadata
+- 18. Sprite-Backed Character Renderer
+- 19. Character Animation and Facing
+- 20. Terrain Base Layer
+- 21. Props and Building Placement
 
 ## Planned: Agent Interaction Layer
 
@@ -31,24 +37,6 @@ All major `world/` engine tasks are complete.
   Add development-facing debugging support for agent-controlled characters, such as current controller type, latest observation summary, last chosen action, and any rejected commands.
 
 ## Planned: Asset Integration Layer
-
-- 16. Asset Loading and Registry
-  Add a dedicated preload/registration path for `world/sprites` assets so scenes and renderers use stable texture keys instead of hard-coded file paths.
-
-- 17. Character Sprite Metadata ✓
-  Extend authored character definitions and normalized runtime types with sprite metadata such as texture key, frame dimensions, scale, label offset, and optional animation mappings.
-
-- 18. Sprite-Backed Character Renderer ✓
-  Replace the current circle-based `CharacterSprite` rendering with Phaser image or spritesheet instances while preserving name labels, selection state, and runtime-authoritative positioning.
-
-- 19. Character Animation and Facing ✓
-  Drive idle and movement animations from runtime state, including choosing the correct row or animation for player and NPC movement without letting renderer logic become the source of truth.
-
-- 20. Terrain Base Layer ✓
-  Replace the placeholder world rectangle with a tile- or image-based terrain layer derived from the terrain sprites, with a clear approach for scaling, repetition, and camera-safe bounds.
-
-- 21. Props and Building Placement
-  Introduce placed world props and buildings backed by asset metadata so houses, resources, and environmental decoration can render as first-class world entities instead of one-off scene art.
 
 - 22. Render Layering and Depth Rules
   Add explicit depth ordering for terrain, props, characters, UI markers, and overlays so tall sprites render correctly and do not visually break movement or selection.

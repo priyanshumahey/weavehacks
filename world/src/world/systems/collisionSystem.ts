@@ -1,13 +1,24 @@
-import type { CharacterState, WorldState } from "../worldState";
-import { CHARACTER_MOVEMENT_MODES } from "../worldState";
+import type { CharacterState, PropState, WorldState } from "../worldState";
+import { CHARACTER_MOVEMENT_MODES, isPropState } from "../worldState";
 
 const EPSILON = 0.0001;
 
-function separatePair(first: CharacterState, second: CharacterState): void {
+function getCollisionRadius(entity: CharacterState | PropState): number {
+  if ("appearance" in entity) {
+    return entity.appearance.radius;
+  }
+
+  return entity.sprite.collisionRadius;
+}
+
+function separatePair(
+  first: CharacterState | PropState,
+  second: CharacterState | PropState,
+): void {
   const dx = first.position.x - second.position.x;
   const dy = first.position.y - second.position.y;
   const distance = Math.hypot(dx, dy);
-  const minimumDistance = first.appearance.radius + second.appearance.radius;
+  const minimumDistance = getCollisionRadius(first) + getCollisionRadius(second);
 
   if (distance >= minimumDistance) {
     return;
@@ -16,8 +27,10 @@ function separatePair(first: CharacterState, second: CharacterState): void {
   const overlap = minimumDistance - distance;
   const normalX = distance > EPSILON ? dx / distance : 1;
   const normalY = distance > EPSILON ? dy / distance : 0;
-  const firstCanDrive = first.movement.mode === CHARACTER_MOVEMENT_MODES.player;
-  const secondCanDrive = second.movement.mode === CHARACTER_MOVEMENT_MODES.player;
+  const firstCanDrive =
+    "movement" in first && first.movement.mode === CHARACTER_MOVEMENT_MODES.player;
+  const secondCanDrive =
+    "movement" in second && second.movement.mode === CHARACTER_MOVEMENT_MODES.player;
 
   if (firstCanDrive && !secondCanDrive) {
     first.position.x += normalX * overlap;
@@ -31,24 +44,30 @@ function separatePair(first: CharacterState, second: CharacterState): void {
     return;
   }
 
-  const sharedOffset = overlap / 2;
-
-  first.position.x += normalX * sharedOffset;
-  first.position.y += normalY * sharedOffset;
-  second.position.x -= normalX * sharedOffset;
-  second.position.y -= normalY * sharedOffset;
+  if (firstCanDrive || secondCanDrive) {
+    const mobileEntity = firstCanDrive ? first : second;
+    mobileEntity.position.x += firstCanDrive ? normalX * overlap : -normalX * overlap;
+    mobileEntity.position.y += firstCanDrive ? normalY * overlap : -normalY * overlap;
+  }
 }
 
 export function collisionSystem(state: WorldState): void {
   const blockingCharacters = Object.values(state.characters).filter((character) => {
     return character.blocksMovement;
   });
+  const blockingProps = Object.values(state.entities)
+    .filter(isPropState)
+    .filter((prop) => prop.blocksMovement);
 
   for (let index = 0; index < blockingCharacters.length; index += 1) {
     const character = blockingCharacters[index];
 
     for (let otherIndex = index + 1; otherIndex < blockingCharacters.length; otherIndex += 1) {
       separatePair(character, blockingCharacters[otherIndex]);
+    }
+
+    for (const prop of blockingProps) {
+      separatePair(character, prop);
     }
   }
 }

@@ -3,6 +3,7 @@ import type { CharacterAgent } from "../agents/characterAgent";
 import { ScoutGreeterAgent } from "../agents/ScoutGreeterAgent";
 import { preloadWorldAssets } from "../assets/worldAssetRegistry";
 import { characterDefinitions } from "../data/characters";
+import { propDefinitions } from "../data/props";
 import {
   collectCharacterTextureKeys,
   preloadCharacterSpritesheets,
@@ -36,6 +37,7 @@ export class WorldScene extends Phaser.Scene {
   create(): void {
     const world = createWorld({
       definitions: characterDefinitions,
+      propDefinitions,
       bounds: getWorldBounds(this),
     });
 

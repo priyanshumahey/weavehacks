@@ -3,6 +3,8 @@ import type {
   CharacterSpriteFacing,
   CharacterSpriteMetadata,
 } from "../types/characterSprite";
+import type { PropCategory } from "../types/prop";
+import type { PropSpriteMetadata } from "../types/propSprite";
 
 export interface Vector2 {
   x: number;
@@ -69,6 +71,16 @@ export interface WorldEntityState {
   zoneId: string | null;
   blocksMovement: boolean;
   interactable: boolean;
+}
+
+export interface PropState extends WorldEntityState {
+  kind: typeof ENTITY_KINDS.prop;
+  category: PropCategory;
+  sprite: PropSpriteMetadata;
+}
+
+export function isPropState(entity: WorldEntityState): entity is PropState {
+  return entity.kind === ENTITY_KINDS.prop;
 }
 
 export interface CharacterState extends WorldEntityState {

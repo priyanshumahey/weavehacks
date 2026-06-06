@@ -95,6 +95,33 @@ Terrain rendering rules:
 - `WorldBounds` remain simulation-authoritative; terrain is presentation-only and masked to the same rectangle used by `boundsSystem`
 - `createWorldFrame()` now owns only the camera background color
 
+### Props and Building Placement
+
+Placed world props and buildings are now file-backed entities in authoritative state and rendered as Phaser sprites:
+
+- `src/types/propSprite.ts`: shared contracts for prop texture keys, scale, origin, and collision radius
+- `src/types/prop.ts`: prop categories (`building`, `resource`, `decoration`), definition contracts, and normalized instance shape
+- `src/domain/props/propSprite.ts`: normalization and defaults for authored prop sprite metadata
+- `src/domain/props/propDefinition.ts`: validation and normalization of prop definitions into runtime instances
+- `src/data/props/placements.json`: authored world layout for buildings, resources, and decorations
+- `src/entities/PropSprite.ts`: creates a `Phaser.GameObjects.Sprite` inside a `Container`, applies authored origin/scale via Phaser APIs, and Y-sorts with `setDepth()`
+- `src/rendering/props/PropRenderer.ts`: mirrors authoritative prop entities from `WorldState.entities` each frame
+- `createWorld()`: loads normalized props into `WorldState.entities`
+- `collisionSystem`: separates player-driven characters from blocking props using circle overlap, same as character-character separation
+
+Prop rendering rules:
+
+- Props load through the shared asset registry (`textureSourcePath` or `textureKey`)
+- Default origin is bottom-center `(0.5, 1)` so building feet align to authored positions
+- Default `collisionRadius` is derived from registry texture dimensions when not authored
+- Render depth uses Y-position (`1 + y` for props, `y + 0.5` for characters) for basic overlap ordering until explicit depth rules land in task 22
+- Props remain presentation and collision metadata in state; Phaser objects mirror `WorldRuntime` rather than owning it
+
+Authored prop JSON may declare sprite metadata with either:
+
+- `textureKey`: a stable registry key such as `world/buildings/blue-buildings/house1`
+- `textureSourcePath`: a path relative to `world/sprites/`, normalized into the same key format at definition load time
+
 Rendered character positions always come from runtime state. The renderer does not write back into `WorldRuntime`.
 
 ### Character Architecture
@@ -102,15 +129,17 @@ Rendered character positions always come from runtime state. The renderer does n
 Characters and world UI are file-backed and split into focused layers:
 
 - `src/data/characters/`: authored JSON definitions, one file per character
+- `src/data/props/`: authored JSON placements for buildings, resources, and decorations
 - `src/domain/characters/`: normalization and validation of character definitions into a stable runtime shape
 - `src/world/`: `createWorld()` and `WorldRuntime`, the authoritative world-state layer responsible for state creation, action handling, and frame stepping
 - `src/agents/`: agent-facing read-only observation builders derived from authoritative runtime state
 - `src/rendering/characters/`: Phaser-facing rendering adapters such as `CharacterRenderer`
+- `src/rendering/props/`: Phaser-facing prop rendering adapters such as `PropRenderer`
 - `src/rendering/world/`: world bounds helpers, scene frame creation, and the top-level `WorldRenderer`
 - `src/rendering/ui/`: Phaser-facing prompt, dialogue, and inspection rendering
 - `src/input/`: input readers that convert Phaser APIs into scene-level intent
 - `src/ui/`: presentation logic that derives player-facing copy from authoritative world state
-- `src/entities/`: Phaser-facing wrappers such as `CharacterSprite`
+- `src/entities/`: Phaser-facing wrappers such as `CharacterSprite` and `PropSprite`
 - `src/types/`: shared TypeScript contracts for character definitions, instances, and world bounds
 
 The scene does not treat Phaser game objects as the source of truth for character state. Runtime state lives in `WorldRuntime`, and rendered entities mirror that state through renderer modules.
@@ -121,6 +150,7 @@ The current world is a minimal prototype scene composed of:
 
 - A solid background color
 - A Phaser tilemap grass base layer clipped to the playfield bounds
+- Sprite-backed buildings, resources, and decorations loaded from authored prop placements
 - A set of sprite-backed character markers rendered from JSON definitions
 - Selection highlighting derived from UI state
 - Prompt, dialogue, and inspection panels derived from the runtime UI state
