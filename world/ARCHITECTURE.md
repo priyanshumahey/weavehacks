@@ -34,8 +34,8 @@ This keeps boot concerns separate from scene logic and world behavior.
 
 `WorldScene` is now an orchestration scene. It wires dedicated collaborators for layout, input, runtime state, and rendering:
 
-- `create()`: builds the world frame, instantiates the character manager and renderer, and binds input
-- `update()`: reads input intent, forwards movement to the runtime state layer, and asks the renderer to reflect current state
+- `create()`: builds the world frame, creates the initial world state, instantiates the runtime and renderer, and binds input
+- `update()`: reads input intent, dispatches actions into the runtime, advances simulation, and asks the renderer to reflect current state
 
 ### Character Architecture
 
@@ -43,14 +43,14 @@ Characters are file-backed and split into three layers:
 
 - `src/data/characters/`: authored JSON definitions, one file per character
 - `src/domain/characters/`: normalization and validation of character definitions into a stable runtime shape
-- `src/runtime/characters/`: `CharacterManager`, the state layer responsible for character instances, lookup, and movement
+- `src/world/`: `createWorld()` and `WorldRuntime`, the authoritative world-state layer responsible for state creation, action handling, and frame stepping
 - `src/rendering/characters/`: Phaser-facing rendering adapters such as `CharacterRenderer`
 - `src/rendering/world/`: scene frame and presentational world shell helpers
 - `src/input/`: input readers that convert Phaser APIs into scene-level intent
 - `src/entities/`: Phaser-facing wrappers such as `CharacterSprite`
 - `src/types/`: shared TypeScript contracts for character definitions, instances, and world bounds
 
-The scene does not treat Phaser game objects as the source of truth for character state. Runtime state lives in `CharacterManager`, and rendered entities mirror that state through renderer modules.
+The scene does not treat Phaser game objects as the source of truth for character state. Runtime state lives in `WorldRuntime`, and rendered entities mirror that state through renderer modules.
 
 ### Rendered World
 
@@ -77,7 +77,8 @@ Current state is split as follows:
 
 - `WorldScene`: Phaser lifecycle only
 - `WorldInputController`: input polling and intent creation
-- `CharacterManager`: character instances and movement/state updates
+- `createWorld()`: serializable world-state construction from authored definitions
+- `WorldRuntime`: authoritative state mutation, action application, and per-frame simulation
 - `CharacterRenderer` and `CharacterSprite`: visual representation for each character
 - `createWorldFrame()`: static world presentation and bounds setup
 - `worldState.ts`: serializable interfaces for world bounds, entities, characters, zones, UI, and time
@@ -94,6 +95,15 @@ The shared model is intentionally plain data:
 - `WorldTimeState`: elapsed time, tick counter, and time scale
 
 Existing character definition and instance types in `src/types/character.ts` are compatibility contracts layered on top of this shared model so current gameplay code can keep moving while the broader runtime is built out.
+
+### Runtime Flow
+
+Per frame, the current runtime flow is:
+
+1. `WorldInputController` reads Phaser keyboard state and returns a movement intent.
+2. `WorldScene` dispatches a `move` action into `WorldRuntime`.
+3. `WorldRuntime` stores move intent on the authoritative character state, advances movement and time, and clamps positions to world bounds.
+4. `CharacterRenderer` reads the current runtime state and syncs Phaser objects to it.
 
 ## Recommended Target Architecture
 

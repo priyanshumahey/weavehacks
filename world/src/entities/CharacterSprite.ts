@@ -1,13 +1,13 @@
 import Phaser from "phaser";
-import type { CharacterInstance } from "../types/character";
+import type { CharacterState } from "../world/worldState";
 
 export class CharacterSprite extends Phaser.GameObjects.Container {
   private readonly bodyCircle: Phaser.GameObjects.Arc;
   private readonly label: Phaser.GameObjects.Text;
   readonly characterId: string;
 
-  constructor(scene: Phaser.Scene, character: CharacterInstance) {
-    super(scene, character.x, character.y);
+  constructor(scene: Phaser.Scene, character: CharacterState) {
+    super(scene, character.position.x, character.position.y);
 
     this.characterId = character.id;
 
@@ -30,7 +30,7 @@ export class CharacterSprite extends Phaser.GameObjects.Container {
     scene.add.existing(this);
   }
 
-  sync(character: CharacterInstance): void {
-    this.setPosition(character.x, character.y);
+  sync(character: CharacterState): void {
+    this.setPosition(character.position.x, character.position.y);
   }
 }
