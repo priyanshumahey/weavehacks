@@ -1,12 +1,6 @@
-"""Thin OpenAI wrapper — the single place model names and calls live.
-
-GPT-5.5 is the locked cognition/judging model (Scope & Simplifications). Calls
-are auto-traced by Weave once :func:`got_agents.infra.weave_setup.init_weave`
-has run, so these helpers stay deliberately minimal.
-"""
-
 from __future__ import annotations
 
+import json
 from functools import lru_cache
 
 from openai import OpenAI
@@ -25,12 +19,24 @@ def client() -> OpenAI:
 
 
 def complete(messages: list[Message], model: str = CHAT_MODEL) -> str:
-    """Return the assistant text for a chat completion."""
     response = client().chat.completions.create(model=model, messages=messages)
     return response.choices[0].message.content or ""
 
 
+def complete_json(messages: list[Message], model: str = CHAT_MODEL) -> dict:
+    response = client().chat.completions.create(
+        model=model,
+        messages=messages,
+        response_format={"type": "json_object"},
+    )
+    content = response.choices[0].message.content or "{}"
+    try:
+        parsed = json.loads(content)
+    except json.JSONDecodeError:
+        return {}
+    return parsed if isinstance(parsed, dict) else {}
+
+
 def embed(text: str, model: str = EMBED_MODEL) -> list[float]:
-    """Return the embedding vector for a single string."""
     response = client().embeddings.create(model=model, input=text)
     return response.data[0].embedding

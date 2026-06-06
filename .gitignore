@@ -24,3 +24,6 @@ marimo-config.toml
 
 # OS / editor
 .DS_Store
+
+# Run logs / generated artifacts
+logs/

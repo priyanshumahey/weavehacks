@@ -1,11 +1,3 @@
-"""The drive system — constant action pressure expressed as a felt desire.
-
-Eight political drives (AGENT_SYSTEM_DESIGN.md A.5). For the Step-0 chat slice
-this is **read-only**: a static drive vector renders to a first-person desire
-string. The satisfaction/decay loop (appraisal writing drive deltas) arrives
-with the cognitive tick in a later step.
-"""
-
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -35,16 +27,20 @@ _PHRASING = {
 
 @dataclass(frozen=True, slots=True)
 class Drives:
-    """A drive vector (each value in ``[0, 100]``)."""
-
     values: dict[str, float]
 
     def top(self, n: int = 3) -> list[tuple[str, float]]:
         return sorted(self.values.items(), key=lambda kv: kv[1], reverse=True)[:n]
 
     def felt(self, n: int = 3) -> str:
-        """A first-person sentence of the strongest desires (the D2A bridge)."""
         wants = [_PHRASING.get(name, name) for name, _ in self.top(n)]
         if not wants:
             return ""
         return "Right now I want to " + "; ".join(wants) + "."
+
+    def adjust(self, deltas: dict[str, float]) -> Drives:
+        updated = dict(self.values)
+        for name, delta in deltas.items():
+            if name in updated:
+                updated[name] = max(0.0, min(100.0, updated[name] + float(delta)))
+        return Drives(values=updated)

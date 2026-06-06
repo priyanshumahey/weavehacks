@@ -1,10 +1,3 @@
-"""The ``Lord`` — a standalone, in-character agent (L2).
-
-Step-0 surface: ``Lord.load(key, at_time=...)`` to hydrate, and ``chat`` to hold
-a traced, memory-grounded conversation. No orchestrator, scene, or world loop is
-involved — the same object will later gain ``act``/``appraise``/``reflect``.
-"""
-
 from __future__ import annotations
 
 import time
@@ -14,6 +7,7 @@ import weave
 
 from got_agents.agent import prompts
 from got_agents.agent.genome import Genome
+from got_agents.agent.types import ACTION_VOCAB, Appraisal, Decision, Perception
 from got_agents.cognition.memory import MemoryStore
 from got_agents.cognition.types import Memory
 from got_agents.infra import llm
@@ -35,7 +29,6 @@ class Lord:
 
     @classmethod
     def load(cls, key: str, at_time: str | None = None) -> Lord:
-        """Hydrate a Lord, seeding its memory stream on first load."""
         from got_agents.characters import get_character
 
         spec = get_character(key)
@@ -52,7 +45,6 @@ class Lord:
 
     @weave.op
     def chat(self, message: str) -> str:
-        """One in-character, memory-grounded reply (the Step-0 done-criterion)."""
         memories = self.recall(message)
         messages = prompts.chat_messages(
             self.identity, self.drives, memories, message
@@ -70,4 +62,70 @@ class Lord:
                 timestamp=time.time(),
                 concepts=("conversation",),
             )
+        )
+
+    @weave.op
+    def act(self, perception: Perception) -> Decision:
+        memories = self.recall(perception.cue())
+        messages = prompts.act_messages(
+            self.identity, self.drives, memories, perception
+        )
+        raw = llm.complete_json(messages)
+        return self._parse_decision(raw)
+
+    @staticmethod
+    def _parse_decision(raw: dict) -> Decision:
+        action = str(raw.get("action") or "speak")
+        if action not in ACTION_VOCAB:
+            action = "speak"
+        target = raw.get("target")
+        return Decision(
+            action=action,
+            target=str(target) if target else None,
+            public_stance=str(raw.get("public_stance") or ""),
+            private_intent=str(raw.get("private_intent") or ""),
+            dialogue=str(raw.get("dialogue") or ""),
+            thinking=str(raw.get("thinking") or ""),
+        )
+
+    @weave.op
+    def appraise(self, transcript: str, own_intents: str) -> Appraisal:
+        messages = prompts.appraise_messages(
+            self.identity, self.drives, transcript, own_intents
+        )
+        raw = llm.complete_json(messages)
+        appraisal = self._parse_appraisal(raw)
+        if appraisal.drive_deltas:
+            self.drives = self.drives.adjust(appraisal.drive_deltas)
+        if appraisal.memory:
+            self.memory.encode(
+                Memory(
+                    id=f"scene:{uuid.uuid4().hex}",
+                    text=appraisal.memory,
+                    importance=0.55,
+                    timestamp=time.time(),
+                    concepts=appraisal.concepts,
+                )
+            )
+        return appraisal
+
+    @staticmethod
+    def _parse_appraisal(raw: dict) -> Appraisal:
+        deltas_raw = raw.get("drive_deltas") or {}
+        deltas: dict[str, float] = {}
+        if isinstance(deltas_raw, dict):
+            for name, value in deltas_raw.items():
+                try:
+                    deltas[str(name)] = float(value)
+                except (TypeError, ValueError):
+                    continue
+        concepts_raw = raw.get("concepts") or ()
+        concepts = tuple(
+            str(c) for c in concepts_raw if isinstance(concepts_raw, (list, tuple))
+        )
+        return Appraisal(
+            emotion=str(raw.get("emotion") or ""),
+            drive_deltas=deltas,
+            memory=str(raw.get("memory") or ""),
+            concepts=concepts,
         )
