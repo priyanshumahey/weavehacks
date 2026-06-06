@@ -85,9 +85,14 @@ Env (`.env`): `OPENAI_API_KEY`, `WANDB_API_KEY`, `WEAVE_PROJECT`, `REDIS_URL`.
 
 End-to-end validated against the spec: down-only layering confirmed; demo gives
 in-character, canon-grounded replies; Weave trace nests `chat -> recall ->
-retrieve -> OpenAI`; 8 tests pass; ruff clean. The one substantive deviation
-found (retrieval ignored the Fixed Bag) was fixed — that is the A.4 concept
-filter above.
+retrieve -> OpenAI`; 8 tests pass (6 slice + 2 infra pings); ruff clean. The one
+substantive deviation found (retrieval ignored the Fixed Bag) was fixed — that
+is the A.4 concept filter above.
+
+Storage in use today: **Redis only** (RedisVL vector index, one per character).
+Postgres is running and wired (`config.py`, `db.py`, `docker-compose.yml`) but
+**not used by any agent code yet** — it is scaffolding for the Step 2 durable
+world/chronicle record. `tests/test_infra.py` pings both.
 
 ## Known simplifications (intentional for Step 0)
 
@@ -95,6 +100,11 @@ filter above.
   The score slot is explicit so PAD drops in later.
 - Retrieval uses whole-Fixed-Bag eligibility rather than A.4's 2–3 *active*
   concept spreading activation (needs a semantic cue -> concept selector).
+  Consequence observed in spot-tests: scoring is **importance-dominated** —
+  seeds authored near importance 1.0 (e.g. Maggy's prophecy, children-are-
+  Jaime's) surface in top-2 for almost any cue, because all seeds share one
+  timestamp so recency cancels and `importance*0.4` dominates. Good enough for
+  chat grounding; revisit before `Lord.act` needs scene-specific recall.
 - `Drives` are read-only; the appraisal -> drive-delta loop arrives with the
   cognitive tick.
 - Memory `id` field returns the Redis doc key (field name shadowed) — cosmetic;
