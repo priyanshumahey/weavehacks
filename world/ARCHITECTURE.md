@@ -115,14 +115,30 @@ Character controller ownership is now an explicit part of authored and runtime s
 - `WorldRuntime.getObservation(entityId)` derives a cloned, read-only observation scoped to one character for future agent decision-making
 - Scene input uses the `player` controller path, while future scripted and agent systems are expected to use the same runtime dispatch boundary with their own controller type
 
+### Agent Interface
+
+The runtime now has a first-pass character agent interface in `src/agents/`:
+
+- `characterAgent.ts`: stable contract for agents that accept an observation and return `WorldAction[]`
+- `ScoutGreeterAgent.ts`: lightweight scripted agent used to validate the contract against the live runtime
+
+The current integration is intentionally minimal:
+
+- `WorldScene` owns a temporary validation harness for agent updates
+- agents consume read-only observations from `WorldRuntime.getObservation(entityId)`
+- all agent output still flows through `WorldRuntime.dispatch(action, "agent")`
+
+This keeps the action boundary stable while the dedicated orchestrator and scheduling layers are still pending.
+
 ### Runtime Flow
 
 Per frame, the current runtime flow is:
 
 1. `WorldInputController` reads Phaser keyboard state and returns world actions for the current player.
 2. `WorldScene` forwards those actions into `WorldRuntime` with the `player` controller type.
-3. `WorldRuntime` stores move intent on the authoritative character state and runs focused systems for movement, collisions, bounds, and interactions.
-4. `WorldRenderer` reads the current runtime state, syncs Phaser display objects, and projects UI state through dedicated UI renderers.
+3. `WorldScene` also updates lightweight character agents by reading observations from `WorldRuntime` and forwarding their returned actions with the `agent` controller type.
+4. `WorldRuntime` stores move intent on the authoritative character state and runs focused systems for movement, collisions, bounds, and interactions.
+5. `WorldRenderer` reads the current runtime state, syncs Phaser display objects, and projects UI state through dedicated UI renderers.
 
 When non-player controllers are introduced, they are expected to read character-scoped observations from `WorldRuntime` rather than the raw mutable `WorldState`.
 
