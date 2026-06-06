@@ -247,7 +247,10 @@ src/agents/
   buildAgentObservation.ts
   orchestrator/
     AgentOrchestrator.ts
+    agentOrchestratorConfig.ts
     createCharacterAgents.ts
+    createIdleMoveAction.ts
+    validateAgentAction.ts
   ScoutGreeterAgent.ts
   ...
 ```
@@ -259,6 +262,17 @@ src/agents/
 - `WorldScene` constructs the orchestrator at `create()` and calls `agentOrchestrator.tick(worldRuntime)` each frame before `step()`
 - agents consume read-only observations from `WorldRuntime.getObservation(entityId)`
 - all agent output flows through `WorldRuntime.dispatch(action, "agent")`
+
+#### Scheduling and safety (task 13)
+
+Guardrails live entirely in `src/agents/orchestrator/`:
+
+- **Decision cadence**: each agent calls `decide()` at most once per `decisionIntervalMs` (default 250ms), keyed off `WorldState.time.elapsedMs`
+- **Action budget**: at most `maxActionsPerDecision` actions (default 8) are considered per decision cycle
+- **Validation**: `validateAgentAction()` rejects malformed or cross-entity actions before dispatch
+- **Dispatch gate**: failed `WorldRuntime.dispatch()` calls are recorded as `dispatch_rejected`
+- **Fallback**: on `decide()` throw or when every action is rejected, the orchestrator can dispatch an idle `move` intent (`{ x: 0, y: 0 }`) so agents do not stall with stale intent
+- **Rejection surface**: `getLastRejectedActions()` exposes the latest tick's rejected commands for future debug tooling (task 15)
 
 ### Runtime Flow
 
@@ -601,6 +615,7 @@ Apply this in small steps:
 
 ### 2026-06-06
 
+- Added agent scheduling and safety guardrails to `AgentOrchestrator`: decision interval, per-decision action budget, pre-dispatch validation, idle fallback, and `getLastRejectedActions()`
 - Added `AgentOrchestrator` and `createCharacterAgents()` under `src/agents/orchestrator/`; `WorldScene` now delegates agent updates to `agentOrchestrator.tick(runtime)` instead of an inline loop
 - Documented agent interface separation constraints: orchestration in `src/agents/orchestrator/`, no agent logic in scenes, input, or simulation systems; shared boundary is `WorldAction` dispatch only
 - Created this architecture document as the canonical record for the `world/` engine

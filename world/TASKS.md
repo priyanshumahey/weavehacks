@@ -16,6 +16,7 @@ All major `world/` engine tasks are complete.
 - 10. Agent Perception Layer
 - 11. Character Agent Interface
 - 12. Agent Orchestrator
+- 13. Agent Scheduling and Safety Rules
 - 16. Asset Loading and Registry
 - 17. Character Sprite Metadata
 - 18. Sprite-Backed Character Renderer
@@ -37,9 +38,6 @@ Agent interaction must stay on a **separate adapter path** parallel to player in
 - **Shared contract only at the runtime boundary**: both paths produce `WorldAction[]` and call `WorldRuntime.dispatch(action, controller)`. Convergence is intentional; shared decision logic is not.
 - **Read path**: agents consume `WorldRuntime.getObservation()` (cloned, read-only). **Write path**: `WorldRuntime.dispatch(..., "agent")` with controller ownership checks. Agents never mutate `WorldState` directly.
 - **Task 14 extensions** add action types and system handlers in `src/world/`; agent-specific *choice* logic remains in `src/agents/`. No agent-only branches in `WorldScene`, `WorldInputController`, or renderers.
-
-- 13. Agent Scheduling and Safety Rules
-  Add guardrails in the orchestrator layer for tick rate, action budgets, invalid action rejection, and fallback behavior so multiple agents can run predictably without stalling the simulation or spamming commands every frame.
 
 - 14. Interaction Extensions for Agents
   Extend the shared action and interaction model as needed for agent-driven play, such as explicit facing, inspect/select actions, or richer dialogue initiation. New handlers live in `src/world/`; agents consume the extensions through `decide()` → `dispatch()` only.
