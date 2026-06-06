@@ -35,6 +35,10 @@ const DIALOGUE_COPY: Record<string, string> = {
     "Wine, wit, and wary guests. I drink and I know things — especially about strangers.",
   arya_intro:
     "Quiet roads don't stay quiet. Stick to the shadows if you want to keep your head.",
+  ned_intro:
+    "The man who passes the sentence should swing the sword. Out here, that rule still holds.",
+  cersei_intro:
+    "When you play the game of thrones, you win or you die. Choose your allies carefully.",
 };
 
 function getCharacter(state: WorldState, entityId: string | null) {

@@ -1,0 +1,32 @@
+{
+  "id": "ned-stark",
+  "name": "Ned",
+  "kind": "npc",
+  "controller": "script",
+  "position": {
+    "x": 800,
+    "y": 310
+  },
+  "appearance": {
+    "color": "#6b8f71",
+    "radius": 18,
+    "labelColor": "#dce8dd"
+  },
+  "sprite": {
+    "frameSourcePath": "charsets/sprites/ned stark",
+    "displayHeight": 85,
+    "origin": {
+      "x": 0.5,
+      "y": 1
+    },
+    "labelOffset": {
+      "x": 0,
+      "y": 0
+    }
+  },
+  "movement": {
+    "mode": "idle"
+  },
+  "dialogueId": "ned_intro",
+  "traits": ["honorable", "stern"]
+}
