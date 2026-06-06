@@ -33,10 +33,10 @@ function defaultTextureSourcePath(characterId: string): string {
   return `characters/${characterId}.png`;
 }
 
-function defaultLabelOffset(radius: number): { x: number; y: number } {
+function defaultLabelOffset(): { x: number; y: number } {
   return {
     x: 0,
-    y: radius + 14,
+    y: 0,
   };
 }
 
@@ -237,7 +237,7 @@ export function normalizeCharacterSprite(
 ): CharacterSpriteMetadata {
   const fallbackAnimations = defaultAnimations();
   const labelOffset = {
-    ...defaultLabelOffset(appearanceRadius),
+    ...defaultLabelOffset(),
     ...(sprite?.labelOffset ?? {}),
   };
 

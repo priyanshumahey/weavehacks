@@ -21,7 +21,7 @@
     "scale": 1.125,
     "labelOffset": {
       "x": 0,
-      "y": 32
+      "y": 0
     }
   },
   "movement": {
