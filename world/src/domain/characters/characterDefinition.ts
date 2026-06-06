@@ -83,6 +83,7 @@ export function normalizeCharacterDefinition(
       speed: normalizeNumber(movement.speed, DEFAULT_MOVEMENT.speed, "movement.speed"),
     },
     dialogueId: definition.dialogueId ?? null,
+    zoneId: definition.zoneId ?? null,
     tags: Array.isArray(definition.tags) ? definition.tags : [],
     traits: Array.isArray(definition.traits) ? definition.traits : [],
   };
@@ -93,6 +94,17 @@ export function createCharacterInstance(definition: CharacterDefinition): Charac
 
   return {
     ...normalized,
+    entityKind: "character",
+    blocksMovement: true,
+    interactable: normalized.dialogueId != null,
+    velocity: {
+      x: 0,
+      y: 0,
+    },
+    moveIntent: {
+      x: 0,
+      y: 0,
+    },
     x: normalized.position.x,
     y: normalized.position.y,
   };

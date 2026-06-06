@@ -1,10 +1,18 @@
-export type CharacterKind = "player" | "npc";
-export type CharacterMovementMode = "idle" | "player";
+import type {
+  CharacterKind,
+  CharacterMovementMode,
+  EntityAppearance,
+  Vector2,
+  WorldBounds,
+} from "../world/worldState";
+
+export type { CharacterKind, CharacterMovementMode, WorldBounds };
 
 export interface CharacterDefinition {
   id: string;
   name: string;
   kind?: CharacterKind;
+  zoneId?: string | null;
   position?: {
     x?: number;
     y?: number;
@@ -27,32 +35,26 @@ export interface NormalizedCharacterDefinition {
   id: string;
   name: string;
   kind: CharacterKind;
-  position: {
-    x: number;
-    y: number;
-  };
-  appearance: {
-    color: string;
-    radius: number;
-    labelColor: string;
-  };
+  position: Vector2;
+  appearance: EntityAppearance;
   movement: {
     mode: CharacterMovementMode;
     speed: number;
   };
   dialogueId: string | null;
+  zoneId: string | null;
   tags: string[];
   traits: string[];
 }
 
-export interface CharacterInstance extends NormalizedCharacterDefinition {
+export interface CharacterInstance
+  extends NormalizedCharacterDefinition {
+  entityKind: "character";
+  blocksMovement: boolean;
+  interactable: boolean;
+  velocity: Vector2;
+  moveIntent: Vector2;
+  kind: CharacterKind;
   x: number;
   y: number;
-}
-
-export interface WorldBounds {
-  minX: number;
-  minY: number;
-  maxX: number;
-  maxY: number;
 }
