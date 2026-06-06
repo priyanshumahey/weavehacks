@@ -1,0 +1,19 @@
+{
+  "id": "scout",
+  "name": "Scout",
+  "kind": "npc",
+  "position": {
+    "x": 700,
+    "y": 320
+  },
+  "appearance": {
+    "color": "#7aa6ff",
+    "radius": 16,
+    "labelColor": "#dce7ff"
+  },
+  "movement": {
+    "mode": "idle"
+  },
+  "dialogueId": "scout_intro",
+  "traits": ["watchful", "quiet"]
+}

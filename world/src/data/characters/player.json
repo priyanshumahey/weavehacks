@@ -1,0 +1,18 @@
+{
+  "id": "player",
+  "name": "Player",
+  "kind": "player",
+  "position": {
+    "x": 480,
+    "y": 270
+  },
+  "appearance": {
+    "color": "#ffc857",
+    "radius": 20,
+    "labelColor": "#f4f1de"
+  },
+  "movement": {
+    "mode": "player"
+  },
+  "tags": ["hero"]
+}
