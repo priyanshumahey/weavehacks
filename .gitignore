@@ -27,3 +27,5 @@ marimo-config.toml
 
 # Run logs / generated artifacts
 logs/
+
+debug*
