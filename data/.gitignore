@@ -1,0 +1,5 @@
+# Ignore the downloaded dataset itself; keep the folder + docs in git.
+# Reproduce the data with: ./scripts/download-data.sh
+*
+!.gitignore
+!README.md

@@ -1,0 +1,23 @@
+temp/
+
+# Docs is its own private repo (priyanshumahey/weavehacks-docs)
+Docs/
+
+# Kaggle API token (never commit credentials)
+kaggle.json
+.kaggle/
+
+# Python / tooling
+__pycache__/
+*.py[cod]
+.venv/
+.ipynb_checkpoints/
+.ruff_cache/
+
+# marimo
+__marimo__/
+*.marimo.html
+marimo-config.toml
+
+# OS / editor
+.DS_Store
