@@ -146,7 +146,7 @@ Current state is split as follows:
 - `buildAgentObservation()`: filtered, character-scoped perception queries for future agent controllers
 - `src/world/systems/`: deterministic simulation passes for movement, bounds, collisions, and interactions
 - `WorldRenderer`: top-level Phaser-facing renderer for the world frame and character rendering passes
-- `WorldUiRenderer` and `buildWorldUiViewModel()`: player-facing prompt, dialogue, and inspection presentation
+- `WorldUiRenderer` and `buildWorldUiViewModel()`: player-facing prompt, dialogue, and inspection presentation pinned to the camera via `setScrollFactor(0)`
 - `CharacterRenderer` and `CharacterSprite`: sprite-backed visual representation for each character with labels and selection highlighting
 - `TerrainRenderer`, `createWorldFrame()`, and `getWorldBounds()`: terrain tilemap presentation, camera background, and playfield bounds derived from the main camera viewport
 - `worldState.ts`: serializable interfaces for world bounds, entities, characters, zones, UI, and time

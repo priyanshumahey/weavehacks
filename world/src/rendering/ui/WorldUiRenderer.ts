@@ -15,7 +15,8 @@ export class WorldUiRenderer {
   private readonly inspectionBody: Phaser.GameObjects.Text;
 
   constructor(scene: Phaser.Scene) {
-    const { width, height } = scene.scale;
+    const camera = scene.cameras.main;
+    const { width, height } = camera;
 
     this.promptText = scene.add
       .text(width / 2, height - 56, "", {
@@ -29,6 +30,7 @@ export class WorldUiRenderer {
         },
       })
       .setOrigin(0.5)
+      .setScrollFactor(0)
       .setDepth(20)
       .setVisible(false);
 
@@ -50,6 +52,7 @@ export class WorldUiRenderer {
     });
     this.dialoguePanel = scene.add
       .container(0, 0, [dialogueBackground, this.dialogueTitle, this.dialogueBody])
+      .setScrollFactor(0)
       .setDepth(20)
       .setVisible(false);
 
@@ -75,6 +78,7 @@ export class WorldUiRenderer {
         this.inspectionTitle,
         this.inspectionBody,
       ])
+      .setScrollFactor(0)
       .setDepth(20)
       .setVisible(false);
   }
