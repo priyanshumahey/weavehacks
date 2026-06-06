@@ -1,2 +1,5 @@
 dist
 node_modules
+
+# Combined charset spritesheets (runtime uses per-frame assets in charsets/sprites/)
+charsets/*.png

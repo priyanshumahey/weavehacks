@@ -19,8 +19,9 @@ export function resolveWorldRenderDepth(
 export function resolveCharacterSortY(
   positionY: number,
   displayHeight: number,
+  originY: number,
 ): number {
-  return positionY + displayHeight * 0.5;
+  return resolvePropSortY(positionY, displayHeight, originY);
 }
 
 export function resolvePropSortY(

@@ -26,9 +26,18 @@ export interface CharacterSpriteLabelOffset {
   y: number;
 }
 
+export interface CharacterSpriteOrigin {
+  x: number;
+  y: number;
+}
+
 export interface CharacterSpriteAnimationFrameRange {
-  row: number;
-  column: number;
+  row?: number;
+  column?: number;
+  columnSpan?: number;
+  frameIndex?: number;
+  startFrame?: number;
+  endFrame?: number;
   frameRate: number;
   repeat: number;
 }
@@ -44,9 +53,12 @@ export type CharacterSpriteAnimations = Partial<
 
 export interface CharacterSpriteMetadata {
   textureKey: string;
+  frameSourcePath?: string;
   animationTextureKeys?: Partial<Record<CharacterSpriteAnimationKey, string>>;
   frame: CharacterSpriteFrameDimensions;
+  displayHeight: number;
   scale: number;
+  origin: CharacterSpriteOrigin;
   labelOffset: CharacterSpriteLabelOffset;
   animations: CharacterSpriteAnimations;
 }
@@ -54,6 +66,7 @@ export interface CharacterSpriteMetadata {
 export interface CharacterSpriteDefinition {
   textureKey?: string;
   textureSourcePath?: string;
+  frameSourcePath?: string;
   animationTextureSourcePaths?: Partial<
     Record<CharacterSpriteAnimationKey, string>
   >;
@@ -61,7 +74,12 @@ export interface CharacterSpriteDefinition {
     width?: number;
     height?: number;
   };
+  displayHeight?: number;
   scale?: number;
+  origin?: {
+    x?: number;
+    y?: number;
+  };
   labelOffset?: {
     x?: number;
     y?: number;

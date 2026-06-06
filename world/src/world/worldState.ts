@@ -140,6 +140,7 @@ export interface UiState {
   dialogue: DialoguePanelState | null;
   inspection: InspectionState | null;
   selectedEntityId: string | null;
+  playerAppearanceId: string;
 }
 
 export interface WorldTimeState {

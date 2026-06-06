@@ -37,4 +37,8 @@ export class WorldRenderer {
     this.characterRenderer.render(state);
     this.uiRenderer.render(state);
   }
+
+  setOnPlayerAppearanceSelect(callback: (appearanceId: string) => void): void {
+    this.uiRenderer.setOnPlayerAppearanceSelect(callback);
+  }
 }

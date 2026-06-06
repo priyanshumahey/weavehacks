@@ -7,6 +7,16 @@ const WORLD_SPRITE_MODULES = import.meta.glob("../../sprites/**/*.png", {
   import: "default",
 }) as Record<string, string>;
 
+const WORLD_CHARSET_MODULES = import.meta.glob("../../charsets/sprites/**/*.png", {
+  eager: true,
+  import: "default",
+}) as Record<string, string>;
+
+const WORLD_TEXTURE_MODULES = {
+  ...WORLD_SPRITE_MODULES,
+  ...WORLD_CHARSET_MODULES,
+};
+
 export interface WorldTextureAsset {
   readonly key: string;
   readonly sourcePath: string;
@@ -16,6 +26,10 @@ export interface WorldTextureAsset {
 }
 
 function toSourcePath(modulePath: string): string {
+  if (modulePath.startsWith("../../charsets/")) {
+    return modulePath.replace(/^..\/..\/charsets\//, "charsets/");
+  }
+
   return modulePath.replace(/^..\/..\/sprites\//, "");
 }
 
@@ -42,7 +56,7 @@ const spriteDimensionsBySourcePath = spriteDimensions as Record<
 >;
 
 function buildWorldTextureAssets(): WorldTextureAsset[] {
-  return Object.entries(WORLD_SPRITE_MODULES)
+  return Object.entries(WORLD_TEXTURE_MODULES)
     .map(([modulePath, url]) => {
       const sourcePath = toSourcePath(modulePath);
       const dimensions = spriteDimensionsBySourcePath[sourcePath];

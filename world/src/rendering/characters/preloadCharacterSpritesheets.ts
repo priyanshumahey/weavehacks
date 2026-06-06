@@ -4,6 +4,10 @@ import {
   getWorldTextureAssetByKey,
 } from "../../assets/worldAssetRegistry";
 import type { CharacterDefinition } from "../../types/character";
+import {
+  collectCharsetFrameTextureKeysFromPaths,
+  preloadCharsetFrames,
+} from "./preloadCharsetFrames";
 import { resolveSpritesheetFrameDimensionsFromSize } from "./characterSpritesheet";
 
 const DEFAULT_FRAME_WIDTH = 32;
@@ -40,10 +44,16 @@ function resolveTextureAsset(key: string, sourcePath: string | undefined) {
   return getWorldTextureAssetByKey(key);
 }
 
+function collectFrameSourcePaths(definition: CharacterDefinition): string[] {
+  const frameSourcePath = definition.sprite?.frameSourcePath?.trim();
+
+  return frameSourcePath ? [frameSourcePath] : [];
+}
+
 function collectSpritesheetLoads(definition: CharacterDefinition): CharacterSpritesheetLoad[] {
   const sprite = definition.sprite;
 
-  if (!sprite) {
+  if (!sprite || sprite.frameSourcePath?.trim()) {
     return [];
   }
 
@@ -100,11 +110,18 @@ export function collectCharacterTextureKeys(
   definitions: readonly CharacterDefinition[],
 ): Set<string> {
   const keys = new Set<string>();
+  const frameSourcePaths: string[] = [];
 
   for (const definition of definitions) {
+    frameSourcePaths.push(...collectFrameSourcePaths(definition));
+
     for (const load of collectSpritesheetLoads(definition)) {
       keys.add(load.key);
     }
+  }
+
+  for (const key of collectCharsetFrameTextureKeysFromPaths(frameSourcePaths)) {
+    keys.add(key);
   }
 
   return keys;
@@ -114,6 +131,10 @@ export function preloadCharacterSpritesheets(
   scene: Phaser.Scene,
   definitions: readonly CharacterDefinition[],
 ): void {
+  const frameSourcePaths = definitions.flatMap(collectFrameSourcePaths);
+
+  preloadCharsetFrames(scene, frameSourcePaths);
+
   const queued = new Set<string>();
 
   for (const definition of definitions) {

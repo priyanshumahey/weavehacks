@@ -12,6 +12,7 @@ export const WORLD_ACTION_TYPES = {
   select: "select",
   inspect: "inspect",
   startDialogue: "startDialogue",
+  setPlayerAppearance: "setPlayerAppearance",
 } as const;
 
 export type WorldActionType =
@@ -47,4 +48,9 @@ export type WorldAction =
       type: typeof WORLD_ACTION_TYPES.startDialogue;
       entityId: string;
       targetEntityId: string;
+    }
+  | {
+      type: typeof WORLD_ACTION_TYPES.setPlayerAppearance;
+      entityId: string;
+      appearanceId: string;
     };

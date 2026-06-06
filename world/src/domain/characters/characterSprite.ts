@@ -1,4 +1,10 @@
 import { deriveWorldTextureKey } from "../../assets/worldAssetRegistry";
+import {
+  CHARSET_IDLE_FRAME_INDEX,
+  defaultCharsetAnimations,
+  resolveCharsetFrameTextureKey,
+} from "../../rendering/characters/charsetFrames";
+import { resolveDefaultCharacterDisplayHeight } from "../../rendering/characters/characterSpritesheet";
 import type {
   CharacterSpriteAnimationFrameRange,
   CharacterSpriteAnimationKey,
@@ -19,6 +25,10 @@ const DEFAULT_FRAME = {
 } as const;
 
 const DEFAULT_SCALE = 1;
+const DEFAULT_ORIGIN = {
+  x: 0.5,
+  y: 0.5,
+} as const;
 const DEFAULT_ANIMATION_FRAME_RATE = 8;
 const DEFAULT_ANIMATION_REPEAT = -1;
 
@@ -37,6 +47,13 @@ function defaultLabelOffset(): { x: number; y: number } {
   return {
     x: 0,
     y: 0,
+  };
+}
+
+function defaultOrigin(): { x: number; y: number } {
+  return {
+    x: DEFAULT_ORIGIN.x,
+    y: DEFAULT_ORIGIN.y,
   };
 }
 
@@ -75,13 +92,40 @@ function defaultAnimations(): CharacterSpriteAnimations {
   };
 }
 
-function normalizeAnimationFrameRange(
+function normalizeAnimationTiming(
+  value: Partial<CharacterSpriteAnimationFrameRange> | undefined,
+  characterId: string,
+  animationKey: CharacterSpriteAnimationKey,
+  facing: CharacterSpriteFacing,
+  fallback: CharacterSpriteAnimationFrameRange,
+): Pick<CharacterSpriteAnimationFrameRange, "frameRate" | "repeat"> {
+  const frameRate = value?.frameRate ?? fallback.frameRate;
+
+  if (typeof frameRate !== "number" || Number.isNaN(frameRate) || frameRate <= 0) {
+    throw new Error(
+      `Character "${characterId}" sprite animation "${animationKey}.${facing}" frameRate must be a positive number.`,
+    );
+  }
+
+  const repeat = value?.repeat ?? fallback.repeat;
+
+  if (typeof repeat !== "number" || Number.isNaN(repeat)) {
+    throw new Error(
+      `Character "${characterId}" sprite animation "${animationKey}.${facing}" repeat must be a number.`,
+    );
+  }
+
+  return { frameRate, repeat };
+}
+
+function normalizeSpritesheetAnimationFrameRange(
   value: Partial<CharacterSpriteAnimationFrameRange> | undefined,
   characterId: string,
   animationKey: CharacterSpriteAnimationKey,
   facing: CharacterSpriteFacing,
   fallbackRow: number,
   fallbackColumn: number,
+  fallback: CharacterSpriteAnimationFrameRange,
 ): CharacterSpriteAnimationFrameRange {
   const row = value?.row ?? fallbackRow;
   const column = value?.column ?? fallbackColumn;
@@ -98,27 +142,65 @@ function normalizeAnimationFrameRange(
     );
   }
 
-  const frameRate = value?.frameRate ?? DEFAULT_ANIMATION_FRAME_RATE;
+  const columnSpan = value?.columnSpan;
 
-  if (typeof frameRate !== "number" || Number.isNaN(frameRate) || frameRate <= 0) {
-    throw new Error(
-      `Character "${characterId}" sprite animation "${animationKey}.${facing}" frameRate must be a positive number.`,
-    );
-  }
-
-  const repeat = value?.repeat ?? DEFAULT_ANIMATION_REPEAT;
-
-  if (typeof repeat !== "number" || Number.isNaN(repeat)) {
-    throw new Error(
-      `Character "${characterId}" sprite animation "${animationKey}.${facing}" repeat must be a number.`,
-    );
+  if (columnSpan != null) {
+    if (typeof columnSpan !== "number" || Number.isNaN(columnSpan) || columnSpan <= 0) {
+      throw new Error(
+        `Character "${characterId}" sprite animation "${animationKey}.${facing}" columnSpan must be a positive number.`,
+      );
+    }
   }
 
   return {
     row,
     column,
-    frameRate,
-    repeat,
+    ...(columnSpan != null ? { columnSpan } : {}),
+    ...normalizeAnimationTiming(value, characterId, animationKey, facing, fallback),
+  };
+}
+
+function normalizeCharsetAnimationFrameRange(
+  value: Partial<CharacterSpriteAnimationFrameRange> | undefined,
+  characterId: string,
+  animationKey: CharacterSpriteAnimationKey,
+  facing: CharacterSpriteFacing,
+  fallback: CharacterSpriteAnimationFrameRange,
+): CharacterSpriteAnimationFrameRange {
+  const frameIndex = value?.frameIndex ?? fallback.frameIndex;
+  const startFrame = value?.startFrame ?? fallback.startFrame;
+  const endFrame = value?.endFrame ?? fallback.endFrame;
+
+  if (frameIndex != null) {
+    if (typeof frameIndex !== "number" || Number.isNaN(frameIndex) || frameIndex < 0) {
+      throw new Error(
+        `Character "${characterId}" sprite animation "${animationKey}.${facing}" frameIndex must be a non-negative number.`,
+      );
+    }
+
+    return {
+      frameIndex,
+      ...normalizeAnimationTiming(value, characterId, animationKey, facing, fallback),
+    };
+  }
+
+  if (
+    typeof startFrame !== "number" ||
+    Number.isNaN(startFrame) ||
+    startFrame < 0 ||
+    typeof endFrame !== "number" ||
+    Number.isNaN(endFrame) ||
+    endFrame < startFrame
+  ) {
+    throw new Error(
+      `Character "${characterId}" sprite animation "${animationKey}.${facing}" must define a valid startFrame/endFrame range.`,
+    );
+  }
+
+  return {
+    startFrame,
+    endFrame,
+    ...normalizeAnimationTiming(value, characterId, animationKey, facing, fallback),
   };
 }
 
@@ -129,16 +211,26 @@ function normalizeAnimationMapping(
   characterId: string,
   animationKey: CharacterSpriteAnimationKey,
   fallback: CharacterSpriteAnimationMapping,
+  useFrameSequence: boolean,
 ): CharacterSpriteAnimationMapping {
   return FACING_ORDER.reduce<CharacterSpriteAnimationMapping>((mapping, facing, index) => {
-    mapping[facing] = normalizeAnimationFrameRange(
-      definition?.[facing],
-      characterId,
-      animationKey,
-      facing,
-      fallback[facing].row ?? index,
-      fallback[facing].column ?? 0,
-    );
+    mapping[facing] = useFrameSequence
+      ? normalizeCharsetAnimationFrameRange(
+          definition?.[facing],
+          characterId,
+          animationKey,
+          facing,
+          fallback[facing],
+        )
+      : normalizeSpritesheetAnimationFrameRange(
+          definition?.[facing],
+          characterId,
+          animationKey,
+          facing,
+          fallback[facing].row ?? index,
+          fallback[facing].column ?? 0,
+          fallback[facing],
+        );
     return mapping;
   }, {} as CharacterSpriteAnimationMapping);
 }
@@ -147,6 +239,7 @@ function normalizeAnimations(
   definition: CharacterSpriteDefinition["animations"] | undefined,
   characterId: string,
   fallback: CharacterSpriteAnimations,
+  useFrameSequence: boolean,
 ): CharacterSpriteAnimations {
   const animationKeys = Object.values(CHARACTER_SPRITE_ANIMATION_KEYS);
 
@@ -162,6 +255,7 @@ function normalizeAnimations(
       characterId,
       animationKey,
       fallbackMapping,
+      useFrameSequence,
     );
     return animations;
   }, {});
@@ -195,6 +289,16 @@ function resolveTextureKey(
   characterId: string,
   sprite: CharacterSpriteDefinition | undefined,
 ): string {
+  const frameSourcePath = sprite?.frameSourcePath?.trim();
+
+  if (frameSourcePath) {
+    return resolveCharsetFrameTextureKey(
+      frameSourcePath,
+      CHARACTER_SPRITE_FACING.down,
+      CHARSET_IDLE_FRAME_INDEX,
+    );
+  }
+
   return resolveTextureKeyFromSource(
     characterId,
     sprite?.textureKey,
@@ -235,10 +339,26 @@ export function normalizeCharacterSprite(
   sprite: CharacterSpriteDefinition | undefined,
   appearanceRadius: number,
 ): CharacterSpriteMetadata {
-  const fallbackAnimations = defaultAnimations();
+  const frameSourcePath = sprite?.frameSourcePath?.trim();
+  const textureSourcePath = sprite?.textureSourcePath?.trim();
+
+  if (frameSourcePath && textureSourcePath) {
+    throw new Error(
+      `Character "${characterId}" sprite must define either textureSourcePath or frameSourcePath, not both.`,
+    );
+  }
+
+  const useFrameSequence = Boolean(frameSourcePath);
+  const fallbackAnimations = useFrameSequence
+    ? defaultCharsetAnimations()
+    : defaultAnimations();
   const labelOffset = {
     ...defaultLabelOffset(),
     ...(sprite?.labelOffset ?? {}),
+  };
+  const origin = {
+    ...defaultOrigin(),
+    ...(sprite?.origin ?? {}),
   };
 
   const frameWidth = sprite?.frame?.width ?? DEFAULT_FRAME.width;
@@ -258,10 +378,36 @@ export function normalizeCharacterSprite(
     throw new Error(`Character "${characterId}" sprite scale must be a positive number.`);
   }
 
+  const displayHeight =
+    sprite?.displayHeight ?? resolveDefaultCharacterDisplayHeight(appearanceRadius, scale);
+
+  if (typeof displayHeight !== "number" || Number.isNaN(displayHeight) || displayHeight <= 0) {
+    throw new Error(`Character "${characterId}" sprite displayHeight must be a positive number.`);
+  }
+
+  if (
+    typeof origin.x !== "number" ||
+    Number.isNaN(origin.x) ||
+    origin.x < 0 ||
+    origin.x > 1
+  ) {
+    throw new Error(`Character "${characterId}" sprite origin.x must be between 0 and 1.`);
+  }
+
+  if (
+    typeof origin.y !== "number" ||
+    Number.isNaN(origin.y) ||
+    origin.y < 0 ||
+    origin.y > 1
+  ) {
+    throw new Error(`Character "${characterId}" sprite origin.y must be between 0 and 1.`);
+  }
+
   const animationTextureKeys = normalizeAnimationTextureKeys(characterId, sprite);
 
   return {
     textureKey: resolveTextureKey(characterId, sprite),
+    ...(frameSourcePath ? { frameSourcePath } : {}),
     ...(animationTextureKeys && Object.keys(animationTextureKeys).length > 0
       ? { animationTextureKeys }
       : {}),
@@ -269,11 +415,21 @@ export function normalizeCharacterSprite(
       width: frameWidth,
       height: frameHeight,
     },
+    displayHeight,
     scale,
+    origin: {
+      x: origin.x,
+      y: origin.y,
+    },
     labelOffset: {
       x: labelOffset.x,
       y: labelOffset.y,
     },
-    animations: normalizeAnimations(sprite?.animations, characterId, fallbackAnimations),
+    animations: normalizeAnimations(
+      sprite?.animations,
+      characterId,
+      fallbackAnimations,
+      useFrameSequence,
+    ),
   };
 }

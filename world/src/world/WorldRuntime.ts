@@ -10,6 +10,7 @@ import type {
 } from "./worldState";
 import type { MovementIntent, WorldAction } from "./worldActions";
 import { WORLD_ACTION_TYPES } from "./worldActions";
+import { applyPlayerAppearanceSystem } from "../domain/characters/applyPlayerAppearance";
 import { boundsSystem } from "./systems/boundsSystem";
 import { collisionSystem } from "./systems/collisionSystem";
 import { applyFaceAction } from "./systems/facingSystem";
@@ -67,6 +68,12 @@ export class WorldRuntime {
         return inspectTargetSystem(this.state, action.entityId, action.targetEntityId);
       case WORLD_ACTION_TYPES.startDialogue:
         return startDialogueSystem(this.state, action.entityId, action.targetEntityId);
+      case WORLD_ACTION_TYPES.setPlayerAppearance:
+        return applyPlayerAppearanceSystem(
+          this.state,
+          action.entityId,
+          action.appearanceId,
+        );
       default:
         return false;
     }

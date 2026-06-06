@@ -1638,5 +1638,1205 @@
   "Units/Yellow Units/Warrior/Warrior_Run.png": {
     "width": 1152,
     "height": 192
+  },
+  "charsets/sprites/arya stark/down_0.png": {
+    "width": 121,
+    "height": 207
+  },
+  "charsets/sprites/arya stark/down_1.png": {
+    "width": 116,
+    "height": 202
+  },
+  "charsets/sprites/arya stark/down_2.png": {
+    "width": 117,
+    "height": 207
+  },
+  "charsets/sprites/arya stark/left_0.png": {
+    "width": 115,
+    "height": 198
+  },
+  "charsets/sprites/arya stark/left_1.png": {
+    "width": 111,
+    "height": 199
+  },
+  "charsets/sprites/arya stark/left_2.png": {
+    "width": 117,
+    "height": 199
+  },
+  "charsets/sprites/arya stark/right_0.png": {
+    "width": 117,
+    "height": 198
+  },
+  "charsets/sprites/arya stark/right_1.png": {
+    "width": 112,
+    "height": 198
+  },
+  "charsets/sprites/arya stark/right_2.png": {
+    "width": 116,
+    "height": 198
+  },
+  "charsets/sprites/arya stark/up_0.png": {
+    "width": 117,
+    "height": 204
+  },
+  "charsets/sprites/arya stark/up_1.png": {
+    "width": 115,
+    "height": 199
+  },
+  "charsets/sprites/arya stark/up_2.png": {
+    "width": 115,
+    "height": 204
+  },
+  "charsets/sprites/brienne of tarth/down_0.png": {
+    "width": 128,
+    "height": 190
+  },
+  "charsets/sprites/brienne of tarth/down_1.png": {
+    "width": 122,
+    "height": 184
+  },
+  "charsets/sprites/brienne of tarth/down_2.png": {
+    "width": 125,
+    "height": 190
+  },
+  "charsets/sprites/brienne of tarth/left_0.png": {
+    "width": 100,
+    "height": 178
+  },
+  "charsets/sprites/brienne of tarth/left_1.png": {
+    "width": 84,
+    "height": 179
+  },
+  "charsets/sprites/brienne of tarth/left_2.png": {
+    "width": 104,
+    "height": 181
+  },
+  "charsets/sprites/brienne of tarth/right_0.png": {
+    "width": 99,
+    "height": 178
+  },
+  "charsets/sprites/brienne of tarth/right_1.png": {
+    "width": 82,
+    "height": 178
+  },
+  "charsets/sprites/brienne of tarth/right_2.png": {
+    "width": 102,
+    "height": 178
+  },
+  "charsets/sprites/brienne of tarth/up_0.png": {
+    "width": 123,
+    "height": 189
+  },
+  "charsets/sprites/brienne of tarth/up_1.png": {
+    "width": 118,
+    "height": 186
+  },
+  "charsets/sprites/brienne of tarth/up_2.png": {
+    "width": 124,
+    "height": 192
+  },
+  "charsets/sprites/catelyn stark/down_0.png": {
+    "width": 113,
+    "height": 179
+  },
+  "charsets/sprites/catelyn stark/down_1.png": {
+    "width": 114,
+    "height": 174
+  },
+  "charsets/sprites/catelyn stark/down_2.png": {
+    "width": 113,
+    "height": 179
+  },
+  "charsets/sprites/catelyn stark/left_0.png": {
+    "width": 117,
+    "height": 174
+  },
+  "charsets/sprites/catelyn stark/left_1.png": {
+    "width": 115,
+    "height": 175
+  },
+  "charsets/sprites/catelyn stark/left_2.png": {
+    "width": 113,
+    "height": 175
+  },
+  "charsets/sprites/catelyn stark/right_0.png": {
+    "width": 109,
+    "height": 175
+  },
+  "charsets/sprites/catelyn stark/right_1.png": {
+    "width": 110,
+    "height": 175
+  },
+  "charsets/sprites/catelyn stark/right_2.png": {
+    "width": 109,
+    "height": 174
+  },
+  "charsets/sprites/catelyn stark/up_0.png": {
+    "width": 104,
+    "height": 190
+  },
+  "charsets/sprites/catelyn stark/up_1.png": {
+    "width": 104,
+    "height": 180
+  },
+  "charsets/sprites/catelyn stark/up_2.png": {
+    "width": 105,
+    "height": 185
+  },
+  "charsets/sprites/cersei lannister/down_0.png": {
+    "width": 125,
+    "height": 197
+  },
+  "charsets/sprites/cersei lannister/down_1.png": {
+    "width": 125,
+    "height": 197
+  },
+  "charsets/sprites/cersei lannister/down_2.png": {
+    "width": 125,
+    "height": 197
+  },
+  "charsets/sprites/cersei lannister/left_0.png": {
+    "width": 111,
+    "height": 188
+  },
+  "charsets/sprites/cersei lannister/left_1.png": {
+    "width": 110,
+    "height": 191
+  },
+  "charsets/sprites/cersei lannister/left_2.png": {
+    "width": 119,
+    "height": 189
+  },
+  "charsets/sprites/cersei lannister/right_0.png": {
+    "width": 121,
+    "height": 193
+  },
+  "charsets/sprites/cersei lannister/right_1.png": {
+    "width": 108,
+    "height": 192
+  },
+  "charsets/sprites/cersei lannister/right_2.png": {
+    "width": 117,
+    "height": 192
+  },
+  "charsets/sprites/cersei lannister/up_0.png": {
+    "width": 114,
+    "height": 205
+  },
+  "charsets/sprites/cersei lannister/up_1.png": {
+    "width": 113,
+    "height": 203
+  },
+  "charsets/sprites/cersei lannister/up_2.png": {
+    "width": 114,
+    "height": 204
+  },
+  "charsets/sprites/daenerys/down_0.png": {
+    "width": 120,
+    "height": 185
+  },
+  "charsets/sprites/daenerys/down_1.png": {
+    "width": 115,
+    "height": 185
+  },
+  "charsets/sprites/daenerys/down_2.png": {
+    "width": 120,
+    "height": 185
+  },
+  "charsets/sprites/daenerys/left_0.png": {
+    "width": 114,
+    "height": 180
+  },
+  "charsets/sprites/daenerys/left_1.png": {
+    "width": 104,
+    "height": 179
+  },
+  "charsets/sprites/daenerys/left_2.png": {
+    "width": 118,
+    "height": 179
+  },
+  "charsets/sprites/daenerys/right_0.png": {
+    "width": 115,
+    "height": 180
+  },
+  "charsets/sprites/daenerys/right_1.png": {
+    "width": 104,
+    "height": 178
+  },
+  "charsets/sprites/daenerys/right_2.png": {
+    "width": 115,
+    "height": 179
+  },
+  "charsets/sprites/daenerys/up_0.png": {
+    "width": 120,
+    "height": 203
+  },
+  "charsets/sprites/daenerys/up_1.png": {
+    "width": 110,
+    "height": 196
+  },
+  "charsets/sprites/daenerys/up_2.png": {
+    "width": 120,
+    "height": 203
+  },
+  "charsets/sprites/daenerys targaryen/down_0.png": {
+    "width": 110,
+    "height": 192
+  },
+  "charsets/sprites/daenerys targaryen/down_1.png": {
+    "width": 111,
+    "height": 183
+  },
+  "charsets/sprites/daenerys targaryen/down_2.png": {
+    "width": 111,
+    "height": 192
+  },
+  "charsets/sprites/daenerys targaryen/left_0.png": {
+    "width": 115,
+    "height": 179
+  },
+  "charsets/sprites/daenerys targaryen/left_1.png": {
+    "width": 113,
+    "height": 179
+  },
+  "charsets/sprites/daenerys targaryen/left_2.png": {
+    "width": 114,
+    "height": 179
+  },
+  "charsets/sprites/daenerys targaryen/right_0.png": {
+    "width": 113,
+    "height": 178
+  },
+  "charsets/sprites/daenerys targaryen/right_1.png": {
+    "width": 114,
+    "height": 178
+  },
+  "charsets/sprites/daenerys targaryen/right_2.png": {
+    "width": 111,
+    "height": 178
+  },
+  "charsets/sprites/daenerys targaryen/up_0.png": {
+    "width": 106,
+    "height": 204
+  },
+  "charsets/sprites/daenerys targaryen/up_1.png": {
+    "width": 104,
+    "height": 198
+  },
+  "charsets/sprites/daenerys targaryen/up_2.png": {
+    "width": 111,
+    "height": 204
+  },
+  "charsets/sprites/davos seaworth/down_0.png": {
+    "width": 138,
+    "height": 195
+  },
+  "charsets/sprites/davos seaworth/down_1.png": {
+    "width": 138,
+    "height": 190
+  },
+  "charsets/sprites/davos seaworth/down_2.png": {
+    "width": 138,
+    "height": 195
+  },
+  "charsets/sprites/davos seaworth/left_0.png": {
+    "width": 119,
+    "height": 183
+  },
+  "charsets/sprites/davos seaworth/left_1.png": {
+    "width": 116,
+    "height": 183
+  },
+  "charsets/sprites/davos seaworth/left_2.png": {
+    "width": 117,
+    "height": 183
+  },
+  "charsets/sprites/davos seaworth/right_0.png": {
+    "width": 117,
+    "height": 182
+  },
+  "charsets/sprites/davos seaworth/right_1.png": {
+    "width": 116,
+    "height": 182
+  },
+  "charsets/sprites/davos seaworth/right_2.png": {
+    "width": 116,
+    "height": 182
+  },
+  "charsets/sprites/davos seaworth/up_0.png": {
+    "width": 129,
+    "height": 204
+  },
+  "charsets/sprites/davos seaworth/up_1.png": {
+    "width": 128,
+    "height": 204
+  },
+  "charsets/sprites/davos seaworth/up_2.png": {
+    "width": 128,
+    "height": 204
+  },
+  "charsets/sprites/jaime lannister/down_0.png": {
+    "width": 144,
+    "height": 201
+  },
+  "charsets/sprites/jaime lannister/down_1.png": {
+    "width": 144,
+    "height": 196
+  },
+  "charsets/sprites/jaime lannister/down_2.png": {
+    "width": 144,
+    "height": 201
+  },
+  "charsets/sprites/jaime lannister/left_0.png": {
+    "width": 123,
+    "height": 182
+  },
+  "charsets/sprites/jaime lannister/left_1.png": {
+    "width": 123,
+    "height": 186
+  },
+  "charsets/sprites/jaime lannister/left_2.png": {
+    "width": 122,
+    "height": 182
+  },
+  "charsets/sprites/jaime lannister/right_0.png": {
+    "width": 121,
+    "height": 183
+  },
+  "charsets/sprites/jaime lannister/right_1.png": {
+    "width": 119,
+    "height": 187
+  },
+  "charsets/sprites/jaime lannister/right_2.png": {
+    "width": 119,
+    "height": 183
+  },
+  "charsets/sprites/jaime lannister/up_0.png": {
+    "width": 139,
+    "height": 234
+  },
+  "charsets/sprites/jaime lannister/up_1.png": {
+    "width": 139,
+    "height": 224
+  },
+  "charsets/sprites/jaime lannister/up_2.png": {
+    "width": 139,
+    "height": 234
+  },
+  "charsets/sprites/joffrey baratheon/down_0.png": {
+    "width": 119,
+    "height": 218
+  },
+  "charsets/sprites/joffrey baratheon/down_1.png": {
+    "width": 118,
+    "height": 215
+  },
+  "charsets/sprites/joffrey baratheon/down_2.png": {
+    "width": 118,
+    "height": 218
+  },
+  "charsets/sprites/joffrey baratheon/left_0.png": {
+    "width": 120,
+    "height": 207
+  },
+  "charsets/sprites/joffrey baratheon/left_1.png": {
+    "width": 113,
+    "height": 211
+  },
+  "charsets/sprites/joffrey baratheon/left_2.png": {
+    "width": 118,
+    "height": 208
+  },
+  "charsets/sprites/joffrey baratheon/right_0.png": {
+    "width": 119,
+    "height": 208
+  },
+  "charsets/sprites/joffrey baratheon/right_1.png": {
+    "width": 111,
+    "height": 211
+  },
+  "charsets/sprites/joffrey baratheon/right_2.png": {
+    "width": 117,
+    "height": 209
+  },
+  "charsets/sprites/joffrey baratheon/up_0.png": {
+    "width": 115,
+    "height": 224
+  },
+  "charsets/sprites/joffrey baratheon/up_1.png": {
+    "width": 114,
+    "height": 228
+  },
+  "charsets/sprites/joffrey baratheon/up_2.png": {
+    "width": 116,
+    "height": 227
+  },
+  "charsets/sprites/jon snow/down_0.png": {
+    "width": 138,
+    "height": 200
+  },
+  "charsets/sprites/jon snow/down_1.png": {
+    "width": 127,
+    "height": 196
+  },
+  "charsets/sprites/jon snow/down_2.png": {
+    "width": 139,
+    "height": 200
+  },
+  "charsets/sprites/jon snow/left_0.png": {
+    "width": 138,
+    "height": 187
+  },
+  "charsets/sprites/jon snow/left_1.png": {
+    "width": 112,
+    "height": 187
+  },
+  "charsets/sprites/jon snow/left_2.png": {
+    "width": 138,
+    "height": 187
+  },
+  "charsets/sprites/jon snow/right_0.png": {
+    "width": 126,
+    "height": 188
+  },
+  "charsets/sprites/jon snow/right_1.png": {
+    "width": 109,
+    "height": 188
+  },
+  "charsets/sprites/jon snow/right_2.png": {
+    "width": 130,
+    "height": 187
+  },
+  "charsets/sprites/jon snow/up_0.png": {
+    "width": 134,
+    "height": 201
+  },
+  "charsets/sprites/jon snow/up_1.png": {
+    "width": 128,
+    "height": 192
+  },
+  "charsets/sprites/jon snow/up_2.png": {
+    "width": 137,
+    "height": 199
+  },
+  "charsets/sprites/jorah mormont/down_0.png": {
+    "width": 157,
+    "height": 211
+  },
+  "charsets/sprites/jorah mormont/down_1.png": {
+    "width": 155,
+    "height": 203
+  },
+  "charsets/sprites/jorah mormont/down_2.png": {
+    "width": 160,
+    "height": 211
+  },
+  "charsets/sprites/jorah mormont/left_0.png": {
+    "width": 140,
+    "height": 195
+  },
+  "charsets/sprites/jorah mormont/left_1.png": {
+    "width": 136,
+    "height": 192
+  },
+  "charsets/sprites/jorah mormont/left_2.png": {
+    "width": 144,
+    "height": 195
+  },
+  "charsets/sprites/jorah mormont/right_0.png": {
+    "width": 131,
+    "height": 196
+  },
+  "charsets/sprites/jorah mormont/right_1.png": {
+    "width": 130,
+    "height": 192
+  },
+  "charsets/sprites/jorah mormont/right_2.png": {
+    "width": 139,
+    "height": 196
+  },
+  "charsets/sprites/jorah mormont/up_0.png": {
+    "width": 154,
+    "height": 217
+  },
+  "charsets/sprites/jorah mormont/up_1.png": {
+    "width": 156,
+    "height": 217
+  },
+  "charsets/sprites/jorah mormont/up_2.png": {
+    "width": 152,
+    "height": 221
+  },
+  "charsets/sprites/littlefinger baelish/down_0.png": {
+    "width": 115,
+    "height": 199
+  },
+  "charsets/sprites/littlefinger baelish/down_1.png": {
+    "width": 112,
+    "height": 193
+  },
+  "charsets/sprites/littlefinger baelish/down_2.png": {
+    "width": 115,
+    "height": 199
+  },
+  "charsets/sprites/littlefinger baelish/left_0.png": {
+    "width": 104,
+    "height": 185
+  },
+  "charsets/sprites/littlefinger baelish/left_1.png": {
+    "width": 102,
+    "height": 186
+  },
+  "charsets/sprites/littlefinger baelish/left_2.png": {
+    "width": 102,
+    "height": 185
+  },
+  "charsets/sprites/littlefinger baelish/right_0.png": {
+    "width": 105,
+    "height": 185
+  },
+  "charsets/sprites/littlefinger baelish/right_1.png": {
+    "width": 101,
+    "height": 186
+  },
+  "charsets/sprites/littlefinger baelish/right_2.png": {
+    "width": 102,
+    "height": 186
+  },
+  "charsets/sprites/littlefinger baelish/up_0.png": {
+    "width": 110,
+    "height": 202
+  },
+  "charsets/sprites/littlefinger baelish/up_1.png": {
+    "width": 110,
+    "height": 197
+  },
+  "charsets/sprites/littlefinger baelish/up_2.png": {
+    "width": 109,
+    "height": 205
+  },
+  "charsets/sprites/margaery tyrell/down_0.png": {
+    "width": 123,
+    "height": 202
+  },
+  "charsets/sprites/margaery tyrell/down_1.png": {
+    "width": 123,
+    "height": 197
+  },
+  "charsets/sprites/margaery tyrell/down_2.png": {
+    "width": 123,
+    "height": 202
+  },
+  "charsets/sprites/margaery tyrell/left_0.png": {
+    "width": 124,
+    "height": 189
+  },
+  "charsets/sprites/margaery tyrell/left_1.png": {
+    "width": 117,
+    "height": 193
+  },
+  "charsets/sprites/margaery tyrell/left_2.png": {
+    "width": 123,
+    "height": 189
+  },
+  "charsets/sprites/margaery tyrell/right_0.png": {
+    "width": 123,
+    "height": 187
+  },
+  "charsets/sprites/margaery tyrell/right_1.png": {
+    "width": 116,
+    "height": 191
+  },
+  "charsets/sprites/margaery tyrell/right_2.png": {
+    "width": 124,
+    "height": 187
+  },
+  "charsets/sprites/margaery tyrell/up_0.png": {
+    "width": 125,
+    "height": 205
+  },
+  "charsets/sprites/margaery tyrell/up_1.png": {
+    "width": 124,
+    "height": 202
+  },
+  "charsets/sprites/margaery tyrell/up_2.png": {
+    "width": 124,
+    "height": 206
+  },
+  "charsets/sprites/melisandre/down_0.png": {
+    "width": 135,
+    "height": 211
+  },
+  "charsets/sprites/melisandre/down_1.png": {
+    "width": 132,
+    "height": 206
+  },
+  "charsets/sprites/melisandre/down_2.png": {
+    "width": 134,
+    "height": 211
+  },
+  "charsets/sprites/melisandre/left_0.png": {
+    "width": 120,
+    "height": 188
+  },
+  "charsets/sprites/melisandre/left_1.png": {
+    "width": 119,
+    "height": 188
+  },
+  "charsets/sprites/melisandre/left_2.png": {
+    "width": 118,
+    "height": 193
+  },
+  "charsets/sprites/melisandre/right_0.png": {
+    "width": 118,
+    "height": 187
+  },
+  "charsets/sprites/melisandre/right_1.png": {
+    "width": 118,
+    "height": 187
+  },
+  "charsets/sprites/melisandre/right_2.png": {
+    "width": 117,
+    "height": 192
+  },
+  "charsets/sprites/melisandre/up_0.png": {
+    "width": 134,
+    "height": 215
+  },
+  "charsets/sprites/melisandre/up_1.png": {
+    "width": 132,
+    "height": 215
+  },
+  "charsets/sprites/melisandre/up_2.png": {
+    "width": 132,
+    "height": 215
+  },
+  "charsets/sprites/ned stark/down_0.png": {
+    "width": 152,
+    "height": 202
+  },
+  "charsets/sprites/ned stark/down_1.png": {
+    "width": 152,
+    "height": 196
+  },
+  "charsets/sprites/ned stark/down_2.png": {
+    "width": 151,
+    "height": 203
+  },
+  "charsets/sprites/ned stark/left_0.png": {
+    "width": 139,
+    "height": 190
+  },
+  "charsets/sprites/ned stark/left_1.png": {
+    "width": 119,
+    "height": 191
+  },
+  "charsets/sprites/ned stark/left_2.png": {
+    "width": 135,
+    "height": 190
+  },
+  "charsets/sprites/ned stark/right_0.png": {
+    "width": 137,
+    "height": 191
+  },
+  "charsets/sprites/ned stark/right_1.png": {
+    "width": 115,
+    "height": 189
+  },
+  "charsets/sprites/ned stark/right_2.png": {
+    "width": 132,
+    "height": 189
+  },
+  "charsets/sprites/ned stark/up_0.png": {
+    "width": 147,
+    "height": 217
+  },
+  "charsets/sprites/ned stark/up_1.png": {
+    "width": 150,
+    "height": 211
+  },
+  "charsets/sprites/ned stark/up_2.png": {
+    "width": 148,
+    "height": 217
+  },
+  "charsets/sprites/renly baratheon/down_0.png": {
+    "width": 136,
+    "height": 204
+  },
+  "charsets/sprites/renly baratheon/down_1.png": {
+    "width": 134,
+    "height": 199
+  },
+  "charsets/sprites/renly baratheon/down_2.png": {
+    "width": 139,
+    "height": 204
+  },
+  "charsets/sprites/renly baratheon/left_0.png": {
+    "width": 129,
+    "height": 195
+  },
+  "charsets/sprites/renly baratheon/left_1.png": {
+    "width": 125,
+    "height": 195
+  },
+  "charsets/sprites/renly baratheon/left_2.png": {
+    "width": 131,
+    "height": 195
+  },
+  "charsets/sprites/renly baratheon/right_0.png": {
+    "width": 129,
+    "height": 195
+  },
+  "charsets/sprites/renly baratheon/right_1.png": {
+    "width": 124,
+    "height": 195
+  },
+  "charsets/sprites/renly baratheon/right_2.png": {
+    "width": 129,
+    "height": 195
+  },
+  "charsets/sprites/renly baratheon/up_0.png": {
+    "width": 130,
+    "height": 218
+  },
+  "charsets/sprites/renly baratheon/up_1.png": {
+    "width": 126,
+    "height": 208
+  },
+  "charsets/sprites/renly baratheon/up_2.png": {
+    "width": 129,
+    "height": 217
+  },
+  "charsets/sprites/robb stark/down_0.png": {
+    "width": 151,
+    "height": 200
+  },
+  "charsets/sprites/robb stark/down_1.png": {
+    "width": 150,
+    "height": 196
+  },
+  "charsets/sprites/robb stark/down_2.png": {
+    "width": 149,
+    "height": 200
+  },
+  "charsets/sprites/robb stark/left_0.png": {
+    "width": 134,
+    "height": 187
+  },
+  "charsets/sprites/robb stark/left_1.png": {
+    "width": 131,
+    "height": 191
+  },
+  "charsets/sprites/robb stark/left_2.png": {
+    "width": 131,
+    "height": 187
+  },
+  "charsets/sprites/robb stark/right_0.png": {
+    "width": 131,
+    "height": 190
+  },
+  "charsets/sprites/robb stark/right_1.png": {
+    "width": 128,
+    "height": 193
+  },
+  "charsets/sprites/robb stark/right_2.png": {
+    "width": 128,
+    "height": 187
+  },
+  "charsets/sprites/robb stark/up_0.png": {
+    "width": 149,
+    "height": 214
+  },
+  "charsets/sprites/robb stark/up_1.png": {
+    "width": 147,
+    "height": 206
+  },
+  "charsets/sprites/robb stark/up_2.png": {
+    "width": 147,
+    "height": 212
+  },
+  "charsets/sprites/robert baratheon/down_0.png": {
+    "width": 196,
+    "height": 223
+  },
+  "charsets/sprites/robert baratheon/down_1.png": {
+    "width": 179,
+    "height": 217
+  },
+  "charsets/sprites/robert baratheon/down_2.png": {
+    "width": 185,
+    "height": 222
+  },
+  "charsets/sprites/robert baratheon/left_0.png": {
+    "width": 145,
+    "height": 210
+  },
+  "charsets/sprites/robert baratheon/left_1.png": {
+    "width": 122,
+    "height": 211
+  },
+  "charsets/sprites/robert baratheon/left_2.png": {
+    "width": 150,
+    "height": 211
+  },
+  "charsets/sprites/robert baratheon/right_0.png": {
+    "width": 145,
+    "height": 211
+  },
+  "charsets/sprites/robert baratheon/right_1.png": {
+    "width": 117,
+    "height": 210
+  },
+  "charsets/sprites/robert baratheon/right_2.png": {
+    "width": 144,
+    "height": 211
+  },
+  "charsets/sprites/robert baratheon/up_0.png": {
+    "width": 167,
+    "height": 243
+  },
+  "charsets/sprites/robert baratheon/up_1.png": {
+    "width": 172,
+    "height": 238
+  },
+  "charsets/sprites/robert baratheon/up_2.png": {
+    "width": 169,
+    "height": 244
+  },
+  "charsets/sprites/sandor clegane/down_0.png": {
+    "width": 143,
+    "height": 203
+  },
+  "charsets/sprites/sandor clegane/down_1.png": {
+    "width": 142,
+    "height": 191
+  },
+  "charsets/sprites/sandor clegane/down_2.png": {
+    "width": 142,
+    "height": 198
+  },
+  "charsets/sprites/sandor clegane/left_0.png": {
+    "width": 116,
+    "height": 187
+  },
+  "charsets/sprites/sandor clegane/left_1.png": {
+    "width": 108,
+    "height": 189
+  },
+  "charsets/sprites/sandor clegane/left_2.png": {
+    "width": 118,
+    "height": 188
+  },
+  "charsets/sprites/sandor clegane/right_0.png": {
+    "width": 114,
+    "height": 187
+  },
+  "charsets/sprites/sandor clegane/right_1.png": {
+    "width": 104,
+    "height": 189
+  },
+  "charsets/sprites/sandor clegane/right_2.png": {
+    "width": 116,
+    "height": 187
+  },
+  "charsets/sprites/sandor clegane/up_0.png": {
+    "width": 136,
+    "height": 204
+  },
+  "charsets/sprites/sandor clegane/up_1.png": {
+    "width": 136,
+    "height": 193
+  },
+  "charsets/sprites/sandor clegane/up_2.png": {
+    "width": 136,
+    "height": 203
+  },
+  "charsets/sprites/sansa stark/down_0.png": {
+    "width": 113,
+    "height": 193
+  },
+  "charsets/sprites/sansa stark/down_1.png": {
+    "width": 113,
+    "height": 188
+  },
+  "charsets/sprites/sansa stark/down_2.png": {
+    "width": 113,
+    "height": 188
+  },
+  "charsets/sprites/sansa stark/left_0.png": {
+    "width": 107,
+    "height": 182
+  },
+  "charsets/sprites/sansa stark/left_1.png": {
+    "width": 103,
+    "height": 182
+  },
+  "charsets/sprites/sansa stark/left_2.png": {
+    "width": 107,
+    "height": 182
+  },
+  "charsets/sprites/sansa stark/right_0.png": {
+    "width": 108,
+    "height": 181
+  },
+  "charsets/sprites/sansa stark/right_1.png": {
+    "width": 102,
+    "height": 181
+  },
+  "charsets/sprites/sansa stark/right_2.png": {
+    "width": 108,
+    "height": 181
+  },
+  "charsets/sprites/sansa stark/up_0.png": {
+    "width": 108,
+    "height": 188
+  },
+  "charsets/sprites/sansa stark/up_1.png": {
+    "width": 108,
+    "height": 182
+  },
+  "charsets/sprites/sansa stark/up_2.png": {
+    "width": 107,
+    "height": 188
+  },
+  "charsets/sprites/stannis baratheon/down_0.png": {
+    "width": 116,
+    "height": 193
+  },
+  "charsets/sprites/stannis baratheon/down_1.png": {
+    "width": 115,
+    "height": 190
+  },
+  "charsets/sprites/stannis baratheon/down_2.png": {
+    "width": 114,
+    "height": 193
+  },
+  "charsets/sprites/stannis baratheon/left_0.png": {
+    "width": 103,
+    "height": 184
+  },
+  "charsets/sprites/stannis baratheon/left_1.png": {
+    "width": 102,
+    "height": 184
+  },
+  "charsets/sprites/stannis baratheon/left_2.png": {
+    "width": 103,
+    "height": 184
+  },
+  "charsets/sprites/stannis baratheon/right_0.png": {
+    "width": 102,
+    "height": 184
+  },
+  "charsets/sprites/stannis baratheon/right_1.png": {
+    "width": 102,
+    "height": 184
+  },
+  "charsets/sprites/stannis baratheon/right_2.png": {
+    "width": 101,
+    "height": 184
+  },
+  "charsets/sprites/stannis baratheon/up_0.png": {
+    "width": 110,
+    "height": 203
+  },
+  "charsets/sprites/stannis baratheon/up_1.png": {
+    "width": 109,
+    "height": 203
+  },
+  "charsets/sprites/stannis baratheon/up_2.png": {
+    "width": 109,
+    "height": 203
+  },
+  "charsets/sprites/theon greyjoy/down_0.png": {
+    "width": 139,
+    "height": 207
+  },
+  "charsets/sprites/theon greyjoy/down_1.png": {
+    "width": 137,
+    "height": 201
+  },
+  "charsets/sprites/theon greyjoy/down_2.png": {
+    "width": 132,
+    "height": 206
+  },
+  "charsets/sprites/theon greyjoy/left_0.png": {
+    "width": 139,
+    "height": 198
+  },
+  "charsets/sprites/theon greyjoy/left_1.png": {
+    "width": 136,
+    "height": 198
+  },
+  "charsets/sprites/theon greyjoy/left_2.png": {
+    "width": 133,
+    "height": 197
+  },
+  "charsets/sprites/theon greyjoy/right_0.png": {
+    "width": 132,
+    "height": 198
+  },
+  "charsets/sprites/theon greyjoy/right_1.png": {
+    "width": 126,
+    "height": 198
+  },
+  "charsets/sprites/theon greyjoy/right_2.png": {
+    "width": 131,
+    "height": 196
+  },
+  "charsets/sprites/theon greyjoy/up_0.png": {
+    "width": 134,
+    "height": 232
+  },
+  "charsets/sprites/theon greyjoy/up_1.png": {
+    "width": 130,
+    "height": 223
+  },
+  "charsets/sprites/theon greyjoy/up_2.png": {
+    "width": 126,
+    "height": 229
+  },
+  "charsets/sprites/tyrion lannister/down_0.png": {
+    "width": 123,
+    "height": 196
+  },
+  "charsets/sprites/tyrion lannister/down_1.png": {
+    "width": 124,
+    "height": 191
+  },
+  "charsets/sprites/tyrion lannister/down_2.png": {
+    "width": 126,
+    "height": 196
+  },
+  "charsets/sprites/tyrion lannister/left_0.png": {
+    "width": 113,
+    "height": 183
+  },
+  "charsets/sprites/tyrion lannister/left_1.png": {
+    "width": 113,
+    "height": 183
+  },
+  "charsets/sprites/tyrion lannister/left_2.png": {
+    "width": 114,
+    "height": 183
+  },
+  "charsets/sprites/tyrion lannister/right_0.png": {
+    "width": 110,
+    "height": 184
+  },
+  "charsets/sprites/tyrion lannister/right_1.png": {
+    "width": 110,
+    "height": 184
+  },
+  "charsets/sprites/tyrion lannister/right_2.png": {
+    "width": 110,
+    "height": 184
+  },
+  "charsets/sprites/tyrion lannister/up_0.png": {
+    "width": 120,
+    "height": 201
+  },
+  "charsets/sprites/tyrion lannister/up_1.png": {
+    "width": 118,
+    "height": 195
+  },
+  "charsets/sprites/tyrion lannister/up_2.png": {
+    "width": 119,
+    "height": 201
+  },
+  "charsets/sprites/tywin lannister/down_0.png": {
+    "width": 135,
+    "height": 201
+  },
+  "charsets/sprites/tywin lannister/down_1.png": {
+    "width": 135,
+    "height": 197
+  },
+  "charsets/sprites/tywin lannister/down_2.png": {
+    "width": 135,
+    "height": 201
+  },
+  "charsets/sprites/tywin lannister/left_0.png": {
+    "width": 124,
+    "height": 200
+  },
+  "charsets/sprites/tywin lannister/left_1.png": {
+    "width": 116,
+    "height": 200
+  },
+  "charsets/sprites/tywin lannister/left_2.png": {
+    "width": 127,
+    "height": 200
+  },
+  "charsets/sprites/tywin lannister/right_0.png": {
+    "width": 124,
+    "height": 199
+  },
+  "charsets/sprites/tywin lannister/right_1.png": {
+    "width": 115,
+    "height": 199
+  },
+  "charsets/sprites/tywin lannister/right_2.png": {
+    "width": 123,
+    "height": 199
+  },
+  "charsets/sprites/tywin lannister/up_0.png": {
+    "width": 133,
+    "height": 221
+  },
+  "charsets/sprites/tywin lannister/up_1.png": {
+    "width": 136,
+    "height": 220
+  },
+  "charsets/sprites/tywin lannister/up_2.png": {
+    "width": 133,
+    "height": 222
+  },
+  "charsets/sprites/varys/down_0.png": {
+    "width": 132,
+    "height": 212
+  },
+  "charsets/sprites/varys/down_1.png": {
+    "width": 129,
+    "height": 206
+  },
+  "charsets/sprites/varys/down_2.png": {
+    "width": 130,
+    "height": 211
+  },
+  "charsets/sprites/varys/left_0.png": {
+    "width": 124,
+    "height": 185
+  },
+  "charsets/sprites/varys/left_1.png": {
+    "width": 96,
+    "height": 189
+  },
+  "charsets/sprites/varys/left_2.png": {
+    "width": 131,
+    "height": 185
+  },
+  "charsets/sprites/varys/right_0.png": {
+    "width": 126,
+    "height": 186
+  },
+  "charsets/sprites/varys/right_1.png": {
+    "width": 95,
+    "height": 189
+  },
+  "charsets/sprites/varys/right_2.png": {
+    "width": 130,
+    "height": 186
+  },
+  "charsets/sprites/varys/up_0.png": {
+    "width": 127,
+    "height": 219
+  },
+  "charsets/sprites/varys/up_1.png": {
+    "width": 126,
+    "height": 214
+  },
+  "charsets/sprites/varys/up_2.png": {
+    "width": 128,
+    "height": 225
   }
 }

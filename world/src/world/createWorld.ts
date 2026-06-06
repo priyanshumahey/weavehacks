@@ -1,3 +1,4 @@
+import { DEFAULT_PLAYER_APPEARANCE_ID } from "../data/characters/playerAppearances";
 import { normalizePropDefinition } from "../domain/props/propDefinition";
 import { createCharacterInstance } from "../domain/characters/characterDefinition";
 import type { CharacterDefinition, WorldBounds } from "../types/character";
@@ -99,6 +100,7 @@ export function createWorld({
       dialogue: null,
       inspection: null,
       selectedEntityId: playerId,
+      playerAppearanceId: DEFAULT_PLAYER_APPEARANCE_ID,
     },
     time: {
       elapsedMs: 0,

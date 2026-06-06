@@ -8,11 +8,16 @@ import {
   collectCharacterTextureKeys,
   preloadCharacterSpritesheets,
 } from "../rendering/characters/preloadCharacterSpritesheets";
+import {
+  collectPlayerAppearanceTextureKeys,
+  preloadPlayerAppearances,
+} from "../rendering/characters/preloadPlayerAppearances";
 import { WorldInputController } from "../input/WorldInputController";
 import { WorldRenderer } from "../rendering/world/WorldRenderer";
 import { getWorldBounds } from "../rendering/world/getWorldBounds";
 import { createWorld } from "../world/createWorld";
 import { WorldRuntime } from "../world/WorldRuntime";
+import { WORLD_ACTION_TYPES } from "../world/worldActions";
 import { CHARACTER_CONTROLLER_TYPES } from "../world/worldState";
 
 export const SCENE_KEYS = {
@@ -31,7 +36,13 @@ export class WorldScene extends Phaser.Scene {
 
   preload(): void {
     preloadCharacterSpritesheets(this, characterDefinitions);
-    preloadWorldAssets(this, collectCharacterTextureKeys(characterDefinitions));
+    preloadPlayerAppearances(this);
+
+    const skipKeys = new Set([
+      ...collectCharacterTextureKeys(characterDefinitions),
+      ...collectPlayerAppearanceTextureKeys(),
+    ]);
+    preloadWorldAssets(this, skipKeys);
   }
 
   create(): void {
@@ -43,6 +54,22 @@ export class WorldScene extends Phaser.Scene {
 
     this.worldRuntime = new WorldRuntime(world);
     this.worldRenderer = new WorldRenderer(this);
+    this.worldRenderer.setOnPlayerAppearanceSelect((appearanceId) => {
+      const player = this.worldRuntime?.getPlayer();
+
+      if (!player || !this.worldRuntime) {
+        return;
+      }
+
+      this.worldRuntime.dispatch(
+        {
+          type: WORLD_ACTION_TYPES.setPlayerAppearance,
+          entityId: player.id,
+          appearanceId,
+        },
+        CHARACTER_CONTROLLER_TYPES.player,
+      );
+    });
     this.worldRenderer.create(this.worldRuntime.getState());
     this.inputController = new WorldInputController(this);
     this.agentOrchestrator = new AgentOrchestrator(createCharacterAgents(world.characters));

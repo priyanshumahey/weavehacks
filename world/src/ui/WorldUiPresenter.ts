@@ -1,4 +1,11 @@
-import type { CharacterState, WorldState } from "../world/worldState";
+import type { WorldState } from "../world/worldState";
+import { playerAppearanceOptions } from "../data/characters/playerAppearances";
+
+export interface PlayerAppearanceOptionViewModel {
+  id: string;
+  label: string;
+  selected: boolean;
+}
 
 export interface WorldUiViewModel {
   promptText: string | null;
@@ -6,6 +13,11 @@ export interface WorldUiViewModel {
   dialogueBody: string | null;
   inspectionTitle: string | null;
   inspectionLines: string[];
+  playerAppearanceOptions: PlayerAppearanceOptionViewModel[];
+  playerAppearanceScrollOffset: number;
+  playerAppearanceVisibleCount: number;
+  canScrollPlayerAppearanceBack: boolean;
+  canScrollPlayerAppearanceForward: boolean;
 }
 
 const DIALOGUE_COPY: Record<string, string> = {
@@ -13,7 +25,7 @@ const DIALOGUE_COPY: Record<string, string> = {
   scout_intro: "The roads are quiet for now, but quiet roads rarely stay that way.",
 };
 
-function getCharacter(state: WorldState, entityId: string | null): CharacterState | null {
+function getCharacter(state: WorldState, entityId: string | null) {
   if (!entityId) {
     return null;
   }
@@ -21,7 +33,7 @@ function getCharacter(state: WorldState, entityId: string | null): CharacterStat
   return state.characters[entityId] ?? null;
 }
 
-function getDialogueBody(character: CharacterState | null, dialogueId: string | null): string | null {
+function getDialogueBody(character: ReturnType<typeof getCharacter>, dialogueId: string | null): string | null {
   if (!character || !dialogueId) {
     return null;
   }
@@ -29,9 +41,21 @@ function getDialogueBody(character: CharacterState | null, dialogueId: string | 
   return DIALOGUE_COPY[dialogueId] ?? `${character.name} has nothing to say right now.`;
 }
 
-export function buildWorldUiViewModel(state: WorldState): WorldUiViewModel {
+export function buildWorldUiViewModel(
+  state: WorldState,
+  playerAppearanceScrollOffset: number,
+  playerAppearanceVisibleCount: number,
+): WorldUiViewModel {
   const dialogueCharacter = getCharacter(state, state.ui.dialogue?.entityId ?? null);
   const inspectionCharacter = getCharacter(state, state.ui.inspection?.entityId ?? null);
+  const maxScrollOffset = Math.max(
+    0,
+    playerAppearanceOptions.length - playerAppearanceVisibleCount,
+  );
+  const clampedScrollOffset = Math.min(
+    Math.max(playerAppearanceScrollOffset, 0),
+    maxScrollOffset,
+  );
 
   return {
     promptText: state.ui.prompt?.text ?? null,
@@ -53,5 +77,14 @@ export function buildWorldUiViewModel(state: WorldState): WorldUiViewModel {
             )}`,
           ]
         : [],
+    playerAppearanceOptions: playerAppearanceOptions.map((option) => ({
+      id: option.id,
+      label: option.label,
+      selected: option.id === state.ui.playerAppearanceId,
+    })),
+    playerAppearanceScrollOffset: clampedScrollOffset,
+    playerAppearanceVisibleCount,
+    canScrollPlayerAppearanceBack: clampedScrollOffset > 0,
+    canScrollPlayerAppearanceForward: clampedScrollOffset < maxScrollOffset,
   };
 }

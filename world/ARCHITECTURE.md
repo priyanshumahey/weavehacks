@@ -42,7 +42,7 @@ This keeps boot concerns separate from scene logic and world behavior.
 
 World art assets now have a dedicated preload and registration path:
 
-- `src/assets/worldAssetRegistry.ts`: discovers `world/sprites/**/*.png`, derives stable Phaser texture keys from sprite-relative paths, attaches image dimensions from `spriteDimensions.json`, and exposes preload/lookup helpers
+- `src/assets/worldAssetRegistry.ts`: discovers `world/sprites/**/*.png` and `world/charsets/sprites/**/*.png`, derives stable Phaser texture keys from sprite-relative paths, attaches image dimensions from `spriteDimensions.json`, and exposes preload/lookup helpers
 - `WorldScene.preload()`: owns asset registration for the scene and queues world textures before any renderer or future sprite-backed entity tries to use them
 
 Texture consumers are expected to reference stable texture keys from the asset registry rather than hard-coded filesystem paths.
@@ -59,16 +59,19 @@ Authored character JSON may declare sprite metadata with either:
 
 - `textureKey`: a stable registry key such as `world/characters/player`
 - `textureSourcePath`: a path relative to `world/sprites/`, normalized into the same key format at definition load time
+- `frameSourcePath`: a directory under `world/charsets/sprites/` containing per-frame PNGs named `{facing}_{index}.png` (for example `charsets/sprites/jon snow/down_1.png`)
 
-Normalized runtime character state always includes a complete `sprite` object with texture key, frame size, display scale, label offset, and optional idle/walk animation mappings per facing direction. Circle `appearance` fields remain authoritative for collision, interaction radius, and selection ring sizing.
+Normalized runtime character state always includes a complete `sprite` object with texture key, frame size, fixed `displayHeight` slot, display scale fallback, label offset, origin, and optional idle/walk animation mappings per facing direction. Circle `appearance` fields remain authoritative for collision, interaction radius, and selection ring sizing — not visual height.
 
 ### Character Sprite Rendering
 
 `CharacterSprite` renders characters as Phaser sprites backed by registry textures:
 
-- `src/rendering/characters/preloadCharacterSpritesheets.ts`: queues character textures as `load.spritesheet()` during scene preload using authored frame dimensions from character definitions
-- `src/rendering/characters/characterSpritesheet.ts`: resolves spritesheet frame dimensions from texture size and authored frame metadata, maps row/column animation coordinates to frame indices, and derives display scale from authored scale plus resolved frame height
-- `src/entities/CharacterSprite.ts`: creates a `Phaser.GameObjects.Sprite` per character from preloaded spritesheets, registers animations through Phaser's `AnimationManager` (`scene.anims.create`, `generateFrameNumbers`), and plays them via `sprite.play()` from authoritative runtime `facing` and `animation` state; uses `setFlipX()` for single-row side-view sheets; gates `setTexture` / `setScale` / `play()` so idle and walk clips keep advancing instead of resetting every sync tick
+- `src/rendering/characters/preloadCharacterSpritesheets.ts`: queues spritesheet-backed character textures as `load.spritesheet()` during scene preload using authored frame dimensions from character definitions
+- `src/rendering/characters/preloadCharsetFrames.ts`: queues charset frame directories as individual `load.image()` textures during scene preload
+- `src/rendering/characters/charsetFrames.ts`: resolves per-frame texture keys from `frameSourcePath`, facing, and frame index; provides default idle/walk animation mappings for charset frame sequences
+- `src/rendering/characters/characterSpritesheet.ts`: resolves spritesheet frame dimensions from texture size and authored frame metadata, scales sprites to fit a fixed `displayHeight` slot (`displayHeight / frameHeight`), computes label and depth offsets from `origin`, and maps row/column animation coordinates to frame indices
+- `src/entities/CharacterSprite.ts`: creates a `Phaser.GameObjects.Sprite` per character from preloaded spritesheets or charset frame textures, registers animations through Phaser's `AnimationManager` (`scene.anims.create`, `generateFrameNumbers` for spritesheets; multi-texture frame lists for charset frame sequences), and plays them via `sprite.play()` from authoritative runtime `facing` and `animation` state; uses `setFlipX()` for single-row side-view sheets; gates `setTexture` / `setScale` / `play()` so idle and walk clips keep advancing instead of resetting every sync tick; positions name labels above the top of the fixed display slot
 - `CharacterRenderer`: unchanged orchestration boundary; still mirrors authoritative `WorldRuntime` character positions each frame
 
 ### Character Animation and Facing
@@ -78,6 +81,15 @@ Facing and idle/walk selection are authoritative runtime state, not renderer log
 - `src/domain/characters/resolveCharacterFacing.ts`: derives facing from normalized `moveIntent` (dominant axis, retains last facing when idle) and resolves `idle` vs `walk` animation keys
 - `animationSystem` in `src/world/systems/animationSystem.ts`: updates `CharacterState.facing` and `CharacterState.animation` each tick after movement integration
 - `CharacterState` carries `facing` and `animation` alongside `moveIntent` and `velocity`
+
+### Player Appearance Selection
+
+The player can swap between authored charset sprites without changing entity identity:
+
+- `src/data/characters/playerAppearances.ts`: catalog of selectable charset options backed by `frameSourcePath` directories under `world/charsets/sprites/`
+- `src/rendering/characters/preloadPlayerAppearances.ts`: preloads every selectable charset frame directory during `WorldScene.preload()`
+- `applyPlayerAppearanceSystem()` in `src/domain/characters/applyPlayerAppearance.ts`: applies normalized sprite metadata to the player and updates `UiState.playerAppearanceId`
+- `WORLD_ACTION_TYPES.setPlayerAppearance`: player-controller action dispatched from the bottom selector bar in `WorldUiRenderer`
 
 ### Terrain Base Layer
 
@@ -131,13 +143,13 @@ World presentation uses Phaser `setDepth()` with explicit layer bands and foot-b
 - `TerrainRenderer`: terrain tilemap layer at `RENDER_LAYERS.terrain` (always behind world objects)
 - `PropSprite`: depth from the sprite foot using authored `origin`, scaled texture height, and `RENDER_DEPTH_PRIORITY.prop`
 - `CharacterSprite`: depth from the sprite foot using resolved frame height and display scale, with `RENDER_DEPTH_PRIORITY.character` so characters draw above props at the same foot Y
-- `WorldUiRenderer`: prompt, dialogue, and inspection panels at `RENDER_LAYERS.uiOverlay` with `setScrollFactor(0)` so camera-fixed UI stays above the world
+- `WorldUiRenderer`: prompt, dialogue, inspection, and player appearance selector panels at `RENDER_LAYERS.uiOverlay` with `setScrollFactor(0)` so camera-fixed UI stays above the world
 
 Depth rules:
 
 - Sort Y is the world-space foot of each sprite, not its container center
 - Props with bottom-center origin `(0.5, 1)` sort at their authored position; non-default origins adjust foot Y by `(1 - origin.y) * displayHeight`
-- Characters sort at `position.y + displayHeight * 0.5` because the body sprite uses center origin `(0.5, 0.5)`
+- Characters sort with the same foot-based formula as props: `position.y + displayHeight * (1 - origin.y)`
 - Selection rings and name badges live inside the character container and inherit the same depth as the body
 - World depth values stay well below the UI overlay band so prompts and panels never clip behind terrain or props
 
@@ -193,7 +205,7 @@ Current state is split as follows:
 - `buildAgentObservation()`: filtered, character-scoped perception queries for future agent controllers
 - `src/world/systems/`: deterministic simulation passes for movement, bounds, collisions, and interactions
 - `WorldRenderer`: top-level Phaser-facing renderer for the world frame and character rendering passes
-- `WorldUiRenderer` and `buildWorldUiViewModel()`: player-facing prompt, dialogue, and inspection presentation pinned to the camera via `setScrollFactor(0)`
+- `WorldUiRenderer` and `buildWorldUiViewModel()`: player-facing prompt, dialogue, inspection, and bottom-of-screen character appearance selector pinned to the camera via `setScrollFactor(0)`
 - `CharacterRenderer` and `CharacterSprite`: sprite-backed visual representation for each character with labels and selection highlighting
 - `TerrainRenderer`, `createWorldFrame()`, and `getWorldBounds()`: terrain tilemap presentation, camera background, and playfield bounds derived from the main camera viewport
 - `worldState.ts`: serializable interfaces for world bounds, entities, characters, zones, UI, and time
@@ -206,7 +218,7 @@ The shared model is intentionally plain data:
 - `WorldEntityState`: base interface for world objects with identity, position, tags, traits, zone membership, and interaction flags
 - `CharacterState`: character-specific extension with movement, dialogue, controller ownership, appearance, sprite metadata, velocity, move intent, facing, and animation
 - `ZoneState`: named world partitions with bounds and entity membership
-- `UiState`: prompt, dialogue, inspection, and selection state
+- `UiState`: prompt, dialogue, inspection, selection state, and active player appearance id
 - `WorldTimeState`: elapsed time, tick counter, and time scale
 
 Existing character definition and instance types in `src/types/character.ts` are compatibility contracts layered on top of this shared model so current gameplay code can keep moving while the broader runtime is built out.
@@ -633,6 +645,7 @@ Apply this in small steps:
 
 ### 2026-06-06
 
+- Switched charset characters to per-frame assets in `world/charsets/sprites/` via `frameSourcePath`, replacing combined spritesheet sheets that bled across uneven frame bounds
 - Added agent interaction extensions: `face`, `select`, `inspect`, and `startDialogue` actions with per-character `interaction` state, `facingSystem`, and updated agent observations
 - Added agent scheduling and safety guardrails to `AgentOrchestrator`: decision interval, per-decision action budget, pre-dispatch validation, idle fallback, and `getLastRejectedActions()`
 - Added `AgentOrchestrator` and `createCharacterAgents()` under `src/agents/orchestrator/`; `WorldScene` now delegates agent updates to `agentOrchestrator.tick(runtime)` instead of an inline loop

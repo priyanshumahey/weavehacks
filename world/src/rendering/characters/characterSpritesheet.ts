@@ -5,6 +5,8 @@ export interface SpritesheetFrameDimensions {
   frameHeight: number;
 }
 
+export const CHARACTER_DISPLAY_HEIGHT_RADIUS_MULTIPLIER = 6;
+
 export function resolveSpritesheetFrameDimensionsFromSize(
   imageWidth: number,
   imageHeight: number,
@@ -69,14 +71,23 @@ export function resolveCharacterFrameIndex(
   return Math.min(frameIndex, maxFrameIndex);
 }
 
-const SPRITE_HEIGHT_RADIUS_MULTIPLIER = 6;
+export function resolveDefaultCharacterDisplayHeight(
+  appearanceRadius: number,
+  scale: number,
+): number {
+  return appearanceRadius * CHARACTER_DISPLAY_HEIGHT_RADIUS_MULTIPLIER * scale;
+}
 
 export function resolveCharacterDisplayScale(
   resolvedFrameHeight: number,
-  appearanceRadius: number,
-  authoredScale: number,
+  displayHeight: number,
 ): number {
-  const targetHeight = appearanceRadius * SPRITE_HEIGHT_RADIUS_MULTIPLIER * authoredScale;
+  return displayHeight / resolvedFrameHeight;
+}
 
-  return targetHeight / resolvedFrameHeight;
+export function resolveCharacterSlotTopOffset(
+  displayHeight: number,
+  originY: number,
+): number {
+  return displayHeight * originY;
 }

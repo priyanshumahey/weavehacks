@@ -13,15 +13,12 @@
     "labelColor": "#f4f1de"
   },
   "sprite": {
-    "textureSourcePath": "Units/Blue Units/Pawn/Pawn_Idle.png",
-    "animationTextureSourcePaths": {
-      "walk": "Units/Blue Units/Pawn/Pawn_Run.png"
+    "frameSourcePath": "charsets/sprites/jon snow",
+    "displayHeight": 90,
+    "origin": {
+      "x": 0.5,
+      "y": 1
     },
-    "frame": {
-      "width": 32,
-      "height": 32
-    },
-    "scale": 1.25,
     "labelOffset": {
       "x": 0,
       "y": 0
