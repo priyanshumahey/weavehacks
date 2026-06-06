@@ -36,3 +36,7 @@ Use this commit format for changes in `world/`:
 `prefix(area): message`
 
 Do not include a description/body.
+
+## Verification Rule
+
+At the end of every task in `world/`, run `npm run verify` from the `world/` directory to confirm TypeScript type-checking passes. Fix any errors before considering the task complete.
