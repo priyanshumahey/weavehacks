@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import type { CharacterAgent } from "../agents/characterAgent";
 import { ScoutGreeterAgent } from "../agents/ScoutGreeterAgent";
+import { preloadWorldAssets } from "../assets/worldAssetRegistry";
 import { characterDefinitions } from "../data/characters";
 import { WorldInputController } from "../input/WorldInputController";
 import { WorldRenderer } from "../rendering/world/WorldRenderer";
@@ -21,6 +22,10 @@ export class WorldScene extends Phaser.Scene {
 
   constructor() {
     super(SCENE_KEYS.world);
+  }
+
+  preload(): void {
+    preloadWorldAssets(this);
   }
 
   create(): void {

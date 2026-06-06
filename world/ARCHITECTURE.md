@@ -34,8 +34,18 @@ This keeps boot concerns separate from scene logic and world behavior.
 
 `WorldScene` is now an orchestration scene. It wires dedicated collaborators for bounds/layout, input, runtime state, and rendering:
 
+- `preload()`: registers `world/sprites` PNG assets through the shared asset registry
 - `create()`: derives world bounds, creates the initial world state, instantiates the runtime and renderer, and binds input
 - `update()`: reads input intent, dispatches actions into the runtime, advances simulation, and asks the renderer to reflect current state
+
+### Asset Loading
+
+World art assets now have a dedicated preload and registration path:
+
+- `src/assets/worldAssetRegistry.ts`: discovers `world/sprites/**/*.png`, derives stable Phaser texture keys from sprite-relative paths, and exposes preload/lookup helpers
+- `WorldScene.preload()`: owns asset registration for the scene and queues world textures before any renderer or future sprite-backed entity tries to use them
+
+Texture consumers are expected to reference stable texture keys from the asset registry rather than hard-coded filesystem paths.
 
 ### Character Architecture
 
