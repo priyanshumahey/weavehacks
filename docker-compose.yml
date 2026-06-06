@@ -1,0 +1,54 @@
+name: got-agents
+
+services:
+  redis:
+    image: redis:8
+    container_name: got-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+    volumes:
+      - ./infra/redis/redis.conf:/usr/local/etc/redis/redis.conf:ro
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # --- Postgres 17: durable record ---
+  postgres:
+    image: postgres:17
+    container_name: got-postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: got
+      POSTGRES_PASSWORD: got
+      POSTGRES_DB: got
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U got -d got"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # --- RedisInsight: GUI at http://localhost:5540 (host "redis", port 6379) ---
+  redisinsight:
+    image: redis/redisinsight:latest
+    container_name: got-redisinsight
+    restart: unless-stopped
+    ports:
+      - "5540:5540"
+    volumes:
+      - redisinsight-data:/data
+    depends_on:
+      - redis
+
+volumes:
+  redis-data:
+  postgres-data:
+  redisinsight-data:

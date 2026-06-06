@@ -47,6 +47,18 @@ def _(Path, pd):
 
 
 @app.cell(hide_code=True)
+def _(Path):
+    import json
+
+    _EP_JSON = Path(__file__).parent.parent / "data" / "got_episodes.json"
+    episodes = {}
+    if _EP_JSON.exists():
+        for _r in json.loads(_EP_JSON.read_text("utf-8")):
+            episodes[(_r["season"], _r["episode"])] = _r
+    return (episodes,)
+
+
+@app.cell(hide_code=True)
 def _(mo):
     mo.md("""
     # Game of Thrones
@@ -206,6 +218,96 @@ def _(RED, alt, character, fdf, mo):
         justify="space-around", gap=1,
     )
     mo.vstack([mo.md(f"### {character.value.title()}"), _stats, mo.ui.altair_chart(_chart)])
+    return
+
+
+@app.cell(hide_code=True)
+def _(df, episodes, mo):
+    _seasons = sorted(df["season_num"].unique())
+    ep_season = mo.ui.dropdown(
+        options={f"Season {s}": s for s in _seasons},
+        value=f"Season {_seasons[0]}",
+        label="Season",
+    )
+    mo.vstack([mo.md("### Episode spotlight"), ep_season]) if episodes else mo.md(
+        "### Episode spotlight\n"
+        "_No `data/got_episodes.json` found — run "
+        "`uv run python scripts/scrape_episodes.py` to generate synopses._"
+    )
+    return (ep_season,)
+
+
+@app.cell(hide_code=True)
+def _(df, ep_season, episodes, mo):
+    if not episodes:
+        ep_pick = None
+        _out = mo.md("")
+    else:
+        _eps = sorted(
+            df[df["season_num"] == ep_season.value]["episode_num"].unique()
+        )
+        _labels = {}
+        for _e in _eps:
+            _meta = episodes.get((ep_season.value, int(_e)))
+            _title = _meta["title"] if _meta else "?"
+            _labels[f"E{_e:02d} \u2014 {_title}"] = int(_e)
+        ep_pick = mo.ui.dropdown(
+            options=_labels,
+            value=next(iter(_labels)),
+            label="Episode",
+        )
+        _out = ep_pick
+    _out
+    return (ep_pick,)
+
+
+@app.cell(hide_code=True)
+def _(RED, alt, ep_pick, ep_season, episodes, fdf, mo):
+    if not episodes or ep_pick is None:
+        _panel = mo.md("")
+    else:
+        _meta = episodes.get((ep_season.value, ep_pick.value)) or {}
+        _epdf = fdf[
+            (fdf["season_num"] == ep_season.value)
+            & (fdf["episode_num"] == ep_pick.value)
+        ]
+        _stats = mo.hstack(
+            [
+                mo.stat(f"{len(_epdf):,}", label="Lines"),
+                mo.stat(f"{int(_epdf['word_count'].sum()):,}", label="Words"),
+                mo.stat(f"{_epdf['Name'].nunique():,}", label="Speakers"),
+            ],
+            justify="space-around", gap=1,
+        )
+        _top = (
+            _epdf["Name"].value_counts().head(10)
+            .rename_axis("Character").reset_index(name="Lines")
+        )
+        _chart = (
+            alt.Chart(_top)
+            .mark_bar(color=RED)
+            .encode(
+                x=alt.X("Lines:Q", title="Dialogue lines"),
+                y=alt.Y("Character:N", sort="-x", title=None),
+                tooltip=["Character", "Lines"],
+            )
+            .properties(height=alt.Step(20), title="Who speaks this episode")
+        )
+        _synopsis = _meta.get("synopsis") or "_No synopsis available._"
+        _url = _meta.get("wiki_url")
+        _head = f"#### {_meta.get('title', '')}  \n"
+        _head += f"_Aired {_meta.get('release_date', '?')}"
+        if _url:
+            _head += f" \u00b7 [Wikipedia]({_url})"
+        _head += "_"
+        _panel = mo.hstack(
+            [
+                mo.vstack([mo.md(_head), mo.md(_synopsis)]),
+                mo.vstack([_stats, mo.ui.altair_chart(_chart)]),
+            ],
+            widths=[1, 1], gap=2,
+        )
+    _panel
     return
 
 

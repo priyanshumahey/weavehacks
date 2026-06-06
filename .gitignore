@@ -7,6 +7,9 @@ Docs/
 kaggle.json
 .kaggle/
 
+# Secrets / local env
+.env
+
 # Python / tooling
 __pycache__/
 *.py[cod]
