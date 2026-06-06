@@ -39,14 +39,16 @@ This keeps boot concerns separate from scene logic and world behavior.
 
 ### Character Architecture
 
-Characters are file-backed and split into three layers:
+Characters and world UI are file-backed and split into focused layers:
 
 - `src/data/characters/`: authored JSON definitions, one file per character
 - `src/domain/characters/`: normalization and validation of character definitions into a stable runtime shape
 - `src/world/`: `createWorld()` and `WorldRuntime`, the authoritative world-state layer responsible for state creation, action handling, and frame stepping
 - `src/rendering/characters/`: Phaser-facing rendering adapters such as `CharacterRenderer`
 - `src/rendering/world/`: world bounds helpers, scene frame creation, and the top-level `WorldRenderer`
+- `src/rendering/ui/`: Phaser-facing prompt, dialogue, and inspection rendering
 - `src/input/`: input readers that convert Phaser APIs into scene-level intent
+- `src/ui/`: presentation logic that derives player-facing copy from authoritative world state
 - `src/entities/`: Phaser-facing wrappers such as `CharacterSprite`
 - `src/types/`: shared TypeScript contracts for character definitions, instances, and world bounds
 
@@ -62,6 +64,7 @@ The current world is a minimal prototype scene composed of:
 - A set of character markers rendered from JSON definitions
 - Selection highlighting derived from UI state
 - A movement instruction label
+- Prompt, dialogue, and inspection panels derived from the runtime UI state
 
 ### Input Model
 
@@ -83,6 +86,7 @@ Current state is split as follows:
 - `WorldRuntime`: authoritative state mutation, action application, and per-frame simulation
 - `src/world/systems/`: deterministic simulation passes for movement, bounds, collisions, and interactions
 - `WorldRenderer`: top-level Phaser-facing renderer for the world frame and character rendering passes
+- `WorldUiRenderer` and `buildWorldUiViewModel()`: player-facing prompt, dialogue, and inspection presentation
 - `CharacterRenderer` and `CharacterSprite`: visual representation for each character
 - `createWorldFrame()` and `getWorldBounds()`: static world presentation and scene-derived bounds setup
 - `worldState.ts`: serializable interfaces for world bounds, entities, characters, zones, UI, and time
@@ -107,7 +111,7 @@ Per frame, the current runtime flow is:
 1. `WorldInputController` reads Phaser keyboard state and returns world actions for the current player.
 2. `WorldScene` forwards those actions into `WorldRuntime`.
 3. `WorldRuntime` stores move intent on the authoritative character state and runs focused systems for movement, collisions, bounds, and interactions.
-4. `WorldRenderer` reads the current runtime state and syncs Phaser display objects to it.
+4. `WorldRenderer` reads the current runtime state, syncs Phaser display objects, and projects UI state through dedicated UI renderers.
 
 ### Simulation Systems
 
