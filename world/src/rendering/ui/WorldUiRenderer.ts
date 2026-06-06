@@ -15,8 +15,11 @@ interface AppearanceOptionButton {
 export class WorldUiRenderer {
   private readonly root: HTMLDivElement;
   private readonly promptEl: HTMLDivElement;
+  private readonly dialogueStage: HTMLDivElement;
+  private readonly dialogueBackdrop: HTMLDivElement;
+  private readonly dialoguePortrait: HTMLImageElement;
   private readonly dialoguePanel: HTMLElement;
-  private readonly dialogueTitle: HTMLHeadingElement;
+  private readonly dialogueName: HTMLHeadingElement;
   private readonly dialogueBody: HTMLParagraphElement;
   private readonly inspectionPanel: HTMLElement;
   private readonly inspectionTitle: HTMLHeadingElement;
@@ -36,14 +39,36 @@ export class WorldUiRenderer {
     this.promptEl.className = "world-ui__prompt";
     this.promptEl.hidden = true;
 
+    this.dialogueStage = document.createElement("div");
+    this.dialogueStage.className = "world-ui__dialogue-stage";
+    this.dialogueStage.hidden = true;
+
+    this.dialogueBackdrop = document.createElement("div");
+    this.dialogueBackdrop.className = "world-ui__dialogue-backdrop";
+    this.dialogueBackdrop.setAttribute("aria-hidden", "true");
+
+    this.dialoguePortrait = document.createElement("img");
+    this.dialoguePortrait.className = "world-ui__dialogue-portrait";
+    this.dialoguePortrait.alt = "";
+    this.dialoguePortrait.decoding = "async";
+
     this.dialoguePanel = document.createElement("aside");
-    this.dialoguePanel.className = "world-ui__dialogue";
-    this.dialoguePanel.hidden = true;
-    this.dialogueTitle = document.createElement("h2");
-    this.dialogueTitle.className = "world-ui__dialogue-title";
+    this.dialoguePanel.className = "world-ui__dialogue-panel";
+    this.dialoguePanel.setAttribute("aria-live", "polite");
+
+    this.dialogueName = document.createElement("h2");
+    this.dialogueName.className = "world-ui__dialogue-name";
+
     this.dialogueBody = document.createElement("p");
     this.dialogueBody.className = "world-ui__dialogue-body";
-    this.dialoguePanel.append(this.dialogueTitle, this.dialogueBody);
+
+    this.dialoguePanel.append(this.dialogueName, this.dialogueBody);
+
+    const dialogueLayout = document.createElement("div");
+    dialogueLayout.className = "world-ui__dialogue-layout";
+    dialogueLayout.append(this.dialoguePortrait, this.dialoguePanel);
+
+    this.dialogueStage.append(this.dialogueBackdrop, dialogueLayout);
 
     this.inspectionPanel = document.createElement("aside");
     this.inspectionPanel.className = "world-ui__inspection";
@@ -113,7 +138,7 @@ export class WorldUiRenderer {
 
     this.root.append(
       this.promptEl,
-      this.dialoguePanel,
+      this.dialogueStage,
       this.inspectionPanel,
       selectorPanel,
     );
@@ -135,10 +160,7 @@ export class WorldUiRenderer {
     this.promptEl.textContent = viewModel.promptText ?? "";
     this.promptEl.hidden = !hasPrompt;
 
-    const hasDialogue = Boolean(viewModel.dialogueTitle && viewModel.dialogueBody);
-    this.dialogueTitle.textContent = viewModel.dialogueTitle ?? "";
-    this.dialogueBody.textContent = viewModel.dialogueBody ?? "";
-    this.dialoguePanel.hidden = !hasDialogue;
+    this.syncDialogue(viewModel.dialogue);
 
     const hasInspection = Boolean(viewModel.inspectionTitle);
     this.inspectionTitle.textContent = viewModel.inspectionTitle ?? "";
@@ -146,6 +168,34 @@ export class WorldUiRenderer {
     this.inspectionPanel.hidden = !hasInspection;
 
     this.syncPlayerAppearanceSelector(viewModel);
+  }
+
+  private syncDialogue(dialogue: WorldUiViewModel["dialogue"]): void {
+    const hasDialogue = Boolean(dialogue);
+
+    this.dialogueStage.hidden = !hasDialogue;
+    this.root.classList.toggle("world-ui--dialogue-open", hasDialogue);
+
+    if (!dialogue) {
+      this.dialoguePortrait.removeAttribute("src");
+      this.dialoguePortrait.alt = "";
+      return;
+    }
+
+    this.dialogueName.textContent = dialogue.name;
+    this.dialogueBody.textContent = dialogue.body;
+
+    const hasPortrait = Boolean(dialogue.portraitUrl);
+    this.dialoguePortrait.hidden = !hasPortrait;
+    this.dialoguePortrait.alt = dialogue.name;
+
+    if (dialogue.portraitUrl) {
+      if (this.dialoguePortrait.src !== dialogue.portraitUrl) {
+        this.dialoguePortrait.src = dialogue.portraitUrl;
+      }
+    } else {
+      this.dialoguePortrait.removeAttribute("src");
+    }
   }
 
   private syncPlayerAppearanceSelector(viewModel: WorldUiViewModel): void {

@@ -1,3 +1,7 @@
+import {
+  getCharacterPortraitUrl,
+  resolvePortraitNameFromFrameSourcePath,
+} from "../assets/characterPortraitRegistry";
 import type { WorldState } from "../world/worldState";
 import { playerAppearanceOptions } from "../data/characters/playerAppearances";
 
@@ -7,10 +11,16 @@ export interface PlayerAppearanceOptionViewModel {
   selected: boolean;
 }
 
+export interface DialogueViewModel {
+  name: string;
+  subtitle: string | null;
+  body: string;
+  portraitUrl: string | null;
+}
+
 export interface WorldUiViewModel {
   promptText: string | null;
-  dialogueTitle: string | null;
-  dialogueBody: string | null;
+  dialogue: DialogueViewModel | null;
   inspectionTitle: string | null;
   inspectionLines: string[];
   playerAppearanceOptions: PlayerAppearanceOptionViewModel[];
@@ -43,6 +53,38 @@ function getDialogueBody(character: ReturnType<typeof getCharacter>, dialogueId:
   return DIALOGUE_COPY[dialogueId] ?? `${character.name} has nothing to say right now.`;
 }
 
+function formatDialogueSubtitle(traits: string[]): string | null {
+  if (traits.length === 0) {
+    return null;
+  }
+
+  return traits.map((trait) => trait.toUpperCase()).join(" · ");
+}
+
+function buildDialogueViewModel(
+  character: ReturnType<typeof getCharacter>,
+  dialogueId: string | null,
+): DialogueViewModel | null {
+  if (!character || !dialogueId) {
+    return null;
+  }
+
+  const body = getDialogueBody(character, dialogueId);
+
+  if (!body) {
+    return null;
+  }
+
+  const portraitName = resolvePortraitNameFromFrameSourcePath(character.sprite.frameSourcePath);
+
+  return {
+    name: character.name,
+    subtitle: formatDialogueSubtitle(character.traits),
+    body,
+    portraitUrl: portraitName ? getCharacterPortraitUrl(portraitName) : null,
+  };
+}
+
 export function buildWorldUiViewModel(
   state: WorldState,
   playerAppearanceScrollOffset: number,
@@ -61,11 +103,10 @@ export function buildWorldUiViewModel(
 
   return {
     promptText: state.ui.prompt?.text ?? null,
-    dialogueTitle:
-      state.ui.dialogue?.visible && dialogueCharacter ? dialogueCharacter.name : null,
-    dialogueBody: state.ui.dialogue?.visible
-      ? getDialogueBody(dialogueCharacter, state.ui.dialogue.dialogueId)
-      : null,
+    dialogue:
+      state.ui.dialogue?.visible
+        ? buildDialogueViewModel(dialogueCharacter, state.ui.dialogue.dialogueId)
+        : null,
     inspectionTitle:
       state.ui.inspection?.visible && inspectionCharacter
         ? `Inspect: ${inspectionCharacter.name}`
