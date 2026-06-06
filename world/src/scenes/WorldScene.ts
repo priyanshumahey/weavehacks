@@ -3,6 +3,10 @@ import type { CharacterAgent } from "../agents/characterAgent";
 import { ScoutGreeterAgent } from "../agents/ScoutGreeterAgent";
 import { preloadWorldAssets } from "../assets/worldAssetRegistry";
 import { characterDefinitions } from "../data/characters";
+import {
+  collectCharacterTextureKeys,
+  preloadCharacterSpritesheets,
+} from "../rendering/characters/preloadCharacterSpritesheets";
 import { WorldInputController } from "../input/WorldInputController";
 import { WorldRenderer } from "../rendering/world/WorldRenderer";
 import { getWorldBounds } from "../rendering/world/getWorldBounds";
@@ -25,7 +29,8 @@ export class WorldScene extends Phaser.Scene {
   }
 
   preload(): void {
-    preloadWorldAssets(this);
+    preloadCharacterSpritesheets(this, characterDefinitions);
+    preloadWorldAssets(this, collectCharacterTextureKeys(characterDefinitions));
   }
 
   create(): void {

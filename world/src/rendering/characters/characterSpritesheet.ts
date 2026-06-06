@@ -5,15 +5,12 @@ export interface SpritesheetFrameDimensions {
   frameHeight: number;
 }
 
-export function resolveSpritesheetFrameDimensions(
-  texture: Phaser.Textures.Texture,
+export function resolveSpritesheetFrameDimensionsFromSize(
+  imageWidth: number,
+  imageHeight: number,
   configuredWidth: number,
   configuredHeight: number,
 ): SpritesheetFrameDimensions {
-  const source = texture.source[0];
-  const imageWidth = source.width;
-  const imageHeight = source.height;
-
   if (
     imageWidth > imageHeight &&
     imageHeight > 0 &&
@@ -44,35 +41,19 @@ export function resolveSpritesheetFrameDimensions(
   };
 }
 
-export function ensureCharacterSpritesheet(
-  scene: Phaser.Scene,
-  textureKey: string,
-  frameWidth: number,
-  frameHeight: number,
-): boolean {
-  if (!scene.textures.exists(textureKey)) {
-    return false;
-  }
+export function resolveSpritesheetFrameDimensions(
+  texture: Phaser.Textures.Texture,
+  configuredWidth: number,
+  configuredHeight: number,
+): SpritesheetFrameDimensions {
+  const source = texture.source[0];
 
-  const texture = scene.textures.get(textureKey);
-
-  if (texture.frameTotal > 1) {
-    return true;
-  }
-
-  const sourceImage = texture.source[0]?.image;
-
-  if (!(sourceImage instanceof HTMLImageElement)) {
-    return false;
-  }
-
-  scene.textures.remove(textureKey);
-  scene.textures.addSpriteSheet(textureKey, sourceImage, {
-    frameWidth,
-    frameHeight,
-  });
-
-  return scene.textures.exists(textureKey);
+  return resolveSpritesheetFrameDimensionsFromSize(
+    source.width,
+    source.height,
+    configuredWidth,
+    configuredHeight,
+  );
 }
 
 export function resolveCharacterFrameIndex(

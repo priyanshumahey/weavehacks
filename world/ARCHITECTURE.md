@@ -42,7 +42,7 @@ This keeps boot concerns separate from scene logic and world behavior.
 
 World art assets now have a dedicated preload and registration path:
 
-- `src/assets/worldAssetRegistry.ts`: discovers `world/sprites/**/*.png`, derives stable Phaser texture keys from sprite-relative paths, and exposes preload/lookup helpers
+- `src/assets/worldAssetRegistry.ts`: discovers `world/sprites/**/*.png`, derives stable Phaser texture keys from sprite-relative paths, attaches image dimensions from `spriteDimensions.json`, and exposes preload/lookup helpers
 - `WorldScene.preload()`: owns asset registration for the scene and queues world textures before any renderer or future sprite-backed entity tries to use them
 
 Texture consumers are expected to reference stable texture keys from the asset registry rather than hard-coded filesystem paths.
@@ -66,8 +66,9 @@ Normalized runtime character state always includes a complete `sprite` object wi
 
 `CharacterSprite` renders characters as Phaser sprites backed by registry textures:
 
+- `src/rendering/characters/preloadCharacterSpritesheets.ts`: queues character textures as `load.spritesheet()` during scene preload using authored frame dimensions from character definitions
 - `src/rendering/characters/characterSpritesheet.ts`: resolves spritesheet frame dimensions from texture size and authored frame metadata, maps row/column animation coordinates to frame indices, and derives display scale from authored scale plus resolved frame height
-- `src/entities/CharacterSprite.ts`: promotes registry textures into spritesheets at render time, creates a `Phaser.GameObjects.Sprite` per character, registers animations through Phaser's `AnimationManager` (`scene.anims.create`, `generateFrameNumbers`), and plays them via `sprite.play()` from authoritative runtime `facing` and `animation` state; uses `setFlipX()` for single-row side-view sheets
+- `src/entities/CharacterSprite.ts`: creates a `Phaser.GameObjects.Sprite` per character from preloaded spritesheets, registers animations through Phaser's `AnimationManager` (`scene.anims.create`, `generateFrameNumbers`), and plays them via `sprite.play()` from authoritative runtime `facing` and `animation` state; uses `setFlipX()` for single-row side-view sheets
 - `CharacterRenderer`: unchanged orchestration boundary; still mirrors authoritative `WorldRuntime` character positions each frame
 
 ### Character Animation and Facing

@@ -1,6 +1,5 @@
 import Phaser from "phaser";
 import {
-  ensureCharacterSpritesheet,
   resolveCharacterDisplayScale,
   resolveCharacterFrameIndex,
   resolveSpritesheetFrameDimensions,
@@ -97,21 +96,7 @@ export class CharacterSprite extends Phaser.GameObjects.Container {
       sprite.frame.height,
     );
 
-    if (
-      !ensureCharacterSpritesheet(
-        this.scene,
-        textureKey,
-        resolvedFrame.frameWidth,
-        resolvedFrame.frameHeight,
-      )
-    ) {
-      this.bodySprite.setTexture(textureKey);
-      this.bodySprite.setScale(sprite.scale);
-      this.bodySprite.anims.stop();
-      return;
-    }
-
-    const spritesheet = this.scene.textures.get(textureKey);
+    const spritesheet = texture;
     const presentation = this.resolvePresentationFacing(
       spritesheet,
       resolvedFrame.frameHeight,

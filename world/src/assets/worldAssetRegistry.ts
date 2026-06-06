@@ -1,4 +1,5 @@
 import type Phaser from "phaser";
+import spriteDimensions from "./spriteDimensions.json";
 
 const WORLD_TEXTURE_PREFIX = "world";
 const WORLD_SPRITE_MODULES = import.meta.glob("../../sprites/**/*.png", {
@@ -10,6 +11,8 @@ export interface WorldTextureAsset {
   readonly key: string;
   readonly sourcePath: string;
   readonly url: string;
+  readonly width: number;
+  readonly height: number;
 }
 
 function toSourcePath(modulePath: string): string {
@@ -33,15 +36,27 @@ export function deriveWorldTextureKey(sourcePath: string): string {
   return `${WORLD_TEXTURE_PREFIX}/${normalizedPath}`;
 }
 
+const spriteDimensionsBySourcePath = spriteDimensions as Record<
+  string,
+  { width: number; height: number }
+>;
+
 function buildWorldTextureAssets(): WorldTextureAsset[] {
   return Object.entries(WORLD_SPRITE_MODULES)
     .map(([modulePath, url]) => {
       const sourcePath = toSourcePath(modulePath);
+      const dimensions = spriteDimensionsBySourcePath[sourcePath];
+
+      if (!dimensions) {
+        throw new Error(`Missing sprite dimensions for ${sourcePath}`);
+      }
 
       return {
         key: deriveWorldTextureKey(sourcePath),
         sourcePath,
         url,
+        width: dimensions.width,
+        height: dimensions.height,
       };
     })
     .sort((left, right) => left.key.localeCompare(right.key));
@@ -51,15 +66,25 @@ const worldTextureAssets = buildWorldTextureAssets();
 const textureAssetBySourcePath = new Map(
   worldTextureAssets.map((asset) => [asset.sourcePath, asset]),
 );
+const textureAssetByKey = new Map(
+  worldTextureAssets.map((asset) => [asset.key, asset]),
+);
 
-export function preloadWorldAssets(scene: Phaser.Scene): void {
+export function preloadWorldAssets(
+  scene: Phaser.Scene,
+  skipKeys: ReadonlySet<string> = new Set(),
+): void {
   for (const asset of worldTextureAssets) {
-    if (scene.textures.exists(asset.key)) {
+    if (skipKeys.has(asset.key) || scene.textures.exists(asset.key)) {
       continue;
     }
 
     scene.load.image(asset.key, asset.url);
   }
+}
+
+export function getWorldTextureAssetByKey(key: string): WorldTextureAsset | undefined {
+  return textureAssetByKey.get(key);
 }
 
 export function getWorldTextureKey(sourcePath: string): string {

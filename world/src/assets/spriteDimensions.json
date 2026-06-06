@@ -1,0 +1,1642 @@
+{
+  "Buildings/Black Buildings/Archery.png": {
+    "width": 192,
+    "height": 256
+  },
+  "Buildings/Black Buildings/Barracks.png": {
+    "width": 192,
+    "height": 256
+  },
+  "Buildings/Black Buildings/Castle.png": {
+    "width": 320,
+    "height": 256
+  },
+  "Buildings/Black Buildings/House1.png": {
+    "width": 128,
+    "height": 192
+  },
+  "Buildings/Black Buildings/House2.png": {
+    "width": 128,
+    "height": 192
+  },
+  "Buildings/Black Buildings/House3.png": {
+    "width": 128,
+    "height": 192
+  },
+  "Buildings/Black Buildings/Monastery.png": {
+    "width": 192,
+    "height": 320
+  },
+  "Buildings/Black Buildings/Tower.png": {
+    "width": 128,
+    "height": 256
+  },
+  "Buildings/Blue Buildings/Archery.png": {
+    "width": 192,
+    "height": 256
+  },
+  "Buildings/Blue Buildings/Barracks.png": {
+    "width": 192,
+    "height": 256
+  },
+  "Buildings/Blue Buildings/Castle.png": {
+    "width": 320,
+    "height": 256
+  },
+  "Buildings/Blue Buildings/House1.png": {
+    "width": 128,
+    "height": 192
+  },
+  "Buildings/Blue Buildings/House2.png": {
+    "width": 128,
+    "height": 192
+  },
+  "Buildings/Blue Buildings/House3.png": {
+    "width": 128,
+    "height": 192
+  },
+  "Buildings/Blue Buildings/Monastery.png": {
+    "width": 192,
+    "height": 320
+  },
+  "Buildings/Blue Buildings/Tower.png": {
+    "width": 128,
+    "height": 256
+  },
+  "Buildings/Purple Buildings/Archery.png": {
+    "width": 192,
+    "height": 256
+  },
+  "Buildings/Purple Buildings/Barracks.png": {
+    "width": 192,
+    "height": 256
+  },
+  "Buildings/Purple Buildings/Castle.png": {
+    "width": 320,
+    "height": 256
+  },
+  "Buildings/Purple Buildings/House1.png": {
+    "width": 128,
+    "height": 192
+  },
+  "Buildings/Purple Buildings/House2.png": {
+    "width": 128,
+    "height": 192
+  },
+  "Buildings/Purple Buildings/House3.png": {
+    "width": 128,
+    "height": 192
+  },
+  "Buildings/Purple Buildings/Monastery.png": {
+    "width": 192,
+    "height": 320
+  },
+  "Buildings/Purple Buildings/Tower.png": {
+    "width": 128,
+    "height": 256
+  },
+  "Buildings/Red Buildings/Archery.png": {
+    "width": 192,
+    "height": 256
+  },
+  "Buildings/Red Buildings/Barracks.png": {
+    "width": 192,
+    "height": 256
+  },
+  "Buildings/Red Buildings/Castle.png": {
+    "width": 320,
+    "height": 256
+  },
+  "Buildings/Red Buildings/House1.png": {
+    "width": 128,
+    "height": 192
+  },
+  "Buildings/Red Buildings/House2.png": {
+    "width": 128,
+    "height": 192
+  },
+  "Buildings/Red Buildings/House3.png": {
+    "width": 128,
+    "height": 192
+  },
+  "Buildings/Red Buildings/Monastery.png": {
+    "width": 192,
+    "height": 320
+  },
+  "Buildings/Red Buildings/Tower.png": {
+    "width": 128,
+    "height": 256
+  },
+  "Buildings/Yellow Buildings/Archery.png": {
+    "width": 192,
+    "height": 256
+  },
+  "Buildings/Yellow Buildings/Barracks.png": {
+    "width": 192,
+    "height": 256
+  },
+  "Buildings/Yellow Buildings/Castle.png": {
+    "width": 320,
+    "height": 256
+  },
+  "Buildings/Yellow Buildings/House1.png": {
+    "width": 128,
+    "height": 192
+  },
+  "Buildings/Yellow Buildings/House2.png": {
+    "width": 128,
+    "height": 192
+  },
+  "Buildings/Yellow Buildings/House3.png": {
+    "width": 128,
+    "height": 192
+  },
+  "Buildings/Yellow Buildings/Monastery.png": {
+    "width": 192,
+    "height": 320
+  },
+  "Buildings/Yellow Buildings/Tower.png": {
+    "width": 128,
+    "height": 256
+  },
+  "Particle FX/Dust_01.png": {
+    "width": 512,
+    "height": 64
+  },
+  "Particle FX/Dust_02.png": {
+    "width": 640,
+    "height": 64
+  },
+  "Particle FX/Explosion_01.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Particle FX/Explosion_02.png": {
+    "width": 1920,
+    "height": 192
+  },
+  "Particle FX/Fire_01.png": {
+    "width": 512,
+    "height": 64
+  },
+  "Particle FX/Fire_02.png": {
+    "width": 640,
+    "height": 64
+  },
+  "Particle FX/Fire_03.png": {
+    "width": 768,
+    "height": 64
+  },
+  "Particle FX/Water Splash.png": {
+    "width": 1728,
+    "height": 192
+  },
+  "Terrain/Decorations/Bushes/Bushe1.png": {
+    "width": 1024,
+    "height": 128
+  },
+  "Terrain/Decorations/Bushes/Bushe2.png": {
+    "width": 1024,
+    "height": 128
+  },
+  "Terrain/Decorations/Bushes/Bushe3.png": {
+    "width": 1024,
+    "height": 128
+  },
+  "Terrain/Decorations/Bushes/Bushe4.png": {
+    "width": 1024,
+    "height": 128
+  },
+  "Terrain/Decorations/Clouds/Clouds_01.png": {
+    "width": 576,
+    "height": 256
+  },
+  "Terrain/Decorations/Clouds/Clouds_02.png": {
+    "width": 576,
+    "height": 256
+  },
+  "Terrain/Decorations/Clouds/Clouds_03.png": {
+    "width": 576,
+    "height": 256
+  },
+  "Terrain/Decorations/Clouds/Clouds_04.png": {
+    "width": 576,
+    "height": 256
+  },
+  "Terrain/Decorations/Clouds/Clouds_05.png": {
+    "width": 576,
+    "height": 256
+  },
+  "Terrain/Decorations/Clouds/Clouds_06.png": {
+    "width": 576,
+    "height": 256
+  },
+  "Terrain/Decorations/Clouds/Clouds_07.png": {
+    "width": 576,
+    "height": 256
+  },
+  "Terrain/Decorations/Clouds/Clouds_08.png": {
+    "width": 576,
+    "height": 256
+  },
+  "Terrain/Decorations/Rocks/Rock1.png": {
+    "width": 64,
+    "height": 64
+  },
+  "Terrain/Decorations/Rocks/Rock2.png": {
+    "width": 64,
+    "height": 64
+  },
+  "Terrain/Decorations/Rocks/Rock3.png": {
+    "width": 64,
+    "height": 64
+  },
+  "Terrain/Decorations/Rocks/Rock4.png": {
+    "width": 64,
+    "height": 64
+  },
+  "Terrain/Decorations/Rocks in the Water/Water Rocks_01.png": {
+    "width": 1024,
+    "height": 64
+  },
+  "Terrain/Decorations/Rocks in the Water/Water Rocks_02.png": {
+    "width": 1024,
+    "height": 64
+  },
+  "Terrain/Decorations/Rocks in the Water/Water Rocks_03.png": {
+    "width": 1024,
+    "height": 64
+  },
+  "Terrain/Decorations/Rocks in the Water/Water Rocks_04.png": {
+    "width": 1024,
+    "height": 64
+  },
+  "Terrain/Decorations/Rubber Duck/Rubber duck.png": {
+    "width": 96,
+    "height": 32
+  },
+  "Terrain/Resources/Gold/Gold Resource/Gold_Resource.png": {
+    "width": 128,
+    "height": 128
+  },
+  "Terrain/Resources/Gold/Gold Resource/Gold_Resource_Highlight.png": {
+    "width": 768,
+    "height": 128
+  },
+  "Terrain/Resources/Gold/Gold Stones/Gold Stone 1.png": {
+    "width": 128,
+    "height": 128
+  },
+  "Terrain/Resources/Gold/Gold Stones/Gold Stone 1_Highlight.png": {
+    "width": 768,
+    "height": 128
+  },
+  "Terrain/Resources/Gold/Gold Stones/Gold Stone 2.png": {
+    "width": 128,
+    "height": 128
+  },
+  "Terrain/Resources/Gold/Gold Stones/Gold Stone 2_Highlight.png": {
+    "width": 768,
+    "height": 128
+  },
+  "Terrain/Resources/Gold/Gold Stones/Gold Stone 3.png": {
+    "width": 128,
+    "height": 128
+  },
+  "Terrain/Resources/Gold/Gold Stones/Gold Stone 3_Highlight.png": {
+    "width": 768,
+    "height": 128
+  },
+  "Terrain/Resources/Gold/Gold Stones/Gold Stone 4.png": {
+    "width": 128,
+    "height": 128
+  },
+  "Terrain/Resources/Gold/Gold Stones/Gold Stone 4_Highlight.png": {
+    "width": 768,
+    "height": 128
+  },
+  "Terrain/Resources/Gold/Gold Stones/Gold Stone 5.png": {
+    "width": 128,
+    "height": 128
+  },
+  "Terrain/Resources/Gold/Gold Stones/Gold Stone 5_Highlight.png": {
+    "width": 768,
+    "height": 128
+  },
+  "Terrain/Resources/Gold/Gold Stones/Gold Stone 6.png": {
+    "width": 128,
+    "height": 128
+  },
+  "Terrain/Resources/Gold/Gold Stones/Gold Stone 6_Highlight.png": {
+    "width": 768,
+    "height": 128
+  },
+  "Terrain/Resources/Meat/Meat Resource/Meat Resource.png": {
+    "width": 64,
+    "height": 64
+  },
+  "Terrain/Resources/Meat/Sheep/Sheep_Grass.png": {
+    "width": 1536,
+    "height": 128
+  },
+  "Terrain/Resources/Meat/Sheep/Sheep_Idle.png": {
+    "width": 768,
+    "height": 128
+  },
+  "Terrain/Resources/Meat/Sheep/Sheep_Move.png": {
+    "width": 512,
+    "height": 128
+  },
+  "Terrain/Resources/Tools/Tool_01.png": {
+    "width": 64,
+    "height": 64
+  },
+  "Terrain/Resources/Tools/Tool_02.png": {
+    "width": 64,
+    "height": 64
+  },
+  "Terrain/Resources/Tools/Tool_03.png": {
+    "width": 64,
+    "height": 64
+  },
+  "Terrain/Resources/Tools/Tool_04.png": {
+    "width": 64,
+    "height": 64
+  },
+  "Terrain/Resources/Wood/Trees/Stump 1.png": {
+    "width": 192,
+    "height": 256
+  },
+  "Terrain/Resources/Wood/Trees/Stump 2.png": {
+    "width": 192,
+    "height": 256
+  },
+  "Terrain/Resources/Wood/Trees/Stump 3.png": {
+    "width": 192,
+    "height": 256
+  },
+  "Terrain/Resources/Wood/Trees/Stump 4.png": {
+    "width": 192,
+    "height": 256
+  },
+  "Terrain/Resources/Wood/Trees/Tree1.png": {
+    "width": 1536,
+    "height": 256
+  },
+  "Terrain/Resources/Wood/Trees/Tree2.png": {
+    "width": 1536,
+    "height": 256
+  },
+  "Terrain/Resources/Wood/Trees/Tree3.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Terrain/Resources/Wood/Trees/Tree4.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Terrain/Resources/Wood/Wood Resource/Wood Resource.png": {
+    "width": 64,
+    "height": 64
+  },
+  "Terrain/Tileset/Shadow.png": {
+    "width": 192,
+    "height": 192
+  },
+  "Terrain/Tileset/Tilemap_color1.png": {
+    "width": 576,
+    "height": 384
+  },
+  "Terrain/Tileset/Tilemap_color2.png": {
+    "width": 576,
+    "height": 384
+  },
+  "Terrain/Tileset/Tilemap_color3.png": {
+    "width": 576,
+    "height": 384
+  },
+  "Terrain/Tileset/Tilemap_color4.png": {
+    "width": 576,
+    "height": 384
+  },
+  "Terrain/Tileset/Tilemap_color5.png": {
+    "width": 576,
+    "height": 384
+  },
+  "Terrain/Tileset/Water Background color.png": {
+    "width": 64,
+    "height": 64
+  },
+  "Terrain/Tileset/Water Foam.png": {
+    "width": 3072,
+    "height": 192
+  },
+  "UI Elements/UI Banners from the store page/Banner/Banner.png": {
+    "width": 704,
+    "height": 512
+  },
+  "UI Elements/UI Banners from the store page/Banner/Slots.png": {
+    "width": 320,
+    "height": 320
+  },
+  "UI Elements/UI Banners from the store page/Ribbons/Ribbon_Black.png": {
+    "width": 960,
+    "height": 576
+  },
+  "UI Elements/UI Banners from the store page/Ribbons/Ribbon_Blue.png": {
+    "width": 960,
+    "height": 576
+  },
+  "UI Elements/UI Banners from the store page/Ribbons/Ribbon_Purple.png": {
+    "width": 960,
+    "height": 576
+  },
+  "UI Elements/UI Banners from the store page/Ribbons/Ribbon_Red.png": {
+    "width": 960,
+    "height": 576
+  },
+  "UI Elements/UI Banners from the store page/Ribbons/Ribbon_Yellow.png": {
+    "width": 960,
+    "height": 576
+  },
+  "UI Elements/UI Elements/Banners/Banner.png": {
+    "width": 448,
+    "height": 448
+  },
+  "UI Elements/UI Elements/Banners/Banner_Slots.png": {
+    "width": 192,
+    "height": 192
+  },
+  "UI Elements/UI Elements/Bars/BigBar_Base.png": {
+    "width": 320,
+    "height": 64
+  },
+  "UI Elements/UI Elements/Bars/BigBar_Fill.png": {
+    "width": 64,
+    "height": 64
+  },
+  "UI Elements/UI Elements/Bars/SmallBar_Base.png": {
+    "width": 320,
+    "height": 64
+  },
+  "UI Elements/UI Elements/Bars/SmallBar_Fill.png": {
+    "width": 64,
+    "height": 64
+  },
+  "UI Elements/UI Elements/Buttons/BigBlueButton_Pressed.png": {
+    "width": 320,
+    "height": 320
+  },
+  "UI Elements/UI Elements/Buttons/BigBlueButton_Regular.png": {
+    "width": 320,
+    "height": 320
+  },
+  "UI Elements/UI Elements/Buttons/BigRedButton_Pressed.png": {
+    "width": 320,
+    "height": 320
+  },
+  "UI Elements/UI Elements/Buttons/BigRedButton_Regular.png": {
+    "width": 320,
+    "height": 320
+  },
+  "UI Elements/UI Elements/Buttons/SmallBlueRoundButton_Pressed.png": {
+    "width": 128,
+    "height": 128
+  },
+  "UI Elements/UI Elements/Buttons/SmallBlueRoundButton_Regular.png": {
+    "width": 128,
+    "height": 128
+  },
+  "UI Elements/UI Elements/Buttons/SmallBlueSquareButton_Pressed.png": {
+    "width": 128,
+    "height": 128
+  },
+  "UI Elements/UI Elements/Buttons/SmallBlueSquareButton_Regular.png": {
+    "width": 128,
+    "height": 128
+  },
+  "UI Elements/UI Elements/Buttons/SmallRedRoundButton_Pressed.png": {
+    "width": 128,
+    "height": 128
+  },
+  "UI Elements/UI Elements/Buttons/SmallRedRoundButton_Regular.png": {
+    "width": 128,
+    "height": 128
+  },
+  "UI Elements/UI Elements/Buttons/SmallRedSquareButton_Pressed.png": {
+    "width": 128,
+    "height": 128
+  },
+  "UI Elements/UI Elements/Buttons/SmallRedSquareButton_Regular.png": {
+    "width": 128,
+    "height": 128
+  },
+  "UI Elements/UI Elements/Buttons/TinyRoundBlueButton.png": {
+    "width": 64,
+    "height": 64
+  },
+  "UI Elements/UI Elements/Buttons/TinyRoundRedButton.png": {
+    "width": 64,
+    "height": 64
+  },
+  "UI Elements/UI Elements/Buttons/TinySquareBlueButton.png": {
+    "width": 64,
+    "height": 64
+  },
+  "UI Elements/UI Elements/Buttons/TinySquareRedButton.png": {
+    "width": 64,
+    "height": 64
+  },
+  "UI Elements/UI Elements/Cursors/Cursor_01.png": {
+    "width": 64,
+    "height": 64
+  },
+  "UI Elements/UI Elements/Cursors/Cursor_02.png": {
+    "width": 64,
+    "height": 64
+  },
+  "UI Elements/UI Elements/Cursors/Cursor_03.png": {
+    "width": 64,
+    "height": 64
+  },
+  "UI Elements/UI Elements/Cursors/Cursor_04.png": {
+    "width": 128,
+    "height": 128
+  },
+  "UI Elements/UI Elements/Human Avatars/Avatars_01.png": {
+    "width": 256,
+    "height": 256
+  },
+  "UI Elements/UI Elements/Human Avatars/Avatars_02.png": {
+    "width": 256,
+    "height": 256
+  },
+  "UI Elements/UI Elements/Human Avatars/Avatars_03.png": {
+    "width": 256,
+    "height": 256
+  },
+  "UI Elements/UI Elements/Human Avatars/Avatars_04.png": {
+    "width": 256,
+    "height": 256
+  },
+  "UI Elements/UI Elements/Human Avatars/Avatars_05.png": {
+    "width": 256,
+    "height": 256
+  },
+  "UI Elements/UI Elements/Human Avatars/Avatars_06.png": {
+    "width": 256,
+    "height": 256
+  },
+  "UI Elements/UI Elements/Human Avatars/Avatars_07.png": {
+    "width": 256,
+    "height": 256
+  },
+  "UI Elements/UI Elements/Human Avatars/Avatars_08.png": {
+    "width": 256,
+    "height": 256
+  },
+  "UI Elements/UI Elements/Human Avatars/Avatars_09.png": {
+    "width": 256,
+    "height": 256
+  },
+  "UI Elements/UI Elements/Human Avatars/Avatars_10.png": {
+    "width": 256,
+    "height": 256
+  },
+  "UI Elements/UI Elements/Human Avatars/Avatars_11.png": {
+    "width": 256,
+    "height": 256
+  },
+  "UI Elements/UI Elements/Human Avatars/Avatars_12.png": {
+    "width": 256,
+    "height": 256
+  },
+  "UI Elements/UI Elements/Human Avatars/Avatars_13.png": {
+    "width": 256,
+    "height": 256
+  },
+  "UI Elements/UI Elements/Human Avatars/Avatars_14.png": {
+    "width": 256,
+    "height": 256
+  },
+  "UI Elements/UI Elements/Human Avatars/Avatars_15.png": {
+    "width": 256,
+    "height": 256
+  },
+  "UI Elements/UI Elements/Human Avatars/Avatars_16.png": {
+    "width": 256,
+    "height": 256
+  },
+  "UI Elements/UI Elements/Human Avatars/Avatars_17.png": {
+    "width": 256,
+    "height": 256
+  },
+  "UI Elements/UI Elements/Human Avatars/Avatars_18.png": {
+    "width": 256,
+    "height": 256
+  },
+  "UI Elements/UI Elements/Human Avatars/Avatars_19.png": {
+    "width": 256,
+    "height": 256
+  },
+  "UI Elements/UI Elements/Human Avatars/Avatars_20.png": {
+    "width": 256,
+    "height": 256
+  },
+  "UI Elements/UI Elements/Human Avatars/Avatars_21.png": {
+    "width": 256,
+    "height": 256
+  },
+  "UI Elements/UI Elements/Human Avatars/Avatars_22.png": {
+    "width": 256,
+    "height": 256
+  },
+  "UI Elements/UI Elements/Human Avatars/Avatars_23.png": {
+    "width": 256,
+    "height": 256
+  },
+  "UI Elements/UI Elements/Human Avatars/Avatars_24.png": {
+    "width": 256,
+    "height": 256
+  },
+  "UI Elements/UI Elements/Human Avatars/Avatars_25.png": {
+    "width": 256,
+    "height": 256
+  },
+  "UI Elements/UI Elements/Icons/Icon_01.png": {
+    "width": 64,
+    "height": 64
+  },
+  "UI Elements/UI Elements/Icons/Icon_02.png": {
+    "width": 64,
+    "height": 64
+  },
+  "UI Elements/UI Elements/Icons/Icon_03.png": {
+    "width": 64,
+    "height": 64
+  },
+  "UI Elements/UI Elements/Icons/Icon_04.png": {
+    "width": 64,
+    "height": 64
+  },
+  "UI Elements/UI Elements/Icons/Icon_05.png": {
+    "width": 64,
+    "height": 64
+  },
+  "UI Elements/UI Elements/Icons/Icon_06.png": {
+    "width": 64,
+    "height": 64
+  },
+  "UI Elements/UI Elements/Icons/Icon_07.png": {
+    "width": 64,
+    "height": 64
+  },
+  "UI Elements/UI Elements/Icons/Icon_08.png": {
+    "width": 64,
+    "height": 64
+  },
+  "UI Elements/UI Elements/Icons/Icon_09.png": {
+    "width": 64,
+    "height": 64
+  },
+  "UI Elements/UI Elements/Icons/Icon_10.png": {
+    "width": 64,
+    "height": 64
+  },
+  "UI Elements/UI Elements/Icons/Icon_11.png": {
+    "width": 64,
+    "height": 64
+  },
+  "UI Elements/UI Elements/Icons/Icon_12.png": {
+    "width": 64,
+    "height": 64
+  },
+  "UI Elements/UI Elements/Papers/RegularPaper.png": {
+    "width": 320,
+    "height": 320
+  },
+  "UI Elements/UI Elements/Papers/SpecialPaper.png": {
+    "width": 320,
+    "height": 320
+  },
+  "UI Elements/UI Elements/Ribbons/BigRibbons.png": {
+    "width": 448,
+    "height": 640
+  },
+  "UI Elements/UI Elements/Ribbons/SmallRibbons.png": {
+    "width": 320,
+    "height": 640
+  },
+  "UI Elements/UI Elements/Swords/Swords.png": {
+    "width": 448,
+    "height": 640
+  },
+  "UI Elements/UI Elements/Wood Table/WoodTable.png": {
+    "width": 448,
+    "height": 448
+  },
+  "UI Elements/UI Elements/Wood Table/WoodTable_Slots.png": {
+    "width": 192,
+    "height": 192
+  },
+  "Units/Black Units/Archer/Archer_Idle.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Black Units/Archer/Archer_Run.png": {
+    "width": 768,
+    "height": 192
+  },
+  "Units/Black Units/Archer/Archer_Shoot.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Black Units/Archer/Arrow.png": {
+    "width": 64,
+    "height": 64
+  },
+  "Units/Black Units/Lancer/Lancer_DownRight_Attack.png": {
+    "width": 960,
+    "height": 320
+  },
+  "Units/Black Units/Lancer/Lancer_DownRight_Defence.png": {
+    "width": 1920,
+    "height": 320
+  },
+  "Units/Black Units/Lancer/Lancer_Down_Attack.png": {
+    "width": 960,
+    "height": 320
+  },
+  "Units/Black Units/Lancer/Lancer_Down_Defence.png": {
+    "width": 1920,
+    "height": 320
+  },
+  "Units/Black Units/Lancer/Lancer_Idle.png": {
+    "width": 3840,
+    "height": 320
+  },
+  "Units/Black Units/Lancer/Lancer_Right_Attack.png": {
+    "width": 960,
+    "height": 320
+  },
+  "Units/Black Units/Lancer/Lancer_Right_Defence.png": {
+    "width": 1920,
+    "height": 320
+  },
+  "Units/Black Units/Lancer/Lancer_Run.png": {
+    "width": 1920,
+    "height": 320
+  },
+  "Units/Black Units/Lancer/Lancer_UpRight_Attack.png": {
+    "width": 960,
+    "height": 320
+  },
+  "Units/Black Units/Lancer/Lancer_UpRight_Defence.png": {
+    "width": 1920,
+    "height": 320
+  },
+  "Units/Black Units/Lancer/Lancer_Up_Attack.png": {
+    "width": 960,
+    "height": 320
+  },
+  "Units/Black Units/Lancer/Lancer_Up_Defence.png": {
+    "width": 1920,
+    "height": 320
+  },
+  "Units/Black Units/Monk/Heal.png": {
+    "width": 2112,
+    "height": 192
+  },
+  "Units/Black Units/Monk/Heal_Effect.png": {
+    "width": 2112,
+    "height": 192
+  },
+  "Units/Black Units/Monk/Idle.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Black Units/Monk/Run.png": {
+    "width": 768,
+    "height": 192
+  },
+  "Units/Black Units/Pawn/Pawn_Idle Axe.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Black Units/Pawn/Pawn_Idle Gold.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Black Units/Pawn/Pawn_Idle Hammer.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Black Units/Pawn/Pawn_Idle Knife.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Black Units/Pawn/Pawn_Idle Meat.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Black Units/Pawn/Pawn_Idle Pickaxe.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Black Units/Pawn/Pawn_Idle Wood.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Black Units/Pawn/Pawn_Idle.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Black Units/Pawn/Pawn_Interact Axe.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Black Units/Pawn/Pawn_Interact Hammer.png": {
+    "width": 576,
+    "height": 192
+  },
+  "Units/Black Units/Pawn/Pawn_Interact Knife.png": {
+    "width": 768,
+    "height": 192
+  },
+  "Units/Black Units/Pawn/Pawn_Interact Pickaxe.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Black Units/Pawn/Pawn_Run Axe.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Black Units/Pawn/Pawn_Run Gold.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Black Units/Pawn/Pawn_Run Hammer.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Black Units/Pawn/Pawn_Run Knife.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Black Units/Pawn/Pawn_Run Meat.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Black Units/Pawn/Pawn_Run Pickaxe.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Black Units/Pawn/Pawn_Run Wood.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Black Units/Pawn/Pawn_Run.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Black Units/Warrior/Warrior_Attack1.png": {
+    "width": 768,
+    "height": 192
+  },
+  "Units/Black Units/Warrior/Warrior_Attack2.png": {
+    "width": 768,
+    "height": 192
+  },
+  "Units/Black Units/Warrior/Warrior_Guard.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Black Units/Warrior/Warrior_Idle.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Black Units/Warrior/Warrior_Run.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Blue Units/Archer/Archer_Idle.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Blue Units/Archer/Archer_Run.png": {
+    "width": 768,
+    "height": 192
+  },
+  "Units/Blue Units/Archer/Archer_Shoot.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Blue Units/Archer/Arrow.png": {
+    "width": 64,
+    "height": 64
+  },
+  "Units/Blue Units/Lancer/Lancer_DownRight_Attack.png": {
+    "width": 960,
+    "height": 320
+  },
+  "Units/Blue Units/Lancer/Lancer_DownRight_Defence.png": {
+    "width": 1920,
+    "height": 320
+  },
+  "Units/Blue Units/Lancer/Lancer_Down_Attack.png": {
+    "width": 960,
+    "height": 320
+  },
+  "Units/Blue Units/Lancer/Lancer_Down_Defence.png": {
+    "width": 1920,
+    "height": 320
+  },
+  "Units/Blue Units/Lancer/Lancer_Idle.png": {
+    "width": 3840,
+    "height": 320
+  },
+  "Units/Blue Units/Lancer/Lancer_Right_Attack.png": {
+    "width": 960,
+    "height": 320
+  },
+  "Units/Blue Units/Lancer/Lancer_Right_Defence.png": {
+    "width": 1920,
+    "height": 320
+  },
+  "Units/Blue Units/Lancer/Lancer_Run.png": {
+    "width": 1920,
+    "height": 320
+  },
+  "Units/Blue Units/Lancer/Lancer_UpRight_Attack.png": {
+    "width": 960,
+    "height": 320
+  },
+  "Units/Blue Units/Lancer/Lancer_UpRight_Defence.png": {
+    "width": 1920,
+    "height": 320
+  },
+  "Units/Blue Units/Lancer/Lancer_Up_Attack.png": {
+    "width": 960,
+    "height": 320
+  },
+  "Units/Blue Units/Lancer/Lancer_Up_Defence.png": {
+    "width": 1920,
+    "height": 320
+  },
+  "Units/Blue Units/Monk/Heal.png": {
+    "width": 2112,
+    "height": 192
+  },
+  "Units/Blue Units/Monk/Heal_Effect.png": {
+    "width": 2112,
+    "height": 192
+  },
+  "Units/Blue Units/Monk/Idle.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Blue Units/Monk/Run.png": {
+    "width": 768,
+    "height": 192
+  },
+  "Units/Blue Units/Pawn/Pawn_Idle Axe.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Blue Units/Pawn/Pawn_Idle Gold.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Blue Units/Pawn/Pawn_Idle Hammer.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Blue Units/Pawn/Pawn_Idle Knife.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Blue Units/Pawn/Pawn_Idle Meat.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Blue Units/Pawn/Pawn_Idle Pickaxe.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Blue Units/Pawn/Pawn_Idle Wood.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Blue Units/Pawn/Pawn_Idle.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Blue Units/Pawn/Pawn_Interact Axe.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Blue Units/Pawn/Pawn_Interact Hammer.png": {
+    "width": 576,
+    "height": 192
+  },
+  "Units/Blue Units/Pawn/Pawn_Interact Knife.png": {
+    "width": 768,
+    "height": 192
+  },
+  "Units/Blue Units/Pawn/Pawn_Interact Pickaxe.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Blue Units/Pawn/Pawn_Run Axe.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Blue Units/Pawn/Pawn_Run Gold.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Blue Units/Pawn/Pawn_Run Hammer.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Blue Units/Pawn/Pawn_Run Knife.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Blue Units/Pawn/Pawn_Run Meat.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Blue Units/Pawn/Pawn_Run Pickaxe.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Blue Units/Pawn/Pawn_Run Wood.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Blue Units/Pawn/Pawn_Run.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Blue Units/Warrior/Warrior_Attack1.png": {
+    "width": 768,
+    "height": 192
+  },
+  "Units/Blue Units/Warrior/Warrior_Attack2.png": {
+    "width": 768,
+    "height": 192
+  },
+  "Units/Blue Units/Warrior/Warrior_Guard.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Blue Units/Warrior/Warrior_Idle.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Blue Units/Warrior/Warrior_Run.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Purple Units/Archer/Archer_Idle.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Purple Units/Archer/Archer_Run.png": {
+    "width": 768,
+    "height": 192
+  },
+  "Units/Purple Units/Archer/Archer_Shoot.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Purple Units/Archer/Arrow.png": {
+    "width": 64,
+    "height": 64
+  },
+  "Units/Purple Units/Lancer/Lancer_DownRight_Attack.png": {
+    "width": 960,
+    "height": 320
+  },
+  "Units/Purple Units/Lancer/Lancer_DownRight_Defence.png": {
+    "width": 1920,
+    "height": 320
+  },
+  "Units/Purple Units/Lancer/Lancer_Down_Attack.png": {
+    "width": 960,
+    "height": 320
+  },
+  "Units/Purple Units/Lancer/Lancer_Down_Defence.png": {
+    "width": 1920,
+    "height": 320
+  },
+  "Units/Purple Units/Lancer/Lancer_Idle.png": {
+    "width": 3840,
+    "height": 320
+  },
+  "Units/Purple Units/Lancer/Lancer_Right_Attack.png": {
+    "width": 960,
+    "height": 320
+  },
+  "Units/Purple Units/Lancer/Lancer_Right_Defence.png": {
+    "width": 1920,
+    "height": 320
+  },
+  "Units/Purple Units/Lancer/Lancer_Run.png": {
+    "width": 1920,
+    "height": 320
+  },
+  "Units/Purple Units/Lancer/Lancer_UpRight_Attack.png": {
+    "width": 960,
+    "height": 320
+  },
+  "Units/Purple Units/Lancer/Lancer_UpRight_Defence.png": {
+    "width": 1920,
+    "height": 320
+  },
+  "Units/Purple Units/Lancer/Lancer_Up_Attack.png": {
+    "width": 960,
+    "height": 320
+  },
+  "Units/Purple Units/Lancer/Lancer_Up_Defence.png": {
+    "width": 1920,
+    "height": 320
+  },
+  "Units/Purple Units/Monk/Heal.png": {
+    "width": 2112,
+    "height": 192
+  },
+  "Units/Purple Units/Monk/Heal_Effect.png": {
+    "width": 2112,
+    "height": 192
+  },
+  "Units/Purple Units/Monk/Idle.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Purple Units/Monk/Run.png": {
+    "width": 768,
+    "height": 192
+  },
+  "Units/Purple Units/Pawn/Pawn_Idle Axe.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Purple Units/Pawn/Pawn_Idle Gold.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Purple Units/Pawn/Pawn_Idle Hammer.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Purple Units/Pawn/Pawn_Idle Knife.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Purple Units/Pawn/Pawn_Idle Meat.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Purple Units/Pawn/Pawn_Idle Pickaxe.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Purple Units/Pawn/Pawn_Idle Wood.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Purple Units/Pawn/Pawn_Idle.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Purple Units/Pawn/Pawn_Interact Axe.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Purple Units/Pawn/Pawn_Interact Hammer.png": {
+    "width": 576,
+    "height": 192
+  },
+  "Units/Purple Units/Pawn/Pawn_Interact Knife.png": {
+    "width": 768,
+    "height": 192
+  },
+  "Units/Purple Units/Pawn/Pawn_Interact Pickaxe.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Purple Units/Pawn/Pawn_Run Axe.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Purple Units/Pawn/Pawn_Run Gold.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Purple Units/Pawn/Pawn_Run Hammer.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Purple Units/Pawn/Pawn_Run Knife.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Purple Units/Pawn/Pawn_Run Meat.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Purple Units/Pawn/Pawn_Run Pickaxe.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Purple Units/Pawn/Pawn_Run Wood.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Purple Units/Pawn/Pawn_Run.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Purple Units/Warrior/Warrior_Attack1.png": {
+    "width": 768,
+    "height": 192
+  },
+  "Units/Purple Units/Warrior/Warrior_Attack2.png": {
+    "width": 768,
+    "height": 192
+  },
+  "Units/Purple Units/Warrior/Warrior_Guard.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Purple Units/Warrior/Warrior_Idle.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Purple Units/Warrior/Warrior_Run.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Red Units/Archer/Archer_Idle.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Red Units/Archer/Archer_Run.png": {
+    "width": 768,
+    "height": 192
+  },
+  "Units/Red Units/Archer/Archer_Shoot.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Red Units/Archer/Arrow.png": {
+    "width": 64,
+    "height": 64
+  },
+  "Units/Red Units/Lancer/Lancer_DownRight_Attack.png": {
+    "width": 960,
+    "height": 320
+  },
+  "Units/Red Units/Lancer/Lancer_DownRight_Defence.png": {
+    "width": 1920,
+    "height": 320
+  },
+  "Units/Red Units/Lancer/Lancer_Down_Attack.png": {
+    "width": 960,
+    "height": 320
+  },
+  "Units/Red Units/Lancer/Lancer_Down_Defence.png": {
+    "width": 1920,
+    "height": 320
+  },
+  "Units/Red Units/Lancer/Lancer_Idle.png": {
+    "width": 3840,
+    "height": 320
+  },
+  "Units/Red Units/Lancer/Lancer_Right_Attack.png": {
+    "width": 960,
+    "height": 320
+  },
+  "Units/Red Units/Lancer/Lancer_Right_Defence.png": {
+    "width": 1920,
+    "height": 320
+  },
+  "Units/Red Units/Lancer/Lancer_Run.png": {
+    "width": 1920,
+    "height": 320
+  },
+  "Units/Red Units/Lancer/Lancer_UpRight_Attack.png": {
+    "width": 960,
+    "height": 320
+  },
+  "Units/Red Units/Lancer/Lancer_UpRight_Defence.png": {
+    "width": 1920,
+    "height": 320
+  },
+  "Units/Red Units/Lancer/Lancer_Up_Attack.png": {
+    "width": 960,
+    "height": 320
+  },
+  "Units/Red Units/Lancer/Lancer_Up_Defence.png": {
+    "width": 1920,
+    "height": 320
+  },
+  "Units/Red Units/Monk/Heal.png": {
+    "width": 2112,
+    "height": 192
+  },
+  "Units/Red Units/Monk/Heal_Effect.png": {
+    "width": 2112,
+    "height": 192
+  },
+  "Units/Red Units/Monk/Idle.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Red Units/Monk/Run.png": {
+    "width": 768,
+    "height": 192
+  },
+  "Units/Red Units/Pawn/Pawn_Idle Axe.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Red Units/Pawn/Pawn_Idle Gold.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Red Units/Pawn/Pawn_Idle Hammer.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Red Units/Pawn/Pawn_Idle Knife.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Red Units/Pawn/Pawn_Idle Meat.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Red Units/Pawn/Pawn_Idle Pickaxe.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Red Units/Pawn/Pawn_Idle Wood.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Red Units/Pawn/Pawn_Idle.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Red Units/Pawn/Pawn_Interact Axe.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Red Units/Pawn/Pawn_Interact Hammer.png": {
+    "width": 576,
+    "height": 192
+  },
+  "Units/Red Units/Pawn/Pawn_Interact Knife.png": {
+    "width": 768,
+    "height": 192
+  },
+  "Units/Red Units/Pawn/Pawn_Interact Pickaxe.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Red Units/Pawn/Pawn_Run Axe.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Red Units/Pawn/Pawn_Run Gold.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Red Units/Pawn/Pawn_Run Hammer.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Red Units/Pawn/Pawn_Run Knife.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Red Units/Pawn/Pawn_Run Meat.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Red Units/Pawn/Pawn_Run Pickaxe.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Red Units/Pawn/Pawn_Run Wood.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Red Units/Pawn/Pawn_Run.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Red Units/Warrior/Warrior_Attack1.png": {
+    "width": 768,
+    "height": 192
+  },
+  "Units/Red Units/Warrior/Warrior_Attack2.png": {
+    "width": 768,
+    "height": 192
+  },
+  "Units/Red Units/Warrior/Warrior_Guard.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Red Units/Warrior/Warrior_Idle.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Red Units/Warrior/Warrior_Run.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Yellow Units/Archer/Archer_Idle.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Yellow Units/Archer/Archer_Run.png": {
+    "width": 768,
+    "height": 192
+  },
+  "Units/Yellow Units/Archer/Archer_Shoot.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Yellow Units/Archer/Arrow.png": {
+    "width": 64,
+    "height": 64
+  },
+  "Units/Yellow Units/Lancer/Lancer_DownRight_Attack.png": {
+    "width": 960,
+    "height": 320
+  },
+  "Units/Yellow Units/Lancer/Lancer_DownRight_Defence.png": {
+    "width": 1920,
+    "height": 320
+  },
+  "Units/Yellow Units/Lancer/Lancer_Down_Attack.png": {
+    "width": 960,
+    "height": 320
+  },
+  "Units/Yellow Units/Lancer/Lancer_Down_Defence.png": {
+    "width": 1920,
+    "height": 320
+  },
+  "Units/Yellow Units/Lancer/Lancer_Idle.png": {
+    "width": 3840,
+    "height": 320
+  },
+  "Units/Yellow Units/Lancer/Lancer_Right_Attack.png": {
+    "width": 960,
+    "height": 320
+  },
+  "Units/Yellow Units/Lancer/Lancer_Right_Defence.png": {
+    "width": 1920,
+    "height": 320
+  },
+  "Units/Yellow Units/Lancer/Lancer_Run.png": {
+    "width": 1920,
+    "height": 320
+  },
+  "Units/Yellow Units/Lancer/Lancer_UpRight_Attack.png": {
+    "width": 960,
+    "height": 320
+  },
+  "Units/Yellow Units/Lancer/Lancer_UpRight_Defence.png": {
+    "width": 1920,
+    "height": 320
+  },
+  "Units/Yellow Units/Lancer/Lancer_Up_Attack.png": {
+    "width": 960,
+    "height": 320
+  },
+  "Units/Yellow Units/Lancer/Lancer_Up_Defence.png": {
+    "width": 1920,
+    "height": 320
+  },
+  "Units/Yellow Units/Monk/Heal.png": {
+    "width": 2112,
+    "height": 192
+  },
+  "Units/Yellow Units/Monk/Heal_Effect.png": {
+    "width": 2112,
+    "height": 192
+  },
+  "Units/Yellow Units/Monk/Idle.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Yellow Units/Monk/Run.png": {
+    "width": 768,
+    "height": 192
+  },
+  "Units/Yellow Units/Pawn/Pawn_Idle Axe.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Yellow Units/Pawn/Pawn_Idle Gold.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Yellow Units/Pawn/Pawn_Idle Hammer.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Yellow Units/Pawn/Pawn_Idle Knife.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Yellow Units/Pawn/Pawn_Idle Meat.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Yellow Units/Pawn/Pawn_Idle Pickaxe.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Yellow Units/Pawn/Pawn_Idle Wood.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Yellow Units/Pawn/Pawn_Idle.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Yellow Units/Pawn/Pawn_Interact Axe.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Yellow Units/Pawn/Pawn_Interact Hammer.png": {
+    "width": 576,
+    "height": 192
+  },
+  "Units/Yellow Units/Pawn/Pawn_Interact Knife.png": {
+    "width": 768,
+    "height": 192
+  },
+  "Units/Yellow Units/Pawn/Pawn_Interact Pickaxe.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Yellow Units/Pawn/Pawn_Run Axe.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Yellow Units/Pawn/Pawn_Run Gold.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Yellow Units/Pawn/Pawn_Run Hammer.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Yellow Units/Pawn/Pawn_Run Knife.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Yellow Units/Pawn/Pawn_Run Meat.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Yellow Units/Pawn/Pawn_Run Pickaxe.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Yellow Units/Pawn/Pawn_Run Wood.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Yellow Units/Pawn/Pawn_Run.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Yellow Units/Warrior/Warrior_Attack1.png": {
+    "width": 768,
+    "height": 192
+  },
+  "Units/Yellow Units/Warrior/Warrior_Attack2.png": {
+    "width": 768,
+    "height": 192
+  },
+  "Units/Yellow Units/Warrior/Warrior_Guard.png": {
+    "width": 1152,
+    "height": 192
+  },
+  "Units/Yellow Units/Warrior/Warrior_Idle.png": {
+    "width": 1536,
+    "height": 192
+  },
+  "Units/Yellow Units/Warrior/Warrior_Run.png": {
+    "width": 1152,
+    "height": 192
+  }
+}
