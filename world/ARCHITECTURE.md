@@ -67,7 +67,9 @@ Normalized runtime character state always includes a complete `sprite` object wi
 `CharacterSprite` now renders characters as Phaser sprites backed by registry textures instead of colored circles:
 
 - `src/rendering/characters/characterSpritesheet.ts`: resolves spritesheet frame dimensions from texture size (single-row square strips such as `192x192` cells in `1152x192` sheets) and authored frame metadata, maps row/column animation coordinates to frame indices, and derives display scale from authored scale plus resolved frame height
-- `src/entities/CharacterSprite.ts`: promotes registry textures into spritesheets at render time, creates a `Phaser.GameObjects.Sprite` per character on the idle-down frame as a static pose until animation task 19 drives facing and movement frames, and keeps name labels plus selection rings derived from runtime sprite metadata and UI state
+- `src/rendering/characters/resolveCharacterFacing.ts`: derives the current facing from normalized `moveIntent`, preserving the last facing while idle
+- `src/rendering/characters/characterSpriteAnimations.ts`: registers Phaser animations from authored sprite metadata, resolves idle vs walk texture keys, and applies playback with `sprite.play()` plus `setFlipX()` for single-row side-view sheets
+- `src/entities/CharacterSprite.ts`: promotes registry textures into spritesheets at render time, creates a `Phaser.GameObjects.Sprite` per character, drives idle/walk animation and facing from runtime movement state, and keeps name labels plus selection rings derived from runtime sprite metadata and UI state
 - `CharacterRenderer`: unchanged orchestration boundary; still mirrors authoritative `WorldRuntime` character positions each frame
 
 Rendered character positions always come from runtime state. The renderer does not write back into `WorldRuntime`.

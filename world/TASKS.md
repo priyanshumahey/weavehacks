@@ -41,7 +41,7 @@ All major `world/` engine tasks are complete.
 - 18. Sprite-Backed Character Renderer ✓
   Replace the current circle-based `CharacterSprite` rendering with Phaser image or spritesheet instances while preserving name labels, selection state, and runtime-authoritative positioning.
 
-- 19. Character Animation and Facing
+- 19. Character Animation and Facing ✓
   Drive idle and movement animations from runtime state, including choosing the correct row or animation for player and NPC movement without letting renderer logic become the source of truth.
 
 - 20. Terrain Base Layer

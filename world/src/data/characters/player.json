@@ -14,6 +14,9 @@
   },
   "sprite": {
     "textureSourcePath": "Units/Blue Units/Pawn/Pawn_Idle.png",
+    "animationTextureSourcePaths": {
+      "walk": "Units/Blue Units/Pawn/Pawn_Run.png"
+    },
     "frame": {
       "width": 32,
       "height": 32
@@ -22,20 +25,6 @@
     "labelOffset": {
       "x": 0,
       "y": 34
-    },
-    "animations": {
-      "idle": {
-        "down": { "row": 0, "column": 0, "frameRate": 6 },
-        "left": { "row": 0, "column": 0, "frameRate": 6 },
-        "right": { "row": 0, "column": 0, "frameRate": 6 },
-        "up": { "row": 0, "column": 0, "frameRate": 6 }
-      },
-      "walk": {
-        "down": { "row": 0, "column": 0, "frameRate": 8 },
-        "left": { "row": 0, "column": 0, "frameRate": 8 },
-        "right": { "row": 0, "column": 0, "frameRate": 8 },
-        "up": { "row": 0, "column": 0, "frameRate": 8 }
-      }
     }
   },
   "movement": {

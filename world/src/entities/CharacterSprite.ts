@@ -1,13 +1,21 @@
 import Phaser from "phaser";
 import {
+  applyCharacterSpritePlayback,
+  resolveCharacterSpritePlayback,
+} from "../rendering/characters/characterSpriteAnimations";
+import {
   ensureCharacterSpritesheet,
   resolveCharacterDisplayScale,
-  resolveCharacterFrameIndex,
   resolveSpritesheetFrameDimensions,
 } from "../rendering/characters/characterSpritesheet";
 import {
+  isCharacterMoving,
+  resolveCharacterFacing,
+} from "../rendering/characters/resolveCharacterFacing";
+import {
   CHARACTER_SPRITE_ANIMATION_KEYS,
   CHARACTER_SPRITE_FACING,
+  type CharacterSpriteFacing,
 } from "../types/characterSprite";
 import { CHARACTER_KINDS, type CharacterState } from "../world/worldState";
 
@@ -18,6 +26,7 @@ export class CharacterSprite extends Phaser.GameObjects.Container {
   private readonly bodySprite: Phaser.GameObjects.Sprite;
   private readonly selectionRing: Phaser.GameObjects.Arc;
   private readonly label: Phaser.GameObjects.Text;
+  private lastFacing: CharacterSpriteFacing = CHARACTER_SPRITE_FACING.down;
   readonly characterId: string;
 
   constructor(scene: Phaser.Scene, character: CharacterState) {
@@ -30,7 +39,7 @@ export class CharacterSprite extends Phaser.GameObjects.Container {
 
     this.bodySprite = scene.add.sprite(0, 0, hasTexture ? textureKey : "__MISSING");
     this.bodySprite.setOrigin(0.5, 0.5);
-    this.applyBodyFrame(character);
+    this.applyBodyAnimation(character);
 
     this.selectionRing = scene.add.circle(
       0,
@@ -58,7 +67,7 @@ export class CharacterSprite extends Phaser.GameObjects.Container {
 
   sync(character: CharacterState, isSelected = false): void {
     this.setPosition(character.position.x, character.position.y);
-    this.applyBodyFrame(character);
+    this.applyBodyAnimation(character);
     const showSelectionRing =
       isSelected && character.characterKind !== CHARACTER_KINDS.player;
 
@@ -75,36 +84,43 @@ export class CharacterSprite extends Phaser.GameObjects.Container {
     this.label.setAlpha(isSelected ? 1 : 0.9);
   }
 
-  private applyBodyFrame(character: CharacterState): void {
+  private applyBodyAnimation(character: CharacterState): void {
     const { textureKey, frame, scale } = character.sprite;
+    const animationKey = isCharacterMoving(character.moveIntent)
+      ? CHARACTER_SPRITE_ANIMATION_KEYS.walk
+      : CHARACTER_SPRITE_ANIMATION_KEYS.idle;
+
+    this.lastFacing = resolveCharacterFacing(character.moveIntent, this.lastFacing);
 
     if (!this.scene.textures.exists(textureKey)) {
       this.bodySprite.setTexture("__MISSING");
       this.bodySprite.setFrame(0);
       this.bodySprite.setScale(scale);
+      this.bodySprite.anims.stop();
       return;
     }
 
-    const texture = this.scene.textures.get(textureKey);
-    const resolvedFrame = resolveSpritesheetFrameDimensions(texture, frame.width, frame.height);
-    const spritesheetReady = ensureCharacterSpritesheet(
+    const playback = resolveCharacterSpritePlayback(
+      character.sprite,
+      animationKey,
+      this.lastFacing,
       this.scene,
-      textureKey,
+    );
+
+    if (!playback) {
+      this.bodySprite.setTexture(textureKey);
+      this.bodySprite.setScale(scale);
+      this.bodySprite.anims.stop();
+      return;
+    }
+
+    const texture = this.scene.textures.get(playback.textureKey);
+    const resolvedFrame = resolveSpritesheetFrameDimensions(texture, frame.width, frame.height);
+    ensureCharacterSpritesheet(
+      this.scene,
+      playback.textureKey,
       resolvedFrame.frameWidth,
       resolvedFrame.frameHeight,
-    );
-    const resolvedTexture = this.scene.textures.get(textureKey);
-    const idleDown =
-      character.sprite.animations[CHARACTER_SPRITE_ANIMATION_KEYS.idle]?.[
-        CHARACTER_SPRITE_FACING.down
-      ];
-    const idleRow = idleDown?.row ?? 0;
-    const idleColumn = idleDown?.column ?? 0;
-    const frameIndex = resolveCharacterFrameIndex(
-      resolvedTexture,
-      resolvedFrame.frameWidth,
-      idleRow,
-      idleColumn,
     );
     const displayScale = resolveCharacterDisplayScale(
       resolvedFrame.frameHeight,
@@ -112,7 +128,13 @@ export class CharacterSprite extends Phaser.GameObjects.Container {
       scale,
     );
 
-    this.bodySprite.setTexture(textureKey, spritesheetReady ? frameIndex : 0);
-    this.bodySprite.setScale(displayScale);
+    applyCharacterSpritePlayback(
+      this.bodySprite,
+      this.scene,
+      character.id,
+      character.sprite,
+      playback,
+      displayScale,
+    );
   }
 }

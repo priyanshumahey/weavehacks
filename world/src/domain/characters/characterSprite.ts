@@ -167,24 +167,67 @@ function normalizeAnimations(
   }, {});
 }
 
+function resolveTextureKeyFromSource(
+  characterId: string,
+  textureKey: string | undefined,
+  textureSourcePath: string | undefined,
+  fieldLabel: string,
+): string {
+  const normalizedTextureKey = textureKey?.trim();
+  const normalizedTextureSourcePath = textureSourcePath?.trim();
+
+  if (normalizedTextureKey && normalizedTextureSourcePath) {
+    throw new Error(
+      `Character "${characterId}" sprite ${fieldLabel} must define either textureKey or textureSourcePath, not both.`,
+    );
+  }
+
+  if (normalizedTextureKey) {
+    return normalizedTextureKey;
+  }
+
+  return deriveWorldTextureKey(
+    normalizedTextureSourcePath ?? defaultTextureSourcePath(characterId),
+  );
+}
+
 function resolveTextureKey(
   characterId: string,
   sprite: CharacterSpriteDefinition | undefined,
 ): string {
-  const textureKey = sprite?.textureKey?.trim();
-  const textureSourcePath = sprite?.textureSourcePath?.trim();
+  return resolveTextureKeyFromSource(
+    characterId,
+    sprite?.textureKey,
+    sprite?.textureSourcePath,
+    "texture",
+  );
+}
 
-  if (textureKey && textureSourcePath) {
-    throw new Error(
-      `Character "${characterId}" sprite must define either textureKey or textureSourcePath, not both.`,
-    );
+function normalizeAnimationTextureKeys(
+  characterId: string,
+  sprite: CharacterSpriteDefinition | undefined,
+): Partial<Record<CharacterSpriteAnimationKey, string>> | undefined {
+  const animationTextureSourcePaths = sprite?.animationTextureSourcePaths;
+
+  if (!animationTextureSourcePaths) {
+    return undefined;
   }
 
-  if (textureKey) {
-    return textureKey;
-  }
+  const animationKeys = Object.values(CHARACTER_SPRITE_ANIMATION_KEYS);
 
-  return deriveWorldTextureKey(textureSourcePath ?? defaultTextureSourcePath(characterId));
+  return animationKeys.reduce<Partial<Record<CharacterSpriteAnimationKey, string>>>(
+    (animationTextureKeys, animationKey) => {
+      const textureSourcePath = animationTextureSourcePaths[animationKey]?.trim();
+
+      if (!textureSourcePath) {
+        return animationTextureKeys;
+      }
+
+      animationTextureKeys[animationKey] = deriveWorldTextureKey(textureSourcePath);
+      return animationTextureKeys;
+    },
+    {},
+  );
 }
 
 export function normalizeCharacterSprite(
@@ -215,8 +258,13 @@ export function normalizeCharacterSprite(
     throw new Error(`Character "${characterId}" sprite scale must be a positive number.`);
   }
 
+  const animationTextureKeys = normalizeAnimationTextureKeys(characterId, sprite);
+
   return {
     textureKey: resolveTextureKey(characterId, sprite),
+    ...(animationTextureKeys && Object.keys(animationTextureKeys).length > 0
+      ? { animationTextureKeys }
+      : {}),
     frame: {
       width: frameWidth,
       height: frameHeight,

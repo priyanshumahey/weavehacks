@@ -44,6 +44,7 @@ export type CharacterSpriteAnimations = Partial<
 
 export interface CharacterSpriteMetadata {
   textureKey: string;
+  animationTextureKeys?: Partial<Record<CharacterSpriteAnimationKey, string>>;
   frame: CharacterSpriteFrameDimensions;
   scale: number;
   labelOffset: CharacterSpriteLabelOffset;
@@ -53,6 +54,9 @@ export interface CharacterSpriteMetadata {
 export interface CharacterSpriteDefinition {
   textureKey?: string;
   textureSourcePath?: string;
+  animationTextureSourcePaths?: Partial<
+    Record<CharacterSpriteAnimationKey, string>
+  >;
   frame?: {
     width?: number;
     height?: number;
