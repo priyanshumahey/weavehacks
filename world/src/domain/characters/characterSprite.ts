@@ -43,11 +43,25 @@ function defaultLabelOffset(radius: number): { x: number; y: number } {
 function defaultAnimationMapping(
   startRow: number,
   frameRate = DEFAULT_ANIMATION_FRAME_RATE,
+  startColumn = 0,
 ): CharacterSpriteAnimationMapping {
   return FACING_ORDER.reduce<CharacterSpriteAnimationMapping>((mapping, facing, index) => {
     mapping[facing] = {
       row: startRow + index,
+      column: startColumn,
       frameRate,
+      repeat: DEFAULT_ANIMATION_REPEAT,
+    };
+    return mapping;
+  }, {} as CharacterSpriteAnimationMapping);
+}
+
+function defaultIdleAnimationMapping(): CharacterSpriteAnimationMapping {
+  return FACING_ORDER.reduce<CharacterSpriteAnimationMapping>((mapping, facing) => {
+    mapping[facing] = {
+      row: 0,
+      column: 0,
+      frameRate: 6,
       repeat: DEFAULT_ANIMATION_REPEAT,
     };
     return mapping;
@@ -56,8 +70,8 @@ function defaultAnimationMapping(
 
 function defaultAnimations(): CharacterSpriteAnimations {
   return {
-    [CHARACTER_SPRITE_ANIMATION_KEYS.idle]: defaultAnimationMapping(0, 6),
-    [CHARACTER_SPRITE_ANIMATION_KEYS.walk]: defaultAnimationMapping(4, 8),
+    [CHARACTER_SPRITE_ANIMATION_KEYS.idle]: defaultIdleAnimationMapping(),
+    [CHARACTER_SPRITE_ANIMATION_KEYS.walk]: defaultAnimationMapping(0, 8),
   };
 }
 
@@ -67,8 +81,16 @@ function normalizeAnimationFrameRange(
   animationKey: CharacterSpriteAnimationKey,
   facing: CharacterSpriteFacing,
   fallbackRow: number,
+  fallbackColumn: number,
 ): CharacterSpriteAnimationFrameRange {
   const row = value?.row ?? fallbackRow;
+  const column = value?.column ?? fallbackColumn;
+
+  if (typeof column !== "number" || Number.isNaN(column) || column < 0) {
+    throw new Error(
+      `Character "${characterId}" sprite animation "${animationKey}.${facing}" column must be a non-negative number.`,
+    );
+  }
 
   if (typeof row !== "number" || Number.isNaN(row) || row < 0) {
     throw new Error(
@@ -94,6 +116,7 @@ function normalizeAnimationFrameRange(
 
   return {
     row,
+    column,
     frameRate,
     repeat,
   };
@@ -114,6 +137,7 @@ function normalizeAnimationMapping(
       animationKey,
       facing,
       fallback[facing].row ?? index,
+      fallback[facing].column ?? 0,
     );
     return mapping;
   }, {} as CharacterSpriteAnimationMapping);

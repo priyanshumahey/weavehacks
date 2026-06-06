@@ -13,7 +13,7 @@
     "labelColor": "#dce7ff"
   },
   "sprite": {
-    "textureSourcePath": "characters/scout.png",
+    "textureSourcePath": "Units/Blue Units/Archer/Archer_Idle.png",
     "frame": {
       "width": 32,
       "height": 32

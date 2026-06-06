@@ -28,6 +28,7 @@ export interface CharacterSpriteLabelOffset {
 
 export interface CharacterSpriteAnimationFrameRange {
   row: number;
+  column: number;
   frameRate: number;
   repeat: number;
 }

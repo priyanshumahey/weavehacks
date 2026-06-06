@@ -13,7 +13,7 @@
     "labelColor": "#f4f1de"
   },
   "sprite": {
-    "textureSourcePath": "characters/player.png",
+    "textureSourcePath": "Units/Blue Units/Pawn/Pawn_Idle.png",
     "frame": {
       "width": 32,
       "height": 32
@@ -25,16 +25,16 @@
     },
     "animations": {
       "idle": {
-        "down": { "row": 0, "frameRate": 6 },
-        "left": { "row": 1, "frameRate": 6 },
-        "right": { "row": 2, "frameRate": 6 },
-        "up": { "row": 3, "frameRate": 6 }
+        "down": { "row": 0, "column": 0, "frameRate": 6 },
+        "left": { "row": 0, "column": 0, "frameRate": 6 },
+        "right": { "row": 0, "column": 0, "frameRate": 6 },
+        "up": { "row": 0, "column": 0, "frameRate": 6 }
       },
       "walk": {
-        "down": { "row": 4, "frameRate": 8 },
-        "left": { "row": 5, "frameRate": 8 },
-        "right": { "row": 6, "frameRate": 8 },
-        "up": { "row": 7, "frameRate": 8 }
+        "down": { "row": 0, "column": 0, "frameRate": 8 },
+        "left": { "row": 0, "column": 0, "frameRate": 8 },
+        "right": { "row": 0, "column": 0, "frameRate": 8 },
+        "up": { "row": 0, "column": 0, "frameRate": 8 }
       }
     }
   },

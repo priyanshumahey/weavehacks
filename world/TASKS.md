@@ -38,7 +38,7 @@ All major `world/` engine tasks are complete.
 - 17. Character Sprite Metadata ✓
   Extend authored character definitions and normalized runtime types with sprite metadata such as texture key, frame dimensions, scale, label offset, and optional animation mappings.
 
-- 18. Sprite-Backed Character Renderer
+- 18. Sprite-Backed Character Renderer ✓
   Replace the current circle-based `CharacterSprite` rendering with Phaser image or spritesheet instances while preserving name labels, selection state, and runtime-authoritative positioning.
 
 - 19. Character Animation and Facing

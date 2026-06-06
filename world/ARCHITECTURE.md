@@ -60,7 +60,17 @@ Authored character JSON may declare sprite metadata with either:
 - `textureKey`: a stable registry key such as `world/characters/player`
 - `textureSourcePath`: a path relative to `world/sprites/`, normalized into the same key format at definition load time
 
-Normalized runtime character state always includes a complete `sprite` object with texture key, frame size, display scale, label offset, and optional idle/walk animation mappings per facing direction. Circle `appearance` fields remain authoritative for collision and interaction radius until sprite-backed rendering validation lands in later asset tasks.
+Normalized runtime character state always includes a complete `sprite` object with texture key, frame size, display scale, label offset, and optional idle/walk animation mappings per facing direction. Circle `appearance` fields remain authoritative for collision, interaction radius, and selection ring sizing.
+
+### Character Sprite Rendering
+
+`CharacterSprite` now renders characters as Phaser sprites backed by registry textures instead of colored circles:
+
+- `src/rendering/characters/characterSpritesheet.ts`: resolves spritesheet frame dimensions from texture size (single-row square strips such as `192x192` cells in `1152x192` sheets) and authored frame metadata, maps row/column animation coordinates to frame indices, and derives display scale from authored scale plus resolved frame height
+- `src/entities/CharacterSprite.ts`: promotes registry textures into spritesheets at render time, creates a `Phaser.GameObjects.Sprite` per character on the idle-down frame as a static pose until animation task 19 drives facing and movement frames, and keeps name labels plus selection rings derived from runtime sprite metadata and UI state
+- `CharacterRenderer`: unchanged orchestration boundary; still mirrors authoritative `WorldRuntime` character positions each frame
+
+Rendered character positions always come from runtime state. The renderer does not write back into `WorldRuntime`.
 
 ### Character Architecture
 
@@ -87,7 +97,7 @@ The current world is a minimal prototype scene composed of:
 - A solid background color
 - A bordered playfield rectangle
 - A title label
-- A set of character markers rendered from JSON definitions
+- A set of sprite-backed character markers rendered from JSON definitions
 - Selection highlighting derived from UI state
 - A movement instruction label
 - Prompt, dialogue, and inspection panels derived from the runtime UI state
@@ -114,7 +124,7 @@ Current state is split as follows:
 - `src/world/systems/`: deterministic simulation passes for movement, bounds, collisions, and interactions
 - `WorldRenderer`: top-level Phaser-facing renderer for the world frame and character rendering passes
 - `WorldUiRenderer` and `buildWorldUiViewModel()`: player-facing prompt, dialogue, and inspection presentation
-- `CharacterRenderer` and `CharacterSprite`: visual representation for each character
+- `CharacterRenderer` and `CharacterSprite`: sprite-backed visual representation for each character with labels and selection highlighting
 - `createWorldFrame()` and `getWorldBounds()`: static world presentation and scene-derived bounds setup
 - `worldState.ts`: serializable interfaces for world bounds, entities, characters, zones, UI, and time
 

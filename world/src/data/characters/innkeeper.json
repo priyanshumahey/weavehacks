@@ -13,7 +13,7 @@
     "labelColor": "#d9fff5"
   },
   "sprite": {
-    "textureSourcePath": "characters/innkeeper.png",
+    "textureSourcePath": "Units/Blue Units/Monk/Idle.png",
     "frame": {
       "width": 32,
       "height": 32
