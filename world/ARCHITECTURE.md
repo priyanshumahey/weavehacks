@@ -16,15 +16,26 @@ Rule: every architecture change in `world/` must be reflected in this file in th
 ### Entry Flow
 
 1. `world/index.html` provides the `#app` mount point.
-2. `world/src/main.ts` imports Phaser and bootstraps the game.
-3. `new Phaser.Game(config)` creates the application with a single scene: `WorldScene` from `src/scenes/WorldScene.ts`.
+2. `world/src/main.ts` imports global styles and calls `createGame()`.
+3. `world/src/game/config.ts` builds the Phaser config and registers `WorldScene` from `src/scenes/WorldScene.ts`.
+4. `world/src/game/createGame.ts` creates the `Phaser.Game` instance.
+
+### Boot Layer
+
+Startup wiring is isolated from gameplay modules:
+
+- `src/main.ts`: browser entrypoint only
+- `src/game/config.ts`: Phaser config creation and scene registration
+- `src/game/createGame.ts`: `Phaser.Game` construction
+
+This keeps boot concerns separate from scene logic and world behavior.
 
 ### Scene Structure
 
-`WorldScene` is now an orchestration scene. It owns layout and input wiring, but delegates character state and rendering to dedicated modules:
+`WorldScene` is now an orchestration scene. It wires dedicated collaborators for layout, input, runtime state, and rendering:
 
-- `create()`: builds the world frame, instantiates the character manager, and binds input
-- `update()`: converts input into movement commands and syncs runtime state back into rendered entities
+- `create()`: builds the world frame, instantiates the character manager and renderer, and binds input
+- `update()`: reads input intent, forwards movement to the runtime state layer, and asks the renderer to reflect current state
 
 ### Character Architecture
 
@@ -32,11 +43,14 @@ Characters are file-backed and split into three layers:
 
 - `src/data/characters/`: authored JSON definitions, one file per character
 - `src/domain/characters/`: normalization and validation of character definitions into a stable runtime shape
-- `src/runtime/characters/`: `CharacterManager`, the state layer responsible for character instances, lookup, movement, and sprite synchronization
+- `src/runtime/characters/`: `CharacterManager`, the state layer responsible for character instances, lookup, and movement
+- `src/rendering/characters/`: Phaser-facing rendering adapters such as `CharacterRenderer`
+- `src/rendering/world/`: scene frame and presentational world shell helpers
+- `src/input/`: input readers that convert Phaser APIs into scene-level intent
 - `src/entities/`: Phaser-facing wrappers such as `CharacterSprite`
 - `src/types/`: shared TypeScript contracts for character definitions, instances, and world bounds
 
-The scene does not treat Phaser game objects as the source of truth for character state. Runtime state lives in `CharacterManager`, and rendered entities mirror that state.
+The scene does not treat Phaser game objects as the source of truth for character state. Runtime state lives in `CharacterManager`, and rendered entities mirror that state through renderer modules.
 
 ### Rendered World
 
@@ -57,15 +71,29 @@ The current world is a minimal prototype scene composed of:
 
 ### State Model
 
-There is now a separated character state layer.
+There is now a separated character state layer and a shared world-model contract in `src/world/worldState.ts`.
 
 Current state is split as follows:
 
-- `WorldScene`: input bindings, world bounds, and scene composition
+- `WorldScene`: Phaser lifecycle only
+- `WorldInputController`: input polling and intent creation
 - `CharacterManager`: character instances and movement/state updates
-- `CharacterSprite`: visual representation for each character
+- `CharacterRenderer` and `CharacterSprite`: visual representation for each character
+- `createWorldFrame()`: static world presentation and bounds setup
+- `worldState.ts`: serializable interfaces for world bounds, entities, characters, zones, UI, and time
 
-The only scene-local mutable state required for characters is the `CharacterManager` reference and the keyboard cursor bindings.
+The only scene-local mutable state required is references to its collaborators.
+
+The shared model is intentionally plain data:
+
+- `WorldState`: top-level container for `characters`, `entities`, `zones`, `ui`, `time`, `bounds`, `playerId`, and `seed`
+- `WorldEntityState`: base interface for world objects with identity, position, tags, traits, zone membership, and interaction flags
+- `CharacterState`: character-specific extension with movement, dialogue, appearance, velocity, and move intent
+- `ZoneState`: named world partitions with bounds and entity membership
+- `UiState`: prompt, dialogue, inspection, and selection state
+- `WorldTimeState`: elapsed time, tick counter, and time scale
+
+Existing character definition and instance types in `src/types/character.ts` are compatibility contracts layered on top of this shared model so current gameplay code can keep moving while the broader runtime is built out.
 
 ## Recommended Target Architecture
 
