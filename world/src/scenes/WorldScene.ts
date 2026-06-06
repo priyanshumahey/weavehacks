@@ -1,14 +1,14 @@
 import Phaser from "phaser";
 import { characterDefinitions } from "../data/characters";
 import { WorldInputController } from "../input/WorldInputController";
-import { CharacterRenderer } from "../rendering/characters/CharacterRenderer";
-import { createWorldFrame } from "../rendering/world/createWorldFrame";
+import { WorldRenderer } from "../rendering/world/WorldRenderer";
+import { getWorldBounds } from "../rendering/world/getWorldBounds";
 import { createWorld } from "../world/createWorld";
 import { WorldRuntime } from "../world/WorldRuntime";
 
 export class WorldScene extends Phaser.Scene {
   private worldRuntime: WorldRuntime | null = null;
-  private characterRenderer: CharacterRenderer | null = null;
+  private worldRenderer: WorldRenderer | null = null;
   private inputController: WorldInputController | null = null;
 
   constructor() {
@@ -16,21 +16,19 @@ export class WorldScene extends Phaser.Scene {
   }
 
   create(): void {
-    const frame = createWorldFrame(this);
-
     const world = createWorld({
       definitions: characterDefinitions,
-      bounds: frame.bounds,
+      bounds: getWorldBounds(this),
     });
 
     this.worldRuntime = new WorldRuntime(world);
-    this.characterRenderer = new CharacterRenderer(this, this.worldRuntime);
-    this.characterRenderer.create();
+    this.worldRenderer = new WorldRenderer(this);
+    this.worldRenderer.create(this.worldRuntime.getState());
     this.inputController = new WorldInputController(this);
   }
 
   update(_time: number, delta: number): void {
-    if (!this.inputController || !this.worldRuntime || !this.characterRenderer) {
+    if (!this.inputController || !this.worldRuntime || !this.worldRenderer) {
       return;
     }
 
@@ -43,6 +41,6 @@ export class WorldScene extends Phaser.Scene {
     }
 
     this.worldRuntime.step(delta);
-    this.characterRenderer.render();
+    this.worldRenderer.render(this.worldRuntime.getState());
   }
 }

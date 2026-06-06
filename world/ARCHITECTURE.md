@@ -32,9 +32,9 @@ This keeps boot concerns separate from scene logic and world behavior.
 
 ### Scene Structure
 
-`WorldScene` is now an orchestration scene. It wires dedicated collaborators for layout, input, runtime state, and rendering:
+`WorldScene` is now an orchestration scene. It wires dedicated collaborators for bounds/layout, input, runtime state, and rendering:
 
-- `create()`: builds the world frame, creates the initial world state, instantiates the runtime and renderer, and binds input
+- `create()`: derives world bounds, creates the initial world state, instantiates the runtime and renderer, and binds input
 - `update()`: reads input intent, dispatches actions into the runtime, advances simulation, and asks the renderer to reflect current state
 
 ### Character Architecture
@@ -45,7 +45,7 @@ Characters are file-backed and split into three layers:
 - `src/domain/characters/`: normalization and validation of character definitions into a stable runtime shape
 - `src/world/`: `createWorld()` and `WorldRuntime`, the authoritative world-state layer responsible for state creation, action handling, and frame stepping
 - `src/rendering/characters/`: Phaser-facing rendering adapters such as `CharacterRenderer`
-- `src/rendering/world/`: scene frame and presentational world shell helpers
+- `src/rendering/world/`: world bounds helpers, scene frame creation, and the top-level `WorldRenderer`
 - `src/input/`: input readers that convert Phaser APIs into scene-level intent
 - `src/entities/`: Phaser-facing wrappers such as `CharacterSprite`
 - `src/types/`: shared TypeScript contracts for character definitions, instances, and world bounds
@@ -60,6 +60,7 @@ The current world is a minimal prototype scene composed of:
 - A bordered playfield rectangle
 - A title label
 - A set of character markers rendered from JSON definitions
+- Selection highlighting derived from UI state
 - A movement instruction label
 
 ### Input Model
@@ -80,8 +81,9 @@ Current state is split as follows:
 - `WorldInputController`: input polling and intent creation
 - `createWorld()`: serializable world-state construction from authored definitions
 - `WorldRuntime`: authoritative state mutation, action application, and per-frame simulation
+- `WorldRenderer`: top-level Phaser-facing renderer for the world frame and character rendering passes
 - `CharacterRenderer` and `CharacterSprite`: visual representation for each character
-- `createWorldFrame()`: static world presentation and bounds setup
+- `createWorldFrame()` and `getWorldBounds()`: static world presentation and scene-derived bounds setup
 - `worldState.ts`: serializable interfaces for world bounds, entities, characters, zones, UI, and time
 
 The only scene-local mutable state required is references to its collaborators.
@@ -104,7 +106,7 @@ Per frame, the current runtime flow is:
 1. `WorldInputController` reads Phaser keyboard state and returns world actions for the current player.
 2. `WorldScene` forwards those actions into `WorldRuntime`.
 3. `WorldRuntime` stores move intent on the authoritative character state, resolves interaction targets, advances movement and time, and clamps positions to world bounds.
-4. `CharacterRenderer` reads the current runtime state and syncs Phaser objects to it.
+4. `WorldRenderer` reads the current runtime state and syncs Phaser display objects to it.
 
 ## Recommended Target Architecture
 

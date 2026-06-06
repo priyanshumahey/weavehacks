@@ -1,25 +1,33 @@
 import type Phaser from "phaser";
 import { CharacterSprite } from "../../entities/CharacterSprite";
-import { WorldRuntime } from "../../world/WorldRuntime";
+import type { WorldState } from "../../world/worldState";
 
 export class CharacterRenderer {
   private readonly sprites = new Map<string, CharacterSprite>();
 
-  constructor(
-    private readonly scene: Phaser.Scene,
-    private readonly worldRuntime: WorldRuntime,
-  ) {}
+  constructor(private readonly scene: Phaser.Scene) {}
 
-  create(): void {
-    for (const character of Object.values(this.worldRuntime.getState().characters)) {
-      const sprite = new CharacterSprite(this.scene, character);
-      this.sprites.set(character.id, sprite);
+  render(state: WorldState): void {
+    const activeCharacterIds = new Set(Object.keys(state.characters));
+
+    for (const [characterId, sprite] of this.sprites) {
+      if (activeCharacterIds.has(characterId)) {
+        continue;
+      }
+
+      sprite.destroy();
+      this.sprites.delete(characterId);
     }
-  }
 
-  render(): void {
-    for (const character of Object.values(this.worldRuntime.getState().characters)) {
-      this.sprites.get(character.id)?.sync(character);
+    for (const character of Object.values(state.characters)) {
+      let sprite = this.sprites.get(character.id);
+
+      if (!sprite) {
+        sprite = new CharacterSprite(this.scene, character);
+        this.sprites.set(character.id, sprite);
+      }
+
+      sprite.sync(character, state.ui.selectedEntityId === character.id);
     }
   }
 }

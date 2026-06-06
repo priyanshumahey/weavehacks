@@ -30,7 +30,13 @@ export class CharacterSprite extends Phaser.GameObjects.Container {
     scene.add.existing(this);
   }
 
-  sync(character: CharacterState): void {
+  sync(character: CharacterState, isSelected = false): void {
     this.setPosition(character.position.x, character.position.y);
+    this.bodyCircle.setStrokeStyle(
+      isSelected ? 3 : 0,
+      isSelected ? 0xf6bd60 : 0x000000,
+      isSelected ? 1 : 0,
+    );
+    this.label.setAlpha(isSelected ? 1 : 0.9);
   }
 }

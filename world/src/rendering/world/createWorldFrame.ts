@@ -1,24 +1,22 @@
 import type Phaser from "phaser";
-import type { WorldBounds } from "../../types/character";
+import type { WorldBounds } from "../../world/worldState";
 
-export interface WorldFrame {
-  bounds: WorldBounds;
-}
-
-export function createWorldFrame(scene: Phaser.Scene): WorldFrame {
+export function createWorldFrame(scene: Phaser.Scene, bounds: WorldBounds): void {
   const { width, height } = scene.scale;
-  const margin = 40;
-  const bounds = {
-    minX: margin,
-    minY: margin,
-    maxX: width - margin,
-    maxY: height - margin,
-  };
+  const frameWidth = bounds.maxX - bounds.minX;
+  const frameHeight = bounds.maxY - bounds.minY;
 
   scene.cameras.main.setBackgroundColor("#10212b");
 
   scene.add
-    .rectangle(width / 2, height / 2, width - 80, height - 80, 0x193441, 1)
+    .rectangle(
+      bounds.minX + frameWidth / 2,
+      bounds.minY + frameHeight / 2,
+      frameWidth,
+      frameHeight,
+      0x193441,
+      1,
+    )
     .setStrokeStyle(4, 0x4fc3a1, 1);
 
   scene.add
@@ -41,6 +39,4 @@ export function createWorldFrame(scene: Phaser.Scene): WorldFrame {
       },
     )
     .setOrigin(0.5);
-
-  return { bounds };
 }
