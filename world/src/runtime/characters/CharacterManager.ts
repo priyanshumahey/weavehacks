@@ -1,5 +1,4 @@
 import { createCharacterInstance } from "../../domain/characters/characterDefinition";
-import { CharacterSprite } from "../../entities/CharacterSprite";
 import type {
   CharacterDefinition,
   CharacterInstance,
@@ -18,7 +17,6 @@ interface CharacterManagerOptions {
 export class CharacterManager {
   private readonly bounds: WorldBounds;
   private readonly characters = new Map<string, CharacterInstance>();
-  private readonly sprites = new Map<string, CharacterSprite>();
 
   constructor({ definitions, bounds }: CharacterManagerOptions) {
     this.bounds = bounds;
@@ -26,13 +24,6 @@ export class CharacterManager {
     for (const definition of definitions) {
       const instance = createCharacterInstance(definition);
       this.characters.set(instance.id, instance);
-    }
-  }
-
-  spawnAll(scene: Phaser.Scene): void {
-    for (const character of this.characters.values()) {
-      const sprite = new CharacterSprite(scene, character);
-      this.sprites.set(character.id, sprite);
     }
   }
 
@@ -72,15 +63,5 @@ export class CharacterManager {
       this.bounds.minY + radius,
       this.bounds.maxY - radius,
     );
-  }
-
-  syncSprites(): void {
-    for (const character of this.characters.values()) {
-      const sprite = this.sprites.get(character.id);
-
-      if (sprite) {
-        sprite.sync(character);
-      }
-    }
   }
 }
