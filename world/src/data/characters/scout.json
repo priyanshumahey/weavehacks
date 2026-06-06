@@ -2,7 +2,7 @@
   "id": "scout",
   "name": "Scout",
   "kind": "npc",
-  "controller": "script",
+  "controller": "agent",
   "position": {
     "x": 700,
     "y": 320

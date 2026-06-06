@@ -1,4 +1,6 @@
 import Phaser from "phaser";
+import type { CharacterAgent } from "../agents/characterAgent";
+import { ScoutGreeterAgent } from "../agents/ScoutGreeterAgent";
 import { characterDefinitions } from "../data/characters";
 import { WorldInputController } from "../input/WorldInputController";
 import { WorldRenderer } from "../rendering/world/WorldRenderer";
@@ -10,6 +12,7 @@ export class WorldScene extends Phaser.Scene {
   private worldRuntime: WorldRuntime | null = null;
   private worldRenderer: WorldRenderer | null = null;
   private inputController: WorldInputController | null = null;
+  private agents: CharacterAgent[] = [];
 
   constructor() {
     super("world");
@@ -25,6 +28,7 @@ export class WorldScene extends Phaser.Scene {
     this.worldRenderer = new WorldRenderer(this);
     this.worldRenderer.create(this.worldRuntime.getState());
     this.inputController = new WorldInputController(this);
+    this.agents = world.characters.scout ? [new ScoutGreeterAgent("scout")] : [];
   }
 
   update(_time: number, delta: number): void {
@@ -37,6 +41,18 @@ export class WorldScene extends Phaser.Scene {
     if (player) {
       for (const action of this.inputController.readActions(player.id)) {
         this.worldRuntime.dispatch(action, "player");
+      }
+    }
+
+    for (const agent of this.agents) {
+      const observation = this.worldRuntime.getObservation(agent.characterId);
+
+      if (!observation) {
+        continue;
+      }
+
+      for (const action of agent.decide(observation)) {
+        this.worldRuntime.dispatch(action, "agent");
       }
     }
 
