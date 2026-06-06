@@ -11,7 +11,7 @@ function createAgentForCharacter(character: CharacterState): CharacterAgent | nu
   }
 
   switch (character.id) {
-    case "scout":
+    case "arya-stark":
       return new ScoutGreeterAgent(character.id);
     default:
       return null;

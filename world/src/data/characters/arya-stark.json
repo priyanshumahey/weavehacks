@@ -1,0 +1,32 @@
+{
+  "id": "arya-stark",
+  "name": "Arya",
+  "kind": "npc",
+  "controller": "agent",
+  "position": {
+    "x": 700,
+    "y": 320
+  },
+  "appearance": {
+    "color": "#8fa6c8",
+    "radius": 16,
+    "labelColor": "#dce7ff"
+  },
+  "sprite": {
+    "frameSourcePath": "charsets/sprites/arya stark",
+    "displayHeight": 80,
+    "origin": {
+      "x": 0.5,
+      "y": 1
+    },
+    "labelOffset": {
+      "x": 0,
+      "y": 0
+    }
+  },
+  "movement": {
+    "mode": "idle"
+  },
+  "dialogueId": "arya_intro",
+  "traits": ["watchful", "quick"]
+}

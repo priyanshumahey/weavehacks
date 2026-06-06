@@ -21,8 +21,10 @@ export interface WorldUiViewModel {
 }
 
 const DIALOGUE_COPY: Record<string, string> = {
-  innkeeper_intro: "Fresh stew, warm gossip, and a guarded eye on every stranger.",
-  scout_intro: "The roads are quiet for now, but quiet roads rarely stay that way.",
+  tyrion_intro:
+    "Wine, wit, and wary guests. I drink and I know things — especially about strangers.",
+  arya_intro:
+    "Quiet roads don't stay quiet. Stick to the shadows if you want to keep your head.",
 };
 
 function getCharacter(state: WorldState, entityId: string | null) {

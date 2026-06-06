@@ -1,0 +1,32 @@
+{
+  "id": "tyrion-lannister",
+  "name": "Tyrion",
+  "kind": "npc",
+  "controller": "script",
+  "position": {
+    "x": 280,
+    "y": 220
+  },
+  "appearance": {
+    "color": "#c9a227",
+    "radius": 18,
+    "labelColor": "#f4e4bc"
+  },
+  "sprite": {
+    "frameSourcePath": "charsets/sprites/tyrion lannister",
+    "displayHeight": 75,
+    "origin": {
+      "x": 0.5,
+      "y": 1
+    },
+    "labelOffset": {
+      "x": 0,
+      "y": 0
+    }
+  },
+  "movement": {
+    "mode": "idle"
+  },
+  "dialogueId": "tyrion_intro",
+  "traits": ["witty", "merchant"]
+}
