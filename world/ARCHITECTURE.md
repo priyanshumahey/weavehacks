@@ -253,6 +253,11 @@ src/agents/
     validateAgentAction.ts
   ScoutGreeterAgent.ts
   ...
+src/domain/characters/
+  resolveFacingToward.ts
+src/world/systems/
+  facingSystem.ts
+  ...
 ```
 
 #### Orchestrator integration
@@ -273,6 +278,19 @@ Guardrails live entirely in `src/agents/orchestrator/`:
 - **Dispatch gate**: failed `WorldRuntime.dispatch()` calls are recorded as `dispatch_rejected`
 - **Fallback**: on `decide()` throw or when every action is rejected, the orchestrator can dispatch an idle `move` intent (`{ x: 0, y: 0 }`) so agents do not stall with stale intent
 - **Rejection surface**: `getLastRejectedActions()` exposes the latest tick's rejected commands for future debug tooling (task 15)
+
+#### Interaction extensions (task 14)
+
+Shared `WorldAction` types and handlers in `src/world/`:
+
+- `face`: set explicit `CharacterState.facing` from a facing direction or `targetEntityId` (`facingSystem.applyFaceAction`)
+- `select`: set per-character `interaction.selectedEntityId` when a target is in range
+- `inspect`: set `interaction.inspectedEntityId` and selection when a target is in range
+- `startDialogue`: set `interaction.dialogueEntityId` when a character target has `dialogueId` and is in range
+
+Per-character `CharacterState.interaction` holds agent/script focus separately from player-facing `state.ui`. `syncCharacterInteractionSystem()` clears stale selections when targets move out of range. Agent observations read interaction state from the observer character, not global UI.
+
+`ScoutGreeterAgent` demonstrates the extended action flow: approach the player, face toward them, select/inspect, and start dialogue when in range.
 
 ### Runtime Flow
 
@@ -615,6 +633,7 @@ Apply this in small steps:
 
 ### 2026-06-06
 
+- Added agent interaction extensions: `face`, `select`, `inspect`, and `startDialogue` actions with per-character `interaction` state, `facingSystem`, and updated agent observations
 - Added agent scheduling and safety guardrails to `AgentOrchestrator`: decision interval, per-decision action budget, pre-dispatch validation, idle fallback, and `getLastRejectedActions()`
 - Added `AgentOrchestrator` and `createCharacterAgents()` under `src/agents/orchestrator/`; `WorldScene` now delegates agent updates to `agentOrchestrator.tick(runtime)` instead of an inline loop
 - Documented agent interface separation constraints: orchestration in `src/agents/orchestrator/`, no agent logic in scenes, input, or simulation systems; shared boundary is `WorldAction` dispatch only

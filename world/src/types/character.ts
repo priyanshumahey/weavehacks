@@ -1,4 +1,5 @@
 import type {
+  CharacterInteractionState,
   CharacterKind,
   CharacterControllerType,
   CharacterMovementMode,
@@ -78,6 +79,7 @@ export interface CharacterInstance
   moveIntent: Vector2;
   facing: CharacterSpriteFacing;
   animation: CharacterSpriteAnimationKey;
+  interaction: CharacterInteractionState;
   kind: CharacterKind;
   x: number;
   y: number;

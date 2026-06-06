@@ -61,6 +61,18 @@ export interface CharacterMovementState {
   speed: number;
 }
 
+export const EMPTY_CHARACTER_INTERACTION = {
+  selectedEntityId: null,
+  inspectedEntityId: null,
+  dialogueEntityId: null,
+} as const;
+
+export interface CharacterInteractionState {
+  selectedEntityId: string | null;
+  inspectedEntityId: string | null;
+  dialogueEntityId: string | null;
+}
+
 export interface WorldEntityState {
   id: string;
   kind: EntityKind;
@@ -95,6 +107,7 @@ export interface CharacterState extends WorldEntityState {
   facing: CharacterSpriteFacing;
   animation: CharacterSpriteAnimationKey;
   dialogueId: string | null;
+  interaction: CharacterInteractionState;
 }
 
 export interface ZoneState {

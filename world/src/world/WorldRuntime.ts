@@ -12,8 +12,13 @@ import type { MovementIntent, WorldAction } from "./worldActions";
 import { WORLD_ACTION_TYPES } from "./worldActions";
 import { boundsSystem } from "./systems/boundsSystem";
 import { collisionSystem } from "./systems/collisionSystem";
+import { applyFaceAction } from "./systems/facingSystem";
 import {
   attemptInteractionSystem,
+  inspectTargetSystem,
+  selectTargetSystem,
+  startDialogueSystem,
+  syncCharacterInteractionSystem,
   syncInteractionSystem,
 } from "./systems/interactionSystem";
 import { animationSystem } from "./systems/animationSystem";
@@ -47,13 +52,24 @@ export class WorldRuntime {
     switch (action.type) {
       case WORLD_ACTION_TYPES.move:
         this.applyMoveIntent(action.entityId, action.intent);
-        break;
+        return true;
       case WORLD_ACTION_TYPES.interact:
         attemptInteractionSystem(this.state, action.entityId);
-        break;
+        return true;
+      case WORLD_ACTION_TYPES.face:
+        return applyFaceAction(this.state, action.entityId, {
+          facing: action.facing,
+          targetEntityId: action.targetEntityId,
+        });
+      case WORLD_ACTION_TYPES.select:
+        return selectTargetSystem(this.state, action.entityId, action.targetEntityId);
+      case WORLD_ACTION_TYPES.inspect:
+        return inspectTargetSystem(this.state, action.entityId, action.targetEntityId);
+      case WORLD_ACTION_TYPES.startDialogue:
+        return startDialogueSystem(this.state, action.entityId, action.targetEntityId);
+      default:
+        return false;
     }
-
-    return true;
   }
 
   step(deltaMs: number): void {
@@ -63,6 +79,7 @@ export class WorldRuntime {
     animationSystem(this.state);
     collisionSystem(this.state);
     boundsSystem(this.state);
+    syncCharacterInteractionSystem(this.state);
     syncInteractionSystem(this.state);
 
     this.state.time.elapsedMs += scaledDeltaMs;

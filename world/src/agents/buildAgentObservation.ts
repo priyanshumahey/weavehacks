@@ -1,4 +1,8 @@
-import { findNearestInteractableCharacter } from "../world/systems/interactionSystem";
+import {
+  findNearestInteractableCharacter,
+  resolveInteractionTarget,
+} from "../world/systems/interactionSystem";
+import type { CharacterSpriteFacing } from "../types/characterSprite";
 import type {
   CharacterState,
   DialoguePanelState,
@@ -10,6 +14,7 @@ import type {
   WorldTimeState,
   ZoneState,
 } from "../world/worldState";
+import { ENTITY_KINDS } from "../world/worldState";
 
 const DEFAULT_PERCEPTION_RADIUS = 180;
 
@@ -34,6 +39,7 @@ export interface AgentCharacterObservation {
     x: number;
     y: number;
   };
+  facing: CharacterSpriteFacing;
   zoneId: string | null;
   dialogueId: string | null;
   traits: readonly string[];
@@ -64,6 +70,7 @@ export interface NearbyEntityObservation {
 
 export interface AgentInteractionObservation {
   target: NearbyCharacterObservation | null;
+  focus: NearbyCharacterObservation | NearbyEntityObservation | null;
   prompt: UiPromptState | null;
   selectedEntityId: string | null;
 }
@@ -180,6 +187,7 @@ function createCharacterObservation(character: CharacterState): AgentCharacterOb
       x: character.moveIntent.x,
       y: character.moveIntent.y,
     }),
+    facing: character.facing,
     zoneId: character.zoneId,
     dialogueId: character.dialogueId,
     traits: Object.freeze([...character.traits]),
@@ -220,32 +228,67 @@ function createNearbyEntityObservation(
   });
 }
 
-function isRelevantDialogue(
+function createFocusedObservation(
   state: WorldState,
   observer: CharacterState,
-  activeTarget: CharacterState | null,
-): boolean {
-  const dialogue = state.ui.dialogue;
+): NearbyCharacterObservation | NearbyEntityObservation | null {
+  const focusedEntityId = observer.interaction.selectedEntityId;
 
-  if (!dialogue?.visible) {
-    return false;
+  if (!focusedEntityId) {
+    return null;
   }
 
-  return dialogue.entityId === observer.id || dialogue.entityId === activeTarget?.id;
+  const focusedCharacter = state.characters[focusedEntityId];
+
+  if (focusedCharacter) {
+    return createNearbyCharacterObservation(observer, focusedCharacter);
+  }
+
+  const focusedEntity = state.entities[focusedEntityId];
+
+  if (!focusedEntity) {
+    return null;
+  }
+
+  return createNearbyEntityObservation(observer, focusedEntity);
 }
 
-function isRelevantInspection(
+function createDialogueObservation(
   state: WorldState,
   observer: CharacterState,
-  activeTarget: CharacterState | null,
-): boolean {
-  const inspection = state.ui.inspection;
+): DialoguePanelState | null {
+  const dialogueEntityId = observer.interaction.dialogueEntityId;
 
-  if (!inspection?.visible) {
-    return false;
+  if (!dialogueEntityId) {
+    return null;
   }
 
-  return inspection.entityId === observer.id || inspection.entityId === activeTarget?.id;
+  const target = state.characters[dialogueEntityId];
+
+  if (!target?.dialogueId) {
+    return null;
+  }
+
+  return Object.freeze({
+    entityId: target.id,
+    dialogueId: target.dialogueId,
+    visible: true,
+  });
+}
+
+function createInspectionObservation(
+  observer: CharacterState,
+): InspectionState | null {
+  const inspectedEntityId = observer.interaction.inspectedEntityId;
+
+  if (!inspectedEntityId) {
+    return null;
+  }
+
+  return Object.freeze({
+    entityId: inspectedEntityId,
+    visible: true,
+  });
 }
 
 export function buildAgentObservation(
@@ -277,12 +320,25 @@ export function buildAgentObservation(
       .sort((first, second) => first.distance - second.distance),
   );
 
-  const prompt =
-    state.ui.prompt?.entityId === activeTarget?.id ? clonePrompt(state.ui.prompt) : null;
+  const focus = createFocusedObservation(state, observer);
+  const focusedTarget = observer.interaction.selectedEntityId
+    ? resolveInteractionTarget(state, observer.id, observer.interaction.selectedEntityId)
+    : null;
 
-  const selectedEntityId =
-    state.ui.selectedEntityId === observer.id || state.ui.selectedEntityId === activeTarget?.id
-      ? state.ui.selectedEntityId
+  const prompt = focusedTarget
+    ? clonePrompt({
+        entityId: focusedTarget.id,
+        text:
+          focusedTarget.kind === ENTITY_KINDS.character &&
+          state.characters[focusedTarget.id]?.dialogueId
+            ? `Talk to ${focusedTarget.name}`
+            : `Inspect ${focusedTarget.name}`,
+      })
+    : activeTarget
+      ? clonePrompt({
+          entityId: activeTarget.id,
+          text: `Talk to ${activeTarget.name}`,
+        })
       : null;
 
   return Object.freeze({
@@ -291,15 +347,12 @@ export function buildAgentObservation(
     nearbyEntities,
     activeInteraction: Object.freeze({
       target: activeTarget ? createNearbyCharacterObservation(observer, activeTarget) : null,
+      focus,
       prompt,
-      selectedEntityId,
+      selectedEntityId: observer.interaction.selectedEntityId,
     }),
-    dialogue: isRelevantDialogue(state, observer, activeTarget)
-      ? cloneDialogue(state.ui.dialogue)
-      : null,
-    inspection: isRelevantInspection(state, observer, activeTarget)
-      ? cloneInspection(state.ui.inspection)
-      : null,
+    dialogue: cloneDialogue(createDialogueObservation(state, observer)),
+    inspection: cloneInspection(createInspectionObservation(observer)),
     zone: cloneZone(observer.zoneId ? state.zones[observer.zoneId] ?? null : null),
     bounds: cloneBounds(state.bounds),
     time: cloneTime(state.time),

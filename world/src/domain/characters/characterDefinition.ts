@@ -10,6 +10,7 @@ import {
   CHARACTER_CONTROLLER_TYPES,
   CHARACTER_KINDS,
   CHARACTER_MOVEMENT_MODES,
+  EMPTY_CHARACTER_INTERACTION,
   ENTITY_KINDS,
 } from "../../world/worldState";
 import {
@@ -148,6 +149,7 @@ export function createCharacterInstance(definition: CharacterDefinition): Charac
     },
     facing: CHARACTER_SPRITE_FACING.down,
     animation: CHARACTER_SPRITE_ANIMATION_KEYS.idle,
+    interaction: { ...EMPTY_CHARACTER_INTERACTION },
     x: normalized.position.x,
     y: normalized.position.y,
   };
