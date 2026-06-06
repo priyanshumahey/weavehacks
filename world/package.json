@@ -1,0 +1,19 @@
+{
+  "name": "weavehacks-world",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "typecheck": "tsc --noEmit",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "phaser": "^3.90.0"
+  },
+  "devDependencies": {
+    "typescript": "^6.0.3",
+    "vite": "^7.1.12"
+  }
+}
