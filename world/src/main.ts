@@ -1,5 +1,6 @@
 import "./style.css";
 import { createGame } from "./game/createGame";
+import { loadDefaultEnsemble } from "./replay/ensembleSource";
 import { SceneSetupPanel } from "./replay/SceneSetupPanel";
 import { REPLAY_SCENE_KEY } from "./scenes/ReplayScene";
 
@@ -7,8 +8,9 @@ const game = createGame();
 
 // A persistent scene-setup overlay (outside the Phaser scene lifecycle, so it
 // survives restarts). Staging a scene restarts the replay scene with the fresh
-// ensemble the backend returns.
+// ensemble; map location is applied client-side from the setup panel.
 const setupPanel = new SceneSetupPanel();
+setupPanel.seedEnsemble(loadDefaultEnsemble());
 setupPanel.setOnStage((ensemble) => {
   const replayScene = game.scene.getScene(REPLAY_SCENE_KEY);
   if (replayScene) {

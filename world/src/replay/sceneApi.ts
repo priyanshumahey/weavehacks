@@ -38,7 +38,6 @@ export interface SceneRequest {
   setting: string;
   stakes: string;
   episode: string;
-  location: string;
   maxRounds: number;
 }
 
@@ -46,7 +45,6 @@ export interface EpisodeRequest {
   premise: string;
   castPool: string[];
   episode: string;
-  location: string;
   maxGroups: number;
   maxRounds: number;
 }
@@ -97,7 +95,6 @@ export async function stageScene(request: SceneRequest): Promise<EnsembleReplay>
       setting: request.setting,
       stakes: request.stakes,
       episode: request.episode,
-      location: request.location,
       max_rounds: request.maxRounds,
     }),
   });
@@ -115,7 +112,6 @@ export async function directEpisode(request: EpisodeRequest): Promise<EnsembleRe
       premise: request.premise,
       cast_pool: request.castPool,
       episode: request.episode,
-      location: request.location,
       max_groups: request.maxGroups,
       max_rounds: request.maxRounds,
     }),

@@ -23,14 +23,23 @@ export class ReplayRenderer {
     this.characterRenderer = new CharacterRenderer(scene);
   }
 
-  create(state: WorldState): void {
+  create(state: WorldState, locationId: string): void {
+    this.terrainRenderer.create(locationId);
     if (!this.hasCreatedFrame) {
-      this.terrainRenderer.create();
       createWorldFrame(this.scene);
       this.hasCreatedFrame = true;
     }
     this.characterRenderer.render(state);
     this.renderNames(state);
+  }
+
+  destroy(): void {
+    this.terrainRenderer.clear();
+    for (const label of this.nameLabels.values()) {
+      label.destroy();
+    }
+    this.nameLabels.clear();
+    this.hasCreatedFrame = false;
   }
 
   render(state: WorldState): void {

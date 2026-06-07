@@ -7,7 +7,10 @@ import {
   getLocationById,
   winterfellWorldLayout,
 } from "../data/locations/winterfellWorldLayout";
-import { getLocationBounds } from "../rendering/world/locationBounds";
+import {
+  getLocalLocationBounds,
+  getLocationBounds,
+} from "../rendering/world/locationBounds";
 import type { CharacterDefinition, WorldBounds } from "../types/character";
 import {
   CHARACTER_CONTROLLER_TYPES,
@@ -67,7 +70,20 @@ export interface EnsembleStaging {
   groupIdByCharacter: Map<string, string>;
 }
 
-function resolveGroupBounds(group: EnsembleGroup): WorldBounds {
+interface StagingOptions {
+  /** Pin every group to one map with coordinates starting at (0, 0). */
+  localizeToLocationId?: string;
+}
+
+function resolveGroupBounds(group: EnsembleGroup, options?: StagingOptions): WorldBounds {
+  if (options?.localizeToLocationId) {
+    const location = getLocationById(options.localizeToLocationId);
+    if (!location) {
+      throw new Error(`Unknown ensemble group location: ${options.localizeToLocationId}`);
+    }
+    return getLocalLocationBounds(location);
+  }
+
   const locationId = group.locationId ?? winterfellWorldLayout.defaultLocationId;
   const location = getLocationById(locationId);
 
@@ -78,8 +94,8 @@ function resolveGroupBounds(group: EnsembleGroup): WorldBounds {
   return getLocationBounds(location);
 }
 
-function groupCentre(group: EnsembleGroup): { x: number; y: number } {
-  const bounds = resolveGroupBounds(group);
+function groupCentre(group: EnsembleGroup, options?: StagingOptions): { x: number; y: number } {
+  const bounds = resolveGroupBounds(group, options);
 
   return {
     x: bounds.minX + group.anchor.x * (bounds.maxX - bounds.minX),
@@ -103,15 +119,18 @@ function ringHome(
   };
 }
 
-export function buildEnsembleStaging(replay: EnsembleReplay): EnsembleStaging {
+export function buildEnsembleStaging(
+  replay: EnsembleReplay,
+  options?: StagingOptions,
+): EnsembleStaging {
   const definitions: CharacterDefinition[] = [];
   const layouts = new Map<string, GroupLayout>();
   const groupIdByCharacter = new Map<string, string>();
 
   for (const group of replay.groups) {
-    const centre = groupCentre(group);
+    const centre = groupCentre(group, options);
     const radius = ringRadius(group.mood, group.cast.length);
-    const bounds = resolveGroupBounds(group);
+    const bounds = resolveGroupBounds(group, options);
     const homes = new Map<string, { x: number; y: number }>();
     const spawns = new Map<string, { x: number; y: number }>();
     const count = group.cast.length;

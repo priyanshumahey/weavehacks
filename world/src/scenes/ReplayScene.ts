@@ -10,10 +10,12 @@ import {
   preloadCharacterSpritesheets,
 } from "../rendering/characters/preloadCharacterSpritesheets";
 import { ReplayRenderer } from "../rendering/world/ReplayRenderer";
-import { getWorldBounds } from "../rendering/world/getWorldBounds";
+import { getLocalLocationBoundsById } from "../rendering/world/locationBounds";
+import { resolveEnsembleLocationId } from "../replay/applyLocationToEnsemble";
 import { createWorld } from "../world/createWorld";
 import { WorldRuntime } from "../world/WorldRuntime";
-import type { WorldState } from "../world/worldState";
+import type { LocationId } from "../types/location";
+import type { WorldBounds, WorldState } from "../world/worldState";
 import { DialogueLayer, type SpriteAnchor } from "../replay/DialogueLayer";
 import { EnsembleTimeline } from "../replay/EnsembleTimeline";
 import {
@@ -38,6 +40,8 @@ const START_ZOOM = 0.72;
 export class ReplayScene extends Phaser.Scene {
   private replay!: EnsembleReplay;
   private staging!: EnsembleStaging;
+  private activeLocationId!: LocationId;
+  private locationBounds!: WorldBounds;
   private runtime: WorldRuntime | null = null;
   private replayRenderer: ReplayRenderer | null = null;
   private timeline: EnsembleTimeline | null = null;
@@ -62,18 +66,10 @@ export class ReplayScene extends Phaser.Scene {
     this.injectedReplay = data?.replay ?? null;
     this.focusedGroupId = null;
     this.manualMode = false;
-    this.charsetByKey.clear();
+    this.resolveReplayState();
   }
 
   preload(): void {
-    this.replay = this.injectedReplay ?? loadDefaultEnsemble();
-    this.staging = buildEnsembleStaging(this.replay);
-    for (const group of this.replay.groups) {
-      for (const member of group.cast) {
-        this.charsetByKey.set(member.key, member.charset);
-      }
-    }
-
     preloadCharacterSpritesheets(this, this.staging.definitions);
     preloadWorldAssets(this, new Set(collectCharacterTextureKeys(this.staging.definitions)));
 
@@ -91,12 +87,12 @@ export class ReplayScene extends Phaser.Scene {
   create(): void {
     const world = createWorld({
       definitions: this.staging.definitions,
-      bounds: getWorldBounds(),
+      bounds: this.locationBounds,
     });
 
     this.runtime = new WorldRuntime(world);
     this.replayRenderer = new ReplayRenderer(this);
-    this.replayRenderer.create(this.runtime.getState());
+    this.replayRenderer.create(this.runtime.getState(), this.activeLocationId);
 
     this.timeline = new EnsembleTimeline(this.replay);
     this.movement = new GroupMovement();
@@ -132,7 +128,24 @@ export class ReplayScene extends Phaser.Scene {
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       this.slider?.destroy();
       this.panel?.destroy();
+      this.replayRenderer?.destroy();
     });
+  }
+
+  /** Phaser skips preload on scene.restart(); init always rebuilds staging. */
+  private resolveReplayState(): void {
+    this.replay = this.injectedReplay ?? loadDefaultEnsemble();
+    this.activeLocationId = resolveEnsembleLocationId(this.replay);
+    this.locationBounds = getLocalLocationBoundsById(this.activeLocationId);
+    this.staging = buildEnsembleStaging(this.replay, {
+      localizeToLocationId: this.activeLocationId,
+    });
+    this.charsetByKey.clear();
+    for (const group of this.replay.groups) {
+      for (const member of group.cast) {
+        this.charsetByKey.set(member.key, member.charset);
+      }
+    }
   }
 
   update(_time: number, delta: number): void {
@@ -275,8 +288,6 @@ export class ReplayScene extends Phaser.Scene {
     const cx = (content.minX + content.maxX) / 2;
     const cy = (content.minY + content.maxY) / 2;
 
-    // Fit the staged content (not the whole two-map world) to the viewport, so
-    // there is no dead space above/around a scene that uses only one corner.
     const cam = this.cameras.main;
     const pad = 160;
     const w = content.maxX - content.minX + pad * 2;
@@ -286,11 +297,11 @@ export class ReplayScene extends Phaser.Scene {
     this.observer?.frameOn(cx, cy, zoom, 520);
   }
 
-  /** Bounding box of all group huddles (falls back to the whole world). */
+  /** Bounding box of all group huddles (falls back to the location playfield). */
   private contentBounds(): { minX: number; minY: number; maxX: number; maxY: number } {
     const layouts = [...this.staging.layouts.values()];
     if (layouts.length === 0) {
-      return getWorldBounds();
+      return this.locationBounds;
     }
     let minX = Infinity;
     let minY = Infinity;

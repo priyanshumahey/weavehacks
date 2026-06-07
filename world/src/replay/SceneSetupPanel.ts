@@ -4,6 +4,8 @@
 // (replay a previously generated scene without paying to regenerate it).
 // Pure DOM; the scene wires `onStage` and receives the ensemble to play.
 
+import { winterfellWorldLayout } from "../data/locations/winterfellWorldLayout";
+import { applyLocationToEnsemble } from "./applyLocationToEnsemble";
 import {
   directEpisode,
   fetchSavedScenes,
@@ -37,6 +39,9 @@ export class SceneSetupPanel {
   private readonly stakesInput: HTMLTextAreaElement;
   private readonly episodeSelect: HTMLSelectElement;
   private readonly locationSelect: HTMLSelectElement;
+  private readonly locationField: HTMLElement;
+  private readonly episodeField: HTMLElement;
+  private readonly lengthField: HTMLElement;
   private readonly roundsSelect: HTMLSelectElement;
   private readonly stageButton: HTMLButtonElement;
   private readonly libraryList: HTMLDivElement;
@@ -50,6 +55,9 @@ export class SceneSetupPanel {
   private open = false;
   private busy = false;
   private loaded = false;
+
+  /** Dialogue/cast document before the viewer's map choice is applied. */
+  private baseEnsemble: EnsembleReplay | null = null;
 
   private onStage: ((ensemble: EnsembleReplay) => void) | null = null;
   private onBusyChange: ((busy: boolean) => void) | null = null;
@@ -107,14 +115,6 @@ export class SceneSetupPanel {
     this.directStage.className = "scene-setup__stage";
     this.directStage.textContent = "Direct the moment";
     this.directStage.addEventListener("click", () => void this.submitDirect());
-    this.directBlock.append(
-      this.fieldLabel("Premise", "one dramatic moment, your detail"),
-      this.premiseInput,
-      this.fieldLabel("Cast pool", "optional — empty = AI chooses"),
-      this.poolGrid,
-      this.labelled("How many", this.groupsSelect),
-      this.directStage,
-    );
 
     // --- Manual block ------------------------------------------------------
     this.manualBlock = document.createElement("div");
@@ -174,13 +174,23 @@ export class SceneSetupPanel {
       }
       this.roundsSelect.append(opt);
     }
+    this.locationField = this.labelled("Where", this.locationSelect);
+    this.episodeField = this.labelled("Rewound to", this.episodeSelect);
+    this.lengthField = this.labelled("Length", this.roundsSelect);
+
+    this.directBlock.append(
+      this.fieldLabel("Premise", "one dramatic moment, your detail"),
+      this.premiseInput,
+      this.fieldLabel("Cast pool", "optional — empty = AI chooses"),
+      this.poolGrid,
+      this.labelled("How many", this.groupsSelect),
+      this.locationField,
+      this.directStage,
+    );
+
     this.genControls = document.createElement("div");
     this.genControls.className = "scene-setup__row";
-    this.genControls.append(
-      this.labelled("Rewound to", this.episodeSelect),
-      this.labelled("Where", this.locationSelect),
-      this.labelled("Length", this.roundsSelect),
-    );
+    this.genControls.append(this.episodeField, this.lengthField);
 
     this.status = document.createElement("p");
     this.status.className = "scene-setup__status";
@@ -196,6 +206,14 @@ export class SceneSetupPanel {
     );
 
     parent.append(this.toggle, this.drawer);
+    this.renderLocationOptions();
+    this.locationSelect.addEventListener("change", () => this.restageLocation());
+    this.mountLocationField(this.mode);
+  }
+
+  /** The ensemble currently playing (before map stamping). Enables live location swaps. */
+  seedEnsemble(ensemble: EnsembleReplay): void {
+    this.baseEnsemble = ensemble;
   }
 
   setOnStage(cb: (ensemble: EnsembleReplay) => void): void {
@@ -225,8 +243,20 @@ export class SceneSetupPanel {
     this.directButton.classList.toggle("scene-setup__tab--on", mode === "direct");
     this.manualButton.classList.toggle("scene-setup__tab--on", mode === "manual");
     this.libraryButton.classList.toggle("scene-setup__tab--on", mode === "library");
+    this.mountLocationField(mode);
     if (mode === "library") {
       void this.loadLibrary();
+    }
+  }
+
+  private mountLocationField(mode: SetupMode): void {
+    this.locationField.remove();
+    if (mode === "direct") {
+      this.directBlock.insertBefore(this.locationField, this.directStage);
+      return;
+    }
+    if (mode === "manual") {
+      this.genControls.insertBefore(this.locationField, this.lengthField);
     }
   }
 
@@ -341,11 +371,17 @@ export class SceneSetupPanel {
       opt.textContent = ep.label;
       this.episodeSelect.append(opt);
     }
+  }
+
+  private renderLocationOptions(): void {
     this.locationSelect.replaceChildren();
-    for (const loc of this.options.locations) {
+    for (const location of winterfellWorldLayout.locations) {
       const opt = document.createElement("option");
-      opt.value = loc.id;
-      opt.textContent = loc.label;
+      opt.value = location.id;
+      opt.textContent = location.label;
+      if (location.id === winterfellWorldLayout.defaultLocationId) {
+        opt.selected = true;
+      }
       this.locationSelect.append(opt);
     }
   }
@@ -375,10 +411,9 @@ export class SceneSetupPanel {
         setting: this.settingInput.value,
         stakes: this.stakesInput.value,
         episode: this.episodeSelect.value,
-        location: this.locationSelect.value,
         maxRounds: Number(this.roundsSelect.value),
       });
-      this.finishStage(ensemble);
+      this.finishStage(ensemble, true);
     } catch (error) {
       this.setStatus(`The scene faltered: ${(error as Error).message}`, "error");
     } finally {
@@ -405,11 +440,10 @@ export class SceneSetupPanel {
         premise,
         castPool: [...this.pool],
         episode: this.episodeSelect.value,
-        location: this.locationSelect.value,
         maxGroups: Number(this.groupsSelect.value),
         maxRounds: Number(this.roundsSelect.value),
       });
-      this.finishStage(ensemble);
+      this.finishStage(ensemble, true);
     } catch (error) {
       this.setStatus(`The moment faltered: ${(error as Error).message}`, "error");
     } finally {
@@ -425,7 +459,7 @@ export class SceneSetupPanel {
     this.setStatus("Restaging…", "info");
     try {
       const ensemble = await loadSavedScene(name);
-      this.finishStage(ensemble);
+      this.finishStage(ensemble, true);
     } catch (error) {
       this.setStatus(`Could not replay: ${(error as Error).message}`, "error");
     } finally {
@@ -433,10 +467,25 @@ export class SceneSetupPanel {
     }
   }
 
-  private finishStage(ensemble: EnsembleReplay): void {
+  private finishStage(ensemble: EnsembleReplay, applyLocation: boolean): void {
+    this.baseEnsemble = ensemble;
+    this.emitStaged(ensemble, applyLocation);
     this.setStatus("", "info");
     this.setOpen(false);
-    this.onStage?.(ensemble);
+  }
+
+  private restageLocation(): void {
+    if (!this.baseEnsemble || this.busy) {
+      return;
+    }
+    this.emitStaged(this.baseEnsemble, true);
+  }
+
+  private emitStaged(ensemble: EnsembleReplay, applyLocation: boolean): void {
+    const staged = applyLocation
+      ? applyLocationToEnsemble(ensemble, this.locationSelect.value)
+      : ensemble;
+    this.onStage?.(staged);
   }
 
   private setBusy(busy: boolean): void {
