@@ -239,10 +239,16 @@ canvas {
   padding: 10px 12px;
   border: 1px solid #2a2018;
   border-radius: 2px;
-  background: rgb(255 255 255 / 18%);
+}
+
+.world-ui__dialogue-motive--public {
+  background:
+    linear-gradient(180deg, rgb(88 118 88 / 14%) 0%, rgb(72 98 72 / 22%) 100%);
 }
 
 .world-ui__dialogue-motive--private {
+  background:
+    linear-gradient(180deg, rgb(72 52 92 / 14%) 0%, rgb(58 40 78 / 24%) 100%);
   animation: motive-private-enter 280ms ease-out 180ms both;
 }
 
