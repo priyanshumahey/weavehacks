@@ -26,6 +26,7 @@ import { DialogueLayer, type SpriteAnchor } from "../replay/DialogueLayer";
 import { ReplayCamera } from "../replay/ReplayCamera";
 import { ReplayPortraitPanel } from "../replay/ReplayPortraitPanel";
 import { TimeSlider } from "../replay/TimeSlider";
+import { Minimap, type MinimapThreadPhase } from "../replay/Minimap";
 import { DebugOverlay } from "../replay/DebugOverlay";
 import { reactionEmojiFor } from "../replay/reactionEmoji";
 import {
@@ -51,6 +52,7 @@ export class EpisodeScene extends Phaser.Scene {
   private slider: TimeSlider | null = null;
   private debug: DebugOverlay | null = null;
   private panel: ReplayPortraitPanel | null = null;
+  private minimap: Minimap | null = null;
   /** The conversation thread whose portrait is currently open, if any. */
   private focusedThreadId: string | null = null;
   /** The last speaker shown in the panel, so we only re-render on a change. */
@@ -189,6 +191,8 @@ export class EpisodeScene extends Phaser.Scene {
       this.slider?.setSpeed(this.playbackSpeed);
     });
 
+    this.buildMinimap();
+
     // Open framed on the whole world so both maps are visible.
     this.frameWorld();
   }
@@ -239,6 +243,8 @@ export class EpisodeScene extends Phaser.Scene {
     this.slider?.setPlaying(this.timeline.isPlaying);
     this.slider?.setLabel(this.timeline.atEnd ? "the episode has played out" : "");
 
+    this.renderMinimap();
+
     this.syncPanel();
   }
 
@@ -255,6 +261,7 @@ export class EpisodeScene extends Phaser.Scene {
       this.focusedThreadId = null;
       this.panelSpeakerKey = null;
       this.slider?.setDocked("bottom");
+      this.minimap?.setDocked("bottom");
       return;
     }
     const speech = this.timeline.speechForThread(this.focusedThreadId);
@@ -269,14 +276,97 @@ export class EpisodeScene extends Phaser.Scene {
       return;
     }
     this.panelSpeakerKey = speech.speaker;
-    // The portrait panel occupies the bottom of the screen; move the scrubber to
-    // the top so it never overlaps the dialogue text.
+    // The portrait panel occupies the bottom of the screen; move the scrubber and
+    // the minimap to the top so neither overlaps the dialogue text.
     this.slider?.setDocked("top");
+    this.minimap?.setDocked("top");
     this.panel.show({
       name: member.name,
       portraitName: member.charset,
       line: { dialogue: speech.turn.dialogue },
     });
+  }
+
+  /** Build the top-right world overview: every used map, every conversation
+   *  huddle as a state dot, and the live camera viewport. Clicking a huddle
+   *  flies the camera there and opens its portrait panel. */
+  private buildMinimap(): void {
+    if (!this.staging) {
+      return;
+    }
+    const locations = this.staging.mapPlacements
+      .map((placement) => {
+        const bounds = this.staging.locationBounds.get(placement.locationId);
+        const location = getLocationById(placement.locationId);
+        if (!bounds || !location) {
+          return null;
+        }
+        return { id: placement.locationId, label: location.label, bounds };
+      })
+      .filter((entry): entry is NonNullable<typeof entry> => entry !== null);
+
+    const threads = this.script.threads.flatMap((thread) => {
+      const layout = this.staging.layouts.get(thread.id);
+      if (!layout) {
+        return [];
+      }
+      return [
+        {
+          id: thread.id,
+          label: thread.label,
+          mood: thread.mood,
+          x: layout.centre.x,
+          y: layout.centre.y,
+        },
+      ];
+    });
+
+    this.minimap = new Minimap({ world: this.worldBounds, locations, threads });
+    this.minimap.setOnFocusThread((threadId) => this.focusThreadFromMinimap(threadId));
+    this.minimap.setOnPan((worldX, worldY) => {
+      this.camera?.frameOn(worldX, worldY, this.cameras.main.zoom, 500);
+    });
+
+    const teardown = () => {
+      this.minimap?.destroy();
+      this.minimap = null;
+    };
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, teardown);
+    this.events.once(Phaser.Scenes.Events.DESTROY, teardown);
+  }
+
+  /** Push the live timeline + camera state into the minimap each frame. */
+  private renderMinimap(): void {
+    if (!this.minimap || !this.timeline) {
+      return;
+    }
+    const phases = new Map<string, MinimapThreadPhase>();
+    for (const thread of this.script.threads) {
+      const phase = this.timeline.threadPhaseOf(thread.id);
+      if (phase) {
+        phases.set(thread.id, phase);
+      }
+    }
+    const speaking = new Set(this.timeline.currentSpeech().map((s) => s.threadId));
+    const view = this.cameras.main.worldView;
+    this.minimap.render({
+      phases,
+      speaking,
+      viewport: { x: view.x, y: view.y, width: view.width, height: view.height },
+    });
+  }
+
+  /** Clicking a conversation in the minimap: fly there and open its panel. */
+  private focusThreadFromMinimap(threadId: string): void {
+    const layout = this.staging.layouts.get(threadId);
+    if (layout) {
+      this.camera?.frameOn(layout.centre.x, layout.centre.y, 0.8, 650);
+    }
+    if (this.timeline?.isThreadActive(threadId)) {
+      this.focusedThreadId = threadId;
+      this.panelSpeakerKey = null;
+      this.syncPanel();
+    }
   }
 
   private bindClicks(): void {
@@ -301,6 +391,7 @@ export class EpisodeScene extends Phaser.Scene {
           this.focusedThreadId = null;
           this.panelSpeakerKey = null;
           this.slider?.setDocked("top");
+          this.minimap?.setDocked("top");
           this.panel?.show({
             name: member.name,
             portraitName: member.charset,
@@ -312,6 +403,7 @@ export class EpisodeScene extends Phaser.Scene {
         this.focusedThreadId = null;
         this.panelSpeakerKey = null;
         this.slider?.setDocked("bottom");
+        this.minimap?.setDocked("bottom");
       }
     });
   }
@@ -399,11 +491,16 @@ export class EpisodeScene extends Phaser.Scene {
           const sp = speechByKey.get(member.key);
           const isSpeaker = !!sp && sp.threadId === thread.id;
           const full = this.castByKey.get(member.key);
+          const reflection = this.script.learning?.reflections?.[member.key];
           return {
             key: member.key,
             name: member.name,
             title: full?.title,
             drives: full?.drives,
+            // Per-scene appraisal deltas + emotion apply to the whole huddle, not
+            // just whoever is mid-sentence, so surface them for every member.
+            driveDeltas: thread.driveDeltas?.[member.key],
+            emotion: thread.emotion?.[member.key],
             isSpeaker,
             action: isSpeaker ? sp!.turn.action : null,
             target: isSpeaker ? sp!.turn.target : null,
@@ -411,6 +508,8 @@ export class EpisodeScene extends Phaser.Scene {
             publicStance: isSpeaker ? sp!.turn.publicStance : "",
             privateIntent: isSpeaker ? sp!.turn.privateIntent : "",
             thinking: isSpeaker ? sp!.turn.thinking ?? "" : "",
+            memory: reflection?.summary,
+            relationships: reflection?.relationships,
           };
         }),
       };

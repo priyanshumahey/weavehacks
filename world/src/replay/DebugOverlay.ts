@@ -43,6 +43,10 @@ export interface DebugCharStat {
   name: string;
   title?: string;
   drives?: Record<string, number>;
+  /** Per-scene appraisal deltas for this character (the live "stat changes"). */
+  driveDeltas?: Record<string, number>;
+  /** One-word emotion after the current scene's appraisal. */
+  emotion?: string;
   /** True when this character holds the floor in their group right now. */
   isSpeaker: boolean;
   action: string | null;
@@ -51,6 +55,10 @@ export interface DebugCharStat {
   publicStance: string;
   privateIntent: string;
   thinking: string;
+  /** End-of-episode reflection summary (the character's "memory"). */
+  memory?: string;
+  /** How this character now regards others (key insight relationships). */
+  relationships?: Record<string, string>;
 }
 
 export interface DebugGroupStat {
@@ -351,8 +359,16 @@ export class DebugOverlay {
     }
     card.append(head);
 
+    // One-word emotion after this scene's appraisal — the affective read-out.
+    if (member.emotion) {
+      const emo = document.createElement("span");
+      emo.className = "dbg-char__emotion";
+      emo.textContent = `feeling ${member.emotion}`;
+      card.append(emo);
+    }
+
     if (member.drives) {
-      card.append(this.renderDrives(member.drives));
+      card.append(this.renderDrives(member.drives, member.driveDeltas));
     }
 
     // Deception substrate: public stance vs private intent.
@@ -373,10 +389,36 @@ export class DebugOverlay {
       card.append(think);
     }
 
+    // The character's memory: end-of-episode reflection + how they now regard
+    // the others. Present only once the backend has emitted learning data.
+    if (member.memory || (member.relationships && Object.keys(member.relationships).length)) {
+      const memory = document.createElement("div");
+      memory.className = "dbg-char__memory";
+      const tag = document.createElement("span");
+      tag.className = "dbg-char__memory-tag";
+      tag.textContent = "MEMORY";
+      memory.append(tag);
+      if (member.memory) {
+        const summary = document.createElement("div");
+        summary.className = "dbg-char__memory-summary";
+        summary.textContent = member.memory;
+        memory.append(summary);
+      }
+      if (member.relationships) {
+        for (const [other, view] of Object.entries(member.relationships)) {
+          memory.append(labelled(other, view, "#9a8fc0"));
+        }
+      }
+      card.append(memory);
+    }
+
     return card;
   }
 
-  private renderDrives(drives: Record<string, number>): HTMLElement {
+  private renderDrives(
+    drives: Record<string, number>,
+    deltas?: Record<string, number>,
+  ): HTMLElement {
     const grid = document.createElement("div");
     grid.className = "dbg-drives";
     for (const drive of DRIVE_ORDER) {
@@ -400,6 +442,21 @@ export class DebugOverlay {
       num.className = "dbg-drive__num";
       num.textContent = String(Math.round(value));
       row.append(name, track, num);
+
+      // The live "stat change" from this scene's appraisal, if any.
+      const delta = deltas?.[drive];
+      if (delta !== undefined && Math.round(delta) !== 0) {
+        const rounded = Math.round(delta);
+        const chip = document.createElement("span");
+        chip.className = "dbg-drive__delta";
+        chip.style.color = rounded > 0 ? "#5fb37a" : "#cc5b52";
+        chip.textContent = rounded > 0 ? `+${rounded}` : String(rounded);
+        row.append(chip);
+      } else {
+        const spacer = document.createElement("span");
+        spacer.className = "dbg-drive__delta";
+        row.append(spacer);
+      }
       grid.append(row);
     }
     return grid;
@@ -459,17 +516,22 @@ export class DebugOverlay {
 .dbg-char__name { color: #f0e8d2; font-weight: 600; }
 .dbg-char__title { color: #6c655a; font-size: 10px; }
 .dbg-char__action { margin-left: auto; font-size: 10px; letter-spacing: 0.03em; }
+.dbg-char__emotion { display: inline-block; margin-top: 4px; color: #b9a6d8; font-style: italic; font-size: 10px; letter-spacing: 0.02em; }
 .dbg-drives { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 10px; margin: 5px 0; }
 .dbg-drive { display: flex; align-items: center; gap: 4px; }
 .dbg-drive__name { color: #8a8270; width: 28px; text-transform: uppercase; font-size: 9px; }
 .dbg-drive__track { flex: 1; height: 5px; background: #211e19; border-radius: 3px; overflow: hidden; }
 .dbg-drive__fill { display: block; height: 100%; border-radius: 3px; }
 .dbg-drive__num { color: #8a8270; width: 18px; text-align: right; font-size: 9px; }
+.dbg-drive__delta { width: 22px; text-align: right; font-size: 9px; font-weight: 600; }
 .dbg-char__deception { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px; }
 .dbg-kv { display: flex; flex-direction: column; gap: 1px; }
 .dbg-kv__label { font-size: 8px; letter-spacing: 0.12em; }
 .dbg-kv__value { color: #cfc8b6; font-size: 10px; line-height: 1.3; }
 .dbg-char__thinking { color: #8a8270; font-style: italic; font-size: 10px; margin-top: 4px; line-height: 1.3; }
+.dbg-char__memory { margin-top: 6px; padding: 6px 8px; border-radius: 5px; background: rgba(154,143,192,0.08); border: 1px solid rgba(154,143,192,0.22); display: flex; flex-direction: column; gap: 3px; }
+.dbg-char__memory-tag { font-size: 8px; letter-spacing: 0.14em; color: #9a8fc0; }
+.dbg-char__memory-summary { color: #cfc8b6; font-size: 10px; line-height: 1.35; }
 .dbg-empty { color: #8a8270; line-height: 1.4; }
 .dbg-toggle-btn {
   position: fixed; top: 12px; right: 12px; z-index: 9998;

@@ -18,6 +18,20 @@ export interface PortraitFocus {
   line: PortraitLine;
 }
 
+/**
+ * Strip any leading/trailing quotation marks the model may have wrapped the
+ * dialogue in, so the panel's own quotes aren't doubled. Handles straight and
+ * curly single/double quotes, repeated/nested.
+ */
+function stripWrappingQuotes(text: string): string {
+  let result = text.trim();
+  const quotes = new Set(['"', "'", "“", "”", "‘", "’", "«", "»"]);
+  while (result.length >= 2 && quotes.has(result[0]) && quotes.has(result[result.length - 1])) {
+    result = result.slice(1, -1).trim();
+  }
+  return result;
+}
+
 export class ReplayPortraitPanel {
   private readonly root: HTMLDivElement;
   private readonly stage: HTMLDivElement;
@@ -94,7 +108,7 @@ export class ReplayPortraitPanel {
 
     this.nameEl.textContent = focus.name;
 
-    this.quoteEl.textContent = `“${focus.line.dialogue}”`;
+    this.quoteEl.textContent = `“${stripWrappingQuotes(focus.line.dialogue)}”`;
   }
 
   hide(): void {

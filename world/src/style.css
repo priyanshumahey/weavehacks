@@ -451,6 +451,60 @@ canvas {
   bottom: auto;
 }
 
+/* --- World overview minimap ------------------------------------------------ */
+
+.replay-minimap {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  z-index: 35;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px;
+  border: 1px solid #2a2018;
+  border-radius: 10px;
+  background: rgb(16 33 43 / 88%);
+  box-shadow: 0 10px 28px rgb(0 0 0 / 45%);
+  pointer-events: auto;
+  font-family: "Palatino Linotype", Palatino, Georgia, serif;
+  transition:
+    top 220ms ease,
+    bottom 220ms ease,
+    opacity 220ms ease,
+    transform 220ms ease;
+}
+
+/* While a conversation panel occupies the bottom of the screen, lift the
+   minimap to the top-right (below the debug toggle) and make it unobtrusive so
+   it never fights the cinematic dialogue. */
+.replay-minimap--top {
+  top: 56px;
+  bottom: auto;
+  opacity: 0.82;
+  transform: scale(0.9);
+  transform-origin: top right;
+}
+
+.replay-minimap--top:hover {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.replay-minimap__title {
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #cdbb8e;
+}
+
+.replay-minimap__canvas {
+  display: block;
+  border-radius: 6px;
+  background: rgb(10 20 27 / 90%);
+  cursor: pointer;
+}
+
 /* --- Scene setup overlay --------------------------------------------------- */
 
 .scene-setup__toggle {
