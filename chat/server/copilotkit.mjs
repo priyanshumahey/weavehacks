@@ -22,6 +22,7 @@ import {
 } from "@copilotkit/runtime/v2";
 import { createCopilotNodeListener } from "@copilotkit/runtime/v2/node";
 import { createOpenAI } from "@ai-sdk/openai";
+import { createAzure } from "@ai-sdk/azure";
 import { streamText } from "ai";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
@@ -30,9 +31,37 @@ loadEnv({ path: path.resolve(here, "../../.env") });
 
 const FASTAPI = process.env.FASTAPI_BASE ?? "http://localhost:8000";
 const PORT = Number(process.env.COPILOTKIT_PORT ?? 4100);
-const MODEL = process.env.GOT_CHAT_MODEL ?? "gpt-5.5";
 
-const openai = createOpenAI({ apiKey: process.env.OPENAI_API_KEY });
+// Provider switch — mirrors the Python pipeline (src/got_agents/infra/llm.py):
+// flip the single LLM_PROVIDER env var to move chat between OpenAI and Azure.
+// On Azure the chat "model" is the deployment name.
+const LLM_PROVIDER = (process.env.LLM_PROVIDER ?? "openai").trim().toLowerCase();
+
+function buildChatModel() {
+  if (LLM_PROVIDER === "azure") {
+    const endpoint = process.env.AZURE_OPENAI_ENDPOINT;
+    if (!endpoint) {
+      throw new Error("LLM_PROVIDER=azure but AZURE_OPENAI_ENDPOINT is not set");
+    }
+    const azure = createAzure({
+      apiKey: process.env.AZURE_OPENAI_API_KEY,
+      // Works with both *.openai.azure.com and *.cognitiveservices.azure.com
+      // endpoints. useDeploymentBasedUrls puts the deployment name in the path
+      // ({base}/openai/deployments/{deployment}/chat/completions) instead of
+      // the v1-API form the provider would otherwise default to.
+      baseURL: `${endpoint.replace(/\/$/, "")}/openai`,
+      apiVersion: process.env.AZURE_OPENAI_API_VERSION ?? "2024-12-01-preview",
+      useDeploymentBasedUrls: true,
+    });
+    const deployment = process.env.AZURE_OPENAI_CHAT_DEPLOYMENT ?? "gpt-5.5";
+    return { model: azure.chat(deployment), label: `azure:${deployment}` };
+  }
+  const openai = createOpenAI({ apiKey: process.env.OPENAI_API_KEY });
+  const model = process.env.GOT_CHAT_MODEL ?? "gpt-5.5";
+  return { model: openai.chat(model), label: `openai:${model}` };
+}
+
+const { model: chatModel, label: MODEL_LABEL } = buildChatModel();
 
 /** Most recent user message text, for memory recall on the FastAPI side. */
 function lastUserText(messages) {
@@ -84,7 +113,7 @@ const agent = new BuiltInAgent({
       ...convertMessagesToVercelAISDKMessages(input.messages ?? []),
     ];
 
-    return streamText({ model: openai.chat(MODEL), messages, abortSignal });
+    return streamText({ model: chatModel, messages, abortSignal });
   },
 });
 
@@ -104,6 +133,6 @@ const listener = createCopilotNodeListener({
 
 createServer(listener).listen(PORT, () => {
   console.log(
-    `CopilotKit runtime listening on :${PORT} (FastAPI ${FASTAPI}, model ${MODEL})`,
+    `CopilotKit runtime listening on :${PORT} (FastAPI ${FASTAPI}, model ${MODEL_LABEL})`,
   );
 });
