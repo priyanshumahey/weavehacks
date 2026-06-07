@@ -24,6 +24,7 @@ import {
 } from "../replay/EnsembleStaging";
 import { GroupMovement, type GroupSpeech } from "../replay/GroupMovement";
 import { AmbientWander } from "../replay/AmbientWander";
+import { EncounterDirector } from "../replay/EncounterDirector";
 import { ReplayCamera } from "../replay/ReplayCamera";
 import { ReplayPortraitPanel } from "../replay/ReplayPortraitPanel";
 import { TimeSlider } from "../replay/TimeSlider";
@@ -37,6 +38,9 @@ const OVERVIEW_ZOOM = 0.4;
 const FOCUS_ZOOM = 1.0;
 const START_ZOOM = 0.72;
 
+// Playback speed multipliers the speed button cycles through.
+const SPEEDS: number[] = [1, 2, 4];
+
 export class ReplayScene extends Phaser.Scene {
   private replay!: EnsembleReplay;
   private staging!: EnsembleStaging;
@@ -47,12 +51,14 @@ export class ReplayScene extends Phaser.Scene {
   private timeline: EnsembleTimeline | null = null;
   private movement: GroupMovement | null = null;
   private ambient: AmbientWander | null = null;
+  private encounters: EncounterDirector | null = null;
   private dialogue: DialogueLayer | null = null;
   private observer: ReplayCamera | null = null;
   private panel: ReplayPortraitPanel | null = null;
   private slider: TimeSlider | null = null;
   private focusedGroupId: string | null = null;
   private manualMode = false;
+  private playbackSpeed: number = SPEEDS[0];
   /** Injected ensemble (a freshly staged scene), if the scene was started with one. */
   private injectedReplay: EnsembleReplay | null = null;
   /** Character key -> charset (portrait) name. */
@@ -99,6 +105,7 @@ export class ReplayScene extends Phaser.Scene {
     this.movement.initFrom(this.staging.layouts);
     this.ambient = new AmbientWander();
     this.ambient.initFrom(this.staging);
+    this.encounters = new EncounterDirector(this.replay.encounters);
     this.dialogue = new DialogueLayer(this);
     this.observer = new ReplayCamera(this);
     this.panel = new ReplayPortraitPanel();
@@ -119,6 +126,12 @@ export class ReplayScene extends Phaser.Scene {
       this.manualMode = !this.timeline.isPlaying;
       this.slider?.setPlaying(this.timeline.isPlaying);
     });
+    this.slider.setOnCycleSpeed(() => {
+      const next = SPEEDS[(SPEEDS.indexOf(this.playbackSpeed) + 1) % SPEEDS.length];
+      this.playbackSpeed = next;
+      this.slider?.setSpeed(next);
+    });
+    this.slider.setSpeed(this.playbackSpeed);
 
     this.frameStart();
     this.bindInput();
@@ -148,18 +161,37 @@ export class ReplayScene extends Phaser.Scene {
     }
   }
 
-  update(_time: number, delta: number): void {
+  update(_time: number, _delta: number): void {
     if (!this.runtime || !this.replayRenderer || !this.timeline || !this.movement || !this.dialogue) {
       return;
     }
 
+    // Scale the whole world by the chosen playback speed (talking, walking,
+    // mingling, and the sim all advance together).
+    const delta = _delta * this.playbackSpeed;
+
     this.timeline.update(delta);
 
     // Once the conversation has fully played out, the world goes ambient: the
-    // cast disperses from their huddles and roams the room with purpose.
+    // cast disperses from their huddles and roams the room with purpose, while
+    // the precomputed mingle stages incidental meetings between pairs.
     const idle = this.timeline.atEnd;
+    let encounterSpeakers = new Map<string, string>();
     if (idle && this.ambient) {
-      this.ambient.update(this.runtime, this.runtime.getState(), delta);
+      const state0 = this.runtime.getState();
+      let claimed: ReadonlySet<string> | undefined;
+      if (this.encounters) {
+        this.encounters.update(this.runtime, state0, delta);
+        claimed = this.encounters.claimed();
+        const { speaker, turn } = this.encounters.speech();
+        if (speaker && turn) {
+          const emoji = reactionEmojiFor(turn);
+          if (emoji) {
+            encounterSpeakers.set(speaker, emoji);
+          }
+        }
+      }
+      this.ambient.update(this.runtime, state0, delta, claimed);
     } else {
       const entering = this.timeline.isEntering;
       const speech = this.speechByGroup();
@@ -170,7 +202,7 @@ export class ReplayScene extends Phaser.Scene {
     const state = this.runtime.getState();
     this.replayRenderer.render(state);
 
-    const speakers = idle ? new Map<string, string>() : this.currentSpeakers();
+    const speakers = idle ? encounterSpeakers : this.currentSpeakers();
     this.dialogue.render(
       speakers.keys(),
       (key) => this.anchorFor(state, key),

@@ -47,6 +47,7 @@ export interface EpisodeRequest {
   episode: string;
   maxGroups: number;
   maxRounds: number;
+  encounters: number;
 }
 
 export interface SavedScene {
@@ -114,6 +115,7 @@ export async function directEpisode(request: EpisodeRequest): Promise<EnsembleRe
       episode: request.episode,
       max_groups: request.maxGroups,
       max_rounds: request.maxRounds,
+      encounters: request.encounters,
     }),
   });
   const payload = await asJson<{ ensemble: EnsembleReplay }>(response);

@@ -38,10 +38,24 @@ export interface EnsembleGroup {
   turns: EnsembleTurn[];
 }
 
+/** A precomputed incidental meeting during the post-scene mingle: two
+ *  characters cross paths, trade a few words, and part. The world choreographs
+ *  the walk-together so it reads as emergent, then plays these turns in place. */
+export interface EnsembleEncounter {
+  id: string;
+  setting: string;
+  mood: GroupMood;
+  /** Exactly two members. */
+  cast: ReplayCastMember[];
+  turns: EnsembleTurn[];
+}
+
 export interface EnsembleReplay {
   version: number;
   title: string;
   groups: EnsembleGroup[];
+  /** Optional precomputed mingle meetings, played after the scenes settle. */
+  encounters?: EnsembleEncounter[];
 }
 
 export const SUPPORTED_ENSEMBLE_VERSION = 1;

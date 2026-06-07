@@ -33,6 +33,7 @@ export class SceneSetupPanel {
   private readonly premiseInput: HTMLTextAreaElement;
   private readonly poolGrid: HTMLDivElement;
   private readonly groupsSelect: HTMLSelectElement;
+  private readonly mingleSelect: HTMLSelectElement;
   private readonly directStage: HTMLButtonElement;
   private readonly castGrid: HTMLDivElement;
   private readonly settingInput: HTMLTextAreaElement;
@@ -110,6 +111,17 @@ export class SceneSetupPanel {
       }
       this.groupsSelect.append(opt);
     }
+    this.mingleSelect = document.createElement("select");
+    this.mingleSelect.className = "scene-setup__select";
+    for (const n of [0, 2, 3, 4]) {
+      const opt = document.createElement("option");
+      opt.value = String(n);
+      opt.textContent = n === 0 ? "no mingle" : `${n} meetings`;
+      if (n === 3) {
+        opt.selected = true;
+      }
+      this.mingleSelect.append(opt);
+    }
     this.directStage = document.createElement("button");
     this.directStage.type = "button";
     this.directStage.className = "scene-setup__stage";
@@ -184,6 +196,7 @@ export class SceneSetupPanel {
       this.fieldLabel("Cast pool", "optional — empty = AI chooses"),
       this.poolGrid,
       this.labelled("How many", this.groupsSelect),
+      this.labelled("Mingle", this.mingleSelect),
       this.locationField,
       this.directStage,
     );
@@ -442,6 +455,7 @@ export class SceneSetupPanel {
         episode: this.episodeSelect.value,
         maxGroups: Number(this.groupsSelect.value),
         maxRounds: Number(this.roundsSelect.value),
+        encounters: Number(this.mingleSelect.value),
       });
       this.finishStage(ensemble, true);
     } catch (error) {

@@ -7,10 +7,12 @@ export class TimeSlider {
   private readonly root: HTMLDivElement;
   private readonly playButton: HTMLButtonElement;
   private readonly range: HTMLInputElement;
+  private readonly speedButton: HTMLButtonElement;
   private readonly label: HTMLSpanElement;
   private seeking = false;
   private onSeek: ((fraction: number) => void) | null = null;
   private onTogglePlay: (() => void) | null = null;
+  private onCycleSpeed: (() => void) | null = null;
 
   constructor(parent: HTMLElement = document.getElementById("app") ?? document.body) {
     this.root = document.createElement("div");
@@ -50,7 +52,15 @@ export class TimeSlider {
     this.label.className = "replay-timebar__label";
     this.label.textContent = "";
 
-    this.root.append(this.playButton, this.range, this.label);
+    this.speedButton = document.createElement("button");
+    this.speedButton.type = "button";
+    this.speedButton.className = "replay-timebar__speed";
+    this.speedButton.textContent = "1×";
+    this.speedButton.title = "Playback speed";
+    this.speedButton.setAttribute("aria-label", "Cycle playback speed");
+    this.speedButton.addEventListener("click", () => this.onCycleSpeed?.());
+
+    this.root.append(this.playButton, this.range, this.label, this.speedButton);
     parent.append(this.root);
   }
 
@@ -60,6 +70,15 @@ export class TimeSlider {
 
   setOnTogglePlay(cb: () => void): void {
     this.onTogglePlay = cb;
+  }
+
+  setOnCycleSpeed(cb: () => void): void {
+    this.onCycleSpeed = cb;
+  }
+
+  /** Show the current playback multiplier (e.g. 1, 2, 4). */
+  setSpeed(multiplier: number): void {
+    this.speedButton.textContent = `${multiplier}×`;
   }
 
   /** Reflect the live playhead (skipped while the user is dragging). */

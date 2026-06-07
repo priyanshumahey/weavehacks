@@ -176,6 +176,12 @@ class EpisodeRequest(BaseModel):
     location: str = Field(scene_service.DEFAULT_LOCATION)
     max_groups: int = Field(scene_service.DEFAULT_MAX_GROUPS, ge=1, le=5)
     max_rounds: int = Field(scene_service.DEFAULT_MAX_ROUNDS, ge=1, le=4)
+    encounters: int = Field(
+        scene_service.DEFAULT_MAX_ENCOUNTERS,
+        ge=0,
+        le=5,
+        description="incidental two-person meetings to precompute for the mingle",
+    )
 
 
 @app.post("/api/episode")
@@ -189,6 +195,7 @@ def episode_scene(body: EpisodeRequest) -> dict:
             location=body.location,
             max_groups=body.max_groups,
             max_rounds=body.max_rounds,
+            encounters=body.encounters,
         )
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc

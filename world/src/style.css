@@ -387,6 +387,25 @@ canvas {
   background: #25323f;
 }
 
+.replay-timebar__speed {
+  flex-shrink: 0;
+  min-width: 38px;
+  height: 30px;
+  padding: 0 8px;
+  border: 1px solid #c9a227;
+  border-radius: 7px;
+  background: #1b2733;
+  color: #f6bd60;
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 120ms ease;
+}
+
+.replay-timebar__speed:hover {
+  background: #25323f;
+}
+
 .replay-timebar__range {
   flex: 1;
   height: 6px;

@@ -16,6 +16,11 @@ from __future__ import annotations
 from got_agents.agent.lord import Lord
 from got_agents.characters import charset_for, get_character, known
 from got_agents.flows.council import run_council
+from got_agents.flows.encounter_planner import (
+    DEFAULT_MAX_ENCOUNTERS,
+    EncounterPlan,
+    plan_encounters,
+)
 from got_agents.flows.scene_planner import (
     DEFAULT_MAX_GROUPS,
     HARD_MAX_GROUPS,
@@ -257,6 +262,7 @@ def build_episode(
     location: str = DEFAULT_LOCATION,
     max_groups: int = DEFAULT_MAX_GROUPS,
     max_rounds: int = DEFAULT_MAX_ROUNDS,
+    encounters: int = DEFAULT_MAX_ENCOUNTERS,
 ) -> dict:
     """Direct a whole *moment*: one premise → several concurrent conversations.
 
@@ -266,7 +272,9 @@ def build_episode(
     are stitched into a multi-group ensemble the world plays at once.
 
     ``cast_pool`` optionally restricts the director to a chosen set of character
-    keys; when empty the whole spawnable roster is available.
+    keys; when empty the whole spawnable roster is available. ``encounters`` is
+    how many incidental two-person meetings to precompute for the post-scene
+    mingle (0 to skip).
 
     Raises ``ValueError`` if the premise is empty or the planner finds no viable
     grouping.
@@ -280,6 +288,7 @@ def build_episode(
         location = DEFAULT_LOCATION
     max_groups = max(1, min(int(max_groups), HARD_MAX_GROUPS))
     max_rounds = max(1, min(int(max_rounds), 4))
+    encounters = max(0, int(encounters))
 
     available = roster()
     if cast_pool:
@@ -308,13 +317,68 @@ def build_episode(
     }
     mood_overrides = {i: plan.mood for i, plan in enumerate(plans)}
     location_overrides = {i: location for i in range(len(plans))}
-    return _with_sprite_charsets(
+    ensemble = _with_sprite_charsets(
         to_ensemble(
             chronicle,
             mood_overrides=mood_overrides,
             location_overrides=location_overrides,
         )
     )
+
+    # Precompute the post-scene mingle: a few incidental two-person meetings
+    # among the present cast, baked into the saved ensemble for deterministic
+    # replay. Cross-group pairings are favoured by the planner.
+    if encounters > 0:
+        present = sorted({key for plan in plans for key in plan.cast})
+        present_roster = [c for c in available if c["key"] in present]
+        enc_plans = plan_encounters(
+            premise, present_roster, max_encounters=encounters, episode=episode
+        )
+        baked = _run_encounters(enc_plans, episode=episode)
+        if baked:
+            ensemble["encounters"] = baked
+
+    return ensemble
+
+
+def _run_encounters(plans: list[EncounterPlan], *, episode: str) -> list[dict]:
+    """Run each planned meeting as a short two-person council, concurrently.
+
+    Each encounter is a one-round council rendered into the same camelCase shape
+    as an ensemble group (plus a ``setting``), so the world can play it with the
+    existing dialogue path.
+    """
+    if not plans:
+        return []
+
+    import concurrent.futures
+
+    def run_one(index_plan: tuple[int, EncounterPlan]) -> tuple[int, dict]:
+        index, plan = index_plan
+        cast = list(plan.cast)
+        lords = [Lord.load(key, at_time=episode) for key in cast]
+        scene = _run_one_council(
+            cast, lords, setting=plan.setting, stakes=plan.stakes, max_rounds=1
+        )
+        chronicle = {"episode": episode, "title": plan.setting, "scenes": [scene]}
+        ens = _with_sprite_charsets(
+            to_ensemble(chronicle, mood_overrides={0: plan.mood})
+        )
+        group = ens["groups"][0] if ens.get("groups") else {"cast": [], "turns": []}
+        return index, {
+            "id": f"encounter-{index}",
+            "setting": plan.setting,
+            "mood": plan.mood,
+            "cast": group.get("cast", []),
+            "turns": group.get("turns", []),
+        }
+
+    workers = min(len(plans), 4)
+    results: dict[int, dict] = {}
+    with concurrent.futures.ThreadPoolExecutor(max_workers=workers) as pool:
+        for index, enc in pool.map(run_one, list(enumerate(plans))):
+            results[index] = enc
+    return [results[i] for i in range(len(plans))]
 
 
 def _run_plans(
