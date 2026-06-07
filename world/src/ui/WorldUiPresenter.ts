@@ -37,6 +37,10 @@ const DIALOGUE_COPY: Record<string, string> = {
     "Quiet roads don't stay quiet. Stick to the shadows if you want to keep your head.",
   ned_intro:
     "The man who passes the sentence should swing the sword. Out here, that rule still holds.",
+  catelyn_intro:
+    "My children are the north's future. I will not see harm come to them while I draw breath.",
+  bran_intro:
+    "The towers look different from up high. I only wanted to see the world as the ravens do.",
   cersei_intro:
     "When you play the game of thrones, you win or you die. Choose your allies carefully.",
 };

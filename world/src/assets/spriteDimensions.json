@@ -2846,5 +2846,9 @@
   "maps/throne_room.png": {
     "width": 1024,
     "height": 1536
+  },
+  "maps/winterfell.png": {
+    "width": 1254,
+    "height": 1254
   }
 }

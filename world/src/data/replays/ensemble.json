@@ -9,39 +9,32 @@
       "anchor": { "x": 0.5, "y": 0.3 },
       "cast": [
         { "key": "cersei", "name": "Cersei Lannister", "charset": "cersei lannister" },
-        { "key": "ned", "name": "Eddard Stark", "charset": "ned stark" },
         { "key": "littlefinger", "name": "Petyr Baelish", "charset": "littlefinger baelish" }
       ],
       "turns": [
         {
-          "speaker": "cersei", "speakerName": "Cersei Lannister", "action": "speak", "target": "ned",
-          "dialogue": "Lord Stark, the king's breath grows weaker by the hour. When Robert is gone, my son Joffrey succeeds him — and I expect this council to remember its duty.",
+          "speaker": "cersei", "speakerName": "Cersei Lannister", "action": "speak", "target": "littlefinger",
+          "dialogue": "The king's breath grows weaker by the hour. When Robert is gone, my son Joffrey succeeds him — and I expect this council to remember its duty.",
           "publicStance": "the grieving queen, calmly insisting the succession is settled",
-          "privateIntent": "force Stark to declare himself before Baelish and learn how far his honor will carry him into treason"
-        },
-        {
-          "speaker": "ned", "speakerName": "Eddard Stark", "action": "speak", "target": "cersei",
-          "dialogue": "The realm's duty is to the king while he yet draws breath, and to his last lawful command when he is gone. I will honor Robert's will. No more, and no less.",
-          "publicStance": "upholding Robert's authority and his final written command",
-          "privateIntent": "place Robert's will between Cersei and the throne, and make Baelish see my right rests on the king's seal"
+          "privateIntent": "bind Baelish to my cause before the realm learns how fragile a dead king's words truly are"
         },
         {
           "speaker": "littlefinger", "speakerName": "Petyr Baelish", "action": "share_secret", "target": "cersei",
           "dialogue": "Parchment is a frail shield unless men with spears are paid to stand behind it. See the city paid and loyal, Your Grace, and the king's will means whatever you wish it to mean.",
           "publicStance": "the prudent councillor urging lawful order and a paid, loyal watch",
-          "privateIntent": "set wolf and lion watching each other, and make myself the man both must pay to know what the other has learned"
+          "privateIntent": "sell order to the queen while making myself the man both lions and wolves must pay to know what the other has learned"
         },
         {
           "speaker": "cersei", "speakerName": "Cersei Lannister", "action": "ally", "target": "littlefinger",
           "dialogue": "Lord Baelish is right. A dead king's words will not quiet a hungry mob. See that the city is loyal — to the crown, and to the boy who will soon wear it.",
           "publicStance": "the steady hand keeping the city obedient through the king's final hours",
-          "privateIntent": "draw Baelish and his gold cloaks close before Stark can wrap himself in Robert's will"
+          "privateIntent": "draw Baelish and his gold cloaks close before any Hand can wrap himself in Robert's will"
         },
         {
-          "speaker": "ned", "speakerName": "Eddard Stark", "action": "accuse", "target": "cersei",
-          "dialogue": "Then look to the city if it comforts you. But do not mistake the burden Robert laid on me for a crown upon your son's head.",
-          "publicStance": "refusing to let courtesy be mistaken for surrender",
-          "privateIntent": "I know the truth of her children now, and she will not bury it beneath the weight of law while I hold the king's seal"
+          "speaker": "littlefinger", "speakerName": "Petyr Baelish", "action": "speak", "target": "cersei",
+          "dialogue": "Loyalty is a coin, Your Grace, and coins spend best when the purse is frightened. I shall see the city remembers who paid it.",
+          "publicStance": "the helpful master of coin promising control",
+          "privateIntent": "keep the queen dependent on my whispers while the realm tears itself over a crown"
         }
       ]
     },
@@ -112,9 +105,48 @@
       ]
     },
     {
+      "id": "winterfell-house",
+      "label": "Lord and Lady of Winterfell",
+      "mood": "friendly",
+      "locationId": "winterfell",
+      "anchor": { "x": 0.5, "y": 0.42 },
+      "cast": [
+        { "key": "ned", "name": "Eddard Stark", "charset": "ned stark" },
+        { "key": "catelyn", "name": "Catelyn Stark", "charset": "catelyn stark" },
+        { "key": "bran", "name": "Bran Stark", "charset": "arya stark" }
+      ],
+      "turns": [
+        {
+          "speaker": "catelyn", "speakerName": "Catelyn Stark", "action": "speak", "target": "bran",
+          "dialogue": "Bran, how many times must I tell you? The towers are not a playground. One misstep and you'll break more than your mother's heart.",
+          "publicStance": "a mother's stern warning in the courtyard",
+          "privateIntent": "keep him close while the king's arrival turns every stone of this castle into a stage"
+        },
+        {
+          "speaker": "bran", "speakerName": "Bran Stark", "action": "speak", "target": "catelyn",
+          "dialogue": "I wasn't playing. I was watching the ravens. You can see the whole godswood from the broken tower.",
+          "publicStance": "earnest, unrepentant curiosity",
+          "privateIntent": "make her see it wasn't recklessness — I need to know how the world fits together"
+        },
+        {
+          "speaker": "ned", "speakerName": "Eddard Stark", "action": "speak", "target": "bran",
+          "dialogue": "Your mother speaks wisely. A lord must know his own walls before he climbs them. Come — walk with me. There are things a boy should learn before guests fill this yard.",
+          "publicStance": "quiet authority, steering his son toward duty",
+          "privateIntent": "temper the boy's hunger for heights before Robert's visit brings dangers none of us can climb away from"
+        },
+        {
+          "speaker": "catelyn", "speakerName": "Catelyn Stark", "action": "speak", "target": "ned",
+          "dialogue": "And see that he learns them with both feet on the ground, Ned. Winterfell has enough ghosts without adding our son to their number.",
+          "publicStance": "love sharpened by fear",
+          "privateIntent": "Robert's coming has already stirred old debts and older suspicions — I will not lose a child to carelessness on the eve of it"
+        }
+      ]
+    },
+    {
       "id": "winterfell-sons",
       "label": "Sons of Winterfell",
       "mood": "friendly",
+      "locationId": "winterfell",
       "anchor": { "x": 0.5, "y": 0.72 },
       "cast": [
         { "key": "jon", "name": "Jon Snow", "charset": "jon snow" },

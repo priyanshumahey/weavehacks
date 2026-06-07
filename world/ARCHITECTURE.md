@@ -93,18 +93,22 @@ The player can swap between authored charset sprites without changing entity ide
 
 ### Map Background Layer
 
-The playfield background is a single pre-rendered map image instead of a tilemap fill:
+The playfield background is composed of one or more pre-rendered map images placed side by side instead of a tilemap fill:
 
 - `src/types/terrain.ts`: map texture source paths and `MapBackgroundDefinition` contract
-- `src/data/terrain/defaultMapBackground.ts`: default background texture key and dimensions for `maps/throne_room.png`
-- `src/rendering/terrain/TerrainRenderer.ts`: renders the map image at world origin with `scene.add.image()` at `RENDER_LAYERS.terrain`
+- `src/types/location.ts`: `LocationDefinition` and `WorldLayoutDefinition` contracts
+- `src/data/locations/winterfellWorldLayout.ts`: active world layout — throne room at `(0, 0)`, Winterfell courtyard to its right
+- `src/data/terrain/defaultMapBackground.ts`: re-exports the primary location map for legacy callers
+- `src/rendering/terrain/TerrainRenderer.ts`: renders every location map at its authored offset with `scene.add.image()` at `RENDER_LAYERS.terrain`
+- `src/rendering/world/locationBounds.ts`: per-location playfield bounds and world-size derivation from the layout
 - `src/assets/worldAssetRegistry.ts`: discovers and preloads PNG assets under `world/maps/`
 
 Map background rules:
 
-- World size matches the authored map image (`1024×1536` for the throne room)
-- Image origin is `(0, 0)` and spans the full world rectangle
+- World size is the bounding box of all placed locations (`2278×1536` for throne room + Winterfell courtyard)
+- Each location image uses origin `(0, 0)` at its layout offset and spans its authored map rectangle
 - `WorldBounds` remain simulation-authoritative with a playfield margin that keeps characters off walls and furniture baked into the image
+- Ensemble groups may declare `locationId` so normalized anchors resolve within that location's bounds
 - `createWorldFrame()` sets the camera background color
 - `setupWorldCamera()` constrains the main camera to the fixed world size and follows the player sprite
 
@@ -112,7 +116,7 @@ Map background rules:
 
 The world is larger than the Phaser viewport and scrolls as the player moves:
 
-- `src/rendering/world/worldDimensions.ts`: fixed world size constants (`WORLD_WIDTH` 1024, `WORLD_HEIGHT` 1536 — sized to the throne room map) and playfield margin
+- `src/rendering/world/worldDimensions.ts`: fixed world size constants derived from the active layout and playfield margin
 - `getWorldBounds()`: returns simulation bounds from fixed world dimensions, not from the camera viewport
 - `setupWorldCamera()`: calls `camera.setBounds(0, 0, WORLD_WIDTH, WORLD_HEIGHT)` and `camera.startFollow(playerSprite, true)` with pixel rounding for crisp pixel art
 - `WorldScene.ensureCameraFollow()`: defers camera setup until the player `CharacterSprite` exists after the first render pass
