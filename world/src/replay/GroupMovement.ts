@@ -77,6 +77,17 @@ export class GroupMovement {
   }
 
   /**
+   * Re-point the cast at a new act's huddles. Characters keep their world
+   * position (held by the runtime) but get new homes, so they walk from their
+   * old huddle to the new one — the merge/split movement between acts. Anyone
+   * absent from the new act is dropped so they no longer hold a stale slot.
+   */
+  restage(layouts: Map<string, GroupLayout>): void {
+    this.chars.clear();
+    this.initFrom(layouts);
+  }
+
+  /**
    * Advance every character one frame. `speechByGroup` gives the current speaker
    * and target per group so the speaker can face its listener. While `entering`
    * is true, everyone walks from their spawn to their slot and no one speaks.

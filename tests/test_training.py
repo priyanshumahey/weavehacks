@@ -77,14 +77,14 @@ def test_reaction_probes_are_real_scenes() -> None:
         assert p.point in {"s1e8", "s1e9", "s1e10"}
 
 
-def test_train_test_split_is_season_1_vs_season_2() -> None:
+def test_train_test_split_learns_early_seasons_tests_future() -> None:
     from got_agents.training.fidelity_eval import DEFAULT_REACTION_EPISODES
     from got_agents.training.splits import TEST_EPISODES, TRAIN_EPISODES, VAL_EPISODES
 
-    # Train + validate on Season 1, test on Season 2 (the future).
-    assert all(e.startswith("s1") for e in TRAIN_EPISODES)
-    assert all(e.startswith("s1") for e in VAL_EPISODES)
-    assert all(e.startswith("s2") for e in TEST_EPISODES)
+    # Learn from Seasons 1-3, select on the S3 tail, test on unseen Season 4.
+    assert all(e[:2] in {"s1", "s2", "s3"} for e in TRAIN_EPISODES)
+    assert all(e.startswith("s3") for e in VAL_EPISODES)
+    assert all(e.startswith("s4") for e in TEST_EPISODES)
     # Three disjoint sets — an operator never sees a selected or measured scene.
     assert not set(TRAIN_EPISODES) & set(VAL_EPISODES)
     assert not set(TRAIN_EPISODES) & set(TEST_EPISODES)

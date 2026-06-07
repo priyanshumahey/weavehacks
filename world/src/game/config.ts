@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import { ReplayScene } from "../scenes/ReplayScene";
 import { WorldScene } from "../scenes/WorldScene";
+import { EpisodeScene } from "../scenes/EpisodeScene";
 
 export function createGameConfig(): Phaser.Types.Core.GameConfig {
   return {
@@ -16,7 +17,8 @@ export function createGameConfig(): Phaser.Types.Core.GameConfig {
       zoom: Phaser.Scale.MAX_ZOOM,
     },
     // ReplayScene boots first (the chronicle-playback experiment); WorldScene
-    // remains registered for the interactive sandbox.
-    scene: [ReplayScene, WorldScene],
+    // remains registered for the interactive sandbox. EpisodeScene plays the
+    // continuous multi-map episode-script (launched from main.ts on ?script=).
+    scene: [ReplayScene, WorldScene, EpisodeScene],
   };
 }

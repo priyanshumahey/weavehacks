@@ -3,8 +3,8 @@
 Selects the most-speaking characters from the script, builds a core-less generic
 genome for each (so we are not limited to the four hand-authored leads), and runs
 the train/val/test evolution loop on every one — **in parallel across
-characters**. Each character learns from Season 1 and is scored on unseen Season
-2, so the final board is an honest cross-character fidelity leaderboard.
+characters**. Each character learns from Seasons 1-3 and is scored on unseen
+Season 4, so the final board is an honest cross-character fidelity leaderboard.
 
 Two levels of parallelism stack here: characters run concurrently (a thread per
 character) and, inside each, the reaction probes fan out across their own pool.
@@ -56,26 +56,29 @@ def _season_count(csv_name: str, episodes: tuple[str, ...]) -> int:
 
 
 def select_cast(
-    *, top: int = 8, min_train_lines: int = 25, min_test_lines: int = 12
+    *, top: int | None = 8, min_train_lines: int = 25, min_test_lines: int = 12
 ) -> list[str]:
-    """Pick the most-speaking real characters that have both S1 and S2 dialogue.
+    """Pick the most-speaking real characters with both learn and test dialogue.
 
-    A character must have enough Season-1 lines to learn from and enough unseen
-    Season-2 lines to be honestly tested on. Characters who die in S1 (e.g. Ned)
-    have no S2 lines and are excluded automatically.
+    A character must have enough Seasons 1-3 lines to learn from and enough
+    unseen Season-4 lines to be honestly tested on. Characters who die before S4
+    have no test lines and are excluded automatically. Pass ``top=None`` to keep
+    every eligible character (no cap).
     """
-    s1 = TRAIN_EPISODES + VAL_EPISODES
+    learn = TRAIN_EPISODES + VAL_EPISODES
     candidates: list[tuple[str, int]] = []
     for csv_name, total in sources.line_counts().most_common():
         if csv_name in _NON_CHARACTERS or total < min_train_lines:
             continue
-        train_n = _season_count(csv_name, s1)
+        train_n = _season_count(csv_name, learn)
         test_n = _season_count(csv_name, TEST_EPISODES)
         if train_n >= min_train_lines and test_n >= min_test_lines:
             candidates.append((csv_name, train_n))
-        if len(candidates) >= top:
+        if top is not None and len(candidates) >= top:
             break
-    return [name for name, _ in candidates[:top]]
+    return [name for name, _ in candidates] if top is None else [
+        name for name, _ in candidates[:top]
+    ]
 
 
 def train_one(
@@ -85,7 +88,7 @@ def train_one(
     anonymize: bool = True,
     save: bool = True,
 ) -> CharacterResult:
-    """Train a single core-less character on S1, scored on unseen S2."""
+    """Train a single core-less character on S1-S3, scored on unseen S4."""
     genome: Genome = generic_genome(csv_name, anonymize=anonymize)
     run = train_character(
         genome,
@@ -116,7 +119,7 @@ def train_many(
     char_workers: int = _CHAR_WORKERS,
     save: bool = True,
 ) -> list[CharacterResult]:
-    """Train every character concurrently; return results ranked by S2 fidelity.
+    """Train every character concurrently; return results ranked by S4 fidelity.
 
     ``char_workers`` characters train at once. Each also fans its probes out
     internally, so the effective LLM concurrency is roughly

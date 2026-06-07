@@ -18,25 +18,42 @@ import type { LocationId } from "../types/location";
 import type { WorldBounds, WorldState } from "../world/worldState";
 import { DialogueLayer, type SpriteAnchor } from "../replay/DialogueLayer";
 import { EnsembleTimeline } from "../replay/EnsembleTimeline";
-import {
-  buildEnsembleStaging,
-  type EnsembleStaging,
-} from "../replay/EnsembleStaging";
+import type { EnsembleStaging } from "../replay/EnsembleStaging";
 import { GroupMovement, type GroupSpeech } from "../replay/GroupMovement";
+import {
+  buildEpisodeStaging,
+  isMultiAct,
+  type ActStaging,
+  type EpisodeStaging,
+} from "../replay/EpisodeStaging";
 import { AmbientWander } from "../replay/AmbientWander";
 import { EncounterDirector } from "../replay/EncounterDirector";
 import { ReplayCamera } from "../replay/ReplayCamera";
 import { ReplayPortraitPanel } from "../replay/ReplayPortraitPanel";
+import { DebugOverlay, type DebugFrame } from "../replay/DebugOverlay";
 import { TimeSlider } from "../replay/TimeSlider";
 import { reactionEmojiFor } from "../replay/reactionEmoji";
 import { loadDefaultEnsemble } from "../replay/ensembleSource";
-import type { EnsembleReplay } from "../replay/ensembleTypes";
+import type { EnsembleGroup, EnsembleReplay } from "../replay/ensembleTypes";
+import type { ReplayCastMember } from "../replay/replayTypes";
 
 export const REPLAY_SCENE_KEY = "replay";
+
+/** True when the app is in episode-script mode (?script=<name>), in which case
+ *  the EpisodeScene plays and ReplayScene must not load or run. */
+function isEpisodeScriptMode(): boolean {
+  return (
+    typeof window !== "undefined" &&
+    !!new URLSearchParams(window.location.search).get("script")
+  );
+}
 
 const OVERVIEW_ZOOM = 0.4;
 const FOCUS_ZOOM = 1.0;
 const START_ZOOM = 0.72;
+
+// Actions that read as a sharp/aggressive move (colour the debug tags).
+const SHARP_ACTIONS = new Set(["accuse", "share_secret", "swear_oath", "ally"]);
 
 // Playback speed multipliers the speed button cycles through.
 const SPEEDS: number[] = [1, 2, 4];
@@ -44,6 +61,12 @@ const SPEEDS: number[] = [1, 2, 4];
 export class ReplayScene extends Phaser.Scene {
   private replay!: EnsembleReplay;
   private staging!: EnsembleStaging;
+  /** The whole episode staged for in-place playback (one act, or many). */
+  private episode!: EpisodeStaging;
+  /** Index of the act currently playing. */
+  private actIndex = 0;
+  /** The groups of the act currently playing (what the timeline drives). */
+  private activeGroups: EnsembleGroup[] = [];
   private activeLocationId!: LocationId;
   private locationBounds!: WorldBounds;
   private runtime: WorldRuntime | null = null;
@@ -55,20 +78,34 @@ export class ReplayScene extends Phaser.Scene {
   private dialogue: DialogueLayer | null = null;
   private observer: ReplayCamera | null = null;
   private panel: ReplayPortraitPanel | null = null;
+  private debug: DebugOverlay | null = null;
   private slider: TimeSlider | null = null;
   private focusedGroupId: string | null = null;
   private manualMode = false;
   private playbackSpeed: number = SPEEDS[0];
   /** Injected ensemble (a freshly staged scene), if the scene was started with one. */
   private injectedReplay: EnsembleReplay | null = null;
+  /** True when the app is in episode-script mode and this scene should not run. */
+  private disabled = false;
   /** Character key -> charset (portrait) name. */
   private readonly charsetByKey = new Map<string, string>();
+  /** Character key -> full cast member (name, title, drives) for the debug HUD. */
+  private readonly castByKey = new Map<string, ReplayCastMember>();
 
   constructor() {
     super(REPLAY_SCENE_KEY);
   }
 
   init(data?: { replay?: EnsembleReplay }): void {
+    // When the app is in episode-script mode (?script=<name>), the EpisodeScene
+    // plays instead. ReplayScene auto-starts (it is first in the scene list), so
+    // bail before preload to avoid double-loading the sprite sheets.
+    if (isEpisodeScriptMode()) {
+      this.disabled = true;
+      this.scene.stop();
+      return;
+    }
+    this.disabled = false;
     this.injectedReplay = data?.replay ?? null;
     this.focusedGroupId = null;
     this.manualMode = false;
@@ -76,6 +113,17 @@ export class ReplayScene extends Phaser.Scene {
   }
 
   preload(): void {
+    if (this.disabled || isEpisodeScriptMode()) {
+      return;
+    }
+    // The cast's charsets explode into hundreds of individual frame PNGs. Under
+    // the Vite dev server this can wedge Phaser's loader: it drains its
+    // in-flight set to zero while files are still PENDING and then stops
+    // pumping the queue, leaving the scene stuck in LOADING forever. Widen the
+    // parallelism and watchdog the queue so a stalled batch is re-pumped.
+    this.load.maxParallelDownloads = 48;
+    this.installLoaderWatchdog();
+
     preloadCharacterSpritesheets(this, this.staging.definitions);
     preloadWorldAssets(this, new Set(collectCharacterTextureKeys(this.staging.definitions)));
 
@@ -90,7 +138,31 @@ export class ReplayScene extends Phaser.Scene {
     }
   }
 
+  /**
+   * Guard against the Phaser loader stalling mid-load (in-flight set empty but
+   * files still pending). Polls during the load and re-pumps the queue; tears
+   * itself down once the load completes.
+   */
+  private installLoaderWatchdog(): void {
+    const loader = this.load;
+    const timer = window.setInterval(() => {
+      // `inflight` and `list` are public on the loader plugin at runtime.
+      const inflight = (loader as unknown as { inflight: Set<unknown> }).inflight;
+      const queued = (loader as unknown as { list: Set<unknown> }).list;
+      if (queued.size > 0 && inflight.size === 0) {
+        loader.start();
+      }
+    }, 200);
+    const stop = () => window.clearInterval(timer);
+    this.load.once(Phaser.Loader.Events.COMPLETE, stop);
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, stop);
+    this.events.once(Phaser.Scenes.Events.DESTROY, stop);
+  }
+
   create(): void {
+    if (this.disabled || isEpisodeScriptMode()) {
+      return;
+    }
     const world = createWorld({
       definitions: this.staging.definitions,
       bounds: this.locationBounds,
@@ -100,7 +172,7 @@ export class ReplayScene extends Phaser.Scene {
     this.replayRenderer = new ReplayRenderer(this);
     this.replayRenderer.create(this.runtime.getState(), this.activeLocationId);
 
-    this.timeline = new EnsembleTimeline(this.replay);
+    this.timeline = new EnsembleTimeline(this.currentActReplay());
     this.movement = new GroupMovement();
     this.movement.initFrom(this.staging.layouts);
     this.ambient = new AmbientWander();
@@ -110,6 +182,11 @@ export class ReplayScene extends Phaser.Scene {
     this.observer = new ReplayCamera(this);
     this.panel = new ReplayPortraitPanel();
     this.panel.setOnAdvance(() => this.stepManual());
+    // The debug overlay is a persistent, boot-level singleton (installed in
+    // main.ts before the game boots). Grab it and bind its in-world tags to
+    // this scene; there is exactly one overlay + toggle button for the app.
+    this.debug = DebugOverlay.shared();
+    this.debug?.bindScene(this);
 
     this.slider = new TimeSlider();
     this.slider.setOnSeek((fraction) => {
@@ -150,15 +227,82 @@ export class ReplayScene extends Phaser.Scene {
     this.replay = this.injectedReplay ?? loadDefaultEnsemble();
     this.activeLocationId = resolveEnsembleLocationId(this.replay);
     this.locationBounds = getLocalLocationBoundsById(this.activeLocationId);
-    this.staging = buildEnsembleStaging(this.replay, {
+
+    // Stage the whole episode: every character spawned once (union across acts)
+    // with per-act layouts, so the cast persists and walks between acts.
+    this.episode = buildEpisodeStaging(this.replay, {
       localizeToLocationId: this.activeLocationId,
     });
+    this.actIndex = 0;
+    const firstAct = this.episode.acts[0];
+    this.activeGroups = firstAct.groups;
+    // `staging` drives world creation (union definitions) and the first act's
+    // huddle layout / membership.
+    this.staging = {
+      definitions: this.episode.definitions,
+      layouts: firstAct.staging.layouts,
+      groupIdByCharacter: firstAct.staging.groupIdByCharacter,
+    };
+
+    // Cast lookups span the whole episode so portraits and the debug HUD work
+    // for any character in any act, not just the opening one.
     this.charsetByKey.clear();
-    for (const group of this.replay.groups) {
-      for (const member of group.cast) {
-        this.charsetByKey.set(member.key, member.charset);
+    this.castByKey.clear();
+    for (const act of this.episode.acts) {
+      for (const group of act.groups) {
+        for (const member of group.cast) {
+          this.charsetByKey.set(member.key, member.charset);
+          this.castByKey.set(member.key, member);
+        }
       }
     }
+  }
+
+  /** A self-contained replay for the act currently playing (drives the clock).
+   *  Encounters ride along only on the final act, so the post-episode mingle
+   *  plays once, after the whole story has resolved. */
+  private currentActReplay(): EnsembleReplay {
+    const isLast = this.actIndex >= this.episode.acts.length - 1;
+    return {
+      version: this.replay.version,
+      title: this.episode.acts[this.actIndex].title,
+      groups: this.activeGroups,
+      encounters: isLast ? this.replay.encounters : undefined,
+    };
+  }
+
+  /** Advance to the next act: re-form the groups and re-point the cast so they
+   *  walk from their old huddles into the new ones, then start the act's clock. */
+  private advanceAct(): void {
+    if (this.actIndex >= this.episode.acts.length - 1) {
+      return;
+    }
+    this.actIndex += 1;
+    const act: ActStaging = this.episode.acts[this.actIndex];
+    this.activeGroups = act.groups;
+    // Re-point staging + movement at the new act; characters keep their world
+    // positions and walk to their new huddle homes (the between-act movement).
+    this.staging.layouts = act.staging.layouts;
+    this.staging.groupIdByCharacter = act.staging.groupIdByCharacter;
+    this.movement?.restage(act.staging.layouts);
+    // The post-episode mingle should disperse from the final act's cast and
+    // positions, so re-seed the ambient roamers as we enter the last act.
+    if (this.actIndex >= this.episode.acts.length - 1) {
+      this.ambient?.initFrom({
+        definitions: this.episode.definitions,
+        layouts: act.staging.layouts,
+        groupIdByCharacter: act.staging.groupIdByCharacter,
+      });
+    }
+    // A fresh clock for the act — it opens in its ENTERING phase, so the walk
+    // to the new huddles reads as the scene change.
+    this.timeline = new EnsembleTimeline(this.currentActReplay());
+    this.timeline.setPlaying(!this.manualMode);
+    // The previous act's group ids are gone; drop any stale focus and pull back
+    // to take in the whole new tableau.
+    this.focusedGroupId = null;
+    this.panel?.hide();
+    this.frameOverview();
   }
 
   update(_time: number, _delta: number): void {
@@ -171,6 +315,14 @@ export class ReplayScene extends Phaser.Scene {
     const delta = _delta * this.playbackSpeed;
 
     this.timeline.update(delta);
+
+    // When an act finishes, advance to the next one instead of dispersing: the
+    // cast walks from their old huddles into the next act's groupings (merge /
+    // split / confront), and the new act's clock starts. Only after the FINAL
+    // act does the world go ambient and the mingle play.
+    if (this.timeline.atEnd && this.actIndex < this.episode.acts.length - 1) {
+      this.advanceAct();
+    }
 
     // Once the conversation has fully played out, the world goes ambient: the
     // cast disperses from their huddles and roams the room with purpose, while
@@ -211,9 +363,33 @@ export class ReplayScene extends Phaser.Scene {
 
     this.syncPanel();
 
+    if (this.debug?.isVisible()) {
+      this.debug.render(this.buildDebugFrame(idle));
+      const tags = this.debugTags(idle, encounterSpeakers);
+      this.debug.renderTags(
+        tags.keys(),
+        (key) => this.anchorFor(state, key),
+        (key) => tags.get(key) ?? null,
+      );
+    }
+
     this.slider?.setProgress(this.timeline.progress);
     this.slider?.setPlaying(this.timeline.isPlaying);
-    this.slider?.setLabel(idle ? "the court mingles…" : this.timeline.progressLabel());
+    this.slider?.setLabel(this.sliderLabel(idle));
+  }
+
+  /** The scrubber caption: act + beat during a multi-act episode, else the
+   *  plain beat / mingle label. */
+  private sliderLabel(idle: boolean): string {
+    if (idle) {
+      return "the court mingles…";
+    }
+    const beat = this.timeline?.progressLabel() ?? "";
+    if (isMultiAct(this.replay)) {
+      const actTitle = this.episode.acts[this.actIndex]?.title ?? "";
+      return actTitle ? `${actTitle} · ${beat}` : beat;
+    }
+    return beat;
   }
 
   // --- timeline helpers --------------------------------------------------
@@ -224,7 +400,7 @@ export class ReplayScene extends Phaser.Scene {
     if (!this.timeline) {
       return map;
     }
-    for (const group of this.replay.groups) {
+    for (const group of this.activeGroups) {
       const speaker = this.timeline.speakerOf(group);
       const turn = this.timeline.activeTurn(group);
       map.set(group.id, { speaker, target: turn?.target ?? null });
@@ -238,7 +414,7 @@ export class ReplayScene extends Phaser.Scene {
     if (!this.timeline) {
       return map;
     }
-    for (const group of this.replay.groups) {
+    for (const group of this.activeGroups) {
       const speaker = this.timeline.speakerOf(group);
       const turn = this.timeline.activeTurn(group);
       if (speaker && turn) {
@@ -247,6 +423,93 @@ export class ReplayScene extends Phaser.Scene {
           map.set(speaker, emoji);
         }
       }
+    }
+    return map;
+  }
+
+  // --- debug overlay -----------------------------------------------------
+
+  /** Assemble the full stats frame the debug overlay renders this update. */
+  private buildDebugFrame(idle: boolean): DebugFrame {
+    const groups = this.activeGroups.map((group) => {
+      const turn = this.timeline && !idle ? this.timeline.activeTurn(group) : null;
+      const speakerKey =
+        this.timeline && !idle ? this.timeline.speakerOf(group) : null;
+      return {
+        id: group.id,
+        label: group.label,
+        mood: group.mood,
+        focused: this.focusedGroupId === group.id,
+        cast: group.cast.map((member) => {
+          const active = !!turn && turn.speaker === member.key;
+          return {
+            key: member.key,
+            name: member.name,
+            title: member.title,
+            drives: member.drives,
+            isSpeaker: !!speakerKey && speakerKey === member.key,
+            action: active ? turn.action : null,
+            target: active ? turn.target : null,
+            targetName:
+              active && turn.target
+                ? this.castByKey.get(turn.target)?.name ?? turn.target
+                : null,
+            publicStance: active ? turn.publicStance : "",
+            privateIntent: active ? turn.privateIntent : "",
+            thinking: active ? turn.thinking ?? "" : "",
+          };
+        }),
+      };
+    });
+
+    return {
+      title: this.replay.title || "",
+      phase: this.timeline?.phase ?? "",
+      progressLabel: idle
+        ? "the court mingles"
+        : this.timeline?.progressLabel() ?? "",
+      speed: this.playbackSpeed,
+      idle,
+      groups,
+      act: isMultiAct(this.replay)
+        ? {
+            title: this.episode.acts[this.actIndex]?.title ?? "",
+            index: this.actIndex,
+            total: this.episode.acts.length,
+          }
+        : undefined,
+    };
+  }
+
+  /** Action tags floating above each current speaker's head (debug only). */
+  private debugTags(
+    idle: boolean,
+    encounterSpeakers: Map<string, string>,
+  ): Map<string, { text: string; color: string }> {
+    const map = new Map<string, { text: string; color: string }>();
+    if (!this.timeline) {
+      return map;
+    }
+    if (idle) {
+      for (const key of encounterSpeakers.keys()) {
+        map.set(key, { text: "mingling", color: "#cfc8b6" });
+      }
+      return map;
+    }
+    for (const group of this.activeGroups) {
+      const speaker = this.timeline.speakerOf(group);
+      const turn = this.timeline.activeTurn(group);
+      if (!speaker || !turn) {
+        continue;
+      }
+      const sharp = SHARP_ACTIONS.has(turn.action);
+      const targetName = turn.target
+        ? this.castByKey.get(turn.target)?.name ?? turn.target
+        : null;
+      map.set(speaker, {
+        text: targetName ? `${turn.action} → ${targetName}` : turn.action,
+        color: sharp ? "#ff8a80" : "#ffd479",
+      });
     }
     return map;
   }
@@ -281,6 +544,8 @@ export class ReplayScene extends Phaser.Scene {
     });
     this.input.keyboard?.on("keydown-SPACE", () => this.stepManual());
     this.input.keyboard?.on("keydown-RIGHT", () => this.stepManual());
+    // The backtick toggle lives on the persistent DebugOverlay (a global
+    // window listener), so it works regardless of canvas focus or scene state.
   }
 
   private focusGroup(groupId: string): void {
@@ -294,7 +559,7 @@ export class ReplayScene extends Phaser.Scene {
 
   /** Open on the first group so the viewer lands inside a conversation. */
   private frameStart(): void {
-    const firstId = this.replay.groups[0]?.id;
+    const firstId = this.activeGroups[0]?.id;
     const centre = firstId ? this.staging.layouts.get(firstId)?.centre : null;
     if (centre) {
       this.cameras.main.centerOn(centre.x, centre.y);
@@ -379,7 +644,7 @@ export class ReplayScene extends Phaser.Scene {
       }
       return;
     }
-    const group = this.replay.groups.find((g) => g.id === this.focusedGroupId);
+    const group = this.activeGroups.find((g) => g.id === this.focusedGroupId);
     if (!group) {
       return;
     }

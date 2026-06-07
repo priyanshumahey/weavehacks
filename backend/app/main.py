@@ -182,21 +182,45 @@ class EpisodeRequest(BaseModel):
         le=5,
         description="incidental two-person meetings to precompute for the mingle",
     )
+    acts: int = Field(
+        1,
+        ge=1,
+        le=scene_service.HARD_MAX_ACTS,
+        description="number of acts; >1 directs a continuous multi-act episode "
+        "(state carried forward, groups re-form between acts)",
+    )
 
 
 @app.post("/api/episode")
 def episode_scene(body: EpisodeRequest) -> dict:
-    """Direct a whole moment from one premise into concurrent conversations."""
+    """Direct a whole moment from one premise.
+
+    ``acts == 1`` (default) stages one batch of concurrent conversations.
+    ``acts > 1`` directs a *continuous* multi-act episode: the same cast carries
+    its memory/drives across acts, actions mutate a shared world, and groups
+    re-form between acts from what just happened.
+    """
     try:
-        ensemble = scene_service.build_episode(
-            body.premise,
-            cast_pool=body.cast_pool or None,
-            episode=body.episode,
-            location=body.location,
-            max_groups=body.max_groups,
-            max_rounds=body.max_rounds,
-            encounters=body.encounters,
-        )
+        if body.acts > 1:
+            ensemble = scene_service.build_directed_episode(
+                body.premise,
+                cast_pool=body.cast_pool or None,
+                episode=body.episode,
+                location=body.location,
+                acts=body.acts,
+                max_groups=body.max_groups,
+                max_rounds=body.max_rounds,
+            )
+        else:
+            ensemble = scene_service.build_episode(
+                body.premise,
+                cast_pool=body.cast_pool or None,
+                episode=body.episode,
+                location=body.location,
+                max_groups=body.max_groups,
+                max_rounds=body.max_rounds,
+                encounters=body.encounters,
+            )
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
     meta = saved_scenes.save(

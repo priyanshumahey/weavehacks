@@ -97,6 +97,12 @@ export class WorldRuntime {
     return this.state;
   }
 
+  /** Remove a character from the world entirely (e.g. they walked off-map and
+   *  left the episode). The renderer drops any sprite no longer in state. */
+  removeCharacter(id: string): void {
+    delete this.state.characters[id];
+  }
+
   getPlayer(): CharacterState | null {
     if (!this.state.playerId) {
       return null;

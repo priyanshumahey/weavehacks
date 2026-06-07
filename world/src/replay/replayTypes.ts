@@ -11,6 +11,10 @@ export interface ReplayCastMember {
   name: string;
   /** Charset frame directory under `world/charsets/sprites/<charset>`. */
   charset: string;
+  /** Optional title, e.g. "Queen Regent" — shown in the debug overlay. */
+  title?: string;
+  /** Optional 8-drive baseline (0..100), surfaced in the debug overlay. */
+  drives?: Record<string, number>;
 }
 
 export interface ReplayTurn {

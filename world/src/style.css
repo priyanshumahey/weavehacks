@@ -588,26 +588,162 @@ canvas {
   gap: 6px;
 }
 
-.scene-setup__chip {
-  padding: 5px 10px;
-  border: 1px solid #34424d;
-  border-radius: 14px;
-  background: #16222c;
-  color: #d7cdb4;
-  font-size: 12px;
-  cursor: pointer;
-  transition: border-color 120ms ease, background 120ms ease;
+/* Cast picker — searchable portrait grid for choosing a scene's cast. */
+.cast-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.scene-setup__chip:hover {
+.cast-picker__bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cast-picker__search {
+  flex: 1;
+  min-width: 0;
+  padding: 6px 10px;
+  border: 1px solid #34424d;
+  border-radius: 8px;
+  background: #0f1b23;
+  color: #f4f1de;
+  font-family: inherit;
+  font-size: 12px;
+}
+
+.cast-picker__search::placeholder {
+  color: #6c7882;
+}
+
+.cast-picker__search:focus {
+  outline: none;
   border-color: #c9a227;
 }
 
-.scene-setup__chip--on {
-  background: #c9a227;
+.cast-picker__count {
+  flex-shrink: 0;
+  font-size: 11px;
+  color: #9aa7b0;
+  white-space: nowrap;
+}
+
+.cast-picker__clear {
+  flex-shrink: 0;
+  padding: 4px 8px;
+  border: 1px solid #34424d;
+  border-radius: 7px;
+  background: transparent;
+  color: #c0b393;
+  font-family: inherit;
+  font-size: 11px;
+  cursor: pointer;
+  transition: border-color 120ms ease, color 120ms ease;
+}
+
+.cast-picker__clear:hover:not(:disabled) {
+  border-color: #c9a227;
+  color: #f6bd60;
+}
+
+.cast-picker__clear:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.cast-picker__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+  gap: 6px;
+  max-height: 268px;
+  overflow-y: auto;
+  padding: 2px;
+}
+
+.cast-picker__tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 4px 6px;
+  border: 1px solid #2b3a44;
+  border-radius: 10px;
+  background: #16222c;
+  color: #c8bda0;
+  cursor: pointer;
+  transition: border-color 120ms ease, background 120ms ease, transform 120ms ease;
+}
+
+.cast-picker__tile:hover {
+  border-color: #6f5f2e;
+  background: #1b2934;
+}
+
+.cast-picker__tile--on {
   border-color: #f6bd60;
-  color: #14202a;
+  background: #2a2410;
+  box-shadow: inset 0 0 0 1px #c9a227;
+}
+
+.cast-picker__tile--bump {
+  animation: cast-picker-bump 220ms ease;
+}
+
+@keyframes cast-picker-bump {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-3px); }
+  75% { transform: translateX(3px); }
+}
+
+.cast-picker__avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  overflow: hidden;
+  border-radius: 50%;
+  border: 1px solid #3a4751;
+  background: #0e1820;
+}
+
+.cast-picker__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  image-rendering: pixelated;
+}
+
+.cast-picker__avatar--initials {
+  font-size: 15px;
+  font-weight: 700;
+  color: #d4af37;
+  letter-spacing: 0.04em;
+}
+
+.cast-picker__tile--on .cast-picker__avatar {
+  border-color: #f6bd60;
+}
+
+.cast-picker__name {
+  font-size: 11px;
+  line-height: 1.15;
+  text-align: center;
+  word-break: break-word;
+}
+
+.cast-picker__tile--on .cast-picker__name {
+  color: #f4ead0;
   font-weight: 600;
+}
+
+.cast-picker__empty {
+  margin: 4px 0;
+  font-size: 12px;
+  color: #7e8a93;
+  text-align: center;
 }
 
 .scene-setup__textarea {

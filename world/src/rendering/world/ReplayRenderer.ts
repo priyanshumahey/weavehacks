@@ -33,6 +33,32 @@ export class ReplayRenderer {
     this.renderNames(state);
   }
 
+  /** Create the frame drawing only the given maps at their world offsets — for
+   *  a multi-map episode that spans a subset of locations. */
+  createForLocations(state: WorldState, locationIds: string[]): void {
+    this.terrainRenderer.createForLocations(locationIds);
+    if (!this.hasCreatedFrame) {
+      createWorldFrame(this.scene);
+      this.hasCreatedFrame = true;
+    }
+    this.characterRenderer.render(state);
+    this.renderNames(state);
+  }
+
+  /** Create the frame drawing maps at explicit packed offsets (split-screen). */
+  createAtPlacements(
+    state: WorldState,
+    placements: { locationId: string; offsetX: number; offsetY: number }[],
+  ): void {
+    this.terrainRenderer.createAtPlacements(placements);
+    if (!this.hasCreatedFrame) {
+      createWorldFrame(this.scene);
+      this.hasCreatedFrame = true;
+    }
+    this.characterRenderer.render(state);
+    this.renderNames(state);
+  }
+
   destroy(): void {
     this.terrainRenderer.clear();
     for (const label of this.nameLabels.values()) {

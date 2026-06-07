@@ -1,0 +1,981 @@
+{
+  "version": 2,
+  "kind": "episode-script",
+  "title": "Tensions rise at court as the king lies abed; the Lannisters and Starks each man",
+  "premise": "Tensions rise at court as the king lies abed; the Lannisters and Starks each maneuver, and a spymaster watches all.",
+  "episode": "s1e5",
+  "cast": [
+    {
+      "key": "cersei",
+      "name": "Cersei Lannister",
+      "charset": "cersei lannister",
+      "title": "Queen",
+      "drives": {
+        "survival": 80.0,
+        "power": 95.0,
+        "legitimacy": 85.0,
+        "loyalty": 30.0,
+        "honor": 20.0,
+        "vengeance": 88.0,
+        "wealth": 60.0,
+        "information": 70.0
+      }
+    },
+    {
+      "key": "jaime_lannister",
+      "name": "Jaime Lannister",
+      "charset": "jaime lannister",
+      "title": "Knight of the Kingsguard",
+      "drives": {
+        "survival": 85.0,
+        "power": 55.0,
+        "legitimacy": 35.0,
+        "loyalty": 90.0,
+        "honor": 30.0,
+        "vengeance": 20.0,
+        "wealth": 35.0,
+        "information": 60.0
+      }
+    },
+    {
+      "key": "ned",
+      "name": "Eddard Stark",
+      "charset": "ned stark",
+      "title": "Hand of the King",
+      "drives": {
+        "survival": 40.0,
+        "power": 30.0,
+        "legitimacy": 65.0,
+        "loyalty": 85.0,
+        "honor": 98.0,
+        "vengeance": 25.0,
+        "wealth": 20.0,
+        "information": 55.0
+      }
+    },
+    {
+      "key": "littlefinger",
+      "name": "Petyr Baelish",
+      "charset": "littlefinger baelish",
+      "title": "Master of Coin",
+      "drives": {
+        "survival": 65.0,
+        "power": 92.0,
+        "legitimacy": 30.0,
+        "loyalty": 10.0,
+        "honor": 8.0,
+        "vengeance": 55.0,
+        "wealth": 80.0,
+        "information": 98.0
+      }
+    },
+    {
+      "key": "lord_varys",
+      "name": "Lord Varys",
+      "charset": "varys",
+      "title": "Master of Whisperers",
+      "drives": {
+        "survival": 90.0,
+        "power": 65.0,
+        "legitimacy": 35.0,
+        "loyalty": 45.0,
+        "honor": 25.0,
+        "vengeance": 20.0,
+        "wealth": 30.0,
+        "information": 100.0
+      }
+    },
+    {
+      "key": "robb_stark",
+      "name": "Robb Stark",
+      "charset": "robb stark",
+      "title": "Heir to Winterfell",
+      "drives": {
+        "survival": 60.0,
+        "power": 45.0,
+        "legitimacy": 65.0,
+        "loyalty": 85.0,
+        "honor": 70.0,
+        "vengeance": 30.0,
+        "wealth": 10.0,
+        "information": 35.0
+      }
+    }
+  ],
+  "threads": [
+    {
+      "id": "thread-0",
+      "phase": 0,
+      "locationId": "throne-room",
+      "anchor": {
+        "x": 0.5,
+        "y": 0.28
+      },
+      "mood": "tense",
+      "label": "At the foot of the Iron Throne",
+      "topic": "At the foot of the Iron Throne, Cersei draws Jaime into a low-voiced family conference while courtiers drift past and the king remains out of sight.",
+      "stakes": "Cersei wants Jaime aligned and ready to defend Lannister interests while Robert is bedridden; Jaime wants to know how far the queen means to push against Ned Stark before the Hand gathers too much authority.",
+      "cast": [
+        {
+          "key": "cersei",
+          "name": "Cersei Lannister",
+          "charset": "cersei lannister",
+          "title": "Queen",
+          "drives": {
+            "survival": 80.0,
+            "power": 95.0,
+            "legitimacy": 85.0,
+            "loyalty": 30.0,
+            "honor": 20.0,
+            "vengeance": 88.0,
+            "wealth": 60.0,
+            "information": 70.0
+          }
+        },
+        {
+          "key": "jaime_lannister",
+          "name": "Jaime Lannister",
+          "charset": "jaime lannister",
+          "title": "Knight of the Kingsguard",
+          "drives": {
+            "survival": 85.0,
+            "power": 55.0,
+            "legitimacy": 35.0,
+            "loyalty": 90.0,
+            "honor": 30.0,
+            "vengeance": 20.0,
+            "wealth": 35.0,
+            "information": 60.0
+          }
+        }
+      ],
+      "dependsOn": [],
+      "turns": [
+        {
+          "speaker": "cersei",
+          "speakerName": "Cersei Lannister",
+          "dialogue": "Keep your temper sheathed for one hour more, Jaime. Robert is abed, Stark is bold, and bold men mistake patience for weakness. Let him think himself master while we place our pieces. If he reaches for our family again, I want your hand on the hilt before his fingers close.",
+          "publicStance": "I draw my brother close beneath the throne's shadow and speak as a queen concerned with order, warning that the Hand must be handled carefully while the king is weak.",
+          "privateIntent": "I mean to bind Jaime to me at once and have him ready to strike the moment Stark overreaches, before he can turn Robert's sickness into power against our blood.",
+          "thinking": "Ned Stark is too honorable to see the trap until it shuts on him. Jaime must be steel, not wildfire, until I have the board arranged to my liking.",
+          "action": "speak",
+          "target": "jaime_lannister"
+        },
+        {
+          "speaker": "jaime_lannister",
+          "speakerName": "Jaime Lannister",
+          "dialogue": "As your brother, I feel it's my duty to warn you: if Stark reaches again, I'll be there before he knows he's moved. But tell me how far you mean to push him, so I don't mistake your game for mine.",
+          "publicStance": "I present myself as calm and obedient, ready to wait and let Stark overreach while standing prepared to defend our house the instant he moves.",
+          "privateIntent": "I want Cersei to show me how reckless she means to be with Stark, and whether she intends a warning, a humiliation, or a killing before the Hand gathers more power.",
+          "thinking": "She wants my sword ready, but I want her measure. Cersei is most dangerous when she thinks patience is the same thing as caution.",
+          "action": "speak",
+          "target": "cersei"
+        },
+        {
+          "speaker": "cersei",
+          "speakerName": "Cersei Lannister",
+          "dialogue": "You will do nothing rash unless I command it. Let Stark climb as high as he likes on Robert's favor; the higher he stands, the harder he falls. Smile at him if you must, and keep your sword for the moment he forgets who truly holds this court.",
+          "publicStance": "I present calm restraint, instructing Jaime to let Stark overreach while we appear dutiful and measured in the king's absence.",
+          "privateIntent": "I want Jaime leashed but ready. If Ned Stark pries too near the truth, I will move against him without hesitation and use Jaime's steel to make certain House Lannister is not threatened again.",
+          "thinking": "Men like Stark think honor is armor. It is only another soft place to slide a knife. Jaime must be my blade, not my fool.",
+          "action": "speak",
+          "target": "jaime_lannister"
+        }
+      ],
+      "driveDeltas": {
+        "cersei": {
+          "survival": 12.0,
+          "power": 10.0,
+          "loyalty": 8.0,
+          "information": 6.0
+        },
+        "jaime_lannister": {
+          "information": 7.0,
+          "loyalty": 3.0,
+          "power": 2.0,
+          "honor": -1.0
+        }
+      },
+      "emotion": {
+        "cersei": "calculating",
+        "jaime_lannister": "wary"
+      }
+    },
+    {
+      "id": "thread-1",
+      "phase": 0,
+      "locationId": "throne-room",
+      "anchor": {
+        "x": 0.3,
+        "y": 0.55
+      },
+      "mood": "tense",
+      "label": "A few pillars away in the same hall",
+      "topic": "A few pillars away in the same hall, Littlefinger slides alongside Ned as the court breaks into smaller knots, offering counsel with a knowing half-smile.",
+      "stakes": "Ned wants to get his bearings at a court already thick with hidden loyalties and to judge whom he can use; Littlefinger wants to make himself indispensable to the new Hand and begin steering Stark business toward his own advantage.",
+      "cast": [
+        {
+          "key": "ned",
+          "name": "Eddard Stark",
+          "charset": "ned stark",
+          "title": "Hand of the King",
+          "drives": {
+            "survival": 40.0,
+            "power": 30.0,
+            "legitimacy": 65.0,
+            "loyalty": 85.0,
+            "honor": 98.0,
+            "vengeance": 25.0,
+            "wealth": 20.0,
+            "information": 55.0
+          }
+        },
+        {
+          "key": "littlefinger",
+          "name": "Petyr Baelish",
+          "charset": "littlefinger baelish",
+          "title": "Master of Coin",
+          "drives": {
+            "survival": 65.0,
+            "power": 92.0,
+            "legitimacy": 30.0,
+            "loyalty": 10.0,
+            "honor": 8.0,
+            "vengeance": 55.0,
+            "wealth": 80.0,
+            "information": 98.0
+          }
+        }
+      ],
+      "dependsOn": [],
+      "turns": [
+        {
+          "speaker": "ned",
+          "speakerName": "Eddard Stark",
+          "dialogue": "You seem to know much of this court, Lord Baelish. Tell me plainly: who here serves the realm, and who serves only themselves?",
+          "publicStance": "I answer him civilly and invite his counsel, showing the court I mean to do my duty without open quarrel.",
+          "privateIntent": "I would hear what game he means to play and measure how useful or dangerous he is before I trust him a finger's width.",
+          "thinking": "He smiles too easily for an honest man. Still, a blind man in a snake pit had best listen for hissing.",
+          "action": "speak",
+          "target": "littlefinger"
+        },
+        {
+          "speaker": "littlefinger",
+          "speakerName": "Petyr Baelish",
+          "dialogue": "Plainly? Very well. Most men here serve themselves first, my lord; the clever ones simply dress it up as duty to the realm. If you wish to know who may be used, follow the gold, the grudges, and the beds they creep from. I can help you read the game, if you’ve the wisdom not to trust appearances.",
+          "publicStance": "Offer cool, useful counsel: in King’s Landing, every man serves something, but coin and fear rule more loyalties than honor. Present myself as a practical guide through the court’s hidden interests.",
+          "privateIntent": "Make myself indispensable to Stark at once, nudging him to rely on me rather than his own instincts, so I can shape what he sees and where he steps next.",
+          "thinking": "Honor is a lovely banner, but banners burn. Let Stark think me candid; a man who believes he is being warned is already halfway to dependence.",
+          "action": "speak",
+          "target": "ned"
+        },
+        {
+          "speaker": "ned",
+          "speakerName": "Eddard Stark",
+          "dialogue": "Then spare me the game, Lord Baelish, and give me truth. Jon Arryn died seeking something. If you can help me learn what it was, do so plainly—and I will judge your worth by that.",
+          "publicStance": "I answer coolly and with courtesy, making plain that I value blunt truth over clever riddles and inviting Baelish to prove his usefulness with facts, not jests.",
+          "privateIntent": "I will keep him talking and test the measure of him. A man so eager to offer help in King's Landing likely serves himself first, but even a false friend may lead me to Jon Arryn's trail.",
+          "thinking": "He smiles too easily for an honest man. Still, in this nest of vipers, even a snake may be made to point toward another.",
+          "action": "speak",
+          "target": "littlefinger"
+        }
+      ],
+      "driveDeltas": {
+        "ned": {
+          "information": 7.0,
+          "honor": 1.0,
+          "loyalty": 1.0,
+          "survival": 2.0
+        },
+        "littlefinger": {
+          "power": 7.0,
+          "information": 5.0,
+          "survival": 2.0
+        }
+      },
+      "emotion": {
+        "ned": "wary",
+        "littlefinger": "satisfied"
+      }
+    },
+    {
+      "id": "thread-2",
+      "phase": 0,
+      "locationId": "winterfell",
+      "anchor": {
+        "x": 0.5,
+        "y": 0.28
+      },
+      "mood": "friendly",
+      "label": "Varys contrives to peel Robb Stark away from the",
+      "topic": "Varys contrives to peel Robb Stark away from the southern press and, by messenger and memory in the Winterfell courtyard, probes the boy's northern instincts from afar.",
+      "stakes": "Varys wants an early measure of the Stark heir and a line into northern sentiment while the court sharpens around Robert's sickbed; Robb wants to understand what the southern game means for his house and whether danger already circles his father.",
+      "cast": [
+        {
+          "key": "lord_varys",
+          "name": "Lord Varys",
+          "charset": "varys",
+          "title": "Master of Whisperers",
+          "drives": {
+            "survival": 90.0,
+            "power": 65.0,
+            "legitimacy": 35.0,
+            "loyalty": 45.0,
+            "honor": 25.0,
+            "vengeance": 20.0,
+            "wealth": 30.0,
+            "information": 100.0
+          }
+        },
+        {
+          "key": "robb_stark",
+          "name": "Robb Stark",
+          "charset": "robb stark",
+          "title": "Heir to Winterfell",
+          "drives": {
+            "survival": 60.0,
+            "power": 45.0,
+            "legitimacy": 65.0,
+            "loyalty": 85.0,
+            "honor": 70.0,
+            "vengeance": 30.0,
+            "wealth": 10.0,
+            "information": 35.0
+          }
+        }
+      ],
+      "dependsOn": [],
+      "turns": [
+        {
+          "speaker": "lord_varys",
+          "speakerName": "Lord Varys",
+          "dialogue": "Young Lord Stark, a southern court is a poor place for plain truths, so permit me a small question in their stead: when winter stirs beyond your walls, which reaches a man first in the North — the cold, or the rumor of it?",
+          "publicStance": "I offer a courteous, almost fatherly inquiry into the North, as if I mean only to comfort a dutiful son far from home.",
+          "privateIntent": "I mean to test how quickly the boy scents danger, how tightly he cleaves to Winterfell, and whether fear for his father can be turned into a northern line of confidence for me.",
+          "thinking": "A boy will answer the weather more honestly than he will answer treason. If he speaks as a son of Winterfell, I shall learn whether the North may be warned, or better yet, gently guided.",
+          "action": "speak",
+          "target": "robb_stark"
+        },
+        {
+          "speaker": "robb_stark",
+          "speakerName": "Robb Stark",
+          "dialogue": "The cold. Rumor runs ahead of many things in the South, I’m told, but in the North a man knows winter when it bites his face. If you’ve sent me a question wrapped in fur, my lord, best shake it out plain.",
+          "publicStance": "I answer the riddle plainly, showing northern sense without giving away fear or haste.",
+          "privateIntent": "I mean to learn whether this spider brings warning or bait, and to show him I am not so green as he may hope.",
+          "thinking": "Let him hear a boy if he likes, so long as he also hears a Stark. If danger circles Father, I’ll have truth, not perfumed little puzzles.",
+          "action": "speak",
+          "target": "lord_varys"
+        },
+        {
+          "speaker": "lord_varys",
+          "speakerName": "Lord Varys",
+          "dialogue": "Plain, then. If a son in Winterfell were to hear that his lord father stood in a hall full of smiles and knives, would he send questions south, my lord, or swords?",
+          "publicStance": "I appear to answer the boy's bluntness with a gentler bluntness of my own, offering concern for his lord father while testing whether the son thinks first of kin, bannermen, or vengeance.",
+          "privateIntent": "I mean to take his measure cheaply: whether he can be steered by fear for Eddard Stark, and whether the North might rally around caution or blood if ill news comes from the capital.",
+          "thinking": "He is young, but youth is not the same as softness. If he says swords too quickly, the North may prove as troublesome as it is useful.",
+          "action": "speak",
+          "target": "robb_stark"
+        }
+      ],
+      "driveDeltas": {
+        "lord_varys": {
+          "information": 7.0,
+          "survival": 2.0,
+          "power": 1.0,
+          "loyalty": -1.0
+        },
+        "robb_stark": {
+          "information": 7.0,
+          "honor": 2.0,
+          "survival": 3.0
+        }
+      },
+      "emotion": {
+        "lord_varys": "measured",
+        "robb_stark": "wary"
+      }
+    },
+    {
+      "id": "thread-3",
+      "phase": 1,
+      "locationId": "throne-room",
+      "anchor": {
+        "x": 0.7,
+        "y": 0.62
+      },
+      "mood": "hostile",
+      "label": "With Jaime and Littlefinger peeled away into oth",
+      "topic": "With Jaime and Littlefinger peeled away into other corners of the hall, Cersei crosses the floor beneath the Iron Throne to intercept Ned in the open, turning courtly silence into a private challenge while Robert remains abed.",
+      "stakes": "Ned presses the queen with the sharpened suspicion he has been nursing since Jon Arryn's death and means to show he will not be managed; Cersei means to measure exactly how much he knows, warn him off her family without yielding an inch, and turn his honor into a leash before he moves against the Lannisters.",
+      "cast": [
+        {
+          "key": "cersei",
+          "name": "Cersei Lannister",
+          "charset": "cersei lannister",
+          "title": "Queen",
+          "drives": {
+            "survival": 80.0,
+            "power": 95.0,
+            "legitimacy": 85.0,
+            "loyalty": 30.0,
+            "honor": 20.0,
+            "vengeance": 88.0,
+            "wealth": 60.0,
+            "information": 70.0
+          }
+        },
+        {
+          "key": "ned",
+          "name": "Eddard Stark",
+          "charset": "ned stark",
+          "title": "Hand of the King",
+          "drives": {
+            "survival": 40.0,
+            "power": 30.0,
+            "legitimacy": 65.0,
+            "loyalty": 85.0,
+            "honor": 98.0,
+            "vengeance": 25.0,
+            "wealth": 20.0,
+            "information": 55.0
+          }
+        }
+      ],
+      "dependsOn": [
+        "thread-0",
+        "thread-1"
+      ],
+      "turns": [
+        {
+          "speaker": "cersei",
+          "speakerName": "Cersei Lannister",
+          "dialogue": "Lord Stark. You wear suspicion as poorly as other men wear silk. If you have something to say to me, say it plainly.",
+          "publicStance": "I greet Lord Stark with cool courtesy and invite him to plain words, as though I mean only to settle dangerous tensions between our houses while the king is indisposed.",
+          "privateIntent": "I mean to probe how much he has learned, remind him that his honor can be used against him, and warn him away from my children without confessing a thing.",
+          "thinking": "He has Jon Arryn's ghost in his eyes and questions he thinks make him dangerous. Let him speak first; honorable men are easiest to lead when they believe they have chosen the road themselves.",
+          "action": "speak",
+          "target": "ned"
+        },
+        {
+          "speaker": "ned",
+          "speakerName": "Eddard Stark",
+          "dialogue": "Plainly, then: Jon Arryn died seeking a truth someone feared. I mean to know what truth it was, and who had cause to bury it.",
+          "publicStance": "Answer the queen plainly and with courtesy, showing I will not be cowed or baited into folly before the court.",
+          "privateIntent": "Test her composure at Jon Arryn's name and the matter he died pursuing, to learn how much fear lies beneath her pride.",
+          "thinking": "Let her hear the name and feel the weight of it. A guilty heart will flinch, even behind a queen's smile.",
+          "action": "speak",
+          "target": "cersei"
+        },
+        {
+          "speaker": "cersei",
+          "speakerName": "Cersei Lannister",
+          "dialogue": "Take care, Lord Stark. Men who go digging for truths beneath the Red Keep often find only bones. If you have accusations, make them openly; if not, do not dress northern suspicion up as justice and lay it at my children's feet.",
+          "publicStance": "I answer Stark's suspicion with cool disdain and caution him against turning rumor into insult against the queen and her house.",
+          "privateIntent": "I mean to learn how close he stands to the truth while reminding him that any move against my blood will become a war he cannot contain.",
+          "thinking": "He knows something, though not enough yet. Honor makes men predictable; if I can make him hesitate for the sake of seeming just, I may yet keep his hands from my throat.",
+          "action": "speak",
+          "target": "ned"
+        }
+      ],
+      "driveDeltas": {
+        "cersei": {
+          "survival": 3.0,
+          "power": 1.0,
+          "information": 2.0,
+          "loyalty": 2.0
+        },
+        "ned": {
+          "information": 7.0,
+          "honor": -1.0,
+          "survival": -2.0
+        }
+      },
+      "emotion": {
+        "cersei": "wary",
+        "ned": "wary"
+      }
+    },
+    {
+      "id": "thread-4",
+      "phase": 1,
+      "locationId": "throne-room",
+      "anchor": {
+        "x": 0.34,
+        "y": 0.8
+      },
+      "mood": "tense",
+      "label": "A short remove from the throne",
+      "topic": "A short remove from the throne, Jaime strides from his sister's side to corner Littlefinger beside a pillar, where passing courtiers force both men to smile as they trade threats under their breath.",
+      "stakes": "Jaime wants to know how much Baelish has been feeding Stark and whether the mocking master of coin is pushing the Hand toward open conflict; Littlefinger wants to provoke Jaime just enough to expose Lannister nerves, keep himself useful to both camps, and steer any coming blow so it falls where he profits.",
+      "cast": [
+        {
+          "key": "jaime_lannister",
+          "name": "Jaime Lannister",
+          "charset": "jaime lannister",
+          "title": "Knight of the Kingsguard",
+          "drives": {
+            "survival": 85.0,
+            "power": 55.0,
+            "legitimacy": 35.0,
+            "loyalty": 90.0,
+            "honor": 30.0,
+            "vengeance": 20.0,
+            "wealth": 35.0,
+            "information": 60.0
+          }
+        },
+        {
+          "key": "littlefinger",
+          "name": "Petyr Baelish",
+          "charset": "littlefinger baelish",
+          "title": "Master of Coin",
+          "drives": {
+            "survival": 65.0,
+            "power": 92.0,
+            "legitimacy": 30.0,
+            "loyalty": 10.0,
+            "honor": 8.0,
+            "vengeance": 55.0,
+            "wealth": 80.0,
+            "information": 98.0
+          }
+        }
+      ],
+      "dependsOn": [
+        "thread-0",
+        "thread-1"
+      ],
+      "turns": [
+        {
+          "speaker": "jaime_lannister",
+          "speakerName": "Jaime Lannister",
+          "dialogue": "Lord Baelish. You linger close to every quarrel in the Red Keep, yet somehow never seem touched by any of them. Tell me, are you whispering in Stark's ear for the good of the realm, or merely to see which house starts bleeding first?",
+          "publicStance": "I approach with an easy smile, as though trading some courtly jest with the master of coin.",
+          "privateIntent": "Probe how much poison he has poured into Stark's ear and remind him that clever men can still bleed if they forget themselves.",
+          "thinking": "Littlefinger smiles like a man with a dagger up his sleeve and three more hidden in his boots. If he's been feeding the Hand more than numbers, I'd sooner know it now than after he sets the hall on fire.",
+          "action": "speak",
+          "target": "littlefinger"
+        },
+        {
+          "speaker": "littlefinger",
+          "speakerName": "Petyr Baelish",
+          "dialogue": "Why, Ser Jaime, I whisper in everyone's ear for the good of the realm. Peace is so much more profitable than bloodshed—though when great houses grow anxious, they do say the most revealing things.",
+          "publicStance": "I answer lightly and loyally, presenting myself as a harmless servant of the crown who prefers peace to bloodshed.",
+          "privateIntent": "I want Jaime to feel the Lannisters look rattled and watched, and to wonder exactly how much Stark has learned from me, without giving him anything clean enough to strike at.",
+          "thinking": "Let him hear the jest and taste the barb beneath it. A proud man will always show me where the armor parts when he thinks he's being mocked.",
+          "action": "speak",
+          "target": "jaime_lannister"
+        },
+        {
+          "speaker": "jaime_lannister",
+          "speakerName": "Jaime Lannister",
+          "dialogue": "Then do the realm a kindness, Lord Baelish, and tell me which anxious lord has been most revealing of late. If Stark has questions, I'd sooner hear them from a friend than from a fool with a dagger.",
+          "publicStance": "I trade an easy, courtly jest with the master of coin, smiling as though we speak of trifles.",
+          "privateIntent": "I mean to make him show his hand—whether he has been filling Stark's head with poison, and whether he thinks Lannister nerves can be plucked without losing fingers.",
+          "thinking": "Littlefinger mistakes insolence for safety. Let him choose whether to name Stark outright or wriggle; either way, I learn what game he's playing.",
+          "action": "speak",
+          "target": "littlefinger"
+        }
+      ],
+      "driveDeltas": {
+        "jaime_lannister": {
+          "information": 5.0,
+          "power": 1.0,
+          "loyalty": 2.0,
+          "honor": -1.0
+        },
+        "littlefinger": {
+          "survival": 2.0,
+          "power": 4.0,
+          "information": 3.0
+        }
+      },
+      "emotion": {
+        "jaime_lannister": "wary",
+        "littlefinger": "satisfied"
+      }
+    },
+    {
+      "id": "thread-5",
+      "phase": 1,
+      "locationId": "winterfell",
+      "anchor": {
+        "x": 0.3,
+        "y": 0.55
+      },
+      "mood": "tense",
+      "label": "Far from King's Landing",
+      "topic": "Far from King's Landing, Varys lingers in the Winterfell courtyard with Robb as ravens and servants move around them, drawing the northern heir into a final, quiet reckoning about what may soon be required of him.",
+      "stakes": "Varys wants to learn whether Robb will answer danger to his father with restraint or banners, and to plant the idea that haste could feed the realm's ruin; Robb wants plain warning at last and decides how far he must prepare the North if southern smiles truly hide knives.",
+      "cast": [
+        {
+          "key": "lord_varys",
+          "name": "Lord Varys",
+          "charset": "varys",
+          "title": "Master of Whisperers",
+          "drives": {
+            "survival": 90.0,
+            "power": 65.0,
+            "legitimacy": 35.0,
+            "loyalty": 45.0,
+            "honor": 25.0,
+            "vengeance": 20.0,
+            "wealth": 30.0,
+            "information": 100.0
+          }
+        },
+        {
+          "key": "robb_stark",
+          "name": "Robb Stark",
+          "charset": "robb stark",
+          "title": "Heir to Winterfell",
+          "drives": {
+            "survival": 60.0,
+            "power": 45.0,
+            "legitimacy": 65.0,
+            "loyalty": 85.0,
+            "honor": 70.0,
+            "vengeance": 30.0,
+            "wealth": 10.0,
+            "information": 35.0
+          }
+        }
+      ],
+      "dependsOn": [
+        "thread-2"
+      ],
+      "turns": [
+        {
+          "speaker": "lord_varys",
+          "speakerName": "Lord Varys",
+          "dialogue": "My lord, when ravens fly so hard and servants grow so quiet, a prudent son asks not only what danger threatens his father, but who might profit if the North answers in haste.",
+          "publicStance": "I offer the young lord a courteous, cautious warning, wrapped in concern for his father and for the peace of the realm.",
+          "privateIntent": "I mean to discover whether grief will make him rash, and to place the first stone of doubt beneath any thought of marching south too quickly.",
+          "thinking": "The boy has wolf's blood, if the tales are true. Better to learn whether it may be guided by fear for his father, or loosed by it.",
+          "action": "speak",
+          "target": "robb_stark"
+        },
+        {
+          "speaker": "robb_stark",
+          "speakerName": "Robb Stark",
+          "dialogue": "Then speak plain, my lord. If there are knives hidden in southern smiles, name the hands that hold them. I will not be frightened into folly, but neither will I sit idle while men profit by my father's danger.",
+          "publicStance": "I answer calmly and demand plain truth, showing no panic before the court while signaling that the North is not blind.",
+          "privateIntent": "I mean to draw him out and learn whether this is a warning honestly given or a southern leash dressed up as counsel, while giving away little of what I would truly do for my father.",
+          "thinking": "He wants to see if I'll rage like a boy. Let him find I can listen first—and remember every name he dares to give me.",
+          "action": "speak",
+          "target": "lord_varys"
+        },
+        {
+          "speaker": "lord_varys",
+          "speakerName": "Lord Varys",
+          "dialogue": "Plain speech is a costly luxury, my lord, and oft paid for in blood. I will say only this: when a great lord is imperiled at court, the innocent may suffer, but the ambitious always dine well. If word comes that would set your blood afire, ask first whether the message serves your father... or the designs of those who would make the realm choose between wolf and lion before winter is upon us.",
+          "publicStance": "I offer caution without naming a culprit, urging Robb Stark to weigh who benefits from northern haste and to prepare with restraint rather than summon banners at once.",
+          "privateIntent": "I mean to discover whether the boy is ruled by duty or temper, and to plant delay in his heart so the North does not move too swiftly for my liking.",
+          "thinking": "He wants a name; a wiser man learns more from the names I withhold. If he reaches first for banners, I shall know the measure of him.",
+          "action": "speak",
+          "target": "robb_stark"
+        }
+      ],
+      "driveDeltas": {
+        "lord_varys": {
+          "information": 7.0,
+          "survival": 3.0,
+          "power": 2.0,
+          "loyalty": -1.0,
+          "honor": -2.0
+        },
+        "robb_stark": {
+          "information": 7.0,
+          "loyalty": 2.0,
+          "honor": 1.0,
+          "survival": 1.0
+        }
+      },
+      "emotion": {
+        "lord_varys": "wary",
+        "robb_stark": "wary"
+      }
+    }
+  ],
+  "learning": {
+    "driveTrajectory": {
+      "cersei": [
+        {
+          "thread": "thread-0",
+          "drives": {
+            "survival": 92.0,
+            "power": 100.0,
+            "legitimacy": 85.0,
+            "loyalty": 38.0,
+            "honor": 20.0,
+            "vengeance": 88.0,
+            "wealth": 60.0,
+            "information": 76.0
+          }
+        },
+        {
+          "thread": "thread-3",
+          "drives": {
+            "survival": 95.0,
+            "power": 100.0,
+            "legitimacy": 85.0,
+            "loyalty": 40.0,
+            "honor": 20.0,
+            "vengeance": 88.0,
+            "wealth": 60.0,
+            "information": 78.0
+          }
+        }
+      ],
+      "jaime_lannister": [
+        {
+          "thread": "thread-0",
+          "drives": {
+            "survival": 85.0,
+            "power": 57.0,
+            "legitimacy": 35.0,
+            "loyalty": 93.0,
+            "honor": 29.0,
+            "vengeance": 20.0,
+            "wealth": 35.0,
+            "information": 67.0
+          }
+        },
+        {
+          "thread": "thread-4",
+          "drives": {
+            "survival": 85.0,
+            "power": 58.0,
+            "legitimacy": 35.0,
+            "loyalty": 95.0,
+            "honor": 28.0,
+            "vengeance": 20.0,
+            "wealth": 35.0,
+            "information": 72.0
+          }
+        }
+      ],
+      "ned": [
+        {
+          "thread": "thread-1",
+          "drives": {
+            "survival": 42.0,
+            "power": 30.0,
+            "legitimacy": 65.0,
+            "loyalty": 86.0,
+            "honor": 99.0,
+            "vengeance": 25.0,
+            "wealth": 20.0,
+            "information": 62.0
+          }
+        },
+        {
+          "thread": "thread-3",
+          "drives": {
+            "survival": 40.0,
+            "power": 30.0,
+            "legitimacy": 65.0,
+            "loyalty": 86.0,
+            "honor": 98.0,
+            "vengeance": 25.0,
+            "wealth": 20.0,
+            "information": 69.0
+          }
+        }
+      ],
+      "littlefinger": [
+        {
+          "thread": "thread-1",
+          "drives": {
+            "survival": 67.0,
+            "power": 99.0,
+            "legitimacy": 30.0,
+            "loyalty": 10.0,
+            "honor": 8.0,
+            "vengeance": 55.0,
+            "wealth": 80.0,
+            "information": 100.0
+          }
+        },
+        {
+          "thread": "thread-4",
+          "drives": {
+            "survival": 69.0,
+            "power": 100.0,
+            "legitimacy": 30.0,
+            "loyalty": 10.0,
+            "honor": 8.0,
+            "vengeance": 55.0,
+            "wealth": 80.0,
+            "information": 100.0
+          }
+        }
+      ],
+      "lord_varys": [
+        {
+          "thread": "thread-2",
+          "drives": {
+            "survival": 92.0,
+            "power": 66.0,
+            "legitimacy": 35.0,
+            "loyalty": 44.0,
+            "honor": 25.0,
+            "vengeance": 20.0,
+            "wealth": 30.0,
+            "information": 100.0
+          }
+        },
+        {
+          "thread": "thread-5",
+          "drives": {
+            "survival": 95.0,
+            "power": 68.0,
+            "legitimacy": 35.0,
+            "loyalty": 43.0,
+            "honor": 23.0,
+            "vengeance": 20.0,
+            "wealth": 30.0,
+            "information": 100.0
+          }
+        }
+      ],
+      "robb_stark": [
+        {
+          "thread": "thread-2",
+          "drives": {
+            "survival": 63.0,
+            "power": 45.0,
+            "legitimacy": 65.0,
+            "loyalty": 85.0,
+            "honor": 72.0,
+            "vengeance": 30.0,
+            "wealth": 10.0,
+            "information": 42.0
+          }
+        },
+        {
+          "thread": "thread-5",
+          "drives": {
+            "survival": 64.0,
+            "power": 45.0,
+            "legitimacy": 65.0,
+            "loyalty": 87.0,
+            "honor": 73.0,
+            "vengeance": 30.0,
+            "wealth": 10.0,
+            "information": 49.0
+          }
+        }
+      ]
+    },
+    "reflections": {
+      "Cersei Lannister": {
+        "summary": "I kept Jaime leashed and met Stark in the open, forcing him to show his suspicion before he was ready to strike. The court is shifting around Robert's absence, and every smile now conceals a calculation about whether wolf or lion will move first.",
+        "rules": [
+          "Let Stark overreach before I answer him.",
+          "Jaime is strongest when directed, not indulged.",
+          "In a quiet court, the most dangerous move is the one made to seem defensive."
+        ],
+        "relationships": {
+          "Jaime Lannister": "He is fierce and loyal, but I must keep his anger pointed where it serves me.",
+          "Eddard Stark": "He suspects enough to be dangerous, but not enough yet to act cleanly.",
+          "Petyr Baelish": "He feeds on uncertainty and must never be trusted, only used.",
+          "Lord Varys": "He is listening at every wall and shaping caution into influence far from court.",
+          "Robert Baratheon": "His absence makes space for stronger players, even as his name still shields us."
+        }
+      },
+      "Lord Varys": {
+        "summary": "I watched the lions draw together in patience and menace while Stark pressed after truth with all the dangerous honesty of the North. From afar, I tested young Robb and planted one necessary caution: haste is the feast of ambitious men.",
+        "rules": [
+          "When pride and suspicion rise together, speak less and learn more.",
+          "Warn the young against haste; they are quickest to be used by older players.",
+          "A truth delivered too plainly in court becomes a weapon for someone else."
+        ],
+        "relationships": {
+          "Cersei Lannister": "I see her choosing restraint not from mercy, but to make a harder fall for Stark when the moment ripens.",
+          "Jaime Lannister": "He is a drawn blade pretending to be sheathed, dangerous chiefly when family pride is touched.",
+          "Eddard Stark": "He remains earnest enough to seek truth openly in a place built to punish such men.",
+          "Petyr Baelish": "He thrives exactly where meanings blur, and I must assume every smile of his hides a wager.",
+          "Robb Stark": "He is green but not witless, and may yet be steered toward caution if warning reaches him before grief does."
+        }
+      },
+      "Eddard Stark": {
+        "summary": "I saw the court more clearly today: Cersei and Jaime mean to meet inquiry with force when it suits them, while Littlefinger offers help wrapped in self-interest and smiling deceit. I pressed for the truth of Jon Arryn’s death and learned that in King’s Landing every warning is also a move in some larger game.",
+        "rules": [
+          "Speak plainly, but do not mistake plain speech for safety.",
+          "Trust no counsel in this court unless it is tested.",
+          "Move carefully when lions feel cornered."
+        ],
+        "relationships": {
+          "Cersei Lannister": "She met my suspicion with veiled threat, and I count her guarded, dangerous, and deeply invested in hiding something.",
+          "Jaime Lannister": "He is quick to violence and will act for his family without hesitation.",
+          "Petyr Baelish": "He may prove useful, but he serves himself first and must never be trusted farther than necessity requires.",
+          "Lord Varys": "He sees the board more clearly than most, yet speaks in riddles and purposes of his own.",
+          "Robb Stark": "My son must learn patience as well as courage, for haste is what our enemies would use against us."
+        }
+      },
+      "Jaime Lannister": {
+        "summary": "I spent the day with my hand near my sword and my temper on a leash, while Cersei bid me wait and Stark prowled after truths he scarcely understands. Littlefinger slithered between us all, and I was reminded that in this court the man smiling beside the pillar may be more dangerous than the one making threats in the open.",
+        "rules": [
+          "Sheathe my temper until the blow matters.",
+          "Trust open enemies before useful whisperers.",
+          "Know Cersei’s game before I make my own move."
+        ],
+        "relationships": {
+          "Cersei Lannister": "I stand with her as ever, but I must be sure her command and my instinct are not at cross purposes.",
+          "Eddard Stark": "He is coming too close to truths that threaten my family, and if he reaches again I must be ready.",
+          "Petyr Baelish": "He is a smirking knife who profits from every quarrel, and I would sooner watch him than trust a word from him."
+        }
+      },
+      "Petyr Baelish": {
+        "summary": "The court showed its teeth without drawing blood: Cersei and Jaime tightened ranks, Stark demanded truth as if truth were ever given freely, and I remained where I always profit most—between suspicion and certainty. Jaime tested me, Stark invited guidance without understanding the price of it, and the realm drifted one step closer to choosing sides before anyone is ready to admit it.",
+        "rules": [
+          "Stand close to conflict, never inside it.",
+          "Give truth in pieces, never whole.",
+          "When wolves and lions bristle, listen for who hopes to feast."
+        ],
+        "relationships": {
+          "Eddard Stark": "He wants plain truth from a crooked court, which makes him useful and doomed in equal measure.",
+          "Jaime Lannister": "He knows I traffic in whispers and would rather measure me as a threat than trust me as an ally.",
+          "Cersei Lannister": "She means to let Stark rise just high enough to break, and I do not forget a queen who plays the long fall well.",
+          "Lord Varys": "The eunuch warns against haste while pretending only to observe; as ever, he moves pieces with soft hands."
+        }
+      },
+      "Robb Stark": {
+        "summary": "I can feel the South tightening around my father, all smiles on the face and knives behind the back. If word comes from King's Landing, I must not let fear or anger drive me faster than sense.",
+        "rules": [
+          "Answer danger with judgment before steel.",
+          "When men speak in riddles, ask who profits.",
+          "Guard the North from being baited into another man's game."
+        ],
+        "relationships": {
+          "Lord Varys": "He tested me more than he warned me, but his lesson was sound: haste can serve our enemies.",
+          "Eddard Stark": "My duty is to be ready for my father without making his peril worse.",
+          "Cersei Lannister": "I know her only by the threat her house casts over my father.",
+          "Jaime Lannister": "He feels like the sword behind the lion's smile.",
+          "Petyr Baelish": "A man too eager to stand near trouble is one to mistrust."
+        }
+      }
+    }
+  },
+  "meta": {
+    "iteration": "reliability-check",
+    "premise": "Tensions rise at court as the king lies abed; the Lannisters and Starks each maneuver, and a spymaster watches all.",
+    "cast": [
+      "cersei",
+      "jaime_lannister",
+      "ned",
+      "robb_stark",
+      "littlefinger",
+      "lord_varys"
+    ],
+    "episode": "s1e5",
+    "locations": [
+      "throne-room",
+      "winterfell"
+    ],
+    "phases": 2,
+    "maxThreads": 3,
+    "rounds": 1
+  }
+}

@@ -21,6 +21,16 @@ from got_agents.flows.encounter_planner import (
     EncounterPlan,
     plan_encounters,
 )
+from got_agents.flows.episode_director import (
+    DEFAULT_NUM_ACTS,
+    HARD_MAX_ACTS,
+    direct_episode,
+)
+from got_agents.flows.continuous_director import (
+    DEFAULT_NUM_PHASES,
+    HARD_MAX_PHASES,
+    direct_continuous_episode,
+)
 from got_agents.flows.scene_planner import (
     DEFAULT_MAX_GROUPS,
     HARD_MAX_GROUPS,
@@ -28,6 +38,7 @@ from got_agents.flows.scene_planner import (
     plan_scenes,
 )
 from got_agents.outputs.ensemble_contract import to_ensemble
+from got_agents.outputs.episode_script import to_episode_script
 
 # Episode rewind points, shared with the chat service.
 EPISODES: list[str] = [f"s1e{e}" for e in range(1, 11)]
@@ -37,6 +48,9 @@ DEFAULT_EPISODE = "s1e1"
 LOCATIONS: list[dict] = [
     {"id": "throne-room", "label": "Throne Room"},
     {"id": "winterfell", "label": "Winterfell Courtyard"},
+    {"id": "wall", "label": "The Wall"},
+    {"id": "vaes-dothrak", "label": "Vaes Dothrak"},
+    {"id": "dragonstone", "label": "Dragonstone"},
 ]
 _LOCATION_IDS = {loc["id"] for loc in LOCATIONS}
 DEFAULT_LOCATION = "throne-room"
@@ -200,13 +214,20 @@ def _with_sprite_charsets(ensemble: dict) -> dict:
     ``to_ensemble`` derives charsets from ``charset_for`` (which may keep an
     honorific, e.g. "lord varys"), but the world's sprite directory is the bare
     name ("varys"). Reuse the roster's sprite-verified resolver so no character
-    renders as a missing-texture box.
+    renders as a missing-texture box. Handles both the flat (``groups``) and the
+    multi-act (``acts[].groups``) ensemble shapes.
     """
-    for group in ensemble.get("groups", []):
-        for member in group.get("cast", []):
-            resolved = _resolve_charset(member.get("key", ""))
-            if resolved:
-                member["charset"] = resolved
+
+    def fix(groups: list[dict]) -> None:
+        for group in groups:
+            for member in group.get("cast", []):
+                resolved = _resolve_charset(member.get("key", ""))
+                if resolved:
+                    member["charset"] = resolved
+
+    fix(ensemble.get("groups", []))
+    for act in ensemble.get("acts", []):
+        fix(act.get("groups", []))
     return ensemble
 
 
@@ -339,6 +360,180 @@ def build_episode(
             ensemble["encounters"] = baked
 
     return ensemble
+
+
+# Multi-act episode defaults (the directed, continuous path).
+DEFAULT_ACTS = DEFAULT_NUM_ACTS
+
+
+def build_directed_episode(
+    premise: str,
+    *,
+    cast_pool: list[str] | None = None,
+    episode: str = DEFAULT_EPISODE,
+    location: str = DEFAULT_LOCATION,
+    acts: int = DEFAULT_NUM_ACTS,
+    max_groups: int = DEFAULT_MAX_GROUPS,
+    max_rounds: int = DEFAULT_MAX_ROUNDS,
+) -> dict:
+    """Direct a continuous, multi-act episode from one premise.
+
+    Unlike :func:`build_episode` (one batch of parallel councils that never see
+    each other), this stages an ordered sequence of acts with state carried
+    forward: the same cast keeps its memory and drives, actions mutate a shared
+    world, and each act's groups are re-planned from what just happened. Returns
+    an ensemble in the *acts* shape (with a back-compat top-level ``groups``).
+
+    ``cast_pool`` optionally restricts the showrunner's casting to chosen keys.
+
+    Raises ``ValueError`` for an empty premise or an unstageable cast pool.
+    """
+    premise = (premise or "").strip()
+    if not premise:
+        raise ValueError("a premise is required")
+    if episode not in EPISODES:
+        episode = DEFAULT_EPISODE
+    if location not in _LOCATION_IDS:
+        location = DEFAULT_LOCATION
+    acts = max(1, min(int(acts), HARD_MAX_ACTS))
+    max_groups = max(1, min(int(max_groups), HARD_MAX_GROUPS))
+    max_rounds = max(1, min(int(max_rounds), 4))
+
+    available = roster()
+    if cast_pool:
+        pool = set(cast_pool)
+        chosen = [c for c in available if c["key"] in pool]
+        if len(chosen) < 2:
+            raise ValueError(
+                "choose at least two spawnable characters for the cast pool, "
+                "or leave it empty to let the director cast freely"
+            )
+        available = chosen
+
+    chronicle = direct_episode(
+        premise,
+        available,
+        episode=episode,
+        num_acts=acts,
+        max_groups=max_groups,
+        max_rounds=max_rounds,
+    )
+    if not chronicle.get("acts"):
+        raise ValueError(
+            "the director could not stage this premise; try naming characters or "
+            "a clearer situation"
+        )
+
+    ensemble = _with_sprite_charsets(to_ensemble(chronicle))
+    # Pin every act's groups to the chosen map location (the world stamps anchors
+    # within that location's bounds).
+    for act in ensemble.get("acts", []):
+        for group in act.get("groups", []):
+            group["locationId"] = location
+    for group in ensemble.get("groups", []):
+        group["locationId"] = location
+    return ensemble
+
+
+# Continuous-episode defaults (the timeline path).
+DEFAULT_PHASES = DEFAULT_NUM_PHASES
+
+
+def _script_with_sprite_charsets(script: dict) -> dict:
+    """Rewrite charsets to world-loadable sprites for the episode-script shape
+    (top-level ``cast`` and each ``threads[].cast``)."""
+
+    def fix(cast: list[dict]) -> None:
+        for member in cast:
+            resolved = _resolve_charset(member.get("key", ""))
+            if resolved:
+                member["charset"] = resolved
+
+    fix(script.get("cast", []))
+    for thread in script.get("threads", []):
+        fix(thread.get("cast", []))
+    return script
+
+
+def build_continuous_episode(
+    premise: str,
+    *,
+    cast_pool: list[str] | None = None,
+    episode: str = DEFAULT_EPISODE,
+    locations: list[str] | None = None,
+    phases: int = DEFAULT_NUM_PHASES,
+    max_threads: int = DEFAULT_MAX_GROUPS,
+    max_rounds: int = DEFAULT_MAX_ROUNDS,
+    reflect: bool = True,
+) -> dict:
+    """Direct a continuous, multi-thread episode and return its episode-script.
+
+    The episode plays on one continuous clock: conversation threads begin, run,
+    and finish independently across map ``locations`` while characters move
+    between them with motive. State carries forward (memory + drives persist,
+    actions mutate a shared world), and the script captures the agents' learning
+    (per-thread drive deltas, a drive trajectory, end-of-episode reflections).
+
+    ``locations`` is an optional list of location ids the director may use; the
+    first is where everyone starts. Defaults to the throne room + the Wall so the
+    episode can cut between them. Returns the episode-script contract JSON.
+
+    Raises ``ValueError`` for an empty premise or an unstageable cast pool.
+    """
+    premise = (premise or "").strip()
+    if not premise:
+        raise ValueError("a premise is required")
+    if episode not in EPISODES:
+        episode = DEFAULT_EPISODE
+    phases = max(1, min(int(phases), HARD_MAX_PHASES))
+    max_threads = max(1, min(int(max_threads), HARD_MAX_GROUPS))
+    max_rounds = max(1, min(int(max_rounds), 4))
+
+    # Resolve the requested location ids to the world's known set, preserving
+    # order; default to the throne room and the Wall.
+    requested = locations or [DEFAULT_LOCATION, "wall"]
+    loc_objs: list[dict] = []
+    seen: set[str] = set()
+    for lid in requested:
+        if lid in _LOCATION_IDS and lid not in seen:
+            seen.add(lid)
+            loc_objs.append(next(l for l in LOCATIONS if l["id"] == lid))
+    if not loc_objs:
+        loc_objs = [next(l for l in LOCATIONS if l["id"] == DEFAULT_LOCATION)]
+
+    available = roster()
+    if cast_pool:
+        pool = set(cast_pool)
+        spawnable = {c["key"] for c in available}
+        unknown = sorted(pool - spawnable)
+        chosen = [c for c in available if c["key"] in pool]
+        if len(chosen) < 2:
+            hint = (
+                f" Unknown/unspawnable keys: {', '.join(unknown)}." if unknown else ""
+            )
+            raise ValueError(
+                "choose at least two spawnable characters for the cast pool, "
+                "or leave it empty to let the director cast freely." + hint
+            )
+        available = chosen
+
+    chronicle = direct_continuous_episode(
+        premise,
+        available,
+        episode=episode,
+        locations=loc_objs,
+        num_phases=phases,
+        max_threads=max_threads,
+        max_rounds=max_rounds,
+        reflect=reflect,
+    )
+    if not chronicle.get("threads"):
+        raise ValueError(
+            "the director could not stage this premise; try naming characters or "
+            "a clearer situation"
+        )
+
+    return _script_with_sprite_charsets(to_episode_script(chronicle))
 
 
 def _run_encounters(plans: list[EncounterPlan], *, episode: str) -> list[dict]:

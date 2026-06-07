@@ -4,11 +4,11 @@
     uv run python scripts/train_all.py --top 12 --generations 2
     uv run python scripts/train_all.py --char-workers 4 --no-anonymize
 
-Selects the most-speaking characters that have both Season-1 (to learn from) and
-Season-2 (to be tested on) dialogue, builds a core-less generic genome for each,
-and evolves them all in parallel. Every character learns from S1 and is scored on
-UNSEEN S2, so the final board is an honest generalization ranking. Needs
-OPENAI_API_KEY; no Redis required.
+Selects the most-speaking characters that have both Seasons 1-3 (to learn from)
+and Season-4 (to be tested on) dialogue, builds a core-less generic genome for
+each, and evolves them all in parallel. Every character learns from S1-S3 and is
+scored on UNSEEN S4, so the final board is an honest generalization ranking.
+Needs OPENAI_API_KEY; no Redis required.
 """
 
 from __future__ import annotations
@@ -25,6 +25,10 @@ from got_agents.training import select_cast, train_many
 def main(argv: list[str]) -> None:
     parser = argparse.ArgumentParser(prog="train_all")
     parser.add_argument("--top", type=int, default=8, help="how many characters")
+    parser.add_argument(
+        "--all", action="store_true",
+        help="train every eligible character (overrides --top)",
+    )
     parser.add_argument("--generations", type=int, default=1)
     parser.add_argument(
         "--char-workers", type=int, default=3,
@@ -41,8 +45,8 @@ def main(argv: list[str]) -> None:
     args = parser.parse_args(argv[1:])
 
     init_weave()
-    cast = args.names or select_cast(top=args.top)
-    print(f"Training {len(cast)} characters on S1, scoring on unseen S2 "
+    cast = args.names or select_cast(top=None if args.all else args.top)
+    print(f"Training {len(cast)} characters on S1-S3, scoring on unseen S4 "
           f"({args.char_workers} at a time)…")
     for name in cast:
         print(f"  - {name}")
@@ -55,7 +59,7 @@ def main(argv: list[str]) -> None:
         char_workers=args.char_workers,
     )
 
-    print("\n=== cross-character fidelity leaderboard (unseen Season 2) ===")
+    print("\n=== cross-character fidelity leaderboard (unseen Season 4) ===")
     print(f"  {'rank':<5}{'character':<22}{'gen-0':>7}{'final':>8}{'Δtest':>8}")
     print("  " + "-" * 48)
     for i, r in enumerate(results, 1):
@@ -72,8 +76,8 @@ def main(argv: list[str]) -> None:
     out = Path("logs/leaderboard.json")
     out.parent.mkdir(parents=True, exist_ok=True)
     payload = {
-        "metric": "unseen Season 2 canon-reaction fidelity",
-        "split": {"train": "S1 e1-7", "val": "S1 e8-10", "test": "S2 e1-10"},
+        "metric": "unseen Season 4 canon-reaction fidelity",
+        "split": {"train": "S1-S2 + S3 e1-7", "val": "S3 e8-10", "test": "S4 e1-10"},
         "generations": args.generations,
         "characters": [
             {
@@ -136,9 +140,9 @@ def _render_html(payload: dict) -> str:
   <p class="split" id="split"></p>
   <table><thead><tr>
     <th class="rank">#</th><th>Character</th><th>gen-0</th>
-    <th>Trained (unseen S2)</th><th class="num">&Delta;</th>
+    <th>Trained (unseen S4)</th><th class="num">&Delta;</th>
   </tr></thead><tbody id="rows"></tbody></table>
-  <div class="foot">Each agent learns from Season 1 and is scored on Season 2 it has never seen.
+  <div class="foot">Each agent learns from Seasons 1-3 and is scored on Season 4 it has never seen.
     A higher bar = a more in-character voice on future scenes.</div>
 </div>
 <script>

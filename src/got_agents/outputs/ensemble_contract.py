@@ -68,11 +68,25 @@ def _display_name(key: str) -> str:
 
 
 def _cast_entry(key: str) -> dict:
-    return {
+    """World-facing cast member, enriched with the hidden stats the debug
+    overlay surfaces: the character's title and full 8-drive baseline."""
+    entry = {
         "key": key,
         "name": _display_name(key),
         "charset": charset_for(key) or key.replace("_", " "),
     }
+    try:
+        genome = get_character(key).genome
+    except KeyError:
+        return entry
+    if genome.title:
+        entry["title"] = genome.title
+    if genome.drive_params:
+        entry["drives"] = {
+            name: round(float(value), 1)
+            for name, value in genome.drive_params.items()
+        }
+    return entry
 
 
 def _anchor_for(index: int, total: int) -> dict:
@@ -112,6 +126,91 @@ def _short_label(setting: str, index: int) -> str:
     return text[:1].upper() + text[1:] if text else f"Scene {index + 1}"
 
 
+def _scene_to_group(
+    scene: dict,
+    index: int,
+    total: int,
+    *,
+    group_id: str,
+    mood_override: str | None = None,
+    anchor_override: dict | None = None,
+    location_override: str | None = None,
+) -> dict:
+    """Transform one chronicle scene into one ensemble group.
+
+    Mood/anchor/location fall back to the scene's own inline ``mood`` /
+    ``locationId`` (set by the act director) before the index heuristics, so a
+    caller can bake per-scene intent into the chronicle without threading
+    index-keyed override maps.
+    """
+    raw_turns = scene.get("turns", [])
+    turns = []
+    for turn in raw_turns:
+        speaker = _to_key(turn["speaker"])
+        raw_target = turn.get("target")
+        turns.append(
+            {
+                "speaker": speaker,
+                "speakerName": _display_name(speaker),
+                "dialogue": turn.get("dialogue", ""),
+                "publicStance": turn.get("public_stance", ""),
+                "privateIntent": turn.get("private_intent", ""),
+                "thinking": turn.get("thinking", ""),
+                "action": turn.get("action", "speak"),
+                "target": _to_key(raw_target) if raw_target else None,
+            }
+        )
+
+    # Cast = the beat cast, in first-appearance order, deduped.
+    cast_keys: list[str] = []
+    seen: set[str] = set()
+    for raw in list(scene.get("cast", [])) + [t["speaker"] for t in turns]:
+        key = _to_key(raw)
+        if key not in seen:
+            seen.add(key)
+            cast_keys.append(key)
+
+    mood = mood_override or scene.get("mood") or _mood_for(turns)
+    anchor = anchor_override or _anchor_for(index, total)
+    location = location_override or scene.get("locationId")
+
+    group = {
+        "id": group_id,
+        "label": _short_label(scene.get("setting", ""), index),
+        "mood": mood,
+        "anchor": anchor,
+        "cast": [_cast_entry(k) for k in cast_keys],
+        "turns": turns,
+    }
+    if location:
+        group["locationId"] = location
+    return group
+
+
+def _build_groups(
+    scenes: list[dict],
+    *,
+    id_prefix: str = "scene",
+    mood_overrides: dict[int, str] | None = None,
+    anchors: dict[int, dict] | None = None,
+    location_overrides: dict[int, str] | None = None,
+) -> list[dict]:
+    """Build a list of ensemble groups from a flat list of scenes."""
+    total = len(scenes)
+    return [
+        _scene_to_group(
+            scene,
+            index,
+            total,
+            group_id=f"{id_prefix}-{index}",
+            mood_override=(mood_overrides or {}).get(index),
+            anchor_override=(anchors or {}).get(index),
+            location_override=(location_overrides or {}).get(index),
+        )
+        for index, scene in enumerate(scenes)
+    ]
+
+
 def to_ensemble(
     chronicle: dict,
     *,
@@ -121,57 +220,45 @@ def to_ensemble(
 ) -> dict:
     """Transform a chronicle dict into the world-facing ensemble contract.
 
-    One chronicle scene -> one ensemble group. ``mood_overrides`` /``anchors`` /
-    ``location_overrides`` let a caller (e.g. the backend, which knows deception
-    scores or map intent) override the per-scene heuristics by scene index.
-    """
-    scenes = chronicle.get("scenes", [])
-    total = len(scenes)
-    groups: list[dict] = []
+    Two chronicle shapes are accepted:
 
-    for index, scene in enumerate(scenes):
-        raw_turns = scene.get("turns", [])
-        turns = []
-        for turn in raw_turns:
-            speaker = _to_key(turn["speaker"])
-            raw_target = turn.get("target")
-            turns.append(
+    * **Flat** (``{"scenes": [...]}``) — one scene per ensemble *group*, all on a
+      single clock. The historical shape; ``mood_overrides`` / ``anchors`` /
+      ``location_overrides`` override the per-scene heuristics by scene index.
+    * **Acts** (``{"acts": [{"title", "scenes": [...]}, ...]}``) — an ordered
+      sequence of acts the world plays one after another, each act its own set
+      of concurrent groups. Per-scene intent (mood/location) is read inline from
+      each scene; the index-keyed override maps are ignored for acts. The first
+      act's groups are also surfaced at top level as ``groups`` for back-compat.
+    """
+    acts_raw = chronicle.get("acts")
+    if acts_raw:
+        acts: list[dict] = []
+        for act_index, act in enumerate(acts_raw):
+            groups = _build_groups(
+                act.get("scenes", []), id_prefix=f"act{act_index}-scene"
+            )
+            acts.append(
                 {
-                    "speaker": speaker,
-                    "speakerName": _display_name(speaker),
-                    "dialogue": turn.get("dialogue", ""),
-                    "publicStance": turn.get("public_stance", ""),
-                    "privateIntent": turn.get("private_intent", ""),
-                    "action": turn.get("action", "speak"),
-                    "target": _to_key(raw_target) if raw_target else None,
+                    "id": f"act-{act_index}",
+                    "title": act.get("title") or f"Act {act_index + 1}",
+                    "groups": groups,
                 }
             )
-
-        # Cast = the beat cast, in first-appearance order, deduped.
-        cast_keys: list[str] = []
-        seen: set[str] = set()
-        for raw in list(scene.get("cast", [])) + [t["speaker"] for t in turns]:
-            key = _to_key(raw)
-            if key not in seen:
-                seen.add(key)
-                cast_keys.append(key)
-
-        mood = (mood_overrides or {}).get(index) or _mood_for(turns)
-        anchor = (anchors or {}).get(index) or _anchor_for(index, total)
-        location = (location_overrides or {}).get(index)
-
-        group = {
-            "id": f"scene-{index}",
-            "label": _short_label(scene.get("setting", ""), index),
-            "mood": mood,
-            "anchor": anchor,
-            "cast": [_cast_entry(k) for k in cast_keys],
-            "turns": turns,
+        return {
+            "version": ENSEMBLE_VERSION,
+            "title": chronicle.get("title", ""),
+            "acts": acts,
+            # Back-compat: a consumer that only knows `groups` plays the first act.
+            "groups": acts[0]["groups"] if acts else [],
         }
-        if location:
-            group["locationId"] = location
-        groups.append(group)
 
+    groups = _build_groups(
+        chronicle.get("scenes", []),
+        mood_overrides=mood_overrides,
+        anchors=anchors,
+        location_overrides=location_overrides,
+    )
     return {
         "version": ENSEMBLE_VERSION,
         "title": chronicle.get("title", ""),

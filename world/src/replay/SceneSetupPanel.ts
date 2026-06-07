@@ -6,6 +6,7 @@
 
 import { winterfellWorldLayout } from "../data/locations/winterfellWorldLayout";
 import { applyLocationToEnsemble } from "./applyLocationToEnsemble";
+import { CastPicker } from "./CastPicker";
 import {
   directEpisode,
   fetchSavedScenes,
@@ -31,11 +32,11 @@ export class SceneSetupPanel {
   private readonly libraryBlock: HTMLDivElement;
   private readonly genControls: HTMLDivElement;
   private readonly premiseInput: HTMLTextAreaElement;
-  private readonly poolGrid: HTMLDivElement;
+  private readonly poolPicker: CastPicker;
   private readonly groupsSelect: HTMLSelectElement;
   private readonly mingleSelect: HTMLSelectElement;
   private readonly directStage: HTMLButtonElement;
-  private readonly castGrid: HTMLDivElement;
+  private readonly castPicker: CastPicker;
   private readonly settingInput: HTMLTextAreaElement;
   private readonly stakesInput: HTMLTextAreaElement;
   private readonly episodeSelect: HTMLSelectElement;
@@ -97,8 +98,9 @@ export class SceneSetupPanel {
       "Joffrey, the Starks insist on the lawful will, and old schemers smell " +
       "opportunity…";
 
-    this.poolGrid = document.createElement("div");
-    this.poolGrid.className = "scene-setup__cast";
+    this.poolPicker = new CastPicker(this.pool, () => {}, {
+      hint: "empty = AI chooses",
+    });
 
     this.groupsSelect = document.createElement("select");
     this.groupsSelect.className = "scene-setup__select";
@@ -132,8 +134,11 @@ export class SceneSetupPanel {
     this.manualBlock = document.createElement("div");
     this.manualBlock.className = "scene-setup__block";
     this.manualBlock.hidden = true;
-    this.castGrid = document.createElement("div");
-    this.castGrid.className = "scene-setup__cast";
+    this.castPicker = new CastPicker(
+      this.selected,
+      () => this.updateStageButton(),
+      { hint: "pick 2–5", max: 5 },
+    );
     this.settingInput = document.createElement("textarea");
     this.settingInput.className = "scene-setup__textarea";
     this.settingInput.rows = 2;
@@ -151,7 +156,7 @@ export class SceneSetupPanel {
     this.stageButton.addEventListener("click", () => void this.submit());
     this.manualBlock.append(
       this.fieldLabel("Cast", "pick 2–5"),
-      this.castGrid,
+      this.castPicker.root,
       this.fieldLabel("Setting", "where & when"),
       this.settingInput,
       this.fieldLabel("Stakes", "what each one wants"),
@@ -194,7 +199,7 @@ export class SceneSetupPanel {
       this.fieldLabel("Premise", "one dramatic moment, your detail"),
       this.premiseInput,
       this.fieldLabel("Cast pool", "optional — empty = AI chooses"),
-      this.poolGrid,
+      this.poolPicker.root,
       this.labelled("How many", this.groupsSelect),
       this.labelled("Mingle", this.mingleSelect),
       this.locationField,
@@ -313,37 +318,8 @@ export class SceneSetupPanel {
   }
 
   private renderRoster(): void {
-    this.castGrid.replaceChildren();
-    this.poolGrid.replaceChildren();
-    for (const character of this.roster) {
-      this.castGrid.append(
-        this.chip(character, this.selected, () => this.updateStageButton()),
-      );
-      this.poolGrid.append(this.chip(character, this.pool, null));
-    }
-  }
-
-  private chip(
-    character: RosterCharacter,
-    set: Set<string>,
-    onChange: (() => void) | null,
-  ): HTMLButtonElement {
-    const chip = document.createElement("button");
-    chip.type = "button";
-    chip.className = "scene-setup__chip";
-    chip.textContent = character.name;
-    chip.title = character.title || character.name;
-    chip.addEventListener("click", () => {
-      if (set.has(character.key)) {
-        set.delete(character.key);
-        chip.classList.remove("scene-setup__chip--on");
-      } else {
-        set.add(character.key);
-        chip.classList.add("scene-setup__chip--on");
-      }
-      onChange?.();
-    });
-    return chip;
+    this.castPicker.setRoster(this.roster);
+    this.poolPicker.setRoster(this.roster);
   }
 
   private renderLibrary(scenes: SavedScene[]): void {

@@ -1,0 +1,1910 @@
+{
+  "version": 2,
+  "kind": "episode-script",
+  "title": "The king decrees Tyrion Lannister be sent to the Wall. In the throne room the La",
+  "premise": "The king decrees Tyrion Lannister be sent to the Wall. In the throne room the Lannisters scheme to undo it while the Starks weigh whether to let the exile stand; Tyrion makes his way north to Jon Snow at the Wall.",
+  "episode": "s1e7",
+  "cast": [
+    {
+      "key": "cersei",
+      "name": "Cersei Lannister",
+      "charset": "cersei lannister",
+      "title": "Queen",
+      "drives": {
+        "survival": 80.0,
+        "power": 95.0,
+        "legitimacy": 85.0,
+        "loyalty": 30.0,
+        "honor": 20.0,
+        "vengeance": 88.0,
+        "wealth": 60.0,
+        "information": 70.0
+      }
+    },
+    {
+      "key": "jaime_lannister",
+      "name": "Jaime Lannister",
+      "charset": "jaime lannister",
+      "title": "Knight of the Kingsguard",
+      "drives": {
+        "survival": 85.0,
+        "power": 55.0,
+        "legitimacy": 35.0,
+        "loyalty": 90.0,
+        "honor": 30.0,
+        "vengeance": 20.0,
+        "wealth": 35.0,
+        "information": 60.0
+      }
+    },
+    {
+      "key": "ned",
+      "name": "Eddard Stark",
+      "charset": "ned stark",
+      "title": "Hand of the King",
+      "drives": {
+        "survival": 40.0,
+        "power": 30.0,
+        "legitimacy": 65.0,
+        "loyalty": 85.0,
+        "honor": 98.0,
+        "vengeance": 25.0,
+        "wealth": 20.0,
+        "information": 55.0
+      }
+    },
+    {
+      "key": "robb_stark",
+      "name": "Robb Stark",
+      "charset": "robb stark",
+      "title": "Heir to Winterfell",
+      "drives": {
+        "survival": 60.0,
+        "power": 45.0,
+        "legitimacy": 65.0,
+        "loyalty": 85.0,
+        "honor": 70.0,
+        "vengeance": 30.0,
+        "wealth": 10.0,
+        "information": 35.0
+      }
+    },
+    {
+      "key": "tyrion_lannister",
+      "name": "Tyrion Lannister",
+      "charset": "tyrion lannister",
+      "title": "Lannister nobleman",
+      "drives": {
+        "survival": 82.0,
+        "power": 45.0,
+        "legitimacy": 38.0,
+        "loyalty": 50.0,
+        "honor": 35.0,
+        "vengeance": 28.0,
+        "wealth": 55.0,
+        "information": 72.0
+      }
+    },
+    {
+      "key": "jon_snow",
+      "name": "Jon Snow",
+      "charset": "jon snow",
+      "title": "Bastard son of Eddard Stark",
+      "drives": {
+        "survival": 55.0,
+        "power": 20.0,
+        "legitimacy": 65.0,
+        "loyalty": 85.0,
+        "honor": 90.0,
+        "vengeance": 15.0,
+        "wealth": 5.0,
+        "information": 30.0
+      }
+    }
+  ],
+  "threads": [
+    {
+      "id": "thread-0",
+      "phase": 0,
+      "locationId": "throne-room",
+      "anchor": {
+        "x": 0.5,
+        "y": 0.28
+      },
+      "mood": "tense",
+      "label": "At the foot of the Iron Throne",
+      "topic": "At the foot of the Iron Throne, Cersei draws Jaime a step away from the court's thinning crowd and begins plotting before Ned can turn the sentence into fact.",
+      "stakes": "Cersei wants Jaime moving immediately to find a way to stop Tyrion's exile or turn it against the Starks; Jaime wants a direct, forceful answer and presses whether they should confront Ned now or act before Tyrion can be sent north.",
+      "cast": [
+        {
+          "key": "cersei",
+          "name": "Cersei Lannister",
+          "charset": "cersei lannister",
+          "title": "Queen",
+          "drives": {
+            "survival": 80.0,
+            "power": 95.0,
+            "legitimacy": 85.0,
+            "loyalty": 30.0,
+            "honor": 20.0,
+            "vengeance": 88.0,
+            "wealth": 60.0,
+            "information": 70.0
+          }
+        },
+        {
+          "key": "jaime_lannister",
+          "name": "Jaime Lannister",
+          "charset": "jaime lannister",
+          "title": "Knight of the Kingsguard",
+          "drives": {
+            "survival": 85.0,
+            "power": 55.0,
+            "legitimacy": 35.0,
+            "loyalty": 90.0,
+            "honor": 30.0,
+            "vengeance": 20.0,
+            "wealth": 35.0,
+            "information": 60.0
+          }
+        }
+      ],
+      "dependsOn": [],
+      "turns": [
+        {
+          "speaker": "cersei",
+          "speakerName": "Cersei Lannister",
+          "dialogue": "Not here. Let the wolves think us slow. Ride now—find out where they mean to take Tyrion, and whether this farce can be stopped or made useful. If the Starks want a quarrel with our House, I mean for them to choke on it.",
+          "publicStance": "I appear to counsel patience and family unity, urging Jaime to move at once for Tyrion's sake while showing the court a composed queen's concern for her brother.",
+          "privateIntent": "I mean to keep Jaime from doing anything rash with Ned in public, while turning all our strength toward seizing the insult against Tyrion and making it a weapon against the Starks before they can move against us.",
+          "thinking": "Ned Stark is dangerous because he still believes honor will shield him. I will not give him a clean field or Jaime a public fury to ruin us before I am ready.",
+          "action": "speak",
+          "target": "jaime_lannister"
+        },
+        {
+          "speaker": "jaime_lannister",
+          "speakerName": "Jaime Lannister",
+          "dialogue": "Then I'll ride now. If they mean to drag my brother north, I'll know by nightfall who holds him and how hard I must strike. Let Stark call it justice if he likes—We're Lannisters. Lannisters don't act like fools.",
+          "publicStance": "I agree to move at once and mean to overtake the road before Tyrion is carried too far, while keeping our hand hidden from the court.",
+          "privateIntent": "I want speed and clarity: learn who holds my brother, judge whether force can free him, and leave Ned no clean path to make Stark justice look lawful.",
+          "thinking": "Ned will do what honor tells him and call it virtue. Honor is a fine shield for a fool; steel and speed serve better when blood is at stake.",
+          "action": "speak",
+          "target": "cersei"
+        },
+        {
+          "speaker": "cersei",
+          "speakerName": "Cersei Lannister",
+          "dialogue": "Go, but use your wits before your sword. Learn who has him, where they mean to take him, and who among the river lords is fool enough to shelter Stark's outrage. If there is a chain to break, break it. If there is a grievance to sharpen, bring it to me, and I will make the realm taste it.",
+          "publicStance": "I send Jaime to learn who holds Tyrion and to move swiftly, but not rashly, so the court sees a queen concerned with law and family alike.",
+          "privateIntent": "I want Tyrion freed if it can be done cleanly; if not, I want the Starks made to answer for this insult and Ned trapped before he can turn royal judgment against us.",
+          "thinking": "Jaime always thinks steel is the first answer. Steel has its uses, but a public wrong done to a Lannister can be worth more than blood if I spend it properly.",
+          "action": "speak",
+          "target": "jaime_lannister"
+        },
+        {
+          "speaker": "jaime_lannister",
+          "speakerName": "Jaime Lannister",
+          "dialogue": "I'll have the truth before the sun sets, and if there's a chain on Tyrion, I'll see who forged it before I break it. Leave Stark to his little solemnities. The things I do for love.",
+          "publicStance": "I pledge to ride at once, learn where Tyrion is being taken, and answer Stark's insult with calculated force rather than a public scene in the throne room.",
+          "privateIntent": "I mean to move before Ned can dress this outrage in law, gather the names of every hand involved, and decide whether Tyrion is best freed quietly or avenged loudly enough to break the Starks.",
+          "thinking": "Ned would meet a challenge with honor and bluster, which makes him dangerous only if I play his game. Better to ride fast, learn everything, and choose where to put the knife.",
+          "action": "swear_oath",
+          "target": "cersei"
+        },
+        {
+          "speaker": "cersei",
+          "speakerName": "Cersei Lannister",
+          "dialogue": "And Jaime—no heroics beneath these walls. Find who dares hold our brother, and whether Stark's hand is in it openly or through some dutiful little proxy. If Ned means to make this insult into judgment, I want the names, the road, and the weakness in it before he draws another righteous breath.",
+          "publicStance": "I coolly direct Jaime to investigate Tyrion's seizure and to avoid rash bloodshed in the court's shadow.",
+          "privateIntent": "I want Jaime gone at once, moving before Ned Stark can fix this insult into law, and I mean to turn Tyrion's capture into proof of Stark aggression that justifies whatever comes next.",
+          "thinking": "Ned is too honorable to survive this court, and too dangerous to ignore. If Jaime moves quickly, I can make Tyrion's seizure the spark and call the fire justice.",
+          "action": "speak",
+          "target": "jaime_lannister"
+        }
+      ],
+      "driveDeltas": {
+        "cersei": {
+          "survival": 7.0,
+          "power": 8.0,
+          "loyalty": 6.0,
+          "vengeance": 9.0,
+          "information": 10.0,
+          "legitimacy": 5.0
+        },
+        "jaime_lannister": {
+          "loyalty": 10.0,
+          "information": 14.0,
+          "power": 6.0,
+          "vengeance": 8.0,
+          "legitimacy": -4.0,
+          "honor": -3.0
+        }
+      },
+      "emotion": {
+        "cersei": "calculating",
+        "jaime_lannister": "incensed"
+      }
+    },
+    {
+      "id": "thread-1",
+      "phase": 0,
+      "locationId": "throne-room",
+      "anchor": {
+        "x": 0.3,
+        "y": 0.55
+      },
+      "mood": "tense",
+      "label": "Near the great doors of the throne room",
+      "topic": "Near the great doors of the throne room, Ned keeps Robb close in a low-voiced Stark huddle as the Lannisters begin to seethe around them.",
+      "stakes": "Ned wants to decide whether the king's decree should stand and what duty requires now that Tyrion has been condemned; Robb wants to know whether mercy, caution, or firmness best serves their house if the Lannisters move against the judgment.",
+      "cast": [
+        {
+          "key": "ned",
+          "name": "Eddard Stark",
+          "charset": "ned stark",
+          "title": "Hand of the King",
+          "drives": {
+            "survival": 40.0,
+            "power": 30.0,
+            "legitimacy": 65.0,
+            "loyalty": 85.0,
+            "honor": 98.0,
+            "vengeance": 25.0,
+            "wealth": 20.0,
+            "information": 55.0
+          }
+        },
+        {
+          "key": "robb_stark",
+          "name": "Robb Stark",
+          "charset": "robb stark",
+          "title": "Heir to Winterfell",
+          "drives": {
+            "survival": 60.0,
+            "power": 45.0,
+            "legitimacy": 65.0,
+            "loyalty": 85.0,
+            "honor": 70.0,
+            "vengeance": 30.0,
+            "wealth": 10.0,
+            "information": 35.0
+          }
+        }
+      ],
+      "dependsOn": [],
+      "turns": [
+        {
+          "speaker": "ned",
+          "speakerName": "Eddard Stark",
+          "dialogue": "Keep your face still, Robb. Mercy is no kindness if it teaches great lords they may defy the crown without cost. Yet we are not butchers. If the king's decree stands, it stands by law, not vengeance. Watch the Lannisters now, and remember who reaches first for steel.",
+          "publicStance": "I draw my son close and give him quiet counsel, showing the room only a father steadying his heir while we hold to the king's justice.",
+          "privateIntent": "I mean to bind Robb to firmness before the Lannisters test us, and prepare him to stand if this judgment brings swords from silk smiles.",
+          "thinking": "The hall smells of pride and anger, and too many lions are near at hand. My son must learn that duty is a hard road, and that justice, once spoken, must not tremble because the guilty are powerful.",
+          "action": "share_secret",
+          "target": "robb_stark"
+        },
+        {
+          "speaker": "robb_stark",
+          "speakerName": "Robb Stark",
+          "dialogue": "Then we hold to the king's word and give them no cause to name us butchers. If they mean to answer law with steel, let all the hall see whose hand moved first.",
+          "publicStance": "I counsel firm obedience to the king's lawful judgment while urging restraint, so House Stark is seen as steady rather than blood-hungry.",
+          "privateIntent": "I want Father to know I am ready to hold Winterfell with a cool head if this turns to open enmity, and to draw the Lannisters into making the first rash move.",
+          "thinking": "Father is right: law must look like law, not a northern grudge. If the lions are set on snarling, better they bare their teeth before every witness in the room.",
+          "action": "speak",
+          "target": "ned"
+        },
+        {
+          "speaker": "ned",
+          "speakerName": "Eddard Stark",
+          "dialogue": "Aye. We stand to the decree, and no Stark draws unless I command it. Let the lions snarl. If they would set themselves above the king's justice, let every man here bear witness.",
+          "publicStance": "I reaffirm that the king's judgment must be upheld in lawful order, while warning my son to show restraint unless the Lannisters force the matter.",
+          "privateIntent": "I mean to steady Robb, keep Stark men disciplined, and make any Lannister defiance plain before the hall so their pride condemns them more surely than my anger ever could.",
+          "thinking": "Robb must learn that firmness is not fury. If blood is to be spilled, better the realm see who chose it, and why.",
+          "action": "speak",
+          "target": "robb_stark"
+        },
+        {
+          "speaker": "robb_stark",
+          "speakerName": "Robb Stark",
+          "dialogue": "We hold where we are and let the king's justice speak for itself. No man of ours reaches for steel unless you give the word, Father.",
+          "publicStance": "I stand with my father and the king's decree, urging calm and discipline so the hall sees House Stark as lawful and restrained.",
+          "privateIntent": "I want the Lannisters to feel the weight of our resolve without giving them any opening to paint us as rash; if they move, every eye in the room must judge them first.",
+          "thinking": "Keep your face still. If the lions mean to bare their claws, let them do it before the whole hall, and not by any fault of ours.",
+          "action": "speak",
+          "target": "ned"
+        },
+        {
+          "speaker": "ned",
+          "speakerName": "Eddard Stark",
+          "dialogue": "Hold your men hard in hand, Robb. Not a sword leaves its sheath unless they force it. We stand with the king's justice, and let the lions show the realm what they are.",
+          "publicStance": "I quietly order Robb to hold every Stark man fast and answer any Lannister fury with discipline alone, so the hall sees we stand with law, not bloodlust.",
+          "privateIntent": "I mean to deny the Lannisters any pretext for open slaughter while fixing every eye in the room upon their next move; if they break the peace, their guilt will be plain.",
+          "thinking": "A hall can turn to a killing floor in a heartbeat. If blood must come, let no man say House Stark was first to loose it.",
+          "action": "speak",
+          "target": "robb_stark"
+        }
+      ],
+      "driveDeltas": {
+        "ned": {
+          "legitimacy": 9.0,
+          "loyalty": 7.0,
+          "honor": 8.0,
+          "survival": 4.0,
+          "power": 2.0
+        },
+        "robb_stark": {
+          "legitimacy": 3.0,
+          "loyalty": 2.0,
+          "honor": 2.0,
+          "power": 1.0
+        }
+      },
+      "emotion": {
+        "ned": "resolute",
+        "robb_stark": "resolute"
+      }
+    },
+    {
+      "id": "thread-2",
+      "phase": 0,
+      "locationId": "wall",
+      "anchor": {
+        "x": 0.5,
+        "y": 0.28
+      },
+      "mood": "friendly",
+      "label": "Already on the road in spirit and stepping out f",
+      "topic": "Already on the road in spirit and stepping out from the throne room toward the long northern journey, Tyrion pulls Jon into the first miles of a bitter march bound for the Wall.",
+      "stakes": "Tyrion wants to learn what awaits him at the Wall and whether Jon might make that exile survivable; Jon wants to gauge whether Tyrion goes north humbled, dangerous, or still scheming, and what this sentence will mean once they arrive among the Night's Watch.",
+      "cast": [
+        {
+          "key": "tyrion_lannister",
+          "name": "Tyrion Lannister",
+          "charset": "tyrion lannister",
+          "title": "Lannister nobleman",
+          "drives": {
+            "survival": 82.0,
+            "power": 45.0,
+            "legitimacy": 38.0,
+            "loyalty": 50.0,
+            "honor": 35.0,
+            "vengeance": 28.0,
+            "wealth": 55.0,
+            "information": 72.0
+          }
+        },
+        {
+          "key": "jon_snow",
+          "name": "Jon Snow",
+          "charset": "jon snow",
+          "title": "Bastard son of Eddard Stark",
+          "drives": {
+            "survival": 55.0,
+            "power": 20.0,
+            "legitimacy": 65.0,
+            "loyalty": 85.0,
+            "honor": 90.0,
+            "vengeance": 15.0,
+            "wealth": 5.0,
+            "information": 30.0
+          }
+        }
+      ],
+      "dependsOn": [],
+      "turns": [
+        {
+          "speaker": "tyrion_lannister",
+          "speakerName": "Tyrion Lannister",
+          "dialogue": "",
+          "publicStance": "",
+          "privateIntent": "",
+          "thinking": "",
+          "action": "speak",
+          "target": null
+        },
+        {
+          "speaker": "jon_snow",
+          "speakerName": "Jon Snow",
+          "dialogue": "The Wall is no court, Imp. If you want to know what awaits you, ask plain and I'll answer plain.",
+          "publicStance": "I mean to meet him plainly on the road and set the terms between us: no mockery, no false courtesies, only the truth of what waits at the Wall.",
+          "privateIntent": "I want to see whether he wears his sentence lightly or hides some sharper purpose beneath his wit, and whether he can be of use or only trouble among my brothers.",
+          "thinking": "He's a Lannister, and Lannisters seldom move without purpose. But a hard road strips a man down to what he is soon enough.",
+          "action": "speak",
+          "target": "tyrion_lannister"
+        },
+        {
+          "speaker": "tyrion_lannister",
+          "speakerName": "Tyrion Lannister",
+          "dialogue": "Plain, is it? Good. Tell me what a man finds at the Wall besides cold, chastity, and bad wine. Who commands, who hungers, who resents, and which of them is fool enough to mistake me for harmless?",
+          "publicStance": "I answer his bluntness with my own and ask what sort of men the Wall is truly made of, so I may seem merely curious and better prepared for the journey.",
+          "privateIntent": "I want to know where the rot lies, who can be bought, and whether this bastard boy might be worth keeping close in that frozen exile.",
+          "thinking": "Bastards and dwarfs are cousins in the eyes of the world; he may answer more honestly than most highborn sons. If I know the men before I meet them, I may keep my head attached to my neck.",
+          "action": "speak",
+          "target": "jon_snow"
+        },
+        {
+          "speaker": "jon_snow",
+          "speakerName": "Jon Snow",
+          "dialogue": "You'll find old men, boys, poachers, rapers, thieves, and a few good men besides. Jeor Mormont commands. Bowen Marsh counts food and fears winter. Alliser Thorne resents weakness and makes a sport of it. No one who matters will mistake you for harmless, but some fools may still try to mock you. The Wall strips rank off a man. What remains is what he is.",
+          "publicStance": "Answer him plainly about the Wall and its men, without bowing or flinching.",
+          "privateIntent": "Measure whether he meets hard truth with wit, fear, or contempt, and learn what kind of danger he may bring among my brothers.",
+          "thinking": "Let him hear the truth cold. If he laughs at it, he's hiding; if he listens, he may yet be useful.",
+          "action": "speak",
+          "target": "tyrion_lannister"
+        },
+        {
+          "speaker": "tyrion_lannister",
+          "speakerName": "Tyrion Lannister",
+          "dialogue": "Then the Wall is much like court, only colder and with fewer whores. Mormont commands, Marsh counts beans, and Thorne pisses vinegar on boys to feel himself a man. Good. I prefer my monsters named. And you, Jon Snow—when they strip rank off a man, what remains of you?",
+          "publicStance": "I answer his plainness with my own and make light of what awaits us, while showing I understand the sort of men the Wall attracts.",
+          "privateIntent": "I want to measure Jon's loyalties, his bitterness, and whether he can be made useful company and a sharper pair of eyes once we reach Castle Black.",
+          "thinking": "Bastards learn early what noble sons discover late: the world loves a label more than a man. If he knows what he is, he may be worth trusting a little; if not, he'll be as dangerous as any fool in silk.",
+          "action": "speak",
+          "target": "jon_snow"
+        }
+      ],
+      "driveDeltas": {
+        "tyrion_lannister": {
+          "information": 8.0,
+          "loyalty": 2.0,
+          "power": 1.0
+        },
+        "jon_snow": {
+          "information": 3.0,
+          "loyalty": 1.0,
+          "honor": 1.0
+        }
+      },
+      "emotion": {
+        "tyrion_lannister": "appraising",
+        "jon_snow": "wary"
+      }
+    },
+    {
+      "id": "thread-3",
+      "phase": 1,
+      "locationId": "throne-room",
+      "anchor": {
+        "x": 0.7,
+        "y": 0.62
+      },
+      "mood": "tense",
+      "label": "As Jaime peels away to carry out her orders",
+      "topic": "As Jaime peels away to carry out her orders, Cersei crosses the throne room before the last witnesses have fully dispersed and corners Ned beneath the Iron Throne's shadow, forcing the quarrel into the open.",
+      "stakes": "Cersei wants to learn whether Ned means to let the king's sentence stand all the way to the Wall or can still be bent by pressure, while wrapping Tyrion's exile in the language of Stark malice; Ned wants to hold to the king's decree, deny her any admission of weakness, and make clear the Lannisters will bear blame if they answer judgment with force.",
+      "cast": [
+        {
+          "key": "cersei",
+          "name": "Cersei Lannister",
+          "charset": "cersei lannister",
+          "title": "Queen",
+          "drives": {
+            "survival": 80.0,
+            "power": 95.0,
+            "legitimacy": 85.0,
+            "loyalty": 30.0,
+            "honor": 20.0,
+            "vengeance": 88.0,
+            "wealth": 60.0,
+            "information": 70.0
+          }
+        },
+        {
+          "key": "ned",
+          "name": "Eddard Stark",
+          "charset": "ned stark",
+          "title": "Hand of the King",
+          "drives": {
+            "survival": 40.0,
+            "power": 30.0,
+            "legitimacy": 65.0,
+            "loyalty": 85.0,
+            "honor": 98.0,
+            "vengeance": 25.0,
+            "wealth": 20.0,
+            "information": 55.0
+          }
+        }
+      ],
+      "dependsOn": [
+        "thread-0",
+        "thread-1"
+      ],
+      "turns": [
+        {
+          "speaker": "cersei",
+          "speakerName": "Cersei Lannister",
+          "dialogue": "Lord Stark. Before your lady wife teaches the realm that any lion may be seized on a whim and called justice, tell me plainly—does my brother ride all the way to the Wall for this insult, or is there still room in you for reason before more blood answers blood?",
+          "publicStance": "I present myself as a composed queen seeking clarity on the king's justice, framing Tyrion's fate as the result of Stark hostility while warning Ned against provoking open conflict.",
+          "privateIntent": "I mean to test whether Stark will yield an inch on the sentence and to bait him into declaring himself plainly, so I may use his rigidity against him and paint House Stark as the aggressor.",
+          "thinking": "Let him wrap himself in honor; honorable men are easiest to corner. If he will not bend, then I will make his stubbornness the spark and call the fire his doing.",
+          "action": "speak",
+          "target": "ned"
+        },
+        {
+          "speaker": "ned",
+          "speakerName": "Eddard Stark",
+          "dialogue": "Reason? The king has given judgment, my lady, and judgment is not a cloak to be shrugged off when it chills a lion's pride. Your brother will answer as the king decreed. If House Lannister would make quarrel of lawful sentence, let all men see who first sets torch to the peace of the realm.",
+          "publicStance": "I uphold the king's sentence as law and warn that any Lannister answer in steel will mark them as enemies of the realm, not injured kin seeking redress.",
+          "privateIntent": "Give her no hint of softness on Tyrion, force her to weigh the cost of open defiance, and make plain before any lingering ears where blame will lie if her house chooses war.",
+          "thinking": "I must not yield her an inch where others may smell weakness. Let her hear iron in it, and let the court remember who stands with law and who would trample it for blood.",
+          "action": "speak",
+          "target": "cersei"
+        },
+        {
+          "speaker": "cersei",
+          "speakerName": "Cersei Lannister",
+          "dialogue": "How noble you sound, Lord Stark. A lion seized by your wife's hand, condemned by your king's in yours, and all of it called peace. Tell me—if it were your brother dragged in chains on a mother's tale and a boy's fall, would you name that lawful judgment as well, or only when the neck beneath the sword is Lannister?",
+          "publicStance": "I cast his sentence as Stark spite masquerading as justice and force him to defend it before the court's lingering ears.",
+          "privateIntent": "I want him nailed to his rigid honor in public, so that if Jaime answers with steel the blame already clings to Stark obstinacy rather than Lannister retaliation.",
+          "thinking": "He clings to honor the way drowning men cling to driftwood. Let him do it before witnesses, and every hard word becomes another stone tied round his neck.",
+          "action": "accuse",
+          "target": "ned"
+        },
+        {
+          "speaker": "ned",
+          "speakerName": "Eddard Stark",
+          "dialogue": "If it were my brother, my lady, I would say the same: the king has judged, and blood and name do not set a man above the law. Your brother is not condemned for being Lannister, but for what was done. If House Lannister cannot endure lawful judgment, the shame of what follows will not be mine.",
+          "publicStance": "I stand by the king's sentence and refuse to be shamed or baited into softening it for Lannister blood.",
+          "privateIntent": "To make plain before any lingering ears that any violence to follow will lie at the Lannisters' door, while giving her no hint of doubt she might exploit.",
+          "thinking": "She would have me yield an inch so she may call it justice when she takes an ell. I will not give her that comfort; let the court remember who threatened peace when the king's word displeased them.",
+          "action": "speak",
+          "target": "cersei"
+        },
+        {
+          "speaker": "cersei",
+          "speakerName": "Cersei Lannister",
+          "dialogue": "Then let all men see this as well, Lord Stark: my brother was taken by Stark hands without leave of crown or council, on suspicion and old women's fears, and now you dress that outrage in the king's words and call it justice. If Tyrion is sent north like a common brigand, do not prattle to me of peace when my father asks what honor is left to House Lannister. There is still a road between sentence and slaughter. Choose it, and this need not grow teeth.",
+          "publicStance": "I present myself as a wronged sister appealing for restraint, warning Stark that driving a quarrel with House Lannister to the Wall will turn a grievance into open feud.",
+          "privateIntent": "I want to see whether Ned can be frightened into softening the sentence, while binding Tyrion's case to Stark provocation so any Lannister answer may be dressed as injured honor rather than rebellion.",
+          "thinking": "He wraps himself in duty as if it were armor, but every man has a seam. If fear for the realm will not move him, fear of what Father may do just might.",
+          "action": "speak",
+          "target": "ned"
+        }
+      ],
+      "driveDeltas": {
+        "cersei": {
+          "power": 2.0,
+          "legitimacy": 3.0,
+          "loyalty": 4.0,
+          "information": 2.0,
+          "vengeance": 1.0
+        },
+        "ned": {
+          "legitimacy": 3.0,
+          "honor": 2.0,
+          "loyalty": 1.0,
+          "survival": -2.0,
+          "power": -1.0
+        }
+      },
+      "emotion": {
+        "cersei": "irritated",
+        "ned": "resolute"
+      }
+    },
+    {
+      "id": "thread-4",
+      "phase": 1,
+      "locationId": "throne-room",
+      "anchor": {
+        "x": 0.34,
+        "y": 0.8
+      },
+      "mood": "hostile",
+      "label": "Near the great doors",
+      "topic": "Near the great doors, Jaime's path outward is checked when he deliberately drifts close to Robb Stark, trading a clean exit for a hard-eyed confrontation before he rides.",
+      "stakes": "Jaime wants to test whether the young wolf knows who truly pushed Tyrion north, provoke him into revealing Stark intentions, and leave with a grievance sharp enough to use on the road; Robb wants to show no fear, defend the sentence as lawful rather than vengeful, and keep Jaime from baiting the Starks into the first open threat.",
+      "cast": [
+        {
+          "key": "jaime_lannister",
+          "name": "Jaime Lannister",
+          "charset": "jaime lannister",
+          "title": "Knight of the Kingsguard",
+          "drives": {
+            "survival": 85.0,
+            "power": 55.0,
+            "legitimacy": 35.0,
+            "loyalty": 90.0,
+            "honor": 30.0,
+            "vengeance": 20.0,
+            "wealth": 35.0,
+            "information": 60.0
+          }
+        },
+        {
+          "key": "robb_stark",
+          "name": "Robb Stark",
+          "charset": "robb stark",
+          "title": "Heir to Winterfell",
+          "drives": {
+            "survival": 60.0,
+            "power": 45.0,
+            "legitimacy": 65.0,
+            "loyalty": 85.0,
+            "honor": 70.0,
+            "vengeance": 30.0,
+            "wealth": 10.0,
+            "information": 35.0
+          }
+        }
+      ],
+      "dependsOn": [
+        "thread-0",
+        "thread-1"
+      ],
+      "turns": [
+        {
+          "speaker": "jaime_lannister",
+          "speakerName": "Jaime Lannister",
+          "dialogue": "As your father's son, I expect you mean to call this justice and not murder dressed in wool. Tell me, Robb Stark—did your lady mother seize my brother on proof, or only on grief?",
+          "publicStance": "I offer the boy a courteous, cutting challenge about his father's justice, as if I mean only to defend my brother's honor before I ride.",
+          "privateIntent": "I want to see whether the young wolf knows this was aimed at Tyrion or at me, and whether Stark blood means to answer law with vengeance once we are on the road.",
+          "thinking": "He is young, but young wolves bare their teeth before they know better. If he snaps at Tyrion's guilt too quickly, I'll know whose game this truly is.",
+          "action": "speak",
+          "target": "robb_stark"
+        },
+        {
+          "speaker": "robb_stark",
+          "speakerName": "Robb Stark",
+          "dialogue": "If my lady mother lays hands on a man, she answers for it before gods and men, not to your sneers. Your brother was taken to answer a charge, ser—not butchered in his bed. If he is innocent, the truth will serve him better than your temper.",
+          "publicStance": "Meet Jaime's provocation with a cold, lawful answer, making plain that Tyrion's seizure was no roadside spite and that House Stark will not be shamed into rash threats.",
+          "privateIntent": "Give him nothing of our counsels, force him to answer to law rather than insult, and deny him any open grievance beyond his own wounded pride.",
+          "thinking": "He wants me angry, or frightened, and I will be neither. Let him ride south with cold words instead of a threat he can put to use.",
+          "action": "speak",
+          "target": "jaime_lannister"
+        },
+        {
+          "speaker": "jaime_lannister",
+          "speakerName": "Jaime Lannister",
+          "dialogue": "Truth? An attractive word. Northerners polish it like a family sword. Tell me, then—what truth is this? That my brother hired a cutthroat to finish your crippled brother? Did your mother seize him for evidence, or because a grieving sister in the Eyrie shrieked a Lannister name and your house was eager to hear it?",
+          "publicStance": "I answer the boy with cool scorn, treating his talk of law as northern piety and pressing him on whether the charge came from evidence or from Lysa Arryn's panic and Stark suspicion.",
+          "privateIntent": "I want to see whether he knows the shape of the accusation against Tyrion, whether the Starks are acting from blind outrage or from some whisper closer to the truth, and to leave him nettled enough to show his hand without giving him an open threat to rally around.",
+          "thinking": "He's young, but not witless. If he flinches at the mention of the boy, or leans too hard on Arryn lies, I'll know how much of this is Stark honor and how much is fear dressed up in furs.",
+          "action": "speak",
+          "target": "robb_stark"
+        },
+        {
+          "speaker": "robb_stark",
+          "speakerName": "Robb Stark",
+          "dialogue": "My house need not be eager to hear ill of yours, ser. A charge was laid, and your brother was taken to answer it where lords may judge and the gods may see. If you seek quarrel, you will not have it from my tongue at my own doors.",
+          "publicStance": "I answer evenly and keep the matter on law, refusing his taunts and denying him any open threat to carry south.",
+          "privateIntent": "I mean to show him I cannot be baited, give him no hint how much we know, and leave him with less purchase than he hoped for.",
+          "thinking": "He wants anger from me, or fear. I will give him neither. Let him ride south with words too cold to sharpen into a cause.",
+          "action": "speak",
+          "target": "jaime_lannister"
+        },
+        {
+          "speaker": "jaime_lannister",
+          "speakerName": "Jaime Lannister",
+          "dialogue": "Lawful, is it? A neat cloak for a kidnapping. Very well—keep your quarrel out of your mouth if you like. I'll take this much south with me: House Stark believes it may lay hands on a Lannister upon a widow's accusation and call that justice. Tell me one thing before I ride, Robb—was it your mother's judgment that led her to my brother, or someone whispering in her ear who has more to gain from wolves and lions tearing at each other?",
+          "publicStance": "I answer his composure with cold civility, keeping my temper sheathed while reminding him that lawful words do not soften a dangerous insult to my house.",
+          "privateIntent": "I want to needle the boy into defending the seizure as Stark policy, not merely his mother's act, and mark whether he flinches at the mention of who truly profits from sending my brother to the Vale.",
+          "thinking": "He's green, but not witless. If he names no one, that tells me as much as if he blurts out a schemer's name; either way, I leave with cause enough to sharpen into steel on the road.",
+          "action": "speak",
+          "target": "robb_stark"
+        }
+      ],
+      "driveDeltas": {
+        "jaime_lannister": {
+          "information": 8.0,
+          "loyalty": 5.0,
+          "honor": -2.0,
+          "legitimacy": 3.0
+        },
+        "robb_stark": {
+          "legitimacy": 3.0,
+          "information": 1.0,
+          "honor": 2.0,
+          "loyalty": 2.0,
+          "vengeance": -1.0
+        }
+      },
+      "emotion": {
+        "jaime_lannister": "wary",
+        "robb_stark": "wary"
+      }
+    },
+    {
+      "id": "thread-5",
+      "phase": 1,
+      "locationId": "wall",
+      "anchor": {
+        "x": 0.3,
+        "y": 0.55
+      },
+      "mood": "tense",
+      "label": "Far to the north on the Wall's wind-scoured heig",
+      "topic": "Far to the north on the Wall's wind-scoured heights, Tyrion breaks from practical questions and walks the icy parapet with Jon, pressing the bastard more personally as his exile begins to feel real.",
+      "stakes": "Tyrion wants to know whether Jon sees him as a condemned fool or a potential ally in a place ruled by harsh men, and to gather what leverage a clever exile may still have at Castle Black; Jon wants to warn Tyrion what sort of life awaits him, judge whether the Lannister can survive it without poison in every word, and decide how much kinship to offer another outsider marked by his family.",
+      "cast": [
+        {
+          "key": "tyrion_lannister",
+          "name": "Tyrion Lannister",
+          "charset": "tyrion lannister",
+          "title": "Lannister nobleman",
+          "drives": {
+            "survival": 82.0,
+            "power": 45.0,
+            "legitimacy": 38.0,
+            "loyalty": 50.0,
+            "honor": 35.0,
+            "vengeance": 28.0,
+            "wealth": 55.0,
+            "information": 72.0
+          }
+        },
+        {
+          "key": "jon_snow",
+          "name": "Jon Snow",
+          "charset": "jon snow",
+          "title": "Bastard son of Eddard Stark",
+          "drives": {
+            "survival": 55.0,
+            "power": 20.0,
+            "legitimacy": 65.0,
+            "loyalty": 85.0,
+            "honor": 90.0,
+            "vengeance": 15.0,
+            "wealth": 5.0,
+            "information": 30.0
+          }
+        }
+      ],
+      "dependsOn": [
+        "thread-2"
+      ],
+      "turns": [
+        {
+          "speaker": "tyrion_lannister",
+          "speakerName": "Tyrion Lannister",
+          "dialogue": "Tell me, Jon—when a man has been shoved to the edge of the world, is it custom here to pretend it is an honor, or are bastards and dwarfs allowed the truth between them?",
+          "publicStance": "I turn companionable and wry, inviting the boy into honesty by showing him a sliver of my own. Let him think me merely curious and kind enough to spare him a sermon.",
+          "privateIntent": "I want to learn whether Jon means to despise me, use me, or trust me, and what sort of men command this frozen ruin. A bastard's grievance often loosens the tongue more readily than wine.",
+          "thinking": "The Wall has a way of stripping pretty lies down to bone. If the boy has wit, he may yet be useful; if not, at least the conversation will keep me from freezing solid.",
+          "action": "speak",
+          "target": "jon_snow"
+        },
+        {
+          "speaker": "jon_snow",
+          "speakerName": "Jon Snow",
+          "dialogue": "The truth? The Wall is colder than they tell you, and the men are harder. Some came here for honor. More were driven. If you want pretty lies, you should have stayed in the south. If you want truth between us, then hear it: no one gives a bastard or a dwarf a place. We make one.",
+          "publicStance": "I answer him plainly and without courtesy, offering the truth of the Wall as I see it and testing whether he can bear honest words.",
+          "privateIntent": "I mean to see if he wants pity, mockery, or something sterner. If he can meet hard truth without flinching, he may be worth more than his name.",
+          "thinking": "He sounds as though he wants a jest to cover the wound. I know that trick. Best see whether the lion's son has any steel in him besides his tongue.",
+          "action": "speak",
+          "target": "tyrion_lannister"
+        },
+        {
+          "speaker": "tyrion_lannister",
+          "speakerName": "Tyrion Lannister",
+          "dialogue": "Then we are brothers of a sort, you and I. The realm has a talent for telling us what we are; better we name ourselves before it does. Walk with me, Jon Snow, and tell me which men on this Wall wear their vows like armor, and which wear them like chains.",
+          "publicStance": "I offer kinship between two men the world has marked and invite honesty instead of ceremony.",
+          "privateIntent": "If the boy sees me as one of his own kind of wounded creature, he may speak freely of Castle Black—its men, its cruelties, and where a clever man might still find purchase.",
+          "thinking": "He has more Stark in him than is safe, which may make him honest. Honest men are rare coin, and often spendable.",
+          "action": "ally",
+          "target": "jon_snow"
+        },
+        {
+          "speaker": "jon_snow",
+          "speakerName": "Jon Snow",
+          "dialogue": "Some are true men. A few came because they believed the Watch still meant what it says. More wear black because there was nowhere else left for them to go. Thieves, poachers, rapers, men broken by debt or fear. They hate what brought them here, and they hate anyone who reminds them of what they lost. If you want friends at Castle Black, keep your eyes open and your tongue from cutting too deep. But don't look away. See them for what they are, and let them see you do the same.",
+          "publicStance": "I answer him plainly, warning him what sort of men hold the Wall and showing him a measure of respect without yielding too much.",
+          "privateIntent": "I want to see whether he can hear hard truth without turning every word into mockery, and whether another outsider might be worth trusting.",
+          "thinking": "He makes japes to hide the barbs. I know something of that. If he can bear the truth of this place, then maybe he's more than Lord Tywin's twisted son.",
+          "action": "speak",
+          "target": "tyrion_lannister"
+        },
+        {
+          "speaker": "tyrion_lannister",
+          "speakerName": "Tyrion Lannister",
+          "dialogue": "My lord father once taught me a useful lesson, though I doubt he meant it kindly: the world will not forget what a man is, no matter how prettily he dresses it. So let them call you bastard, Jon Snow. Wear it like armor, and it can never be used to hurt you. Tell me, then—who here still bleeds when named for what he was before he took the black?",
+          "publicStance": "I answer his blunt warning with a measure of trust, offering a hard truth about how men survive shame, so he may see me as something more useful than a fool with a sharp tongue.",
+          "privateIntent": "If the boy feels kinship, he may loosen his guard and tell me which men at Castle Black can be bought, feared, or used. A shared wound is often the quickest road to leverage.",
+          "thinking": "The boy has pride enough to freeze before the Wall does. Better to give him a truth he can keep and a question he may answer without noticing how much he reveals.",
+          "action": "share_secret",
+          "target": "jon_snow"
+        }
+      ],
+      "driveDeltas": {
+        "tyrion_lannister": {
+          "information": 11.0,
+          "power": 4.0,
+          "loyalty": 2.0,
+          "honor": 1.0
+        },
+        "jon_snow": {
+          "information": 6.0,
+          "loyalty": 2.0,
+          "honor": 1.0
+        }
+      },
+      "emotion": {
+        "tyrion_lannister": "calculating",
+        "jon_snow": "wary"
+      }
+    },
+    {
+      "id": "thread-6",
+      "phase": 2,
+      "locationId": "throne-room",
+      "anchor": {
+        "x": 0.68,
+        "y": 0.3
+      },
+      "mood": "hostile",
+      "label": "Before Jaime can quit the throne room",
+      "topic": "Before Jaime can quit the throne room, Cersei snaps him back to her side beneath the Iron Throne and forces him to report in Ned Stark's hearing, turning private Lannister plotting into an open challenge.",
+      "stakes": "Cersei wants Jaime's findings and wants Ned to hear that House Lannister will not quietly accept Tyrion's exile; Jaime wants leave to move against whoever laid hands on his brother and to test whether Ned will openly own the sentence; Ned wants to keep the king's decree standing, deny the Lannisters any pretext to call this a secret Stark abduction, and make them show their defiance in public if they mean treason.",
+      "cast": [
+        {
+          "key": "cersei",
+          "name": "Cersei Lannister",
+          "charset": "cersei lannister",
+          "title": "Queen",
+          "drives": {
+            "survival": 80.0,
+            "power": 95.0,
+            "legitimacy": 85.0,
+            "loyalty": 30.0,
+            "honor": 20.0,
+            "vengeance": 88.0,
+            "wealth": 60.0,
+            "information": 70.0
+          }
+        },
+        {
+          "key": "jaime_lannister",
+          "name": "Jaime Lannister",
+          "charset": "jaime lannister",
+          "title": "Knight of the Kingsguard",
+          "drives": {
+            "survival": 85.0,
+            "power": 55.0,
+            "legitimacy": 35.0,
+            "loyalty": 90.0,
+            "honor": 30.0,
+            "vengeance": 20.0,
+            "wealth": 35.0,
+            "information": 60.0
+          }
+        },
+        {
+          "key": "ned",
+          "name": "Eddard Stark",
+          "charset": "ned stark",
+          "title": "Hand of the King",
+          "drives": {
+            "survival": 40.0,
+            "power": 30.0,
+            "legitimacy": 65.0,
+            "loyalty": 85.0,
+            "honor": 98.0,
+            "vengeance": 25.0,
+            "wealth": 20.0,
+            "information": 55.0
+          }
+        }
+      ],
+      "dependsOn": [
+        "thread-3",
+        "thread-4"
+      ],
+      "turns": [
+        {
+          "speaker": "cersei",
+          "speakerName": "Cersei Lannister",
+          "dialogue": "Ser Jaime. You do not leave until you have spoken. Tell me, here before the King's Hand, exactly who dared lay hands on my brother, and by what right they think House Lannister can be robbed of one son without answer.",
+          "publicStance": "I publicly command my brother to give his report before the Hand, making plain that House Lannister will answer insult in the open and under the king's law.",
+          "privateIntent": "I mean to force Jaime to speak in Ned Stark's hearing so I can measure Stark's nerve, bait him into claiming the outrage as his own, and make any coming clash look like Lannister grievance answered by Stark defiance.",
+          "thinking": "Let Stark hear it and choose his ground with witnesses. If he flinches, he is weak; if he stands firm, he names himself our enemy before the throne.",
+          "action": "speak",
+          "target": "jaime_lannister"
+        },
+        {
+          "speaker": "jaime_lannister",
+          "speakerName": "Jaime Lannister",
+          "dialogue": "My men bring me a simple tale, Stark: my brother was taken on the kingsroad by Lady Catelyn, with your father's bannermen at her back, shouting your wife's right as if that were the king's own voice. If Tyrion is held by your leave, say so before the throne. If not, name it what it is—an outrage done to House Lannister—and I will know where to ride.",
+          "publicStance": "I publicly demand that Stark own the seizure of my brother under the king's authority, so there can be no pretense of some roadside kidnapping or hidden grievance.",
+          "privateIntent": "I want Ned to nail his colors to the mast in open court; if he admits it, I have leave to answer him plainly, and if he hedges, I learn where he is weakest.",
+          "thinking": "Let him choose: king's law or northern brigandage. Either answer gives me something I can use, and Cersei gets her challenge in the open.",
+          "action": "speak",
+          "target": "ned"
+        },
+        {
+          "speaker": "ned",
+          "speakerName": "Eddard Stark",
+          "dialogue": "Hear me plain, Ser Jaime: I did not command your brother's seizure on the kingsroad, and I will not answer for acts done beyond my word. But Tyrion Lannister was sent from this city by the king's decree, and that decree stands. If House Lannister claims grievance, let it be brought by law before the crown, not by steel in the dark. The man who passes the sentence should swing the sword; the man who would defy the king should have the courage to name it.",
+          "publicStance": "I answer plainly before the throne that Tyrion was not seized by my command, while insisting that the king's justice in sending him from court stands and warning Jaime that no lord may answer grievance with private war.",
+          "privateIntent": "Make Jaime deny himself the excuse of calling this a secret order of mine, and force the Lannisters to show open contempt for crown and law if they mean to move.",
+          "thinking": "Let them rage, but let them do it in the light where all men can see. If Jaime means to make war over this, I would have him own it before witnesses.",
+          "action": "speak",
+          "target": "jaime_lannister"
+        },
+        {
+          "speaker": "cersei",
+          "speakerName": "Cersei Lannister",
+          "dialogue": "By law before the crown? How dutifully northern that sounds. Very well, Lord Stark—let us have law, and let us have it plainly. My brother was sent from this city under the king's peace, and yet your lady wife laid hands on him upon the road with Tully banners at her back. If that seizure was no act of yours, then say before the Iron Throne that Lady Catelyn Stark acted without warrant of Hand or crown, and that Tyrion Lannister is to be restored at once. If you will not say it, then do not prattle to me of law while your own house takes what it pleases.",
+          "publicStance": "I demand that Ned either claim Lady Catelyn's act under the crown or condemn it openly, while declaring that House Lannister will answer any insult in the full light of court.",
+          "privateIntent": "Force Stark to choose between his wife and his office, bait him into public contradiction, and make clear that any blow struck next will seem provoked rather than planned.",
+          "thinking": "He hides behind Robert's name and his own honor, as men like him always do. Let him choke on the choice: shame his wife, or stand beside her and show the court exactly how close treason sits to his northern virtue.",
+          "action": "speak",
+          "target": "ned"
+        },
+        {
+          "speaker": "jaime_lannister",
+          "speakerName": "Jaime Lannister",
+          "dialogue": "Then do not hedge, Stark. If Lady Catelyn took my brother without your leave, say before the throne that she exceeded both Hand and crown, and command his return. If you cannot bring yourself to speak so plain, spare me talk of law. We're Lannisters. We know the difference between a wrong done openly and one hidden behind another man's silence.",
+          "publicStance": "Press Ned Stark to publicly disavow Catelyn's seizure of Tyrion and demand lawful restoration, while framing House Lannister as the wronged party acting openly.",
+          "privateIntent": "Force Stark to choose between shaming his wife and shielding her; either answer gives me leave to move, and if he hesitates, all the court will see where defiance truly lies.",
+          "thinking": "Let him squirm between honor and blood; men like Stark always bleed from that wound. If he will not own her, he weakens his house. If he does, he gives me the road I want.",
+          "action": "speak",
+          "target": "ned"
+        },
+        {
+          "speaker": "ned",
+          "speakerName": "Eddard Stark",
+          "dialogue": "I will say this plain enough for all the realm, Your Grace's lady wife: Lady Catelyn is no subject of mine to be disowned like a wayward hound, but the king's peace is. Tyrion Lannister left this city by Robert's decree, and no man of House Lannister has leave from me to answer road with sword or grievance with blood. If your brother claims he was wrongly seized, let House Lannister name the charge before the crown and abide the king's judgment. Until then, there will be no riding forth under cover of injured pride. The king takes what he wants. That's why he's king.",
+          "publicStance": "I uphold the king's peace, deny House Lannister leave to make my wife's act into a pretext for private war, and insist any grievance be answered before the crown by lawful charge.",
+          "privateIntent": "I will not condemn Catelyn in open court, nor yield the Lannisters a clean claim of innocence for Tyrion. Let them show their contempt for Robert's law where all can see it.",
+          "thinking": "They would have me shame Cat to strengthen their hand; I will not. If Jaime means to defy Robert, let him do it in the light, not wrapped in talk of family honor.",
+          "action": "speak",
+          "target": "cersei"
+        },
+        {
+          "speaker": "cersei",
+          "speakerName": "Cersei Lannister",
+          "dialogue": "Then we understand one another at last, Lord Stark. You will not command your wife, and you dare not name her wrong. Very well. Let all here remember it: House Lannister has asked for the king's peace and been answered with northern riddles. If the crown will not require my brother's return, then do not feign surprise when lions seek what is theirs without begging leave of wolves.",
+          "publicStance": "Force Stark to own his impotence before the throne and make plain that House Lannister will pursue redress openly if the crown will not command Tyrion's return.",
+          "privateIntent": "Provoke Stark into a harder public position against us, so that when blood follows, no one can pretend the breach began in whispers; measure how far Jaime may go before Robert is made to choose.",
+          "thinking": "He wraps weakness in honor and calls it law. Good. Let him stand before the realm as a man who cannot govern his own house, while I make certain ours is feared.",
+          "action": "speak",
+          "target": "ned"
+        }
+      ],
+      "driveDeltas": {
+        "cersei": {
+          "power": 6.0,
+          "legitimacy": 4.0,
+          "information": 7.0,
+          "loyalty": 3.0,
+          "vengeance": 2.0
+        },
+        "jaime_lannister": {
+          "power": 8.0,
+          "legitimacy": 6.0,
+          "loyalty": 5.0,
+          "information": 7.0,
+          "honor": -2.0
+        },
+        "ned": {
+          "legitimacy": 8.0,
+          "loyalty": 6.0,
+          "honor": 4.0,
+          "survival": -5.0,
+          "power": -3.0
+        }
+      },
+      "emotion": {
+        "cersei": "calculating",
+        "jaime_lannister": "satisfied",
+        "ned": "grim"
+      }
+    },
+    {
+      "id": "thread-7",
+      "phase": 2,
+      "locationId": "wall",
+      "anchor": {
+        "x": 0.7,
+        "y": 0.62
+      },
+      "mood": "tense",
+      "label": "Far to the north in the Wall's cutting wind",
+      "topic": "Far to the north in the Wall's cutting wind, Robb has ridden hard in spirit if not yet in miles, reaching Jon on the icy height to press family loyalties against the new reality that Tyrion now stands under black stone instead of in chains.",
+      "stakes": "Robb wants Jon's honest read on whether Tyrion means to submit, scheme, or turn the Watch into Lannister shelter; Jon wants to warn Robb that the Wall changes the terms of every quarrel and that bringing southron vengeance here could poison the Watch; both brothers want to judge whether Stark honor is best served by letting the exile stand or by preparing for the Lannisters to strike anyway.",
+      "cast": [
+        {
+          "key": "robb_stark",
+          "name": "Robb Stark",
+          "charset": "robb stark",
+          "title": "Heir to Winterfell",
+          "drives": {
+            "survival": 60.0,
+            "power": 45.0,
+            "legitimacy": 65.0,
+            "loyalty": 85.0,
+            "honor": 70.0,
+            "vengeance": 30.0,
+            "wealth": 10.0,
+            "information": 35.0
+          }
+        },
+        {
+          "key": "jon_snow",
+          "name": "Jon Snow",
+          "charset": "jon snow",
+          "title": "Bastard son of Eddard Stark",
+          "drives": {
+            "survival": 55.0,
+            "power": 20.0,
+            "legitimacy": 65.0,
+            "loyalty": 85.0,
+            "honor": 90.0,
+            "vengeance": 15.0,
+            "wealth": 5.0,
+            "information": 30.0
+          }
+        }
+      ],
+      "dependsOn": [
+        "thread-4",
+        "thread-5"
+      ],
+      "turns": [
+        {
+          "speaker": "robb_stark",
+          "speakerName": "Robb Stark",
+          "dialogue": "Jon. I did not come all this way to trade courtesies in the cold. Tell me plain: has Tyrion Lannister come here to bend his neck to the Wall, or to make it a lion's den with black cloaks?",
+          "publicStance": "I come to my brother plain and direct, asking for his honest judgment before I decide how Winterfell should answer Tyrion's taking of the black.",
+          "privateIntent": "I mean to learn whether the Wall has truly put Tyrion beyond my reach, or whether I should begin preparing for Lannister mischief all the same without seeming eager for a quarrel.",
+          "thinking": "Jon sees things cleaner than most when he sets his pride aside. If Tyrion means to hide behind his vows, I must know whether honor binds my hands, or only bids me wait.",
+          "action": "speak",
+          "target": "jon_snow"
+        },
+        {
+          "speaker": "jon_snow",
+          "speakerName": "Jon Snow",
+          "dialogue": "Plain, then: the Wall strips a man of more than his colors, but not always of his nature. If Tyrion means to take the black in truth, he is the Watch's man, not yours or mine. If he means to scheme, the Wall will find him out soon enough. Don't bring a southron quarrel here, Robb. We need fewer banners at the Wall, not more.",
+          "publicStance": "I answer my brother plainly that the Wall is not a refuge for old feuds, and that Tyrion must be judged by whether he keeps the Watch's vows, not by his name alone.",
+          "privateIntent": "I mean to keep Robb from dragging Stark-Lannister vengeance into the Watch, while warning him not to mistake black wool for innocence.",
+          "thinking": "I know what Lannisters are, and I know what vows cost. If Robb presses too hard, he'll force me to choose between my blood and my oath before the words are even spoken.",
+          "action": "speak",
+          "target": "robb_stark"
+        },
+        {
+          "speaker": "robb_stark",
+          "speakerName": "Robb Stark",
+          "dialogue": "I am not here to hang a lion from your gate. If he has truly given himself to the Wall, I will not foul the Watch with our quarrel. But I will not be made a fool either. You know men, Jon, and you have seen him nearer than I have. Tell me this: when he speaks of the black, does he sound like a man yielding his old life, or a man counting what use he can still make of it?",
+          "publicStance": "I accept that the Wall must stand apart from southron feuds, and I ask Jon for his honest judgment so I can keep Stark honor without tainting the Watch.",
+          "privateIntent": "I mean to learn whether Tyrion is vulnerable here and whether leaving him be serves me better than moving against him; if the Lannisters mean treachery, I will not be caught blind.",
+          "thinking": "Jon will give me the plain truth if anyone will. If Tyrion is still playing at courts and debts, I'd sooner know now than after he has friends in black around him.",
+          "action": "speak",
+          "target": "jon_snow"
+        },
+        {
+          "speaker": "jon_snow",
+          "speakerName": "Jon Snow",
+          "dialogue": "He sounds like himself, which is the truth of it. Tyrion Lannister does not stop measuring men and chances because he puts on black wool. But I have seen fear in him too, and something like understanding. The Wall is no lord's shelter, Robb. If he has come to hide, it will break him. If he has come to serve, then he is ours, and that must be the end of it. Judge him watchfully, not wrathfully.",
+          "publicStance": "I give Robb my honest judgment: Tyrion is clever enough to look for use in any place, but the Wall will test whether he means to submit or merely survive, and Robb must not treat the Watch as another field in the war of houses.",
+          "privateIntent": "I mean to keep Robb from dragging Stark vengeance north and to make him see that if Tyrion has taken the black, the matter cannot be handled as it would be in Winterfell or the south.",
+          "thinking": "Robb wants certainty, but there is none to give. I need him to remember that honor means keeping borders, even between blood and duty.",
+          "action": "speak",
+          "target": "robb_stark"
+        },
+        {
+          "speaker": "robb_stark",
+          "speakerName": "Robb Stark",
+          "dialogue": "Then I will leave the Wall its honor, and the dwarf to it, so long as he keeps faith with his vows. But I want your eyes on him, Jon. If he serves, I'll hold my hand. If he schemes, you send word to Winterfell at once. We are brothers still, whatever black you wear.",
+          "publicStance": "I accept that the Wall must stand apart from our quarrels, and I mean to trust Jon's judgment while keeping watch on Tyrion from a distance.",
+          "privateIntent": "Bind Jon tighter to me and make him my eyes on the Wall, so if Tyrion turns fox or lion again I hear of it before any Lannister move can catch us sleeping.",
+          "thinking": "He's right that I cannot drag our feud onto the Wall and call it justice. But I would be a fool to let a Lannister vanish into black wool without a Stark watching.",
+          "action": "ally",
+          "target": "jon_snow"
+        }
+      ],
+      "driveDeltas": {
+        "robb_stark": {
+          "information": 8.0,
+          "loyalty": 4.0,
+          "honor": 3.0,
+          "power": 2.0
+        },
+        "jon_snow": {
+          "loyalty": 7.0,
+          "honor": 6.0,
+          "legitimacy": 5.0,
+          "information": 3.0,
+          "vengeance": -8.0,
+          "power": -2.0
+        }
+      },
+      "emotion": {
+        "robb_stark": "wary",
+        "jon_snow": "wary"
+      }
+    },
+    {
+      "id": "thread-8",
+      "phase": 3,
+      "locationId": "throne-room",
+      "anchor": {
+        "x": 0.5,
+        "y": 0.72
+      },
+      "mood": "tense",
+      "label": "With Jaime gone from her elbow and Ned momentari",
+      "topic": "With Jaime gone from her elbow and Ned momentarily elsewhere beneath the Iron Throne's looming shadow, Cersei glides across the thinning court to intercept Robb before the young wolf can withdraw, forcing the next generation to answer for the old one's choices.",
+      "stakes": "Cersei wants to peel Robb away from Ned's rigid line, bait him into admitting Stark guilt over Catelyn's seizure of Tyrion, or at least mark him as hot-blooded enough to be provoked later; Robb wants to defend his house without giving the queen any rash word she can carry south as proof that the wolves mean war.",
+      "cast": [
+        {
+          "key": "cersei",
+          "name": "Cersei Lannister",
+          "charset": "cersei lannister",
+          "title": "Queen",
+          "drives": {
+            "survival": 80.0,
+            "power": 95.0,
+            "legitimacy": 85.0,
+            "loyalty": 30.0,
+            "honor": 20.0,
+            "vengeance": 88.0,
+            "wealth": 60.0,
+            "information": 70.0
+          }
+        },
+        {
+          "key": "robb_stark",
+          "name": "Robb Stark",
+          "charset": "robb stark",
+          "title": "Heir to Winterfell",
+          "drives": {
+            "survival": 60.0,
+            "power": 45.0,
+            "legitimacy": 65.0,
+            "loyalty": 85.0,
+            "honor": 70.0,
+            "vengeance": 30.0,
+            "wealth": 10.0,
+            "information": 35.0
+          }
+        }
+      ],
+      "dependsOn": [
+        "thread-6",
+        "thread-7"
+      ],
+      "turns": [
+        {
+          "speaker": "cersei",
+          "speakerName": "Cersei Lannister",
+          "dialogue": "Lord Stark. How tall you've grown. It seems the North breeds men quickly—quick enough, perhaps, to answer for a lady mother's curious notion that she may lay hands on my brother as though the king's peace were hers to command.",
+          "publicStance": "I offer the young wolf a queen's courtesy and mild concern, inviting him to explain his lady mother's rashness without seeming openly confrontational.",
+          "privateIntent": "I mean to test his temper, draw him into defending Catelyn's theft of my brother, and see whether the boy has Ned's stiffness or a more useful weakness.",
+          "thinking": "Let him bristle. Boys always do when their mothers are named. If he is foolish, he will give me the very words I need to paint the wolves as rebels.",
+          "action": "speak",
+          "target": "robb_stark"
+        },
+        {
+          "speaker": "robb_stark",
+          "speakerName": "Robb Stark",
+          "dialogue": "Your Grace, my lady mother is answerable to my lord father, not to me. I would not presume to speak for her, nor to trouble the court with family matters I do not know in full.",
+          "publicStance": "Answer the queen with courtesy and restraint, refusing to discuss my lady mother's acts or give any word that sounds like threat or admission.",
+          "privateIntent": "Deny her the anger she wants, show the court that a Stark can keep his head, and leave her nothing useful to carry against my house.",
+          "thinking": "She wants me red-faced and barking like a kennel hound. Let her find I was taught better than that.",
+          "action": "speak",
+          "target": "cersei"
+        },
+        {
+          "speaker": "cersei",
+          "speakerName": "Cersei Lannister",
+          "dialogue": "No, of course not. A dutiful son would never presume. Still, a son may regret what a mother sets in motion. Lord Stark is young, yet old enough, I think, to understand that when one great house seizes a son of another, it ceases to be a family matter and begins to smell very much like treason. Tell me—does Winterfell share Lady Catelyn's confidence, or only her silence?",
+          "publicStance": "I answer the boy with cool courtesy, as though merely inviting him to show good sense and distance himself from his mother's folly.",
+          "privateIntent": "I mean to bait him into defending Catelyn too fiercely or disowning her judgment too plainly, so I may use either wound later.",
+          "thinking": "He is green, but not witless. If he bristles, I have his temper; if he hedges, I have his fear. Either may be turned to my advantage.",
+          "action": "speak",
+          "target": "robb_stark"
+        },
+        {
+          "speaker": "robb_stark",
+          "speakerName": "Robb Stark",
+          "dialogue": "Winterfell shares my lord father's honor, Your Grace. Whatever has been done will answer to law and truth when my father speaks it. Until then, I will not dress rumor up as treason to please the court.",
+          "publicStance": "I answer the queen with courtesy and restraint, refusing her bait and keeping Winterfell aligned with my father's judgment rather than my mother's act.",
+          "privateIntent": "Give her no rash word she can turn into proof of Stark defiance, while showing the court I can hold my temper under her claws.",
+          "thinking": "She wants heat from me, something sharp enough to carry to the king. I will give her stone instead—cold, plain, and hard to cut.",
+          "action": "speak",
+          "target": "cersei"
+        },
+        {
+          "speaker": "cersei",
+          "speakerName": "Cersei Lannister",
+          "dialogue": "Law and truth. Noble words. Let us hope your lady mother held as tightly to them before she set armed men upon my brother on a roadside whim. You are wise to be cautious, Lord Stark. Wisdom becomes you better than your father's severity. Keep to it, and perhaps your house need not suffer for a woman's mistake.",
+          "publicStance": "I answer his coolness with silken courtesy, inviting him to distance himself from his mother's rashness while making the consequences of Stark defiance plain.",
+          "privateIntent": "I want the boy to choose between his father and his mother in public, or else betray the wolf's temper with some proud little snap I can use later.",
+          "thinking": "He wants to sound like Eddard, but he is green still. Prod a boy gently enough and he will either bristle or bend; either serves me.",
+          "action": "speak",
+          "target": "robb_stark"
+        }
+      ],
+      "driveDeltas": {
+        "cersei": {
+          "power": 2.0,
+          "information": 4.0,
+          "legitimacy": 1.0,
+          "vengeance": 2.0
+        },
+        "robb_stark": {
+          "survival": 6.0,
+          "legitimacy": 4.0,
+          "loyalty": 3.0,
+          "honor": 2.0,
+          "information": 1.0
+        }
+      },
+      "emotion": {
+        "cersei": "irritated",
+        "robb_stark": "guarded"
+      }
+    },
+    {
+      "id": "thread-9",
+      "phase": 3,
+      "locationId": "throne-room",
+      "anchor": {
+        "x": 0.22,
+        "y": 0.34
+      },
+      "mood": "hostile",
+      "label": "Near the great doors where Jaime should at last",
+      "topic": "Near the great doors where Jaime should at last be riding out, Ned steps into his path and turns the threatened departure into a final face-to-face reckoning before swords replace words.",
+      "stakes": "Ned wants Jaime bound, if not by obedience then by witness, to hear that any move against Stark or crown in answer to Tyrion's exile will be open defiance of the king's peace; Jaime wants one last measure of Ned's weakness, to see whether Stark will truly stand by the sentence and his wife's seizure both, and to leave with a grievance sharp enough to justify whatever comes next.",
+      "cast": [
+        {
+          "key": "ned",
+          "name": "Eddard Stark",
+          "charset": "ned stark",
+          "title": "Hand of the King",
+          "drives": {
+            "survival": 40.0,
+            "power": 30.0,
+            "legitimacy": 65.0,
+            "loyalty": 85.0,
+            "honor": 98.0,
+            "vengeance": 25.0,
+            "wealth": 20.0,
+            "information": 55.0
+          }
+        },
+        {
+          "key": "jaime_lannister",
+          "name": "Jaime Lannister",
+          "charset": "jaime lannister",
+          "title": "Knight of the Kingsguard",
+          "drives": {
+            "survival": 85.0,
+            "power": 55.0,
+            "legitimacy": 35.0,
+            "loyalty": 90.0,
+            "honor": 30.0,
+            "vengeance": 20.0,
+            "wealth": 35.0,
+            "information": 60.0
+          }
+        }
+      ],
+      "dependsOn": [
+        "thread-6"
+      ],
+      "turns": [
+        {
+          "speaker": "ned",
+          "speakerName": "Eddard Stark",
+          "dialogue": "Ser Jaime. Before you ride, hear me plain: whatever grievance your house nurses over Tyrion's taking, any stroke struck now at Stark or crown will be open defiance of the king's peace. I will have no man say he was not warned.",
+          "publicStance": "I mean to stop him at the threshold and set the king's peace plainly before him, so all that follows cannot be mistaken for confusion or insult.",
+          "privateIntent": "I would look him in the eye and learn whether he rides in obedience or in malice, and leave him no honest claim that Stark gave him cause.",
+          "thinking": "He smiles when other men would bare steel. If there is war in him already, better he name it with my words still hanging between us.",
+          "action": "speak",
+          "target": "jaime_lannister"
+        },
+        {
+          "speaker": "jaime_lannister",
+          "speakerName": "Jaime Lannister",
+          "dialogue": "As your brother, I feel it's my duty to warn you: when a man's wife lays hands on my brother, he should not prattle to me of the king's peace. Will you answer for Lady Stark's work, or is that honor only for other men to keep?",
+          "publicStance": "I answer his warning with cold courtesy and remind him that his lady's seizure of my brother is the first breach, forcing him to show whether he means to own it or hide behind the king's peace.",
+          "privateIntent": "I want to test how far Stark will go for his wife, and whether guilt, doubt, or righteousness makes the softer joint in him. If he claims Catelyn's act as just, I leave with cause sharpened into steel.",
+          "thinking": "He loves his honor the way other men love wine. Press there, and either he bends toward his wife or breaks toward pride; either way, I learn something useful.",
+          "action": "speak",
+          "target": "ned"
+        },
+        {
+          "speaker": "ned",
+          "speakerName": "Eddard Stark",
+          "dialogue": "I answer for my house, ser, as any man must. My lady did what she believed honor and need required, and Tyrion Lannister will answer lawfully for what is laid at his door or be released. But hear me well: if you repay that seizure with steel against Stark or any man under the king's peace, the blame will be yours before gods and men.",
+          "publicStance": "I answer plainly for my house and set the bounds of lawful conduct before witnesses: Lady Stark acted under grave cause as she understood it, and no grievance gives House Lannister leave to break the king's peace.",
+          "privateIntent": "I mean to nail him to his choice before gods and men—either submit to law or stand revealed as oathbreaker and bully. If he rides in anger after this, I will have witnesses enough that the blame is his.",
+          "thinking": "He wants me drawn into heat, into some rash word he can carry home like a banner. I will give him none. Let him sneer if he likes; truth is plainer than gold, and I would have it heard.",
+          "action": "speak",
+          "target": "jaime_lannister"
+        },
+        {
+          "speaker": "jaime_lannister",
+          "speakerName": "Jaime Lannister",
+          "dialogue": "Then keep your warnings, Stark, and I'll keep my memory. You say you answer for your house—good. Remember those words when the debt is called. We're Lannisters. We do not forget our own.",
+          "publicStance": "I mock Stark's appeal to law and make plain that if he claims Lady Stark's act, he also claims its consequences.",
+          "privateIntent": "I want to see whether he flinches at the thought of blood and whether he will hide behind Robert or stand stubbornly alone. If he gives me nothing, I leave with cause enough to answer insult with steel.",
+          "thinking": "He wraps himself in law the way other men hide behind shields. I want one last look at his face when consequence is named, to learn whether honor has any spine beneath it.",
+          "action": "speak",
+          "target": "ned"
+        },
+        {
+          "speaker": "ned",
+          "speakerName": "Eddard Stark",
+          "dialogue": "Then remember this as well, Ser Jaime: your brother shall have the law, no less and no more. But if you or your house raise a hand against mine in answer, you do it as breakers of the king's peace, and I will name you so before the Iron Throne and every lord in the Seven Kingdoms.",
+          "publicStance": "I set the boundary plain before witnesses: law will answer for law, and any violence he chooses after this will be his burden, not mine.",
+          "privateIntent": "I mean to bind him with his own pride and make certain he cannot later claim surprise or provocation; if he strikes after this, he stands revealed as oathbreaker and rebel to the realm.",
+          "thinking": "He wants leave to call vengeance justice. I will deny him that comfort, and put his choice in the light where all men may judge it.",
+          "action": "speak",
+          "target": "jaime_lannister"
+        }
+      ],
+      "driveDeltas": {
+        "ned": {
+          "legitimacy": 3.0,
+          "honor": 2.0,
+          "information": 2.0,
+          "loyalty": 1.0,
+          "survival": -1.0
+        },
+        "jaime_lannister": {
+          "information": 8.0,
+          "vengeance": 6.0,
+          "loyalty": 5.0,
+          "honor": -3.0,
+          "legitimacy": -4.0
+        }
+      },
+      "emotion": {
+        "ned": "grim",
+        "jaime_lannister": "grim"
+      }
+    },
+    {
+      "id": "thread-10",
+      "phase": 3,
+      "locationId": "wall",
+      "anchor": {
+        "x": 0.34,
+        "y": 0.8
+      },
+      "mood": "friendly",
+      "label": "On the Wall's frozen height",
+      "topic": "On the Wall's frozen height, after Robb's warning has been left behind in the wind, Tyrion resumes the northward walk at Jon's side and speaks more soberly now that exile has ceased to be a threat and become his road.",
+      "stakes": "Tyrion wants to know whether the Watch can truly be a refuge from the war his family is lighting behind him and whether Jon will meet him as a brother in disgrace rather than a Lannister first; Jon wants Tyrion to understand that if he stays, the Wall must end the southron quarrel, and to decide whether the clever exile means to submit to that truth or carry court politics into black stone.",
+      "cast": [
+        {
+          "key": "tyrion_lannister",
+          "name": "Tyrion Lannister",
+          "charset": "tyrion lannister",
+          "title": "Lannister nobleman",
+          "drives": {
+            "survival": 82.0,
+            "power": 45.0,
+            "legitimacy": 38.0,
+            "loyalty": 50.0,
+            "honor": 35.0,
+            "vengeance": 28.0,
+            "wealth": 55.0,
+            "information": 72.0
+          }
+        },
+        {
+          "key": "jon_snow",
+          "name": "Jon Snow",
+          "charset": "jon snow",
+          "title": "Bastard son of Eddard Stark",
+          "drives": {
+            "survival": 55.0,
+            "power": 20.0,
+            "legitimacy": 65.0,
+            "loyalty": 85.0,
+            "honor": 90.0,
+            "vengeance": 15.0,
+            "wealth": 5.0,
+            "information": 30.0
+          }
+        }
+      ],
+      "dependsOn": [
+        "thread-5",
+        "thread-7"
+      ],
+      "turns": [
+        {
+          "speaker": "tyrion_lannister",
+          "speakerName": "Tyrion Lannister",
+          "dialogue": "Tell me, Jon—when a man takes the black, does the Wall strip the south from his bones, or merely bury it under wool and ice?",
+          "publicStance": "I mean to test whether the boy can speak of the Wall as a hard truth rather than a child's refuge, and to show him enough candor that he may answer me as one bastard to another.",
+          "privateIntent": "If the Wall is truly beyond my sister's claws and my father's ledger, I want to know it now; if not, I had best learn how its vows bend before great names and gold.",
+          "thinking": "The boy has pride enough to be honest if pricked in the right place. Better to ask plainly and let him reveal whether this frozen ruin makes brothers, or only houses in darker colors.",
+          "action": "speak",
+          "target": "jon_snow"
+        },
+        {
+          "speaker": "jon_snow",
+          "speakerName": "Jon Snow",
+          "dialogue": "The Wall does not care what bones a man was born with. It asks what he is willing to bury. If you come here, you leave Lannister and Stark below with the snow. If you cannot, then black wool will not save you.",
+          "publicStance": "I answer him plainly, setting the Wall above the quarrels of great houses and warning him what taking the black truly demands.",
+          "privateIntent": "I mean to see whether he can leave Lannister pride behind, or whether he will carry the south into our order and poison it.",
+          "thinking": "He is clever, and clever men can do more harm than swords if they keep one foot in the south. I would meet him fair, but not blind.",
+          "action": "speak",
+          "target": "tyrion_lannister"
+        },
+        {
+          "speaker": "tyrion_lannister",
+          "speakerName": "Tyrion Lannister",
+          "dialogue": "Then we are brothers of a sort, you and I. The realm makes one man a bastard by birth and another by shape, and fathers can be cruel to both. Never forget what you are, Jon. Wear it like armor, and it can never be used to hurt you.",
+          "publicStance": "I answer him plainly, offering a hard truth about bastards and fathers to show I understand the sort of burial the Wall demands.",
+          "privateIntent": "I mean to win the boy's trust by meeting him in his wound, and to learn whether he is iron enough to choose the Watch over the wars of great houses.",
+          "thinking": "A bastard's bruise is easy enough for me to find; I have one of my own, though mine sits plain upon my face. If he takes the lesson, he may be worth more than all the perfumed fools at court.",
+          "action": "share_secret",
+          "target": "jon_snow"
+        },
+        {
+          "speaker": "jon_snow",
+          "speakerName": "Jon Snow",
+          "dialogue": "Armor helps, but it is not enough. Here a man keeps his word or he is nothing. If you come to the Wall, you come as a brother, not a Lannister. Can you do that?",
+          "publicStance": "I answer him plainly and set the Wall's terms before him: whatever he was in the south must be left behind if he means to find refuge here.",
+          "privateIntent": "I mean to test whether his talk of shared disgrace is truth or another Lannister game, and to make him say, if only to himself, whether he can be less than his name.",
+          "thinking": "He speaks as if he knows me, and perhaps he knows something of scorn. But clever men carry their old names like hidden knives. I would see whether he can set his down.",
+          "action": "speak",
+          "target": "tyrion_lannister"
+        },
+        {
+          "speaker": "tyrion_lannister",
+          "speakerName": "Tyrion Lannister",
+          "dialogue": "Can I? A harder question than climbing these damned steps. I was born a Lannister, and there are some wines a man cannot spit out once swallowed. But I know this much: if I came here, I would not come to play my sister's games or my father's. I have had my fill of great houses gnawing on one another. If the Wall is refuge, let it be refuge. If it is service, let a man serve. Tell me true, Jon—when the old name rises in a man's throat, what does the Wall do then?",
+          "publicStance": "I answer him plainly, showing more honesty than jest, and test whether the Wall truly offers a brotherhood that can swallow old names.",
+          "privateIntent": "I mean to sound sincere while learning whether this bastard of Winterfell will trust me enough to reveal how hard the Watch can press a man to forget his blood.",
+          "thinking": "He wants submission, not cleverness, and cleverness is all I have ever trusted. Still, a plain answer costs less than a lie on a height where the wind steals both warmth and certainty.",
+          "action": "speak",
+          "target": "jon_snow"
+        }
+      ],
+      "driveDeltas": {
+        "tyrion_lannister": {
+          "information": 8.0,
+          "survival": 3.0,
+          "loyalty": -2.0,
+          "honor": 1.0,
+          "power": -1.0
+        },
+        "jon_snow": {
+          "information": 6.0,
+          "loyalty": 3.0,
+          "honor": 2.0
+        }
+      },
+      "emotion": {
+        "tyrion_lannister": "calculating",
+        "jon_snow": "wary"
+      }
+    }
+  ],
+  "learning": {
+    "driveTrajectory": {
+      "cersei": [
+        {
+          "thread": "thread-0",
+          "drives": {
+            "survival": 87.0,
+            "power": 100.0,
+            "legitimacy": 90.0,
+            "loyalty": 36.0,
+            "honor": 20.0,
+            "vengeance": 97.0,
+            "wealth": 60.0,
+            "information": 80.0
+          }
+        },
+        {
+          "thread": "thread-3",
+          "drives": {
+            "survival": 87.0,
+            "power": 100.0,
+            "legitimacy": 93.0,
+            "loyalty": 40.0,
+            "honor": 20.0,
+            "vengeance": 98.0,
+            "wealth": 60.0,
+            "information": 82.0
+          }
+        },
+        {
+          "thread": "thread-6",
+          "drives": {
+            "survival": 87.0,
+            "power": 100.0,
+            "legitimacy": 97.0,
+            "loyalty": 43.0,
+            "honor": 20.0,
+            "vengeance": 100.0,
+            "wealth": 60.0,
+            "information": 89.0
+          }
+        },
+        {
+          "thread": "thread-8",
+          "drives": {
+            "survival": 87.0,
+            "power": 100.0,
+            "legitimacy": 98.0,
+            "loyalty": 43.0,
+            "honor": 20.0,
+            "vengeance": 100.0,
+            "wealth": 60.0,
+            "information": 93.0
+          }
+        }
+      ],
+      "jaime_lannister": [
+        {
+          "thread": "thread-0",
+          "drives": {
+            "survival": 85.0,
+            "power": 61.0,
+            "legitimacy": 31.0,
+            "loyalty": 100.0,
+            "honor": 27.0,
+            "vengeance": 28.0,
+            "wealth": 35.0,
+            "information": 74.0
+          }
+        },
+        {
+          "thread": "thread-4",
+          "drives": {
+            "survival": 85.0,
+            "power": 61.0,
+            "legitimacy": 34.0,
+            "loyalty": 100.0,
+            "honor": 25.0,
+            "vengeance": 28.0,
+            "wealth": 35.0,
+            "information": 82.0
+          }
+        },
+        {
+          "thread": "thread-6",
+          "drives": {
+            "survival": 85.0,
+            "power": 69.0,
+            "legitimacy": 40.0,
+            "loyalty": 100.0,
+            "honor": 23.0,
+            "vengeance": 28.0,
+            "wealth": 35.0,
+            "information": 89.0
+          }
+        },
+        {
+          "thread": "thread-9",
+          "drives": {
+            "survival": 85.0,
+            "power": 69.0,
+            "legitimacy": 36.0,
+            "loyalty": 100.0,
+            "honor": 20.0,
+            "vengeance": 34.0,
+            "wealth": 35.0,
+            "information": 97.0
+          }
+        }
+      ],
+      "ned": [
+        {
+          "thread": "thread-1",
+          "drives": {
+            "survival": 44.0,
+            "power": 32.0,
+            "legitimacy": 74.0,
+            "loyalty": 92.0,
+            "honor": 100.0,
+            "vengeance": 25.0,
+            "wealth": 20.0,
+            "information": 55.0
+          }
+        },
+        {
+          "thread": "thread-3",
+          "drives": {
+            "survival": 42.0,
+            "power": 31.0,
+            "legitimacy": 77.0,
+            "loyalty": 93.0,
+            "honor": 100.0,
+            "vengeance": 25.0,
+            "wealth": 20.0,
+            "information": 55.0
+          }
+        },
+        {
+          "thread": "thread-6",
+          "drives": {
+            "survival": 37.0,
+            "power": 28.0,
+            "legitimacy": 85.0,
+            "loyalty": 99.0,
+            "honor": 100.0,
+            "vengeance": 25.0,
+            "wealth": 20.0,
+            "information": 55.0
+          }
+        },
+        {
+          "thread": "thread-9",
+          "drives": {
+            "survival": 36.0,
+            "power": 28.0,
+            "legitimacy": 88.0,
+            "loyalty": 100.0,
+            "honor": 100.0,
+            "vengeance": 25.0,
+            "wealth": 20.0,
+            "information": 57.0
+          }
+        }
+      ],
+      "robb_stark": [
+        {
+          "thread": "thread-1",
+          "drives": {
+            "survival": 60.0,
+            "power": 46.0,
+            "legitimacy": 68.0,
+            "loyalty": 87.0,
+            "honor": 72.0,
+            "vengeance": 30.0,
+            "wealth": 10.0,
+            "information": 35.0
+          }
+        },
+        {
+          "thread": "thread-4",
+          "drives": {
+            "survival": 60.0,
+            "power": 46.0,
+            "legitimacy": 71.0,
+            "loyalty": 89.0,
+            "honor": 74.0,
+            "vengeance": 29.0,
+            "wealth": 10.0,
+            "information": 36.0
+          }
+        },
+        {
+          "thread": "thread-7",
+          "drives": {
+            "survival": 60.0,
+            "power": 48.0,
+            "legitimacy": 71.0,
+            "loyalty": 93.0,
+            "honor": 77.0,
+            "vengeance": 29.0,
+            "wealth": 10.0,
+            "information": 44.0
+          }
+        },
+        {
+          "thread": "thread-8",
+          "drives": {
+            "survival": 66.0,
+            "power": 48.0,
+            "legitimacy": 75.0,
+            "loyalty": 96.0,
+            "honor": 79.0,
+            "vengeance": 29.0,
+            "wealth": 10.0,
+            "information": 45.0
+          }
+        }
+      ],
+      "tyrion_lannister": [
+        {
+          "thread": "thread-2",
+          "drives": {
+            "survival": 82.0,
+            "power": 46.0,
+            "legitimacy": 38.0,
+            "loyalty": 52.0,
+            "honor": 35.0,
+            "vengeance": 28.0,
+            "wealth": 55.0,
+            "information": 80.0
+          }
+        },
+        {
+          "thread": "thread-5",
+          "drives": {
+            "survival": 82.0,
+            "power": 50.0,
+            "legitimacy": 38.0,
+            "loyalty": 54.0,
+            "honor": 36.0,
+            "vengeance": 28.0,
+            "wealth": 55.0,
+            "information": 91.0
+          }
+        },
+        {
+          "thread": "thread-10",
+          "drives": {
+            "survival": 85.0,
+            "power": 49.0,
+            "legitimacy": 38.0,
+            "loyalty": 52.0,
+            "honor": 37.0,
+            "vengeance": 28.0,
+            "wealth": 55.0,
+            "information": 99.0
+          }
+        }
+      ],
+      "jon_snow": [
+        {
+          "thread": "thread-2",
+          "drives": {
+            "survival": 55.0,
+            "power": 20.0,
+            "legitimacy": 65.0,
+            "loyalty": 86.0,
+            "honor": 91.0,
+            "vengeance": 15.0,
+            "wealth": 5.0,
+            "information": 33.0
+          }
+        },
+        {
+          "thread": "thread-5",
+          "drives": {
+            "survival": 55.0,
+            "power": 20.0,
+            "legitimacy": 65.0,
+            "loyalty": 88.0,
+            "honor": 92.0,
+            "vengeance": 15.0,
+            "wealth": 5.0,
+            "information": 39.0
+          }
+        },
+        {
+          "thread": "thread-7",
+          "drives": {
+            "survival": 55.0,
+            "power": 18.0,
+            "legitimacy": 70.0,
+            "loyalty": 95.0,
+            "honor": 98.0,
+            "vengeance": 7.0,
+            "wealth": 5.0,
+            "information": 42.0
+          }
+        },
+        {
+          "thread": "thread-10",
+          "drives": {
+            "survival": 55.0,
+            "power": 18.0,
+            "legitimacy": 70.0,
+            "loyalty": 98.0,
+            "honor": 100.0,
+            "vengeance": 7.0,
+            "wealth": 5.0,
+            "information": 48.0
+          }
+        }
+      ]
+    },
+    "reflections": {
+      "Eddard Stark": {
+        "summary": "I stood beneath the Iron Throne and held to law while the Lannisters tried to turn outrage into license. I would not disown Catelyn nor yield the king's peace to their threats, and I saw plainly that Cersei and Jaime mean to answer judgment with power if they can.",
+        "rules": [
+          "Hold fast to law, but expect others to twist it.",
+          "Do not mistake a private grievance for a small one when great houses are involved.",
+          "Warn plainly, then prepare for steel."
+        ],
+        "relationships": {
+          "Cersei Lannister": "She has ceased to hide her malice behind courtesy and now tests how far fear and force will serve her.",
+          "Jaime Lannister": "He means to answer his brother's seizure with vengeance, and words will not bind him long.",
+          "Robb Stark": "He listened, kept his temper, and showed the discipline a lord must have.",
+          "Catelyn Stark": "I will not cast off my wife to soothe the Lannisters, but her choice has widened the breach and must now be borne through.",
+          "Tyrion Lannister": "His fate has become a spark between houses, whatever truth may yet be found in the charge against him."
+        }
+      },
+      "Cersei Lannister": {
+        "summary": "I saw plainly that Stark will hide a seizure of my brother behind the king's words and call it law, rather than curb his wife or name her wrong. So I made the insult public, fixed the blame where it belongs, and resolved that if the crown will not protect what is mine, I must.",
+        "rules": [
+          "Force hypocrisy into the open where all can witness it.",
+          "Use wounded pride as a weapon, but gather names and weaknesses before striking.",
+          "If wolves will not yield to law, answer with power."
+        ],
+        "relationships": {
+          "Jaime Lannister": "He is still my surest blade, but I must direct his fury before it outruns advantage.",
+          "Eddard Stark": "He is rigid enough to mistake helplessness for honor, and dangerous because he believes himself just.",
+          "Robb Stark": "The boy is cautious and trainable, but he will wear his father's honor until it strangles him.",
+          "Tyrion Lannister": "My brother's disgrace is now a lever against our enemies, whatever use he makes of exile.",
+          "Jon Snow": "He is far from my hand, but useful only as proof that the Wall may swallow men we cannot govern."
+        }
+      },
+      "Tyrion Lannister": {
+        "summary": "I crossed a threshold without ever putting on the black: while my family and the Starks sharpened law into a weapon around my capture, I found myself staring north and asking what remains of a man when title, comfort, and family pride are stripped away. In Jon Snow's company, I remembered that names can wound only if I let others wield them first.",
+        "rules": [
+          "Name the monsters before they name me.",
+          "Wear the insult as armor and keep my eyes open.",
+          "Great houses call it justice when it suits them; trust conduct, not banners."
+        ],
+        "relationships": {
+          "Jon Snow": "I found in him an honest mirror—another outsider who may yet be worth more than all the polished lords in the south.",
+          "Cersei Lannister": "My sister means to turn my plight into leverage, which is love of a sort, though the sharp-edged Lannister kind.",
+          "Jaime Lannister": "My brother would come for me with wit if possible and steel if required, and I am not fool enough to doubt either.",
+          "Eddard Stark": "Stark clings to law and honor even as the ground shifts beneath him, which makes him dangerous and oddly predictable.",
+          "Robb Stark": "The boy wants to be honorable before he wants to be clever; the realm is unkind to such men."
+        }
+      },
+      "Robb Stark": {
+        "summary": "I saw the quarrel between wolf and lion harden into something that may soon spill blood, and I learned how quickly law becomes a banner men hide their pride behind. I held my tongue where I was told, watched the Lannisters reach first for threat, and understood that a son may be made to answer for his house before he has chosen the fight himself.",
+        "rules": [
+          "Hold my temper and let the other man show his hand first.",
+          "Stand by my house without speaking beyond what I truly know.",
+          "Watch courtesies closely; threats often come dressed as law."
+        ],
+        "relationships": {
+          "Eddard Stark": "I look to my father still and mean to learn the weight of restraint from him.",
+          "Cersei Lannister": "She tested me as if I were already a player in her game, and I will not forget it.",
+          "Jaime Lannister": "He came hunting weakness with a smile, and I know now to meet him with a steady face, not heat.",
+          "Catelyn Stark": "My mother's choices have become the North's burden, and I must be ready to bear part of it.",
+          "Jon Snow": "He remains my brother, even at the Wall, and a man whose judgment I trust.",
+          "Tyrion Lannister": "If he truly belongs to the Wall, I can stay my hand; if not, I must be wary of him."
+        }
+      },
+      "Jon Snow": {
+        "summary": "I saw the realm pull tighter between wolves and lions, with every word in the south sounding like law while meaning threat. At the Wall, Tyrion spoke truths I did not want to hear, and I felt more clearly that a man like me must choose what part of himself to wear and what part to master.",
+        "rules": [
+          "Take men as they are, not as their names claim.",
+          "A hard truth is better than a noble lie.",
+          "If I wear my shame openly, it cannot be used to own me."
+        ],
+        "relationships": {
+          "Tyrion Lannister": "I misliked him at first, but I see now he knows what it is to be marked from birth, and I can learn from that.",
+          "Robb Stark": "He is still my brother in all but name, though our duties now pull us toward different roads.",
+          "Eddard Stark": "I carry my father's example of law, restraint, and bearing the weight of judgment.",
+          "Cersei Lannister": "I know her for pride sharpened into menace, and I want no part of her games.",
+          "Jaime Lannister": "I see in him the danger of pride that reaches for steel before honor."
+        }
+      },
+      "Jaime Lannister": {
+        "summary": "I rode out to learn who had dared lay hands on Tyrion, and before half the court the quarrel with Stark was dragged into the open for all to see. What should have been a matter of law is now plainly a matter of houses, pride, and the next blow waiting to be struck.",
+        "rules": [
+          "Get the truth before drawing steel.",
+          "An insult to one Lannister is a test of all of us.",
+          "Stark honor is still a weapon, even when it calls itself law."
+        ],
+        "relationships": {
+          "Cersei Lannister": "I move quickest when she calls, but I must bring her facts, not just fury.",
+          "Eddard Stark": "He hides hard choices behind law, and I no longer mistake that for softness.",
+          "Robb Stark": "The boy has his father's stiffness and more caution than I expected.",
+          "Tyrion Lannister": "My brother is the insult at the heart of this, and I mean to see who answers for it."
+        }
+      }
+    }
+  },
+  "meta": {
+    "iteration": "iter1",
+    "premise": "The king decrees Tyrion Lannister be sent to the Wall. In the throne room the Lannisters scheme to undo it while the Starks weigh whether to let the exile stand; Tyrion makes his way north to Jon Snow at the Wall.",
+    "cast": [
+      "cersei",
+      "tyrion_lannister",
+      "ned",
+      "jon_snow",
+      "robb_stark",
+      "jaime_lannister"
+    ],
+    "episode": "s1e7",
+    "locations": [
+      "throne-room",
+      "wall"
+    ],
+    "phases": 4,
+    "maxThreads": 3,
+    "rounds": 2
+  }
+}

@@ -1,0 +1,430 @@
+{
+  "version": 2,
+  "kind": "episode-script",
+  "title": "A Realm Divided — the demo episode",
+  "premise": "Word spreads that the king means to send Tyrion to the Wall. Across the realm three storylines unfold at once: the Lannisters scheme in the throne room, the Starks hold the courtyard of Winterfell, and at the Wall the exiled and the forgotten take each other's measure. Allegiances form, betrayals surface, and every character carries forward what they have seen — a hand-authored showcase of the continuous, multi-map, memory-driven simulation.",
+  "episode": "s1e7",
+  "cast": [
+    { "key": "cersei", "name": "Cersei Lannister", "charset": "cersei lannister", "title": "Queen", "drives": { "survival": 55, "power": 90, "legitimacy": 62, "loyalty": 38, "honor": 18, "vengeance": 72, "wealth": 66, "information": 60 } },
+    { "key": "jaime_lannister", "name": "Jaime Lannister", "charset": "jaime lannister", "title": "Lord Commander of the Kingsguard", "drives": { "survival": 50, "power": 58, "legitimacy": 34, "loyalty": 82, "honor": 46, "vengeance": 50, "wealth": 40, "information": 30 } },
+    { "key": "tywin_lannister", "name": "Tywin Lannister", "charset": "tywin lannister", "title": "Lord of Casterly Rock", "drives": { "survival": 60, "power": 95, "legitimacy": 70, "loyalty": 55, "honor": 40, "vengeance": 60, "wealth": 88, "information": 65 } },
+    { "key": "littlefinger", "name": "Petyr Baelish", "charset": "littlefinger baelish", "title": "Master of Coin", "drives": { "survival": 70, "power": 78, "legitimacy": 20, "loyalty": 15, "honor": 10, "vengeance": 55, "wealth": 92, "information": 95 } },
+    { "key": "ned", "name": "Eddard Stark", "charset": "ned stark", "title": "Hand of the King", "drives": { "survival": 45, "power": 35, "legitimacy": 50, "loyalty": 72, "honor": 96, "vengeance": 20, "wealth": 24, "information": 42 } },
+    { "key": "catelyn_stark", "name": "Catelyn Stark", "charset": "catelyn stark", "title": "Lady of Winterfell", "drives": { "survival": 60, "power": 40, "legitimacy": 55, "loyalty": 90, "honor": 70, "vengeance": 58, "wealth": 30, "information": 50 } },
+    { "key": "robb_stark", "name": "Robb Stark", "charset": "robb stark", "title": "Heir to Winterfell", "drives": { "survival": 52, "power": 46, "legitimacy": 56, "loyalty": 88, "honor": 82, "vengeance": 44, "wealth": 20, "information": 30 } },
+    { "key": "theon_greyjoy", "name": "Theon Greyjoy", "charset": "theon greyjoy", "title": "Ward of Winterfell", "drives": { "survival": 65, "power": 55, "legitimacy": 30, "loyalty": 45, "honor": 40, "vengeance": 40, "wealth": 35, "information": 35 } },
+    { "key": "tyrion_lannister", "name": "Tyrion Lannister", "charset": "tyrion lannister", "title": "the Imp", "drives": { "survival": 78, "power": 55, "legitimacy": 28, "loyalty": 45, "honor": 42, "vengeance": 52, "wealth": 60, "information": 92 } },
+    { "key": "jon_snow", "name": "Jon Snow", "charset": "jon snow", "title": "Man of the Night's Watch", "drives": { "survival": 55, "power": 30, "legitimacy": 24, "loyalty": 86, "honor": 90, "vengeance": 36, "wealth": 14, "information": 42 } },
+    { "key": "sandor_clegane", "name": "Sandor Clegane", "charset": "sandor clegane", "title": "the Hound", "drives": { "survival": 70, "power": 50, "legitimacy": 10, "loyalty": 55, "honor": 35, "vengeance": 65, "wealth": 30, "information": 25 } }
+  ],
+  "extras": [
+    { "key": "joffrey", "name": "Joffrey Baratheon", "charset": "joffrey baratheon", "locationId": "throne-room", "behavior": "idle", "anchor": { "x": 0.5, "y": 0.18 } },
+    { "key": "varys", "name": "Lord Varys", "charset": "varys", "locationId": "throne-room", "behavior": "wander" },
+    { "key": "sansa_stark", "name": "Sansa Stark", "charset": "sansa stark", "locationId": "winterfell", "behavior": "wander" },
+    { "key": "arya_stark", "name": "Arya Stark", "charset": "arya stark", "locationId": "winterfell", "behavior": "wander" },
+    { "key": "jorah_mormont", "name": "Ser Jorah Mormont", "charset": "jorah mormont", "locationId": "wall", "behavior": "wander" }
+  ],
+  "threads": [
+    {
+      "id": "thread-0",
+      "phase": 0,
+      "locationId": "throne-room",
+      "anchor": { "x": 0.30, "y": 0.42 },
+      "mood": "tense",
+      "label": "The Queen and the Kingslayer",
+      "topic": "In an alcove off the throne room, Cersei pulls Jaime close the moment the king's decree is spoken.",
+      "stakes": "Cersei wants Jaime's sword and silence; Jaime wants to know whose hand truly sent their brother north.",
+      "cast": [
+        { "key": "cersei", "name": "Cersei Lannister", "charset": "cersei lannister" },
+        { "key": "jaime_lannister", "name": "Jaime Lannister", "charset": "jaime lannister" }
+      ],
+      "dependsOn": [],
+      "turns": [
+        { "speaker": "cersei", "speakerName": "Cersei Lannister", "dialogue": "Our brother, sent to freeze with thieves and rapers. The Starks will call it justice and the realm will believe them. We cannot let this stand unanswered.", "publicStance": "a sister wounded by a cruel judgment", "privateIntent": "bind Jaime to me before pity for the Imp softens him", "thinking": "Jaime loves the little monster. I must make this about our name, not the dwarf.", "action": "speak", "target": "jaime_lannister" },
+        { "speaker": "jaime_lannister", "speakerName": "Jaime Lannister", "dialogue": "Tyrion at the Wall. Was that Robert's wine, or your whispering, sweet sister? Tell me true for once.", "publicStance": "a brother demanding the truth", "privateIntent": "learn whether Cersei engineered this", "thinking": "If she had a hand in it she will lie to my face even now.", "action": "accuse", "target": "cersei" },
+        { "speaker": "cersei", "speakerName": "Cersei Lannister", "dialogue": "Mine? I would never. But now it is done, we make a blade of it. Swear you stand with me when Father comes — and Father is already on the road.", "publicStance": "the loyal sister rallying her twin", "privateIntent": "win an oath without confessing my hand", "thinking": "Let him think me innocent and useful both.", "action": "swear_oath", "target": "jaime_lannister" },
+        { "speaker": "jaime_lannister", "speakerName": "Jaime Lannister", "dialogue": "I am yours, as ever I have been. But hear me — if any harm finds Tyrion on that cold road, I will not care whose hand it is. Stark or Lannister, I will answer it.", "publicStance": "a sworn brother and protector", "privateIntent": "set a line my sister cannot cross", "thinking": "I will play her game. But the Imp is still my blood.", "action": "ally", "target": "cersei" }
+      ],
+      "driveDeltas": { "cersei": { "power": 6, "loyalty": 4, "vengeance": 3 }, "jaime_lannister": { "loyalty": 5, "honor": 3, "vengeance": 4 } },
+      "emotion": { "cersei": "cold", "jaime_lannister": "uneasy" }
+    },
+    {
+      "id": "thread-1",
+      "phase": 0,
+      "locationId": "winterfell",
+      "anchor": { "x": 0.34, "y": 0.46 },
+      "mood": "tense",
+      "label": "A Mother's Fear",
+      "topic": "In the courtyard of Winterfell, Catelyn presses Robb on the danger gathering in the south.",
+      "stakes": "Catelyn wants Robb to understand the realm is turning; Robb wants to be trusted to act, not only to wait.",
+      "cast": [
+        { "key": "catelyn_stark", "name": "Catelyn Stark", "charset": "catelyn stark" },
+        { "key": "robb_stark", "name": "Robb Stark", "charset": "robb stark" }
+      ],
+      "dependsOn": [],
+      "turns": [
+        { "speaker": "catelyn_stark", "speakerName": "Catelyn Stark", "dialogue": "Your father walks among lions, Robb, and now they have a grievance. The Lannisters do not forgive — they remember, and they repay. Winterfell must be ready.", "publicStance": "a mother warning her son", "privateIntent": "prepare Robb to lead if the worst comes", "thinking": "I feel it in my bones — this exile is only the first stone of an avalanche.", "action": "speak", "target": "robb_stark" },
+        { "speaker": "robb_stark", "speakerName": "Robb Stark", "dialogue": "Then let me ride south to stand beside him, Mother. I am no boy to be kept behind walls while Father faces the queen alone.", "publicStance": "a son eager to defend his house", "privateIntent": "prove he is ready to be more than an heir-in-waiting", "thinking": "They all counsel patience while our name is weighed in southern scales.", "action": "speak", "target": "catelyn_stark" },
+        { "speaker": "catelyn_stark", "speakerName": "Catelyn Stark", "dialogue": "No. The North needs a Stark, and if your father cannot be that Stark, you must. Hold Winterfell, gather the banners in your heart if not yet in the field. Promise me.", "publicStance": "the Lady of Winterfell, commanding", "privateIntent": "keep her son alive and the North whole", "thinking": "I have already let one husband and one son ride into the lions' den.", "action": "speak", "target": "robb_stark" }
+      ],
+      "driveDeltas": { "catelyn_stark": { "loyalty": 5, "vengeance": 4, "survival": 3 }, "robb_stark": { "loyalty": 6, "honor": 4 } },
+      "emotion": { "catelyn_stark": "afraid", "robb_stark": "restless" }
+    },
+    {
+      "id": "thread-2",
+      "phase": 0,
+      "locationId": "wall",
+      "anchor": { "x": 0.48, "y": 0.44 },
+      "mood": "friendly",
+      "label": "Two Outcasts",
+      "topic": "Atop the Wall, snow swirling, Tyrion finds Jon Snow at the parapet and the dwarf and the bastard take each other's measure.",
+      "stakes": "Tyrion wants a wry ally in a cold place; Jon wants to know why a Lannister rides to the end of the world.",
+      "cast": [
+        { "key": "tyrion_lannister", "name": "Tyrion Lannister", "charset": "tyrion lannister" },
+        { "key": "jon_snow", "name": "Jon Snow", "charset": "jon snow" }
+      ],
+      "dependsOn": [],
+      "turns": [
+        { "speaker": "tyrion_lannister", "speakerName": "Tyrion Lannister", "dialogue": "So this is the famous Wall. Magnificent, they said. They were right — it is a magnificent way to freeze a man to death. You are the bastard of Winterfell, yes? Jon Snow.", "publicStance": "a traveler making light of a grim place", "privateIntent": "find an ally among the unwanted", "thinking": "A bastard and a dwarf — both jokes to the highborn. That is a kind of kinship.", "action": "speak", "target": "jon_snow" },
+        { "speaker": "jon_snow", "speakerName": "Jon Snow", "dialogue": "And you are the queen's brother. They say you were sent here in disgrace. Why would a lion choose the Night's Watch?", "publicStance": "a guarded young recruit", "privateIntent": "decide whether to trust a Lannister", "thinking": "Every Lannister I have heard of is cruel. Yet this one rode here without a single complaint.", "action": "speak", "target": "tyrion_lannister" },
+        { "speaker": "tyrion_lannister", "speakerName": "Tyrion Lannister", "dialogue": "Choose? No one chooses the Wall, lad — it chooses you, usually after you embarrass someone powerful. One piece of advice: never forget what you are. Wear it like armor, and it can never be used to wound you.", "publicStance": "an older man offering hard-won wisdom", "privateIntent": "earn the boy's trust with truth, not flattery", "thinking": "He carries his bastardy like an open wound. I will teach him to carry it like a shield.", "action": "share_secret", "target": "jon_snow" },
+        { "speaker": "jon_snow", "speakerName": "Jon Snow", "dialogue": "Most highborn would not waste a word on a bastard. You are not what I expected, Lannister. Come — stand near the fire tonight. The Wall is no place to be alone.", "publicStance": "rough hospitality from a young man", "privateIntent": "begin a friendship across enemy lines", "thinking": "Perhaps not every lion has claws for everyone.", "action": "ally", "target": "tyrion_lannister" }
+      ],
+      "driveDeltas": { "tyrion_lannister": { "information": 5, "loyalty": 6, "survival": 2 }, "jon_snow": { "loyalty": 5, "honor": 4, "information": 4 } },
+      "emotion": { "tyrion_lannister": "amused", "jon_snow": "curious" }
+    },
+    {
+      "id": "thread-3",
+      "phase": 1,
+      "locationId": "throne-room",
+      "anchor": { "x": 0.66, "y": 0.40 },
+      "mood": "tense",
+      "label": "The Mockingbird's Offer",
+      "topic": "Littlefinger slips to Cersei's side once Jaime has gone, trading whispers for advantage.",
+      "stakes": "Littlefinger wants to be the indispensable man to whoever wins; Cersei wants to know if the coin-counter can be bought.",
+      "cast": [
+        { "key": "littlefinger", "name": "Petyr Baelish", "charset": "littlefinger baelish" },
+        { "key": "cersei", "name": "Cersei Lannister", "charset": "cersei lannister" }
+      ],
+      "dependsOn": ["thread-0"],
+      "turns": [
+        { "speaker": "littlefinger", "speakerName": "Petyr Baelish", "dialogue": "Your Grace looks troubled. A brother sent north, a Stark playing at honor in your husband's hall — the board has rearranged itself. Fortunate, then, that I know every square of it.", "publicStance": "a helpful servant of the crown", "privateIntent": "make himself necessary to the queen", "thinking": "She has just lost a piece. A frightened queen overpays for friends.", "action": "speak", "target": "cersei" },
+        { "speaker": "cersei", "speakerName": "Cersei Lannister", "dialogue": "Everyone knows the board, Lord Baelish. Few will move on it for me. What is it you actually want, little man — gold, a title, or simply to watch wolves and lions bleed each other?", "publicStance": "a queen weighing a tool", "privateIntent": "test whether his greed can be aimed at the Starks", "thinking": "He serves no one but himself — which means he can be aimed, if I hold the gold.", "action": "speak", "target": "littlefinger" },
+        { "speaker": "littlefinger", "speakerName": "Petyr Baelish", "dialogue": "I want what every sensible man wants, Your Grace — to be standing beside the throne when the dust settles, whoever happens to be sitting on it. Aim me at Lord Stark's honor. It is a wider target than he knows.", "publicStance": "a frank man of business", "privateIntent": "bind the queen to him while keeping every other door open", "thinking": "Let her think she has bought me. I have only rented myself.", "action": "ally", "target": "cersei" }
+      ],
+      "driveDeltas": { "littlefinger": { "wealth": 6, "information": 5, "power": 4 }, "cersei": { "power": 5, "information": 4 } },
+      "emotion": { "littlefinger": "smug", "cersei": "calculating" }
+    },
+    {
+      "id": "thread-4",
+      "phase": 1,
+      "locationId": "winterfell",
+      "anchor": { "x": 0.66, "y": 0.58 },
+      "mood": "tense",
+      "label": "The Ward's Doubt",
+      "topic": "By the Winterfell gate, Theon needles Robb about whether the Starks will really go to war for honor.",
+      "stakes": "Theon wants to matter to the only family he has; Robb wants to know if his foster-brother's loyalty is real.",
+      "cast": [
+        { "key": "robb_stark", "name": "Robb Stark", "charset": "robb stark" },
+        { "key": "theon_greyjoy", "name": "Theon Greyjoy", "charset": "theon greyjoy" }
+      ],
+      "dependsOn": ["thread-1"],
+      "turns": [
+        { "speaker": "theon_greyjoy", "speakerName": "Theon Greyjoy", "dialogue": "Your mother has you guarding stone walls while your father plays politics with lions. If it were me, Robb, I would not sit so quietly. A man who waits to be struck is already losing.", "publicStance": "a friend giving bold counsel", "privateIntent": "prove his worth and his nerve to the Starks", "thinking": "If I make myself indispensable here, perhaps I am more than a hostage in fine clothes.", "action": "speak", "target": "robb_stark" },
+        { "speaker": "robb_stark", "speakerName": "Robb Stark", "dialogue": "And if it came to it, Theon — sword in hand, the North against the South — where would a Greyjoy stand? With the wolves who raised him, or with the salt and the sea?", "publicStance": "an heir testing his friend", "privateIntent": "measure whether Theon's loyalty would survive a war", "thinking": "He talks of striking first. But a borrowed son is a borrowed sword.", "action": "speak", "target": "theon_greyjoy" },
+        { "speaker": "theon_greyjoy", "speakerName": "Theon Greyjoy", "dialogue": "With you, Robb. Always with you. Winterfell is the only home I remember. Point me at your enemies and you will see where I stand.", "publicStance": "a loyal foster-brother", "privateIntent": "be believed, be wanted, belong somewhere", "thinking": "I say it and I mean it — and still I wonder if they will ever truly see me as one of them.", "action": "swear_oath", "target": "robb_stark" }
+      ],
+      "driveDeltas": { "theon_greyjoy": { "loyalty": 5, "honor": 3 }, "robb_stark": { "information": 4, "loyalty": 3 } },
+      "emotion": { "theon_greyjoy": "eager", "robb_stark": "wary" }
+    },
+    {
+      "id": "thread-5",
+      "phase": 1,
+      "locationId": "wall",
+      "anchor": { "x": 0.52, "y": 0.60 },
+      "mood": "tense",
+      "label": "The Hound at the Edge",
+      "topic": "Sent north on the queen's errand, the Hound finds Tyrion at the Wall and the two share a grim, honest word.",
+      "stakes": "Sandor wants to say plainly what he thinks of kings and courts; Tyrion wants to know if the Hound is the queen's eyes.",
+      "cast": [
+        { "key": "tyrion_lannister", "name": "Tyrion Lannister", "charset": "tyrion lannister" },
+        { "key": "sandor_clegane", "name": "Sandor Clegane", "charset": "sandor clegane" }
+      ],
+      "dependsOn": ["thread-2"],
+      "turns": [
+        { "speaker": "sandor_clegane", "speakerName": "Sandor Clegane", "dialogue": "A long ride to watch a dwarf shiver. The queen wanted eyes on you, Imp. I told her I'm a dog, not a spy — but a dog goes where he's kicked.", "publicStance": "a blunt sworn sword", "privateIntent": "make clear he serves out of need, not love", "thinking": "Kings, queens, lords — all the same. They feed you and they kick you. At least the Imp doesn't pretend otherwise.", "action": "speak", "target": "tyrion_lannister" },
+        { "speaker": "tyrion_lannister", "speakerName": "Tyrion Lannister", "dialogue": "Then we understand each other, Clegane. I have no army and no friends save a bastard boy and a brother far away. Tell my sweet sister I froze bravely. It is the truest thing you'll carry south.", "publicStance": "a man with nothing left to hide", "privateIntent": "gauge whether the Hound's contempt for the court runs deeper than his fear", "thinking": "This one despises the throne as much as I do. That is not nothing in a friendless place.", "action": "speak", "target": "sandor_clegane" },
+        { "speaker": "sandor_clegane", "speakerName": "Sandor Clegane", "dialogue": "I'll tell her you talked too much and shivered like the rest. Whatever you are, Imp — you don't lie to a man's face. That's rarer than gold in that nest of vipers.", "publicStance": "grudging respect from the Hound", "privateIntent": "acknowledge the one honest highborn he has met", "thinking": "He doesn't flinch and he doesn't flatter. I've killed better men for less honesty.", "action": "speak", "target": "tyrion_lannister" }
+      ],
+      "driveDeltas": { "sandor_clegane": { "loyalty": 3, "honor": 3 }, "tyrion_lannister": { "information": 4, "survival": 2 } },
+      "emotion": { "sandor_clegane": "grim", "tyrion_lannister": "wry" }
+    },
+    {
+      "id": "thread-6",
+      "phase": 2,
+      "locationId": "throne-room",
+      "anchor": { "x": 0.46, "y": 0.50 },
+      "mood": "hostile",
+      "label": "Lions in Council",
+      "topic": "Tywin Lannister arrives, and the schemes of his children must answer to their father.",
+      "stakes": "Tywin wants the family name made stronger by this exile, not weaker; Cersei wants her father's approval; Littlefinger wants to survive the room.",
+      "cast": [
+        { "key": "tywin_lannister", "name": "Tywin Lannister", "charset": "tywin lannister" },
+        { "key": "cersei", "name": "Cersei Lannister", "charset": "cersei lannister" },
+        { "key": "littlefinger", "name": "Petyr Baelish", "charset": "littlefinger baelish" }
+      ],
+      "dependsOn": ["thread-3"],
+      "turns": [
+        { "speaker": "tywin_lannister", "speakerName": "Tywin Lannister", "dialogue": "I rode through the night to find my grandson on the throne and my son halfway to the ice. Explain to me, daughter, how the family that owns this realm allowed a Stark to humiliate it in open court.", "publicStance": "the Lord of Casterly Rock demanding account", "privateIntent": "turn his children's blunder into a Lannister advantage", "thinking": "Sentiment lost us a piece. I will not lose the game for it.", "action": "accuse", "target": "cersei" },
+        { "speaker": "cersei", "speakerName": "Cersei Lannister", "dialogue": "I have already bought us eyes and ears, Father. Lord Baelish here serves our coin now, and Stark's precious honor is the very rope he will hang himself with. I did not sit idle.", "publicStance": "a daughter proving her worth", "privateIntent": "win Tywin's respect and a freer hand", "thinking": "He has never once said he was proud of me. Perhaps today.", "action": "speak", "target": "tywin_lannister" },
+        { "speaker": "littlefinger", "speakerName": "Petyr Baelish", "dialogue": "My lord. The realm's gold flows through my hands, and I would far rather it flow toward a lion than a wolf. Lord Stark trusts numbers he does not understand. That is a door, and I hold the key.", "publicStance": "a useful servant pledging his worth", "privateIntent": "make himself too valuable for Tywin to discard", "thinking": "Survive Tywin Lannister's notice, and you can survive anything in this realm.", "action": "ally", "target": "tywin_lannister" },
+        { "speaker": "tywin_lannister", "speakerName": "Tywin Lannister", "dialogue": "Good. Then we are agreed on one thing at least — the wolf bleeds first. Cersei, you will do nothing rash until I command it. The lion does not strike when it is angry. It strikes when it cannot lose.", "publicStance": "a father taking command of the board", "privateIntent": "impose discipline and seize the initiative", "thinking": "My children scheme like children. I will make this exile the making of us.", "action": "speak", "target": "cersei" }
+      ],
+      "driveDeltas": { "tywin_lannister": { "power": 6, "vengeance": 4, "wealth": 3 }, "cersei": { "loyalty": 5, "power": 4 }, "littlefinger": { "wealth": 5, "power": 4, "survival": 3 } },
+      "emotion": { "tywin_lannister": "cold", "cersei": "hungry", "littlefinger": "careful" }
+    },
+    {
+      "id": "thread-7",
+      "phase": 2,
+      "locationId": "wall",
+      "anchor": { "x": 0.50, "y": 0.42 },
+      "mood": "friendly",
+      "label": "By the Night's Fire",
+      "topic": "Later, by a brazier on the Wall, Jon presses Tyrion on whether his vows mean anything — and remembers the lesson he was given.",
+      "stakes": "Jon wants to believe his sacrifice has worth; Tyrion wants to leave the boy stronger than he found him.",
+      "cast": [
+        { "key": "tyrion_lannister", "name": "Tyrion Lannister", "charset": "tyrion lannister" },
+        { "key": "jon_snow", "name": "Jon Snow", "charset": "jon snow" }
+      ],
+      "dependsOn": ["thread-5", "thread-2"],
+      "turns": [
+        { "speaker": "jon_snow", "speakerName": "Jon Snow", "dialogue": "You told me to wear what I am as armor. I have been turning it over since. But tell me true, Lannister — is the Watch a noble calling, or a midden for men no one wants?", "publicStance": "a young man seeking honest counsel", "privateIntent": "find a reason to believe in the vow he took", "thinking": "He spoke to me as a man before. I will trust him with the question that keeps me awake.", "action": "speak", "target": "tyrion_lannister" },
+        { "speaker": "tyrion_lannister", "speakerName": "Tyrion Lannister", "dialogue": "Both, of course — the finest callings always are. These men guard the realms of men against the things your warm-bedded brothers are too comfortable to believe in. That is more than any trueborn lord will do in his life. Remember that when they sneer.", "publicStance": "a wry teacher honoring the boy's choice", "privateIntent": "give Jon the pride his birth denied him", "thinking": "Let him leave this fire believing his vow means something. It is the kindest gift I have left to give.", "action": "speak", "target": "jon_snow" },
+        { "speaker": "jon_snow", "speakerName": "Jon Snow", "dialogue": "Then I will guard it well, and I will not forget who told me so. You will always have a friend on the Wall, Tyrion Lannister — whatever your name is in the south.", "publicStance": "a sworn brother offering loyalty", "privateIntent": "repay an unexpected kindness", "thinking": "He owed me nothing and gave me back my pride. I will remember it the rest of my days.", "action": "swear_oath", "target": "tyrion_lannister" }
+      ],
+      "driveDeltas": { "tyrion_lannister": { "loyalty": 4, "honor": 3 }, "jon_snow": { "honor": 6, "loyalty": 6, "legitimacy": 4 } },
+      "emotion": { "tyrion_lannister": "warmed", "jon_snow": "resolved" }
+    },
+    {
+      "id": "thread-8",
+      "phase": 3,
+      "locationId": "throne-room",
+      "anchor": { "x": 0.48, "y": 0.52 },
+      "mood": "hostile",
+      "label": "The Wolf Among Lions",
+      "topic": "Ned Stark crosses the throne room to confront the gathered Lannisters, the law against the pride.",
+      "stakes": "Ned means to make plain the king's justice stands; Tywin means to measure his enemy; Cersei means to bait the wolf into a fatal misstep.",
+      "cast": [
+        { "key": "ned", "name": "Eddard Stark", "charset": "ned stark" },
+        { "key": "tywin_lannister", "name": "Tywin Lannister", "charset": "tywin lannister" },
+        { "key": "cersei", "name": "Cersei Lannister", "charset": "cersei lannister" }
+      ],
+      "dependsOn": ["thread-6"],
+      "turns": [
+        { "speaker": "ned", "speakerName": "Eddard Stark", "dialogue": "Lord Tywin. Your Grace. I will not have it whispered through this court that the judgment was unjust. Tyrion Lannister goes to the Wall by the king's own word — and there he will remain.", "publicStance": "the Hand affirming the king's justice", "privateIntent": "shut the door on Lannister maneuvering before it opens", "thinking": "If I let this fester in corners, by spring it is a war.", "action": "accuse", "target": "tywin_lannister" },
+        { "speaker": "tywin_lannister", "speakerName": "Tywin Lannister", "dialogue": "Justice. How the Starks do love that word. You have a great deal of honor, Lord Stark — I can see it from here. I wonder how long a man can wear so much of it in this city before it becomes a shroud.", "publicStance": "a lord taking the measure of a rival", "privateIntent": "let Ned hear, calmly, that he has made an enemy he cannot afford", "thinking": "Honorable men are predictable men. And predictable men are easily buried.", "action": "speak", "target": "ned" },
+        { "speaker": "cersei", "speakerName": "Cersei Lannister", "dialogue": "Tell me, Lord Stark — does your honor keep you warm at night? It will not keep you warm for long here. You have wolves in the cold North and lions all around you. Do the arithmetic.", "publicStance": "a queen warning a doomed rival", "privateIntent": "frighten Ned into a misstep her father can finish", "thinking": "His honor is the rope. I need only keep handing him the slack.", "action": "accuse", "target": "ned" },
+        { "speaker": "ned", "speakerName": "Eddard Stark", "dialogue": "I keep the king's peace — your son included, my lady, until he is safely at the Wall. Threaten me again beneath this throne and it is the law you answer to, not I. It does not bend for lions, however many you bring.", "publicStance": "the Hand, unmoved by the pride", "privateIntent": "show the court that the Starks will not be cowed", "thinking": "Let them see I do not flinch. In this den it is nearly all I have.", "action": "speak", "target": "cersei" }
+      ],
+      "driveDeltas": { "ned": { "honor": 6, "legitimacy": 5, "survival": -5 }, "tywin_lannister": { "power": 4, "vengeance": 5 }, "cersei": { "vengeance": 7, "power": 3 } },
+      "emotion": { "ned": "resolute", "tywin_lannister": "icy", "cersei": "venomous" }
+    },
+    {
+      "id": "thread-9",
+      "phase": 3,
+      "locationId": "winterfell",
+      "anchor": { "x": 0.40, "y": 0.50 },
+      "mood": "tense",
+      "label": "Word From the South",
+      "topic": "A raven reaches Winterfell. Catelyn and Robb learn the lions have gathered, and a mother's fear becomes a plan.",
+      "stakes": "Catelyn wants the North ready before the blow lands; Robb wants to finally be given the reins.",
+      "cast": [
+        { "key": "catelyn_stark", "name": "Catelyn Stark", "charset": "catelyn stark" },
+        { "key": "robb_stark", "name": "Robb Stark", "charset": "robb stark" }
+      ],
+      "dependsOn": ["thread-4", "thread-1"],
+      "turns": [
+        { "speaker": "catelyn_stark", "speakerName": "Catelyn Stark", "dialogue": "Tywin Lannister has come to court. I warned you it would not end with your uncle's exile, Robb — it begins with it. The lions are gathering, and your father stands in the middle of them with nothing but his honor.", "publicStance": "a mother whose fears have come true", "privateIntent": "move the North from waiting to readiness", "thinking": "Every dread I spoke aloud is walking toward King's Landing on Lannister feet.", "action": "share_secret", "target": "robb_stark" },
+        { "speaker": "robb_stark", "speakerName": "Robb Stark", "dialogue": "Then no more waiting, Mother. You told me to hold Winterfell and gather the banners in my heart. They are gathered. Give me leave to call them to the field if word turns ill — I will not lose my father the way we are losing the realm.", "publicStance": "an heir ready to become a leader", "privateIntent": "be trusted at last with the weight he has been straining toward", "thinking": "She has prepared me for exactly this. I will not waste it.", "action": "swear_oath", "target": "catelyn_stark" },
+        { "speaker": "catelyn_stark", "speakerName": "Catelyn Stark", "dialogue": "Then you have it. Send the riders quietly. The North remembers, Robb — and if they harm your father, the North will not forget. Let us pray it does not come to that, and prepare as though it will.", "publicStance": "the Lady of Winterfell unleashing her son", "privateIntent": "arm the North while there is still time", "thinking": "I have handed my last son a sword. May the gods forgive me, and may he never need it.", "action": "ally", "target": "robb_stark" }
+      ],
+      "driveDeltas": { "catelyn_stark": { "vengeance": 6, "loyalty": 5, "survival": 3 }, "robb_stark": { "power": 6, "loyalty": 5, "honor": 4 } },
+      "emotion": { "catelyn_stark": "steeled", "robb_stark": "determined" }
+    },
+    {
+      "id": "thread-10",
+      "phase": 4,
+      "locationId": "throne-room",
+      "anchor": { "x": 0.32, "y": 0.44 },
+      "mood": "tense",
+      "label": "Brother to Brother",
+      "topic": "His confrontation with Stark behind him, Jaime seeks out Tywin to plead quietly for the brother sent north.",
+      "stakes": "Jaime wants his father to spare Tyrion the worst; Tywin wants his son to remember which Lannister matters to the name.",
+      "cast": [
+        { "key": "jaime_lannister", "name": "Jaime Lannister", "charset": "jaime lannister" },
+        { "key": "tywin_lannister", "name": "Tywin Lannister", "charset": "tywin lannister" }
+      ],
+      "dependsOn": ["thread-8", "thread-0"],
+      "turns": [
+        { "speaker": "jaime_lannister", "speakerName": "Jaime Lannister", "dialogue": "Father. I held my tongue while you traded threats with the wolf, but I will not hold it now. Tyrion is on the road to the Wall because of this family's pride. Whatever you plan against the Starks, let it not cost him.", "publicStance": "a son interceding for his brother", "privateIntent": "make Tywin value Tyrion's life as part of the family's worth", "thinking": "I swore to Cersei I would answer any harm to him. I would rather answer to Father first.", "action": "speak", "target": "tywin_lannister" },
+        { "speaker": "tywin_lannister", "speakerName": "Tywin Lannister", "dialogue": "Your brother survives by being useful, Jaime — as do you. Sentiment did not put him on that road; his own mouth did. When I move against Stark, I move for the name on the gate, not the dwarf behind it. Do not confuse the two.", "publicStance": "a father correcting a son's priorities", "privateIntent": "keep Jaime's loyalty fixed on the house, not his brother", "thinking": "My children love each other more than they love the legacy. It is their one ungovernable flaw.", "action": "speak", "target": "jaime_lannister" },
+        { "speaker": "jaime_lannister", "speakerName": "Jaime Lannister", "dialogue": "The name on the gate is the three of us, Father — Cersei's scheming, my sword, and Tyrion's wits. Spend us carefully. I have already promised someone that I would not lose him quietly.", "publicStance": "a son drawing a quiet line", "privateIntent": "warn Tywin without open defiance", "thinking": "He will do as he wills. But he will know where I stand.", "action": "speak", "target": "tywin_lannister" }
+      ],
+      "driveDeltas": { "jaime_lannister": { "loyalty": 4, "honor": 4 }, "tywin_lannister": { "power": 3, "legitimacy": 3 } },
+      "emotion": { "jaime_lannister": "protective", "tywin_lannister": "unmoved" }
+    },
+    {
+      "id": "thread-11",
+      "phase": 4,
+      "locationId": "wall",
+      "anchor": { "x": 0.46, "y": 0.50 },
+      "mood": "tense",
+      "label": "Two Who Owe the Imp",
+      "topic": "Jon finds the Hound at the Wall's edge, and two men who were each marked by Tyrion take a wary measure of one another.",
+      "stakes": "Jon defends his new friend's name; Sandor admits, grudgingly, that the dwarf is the one honest lion he has met.",
+      "cast": [
+        { "key": "jon_snow", "name": "Jon Snow", "charset": "jon snow" },
+        { "key": "sandor_clegane", "name": "Sandor Clegane", "charset": "sandor clegane" }
+      ],
+      "dependsOn": ["thread-7", "thread-5"],
+      "turns": [
+        { "speaker": "jon_snow", "speakerName": "Jon Snow", "dialogue": "You rode north on the queen's leash to watch Tyrion Lannister. I'll tell you plainly, dog — he is more a man than the court that sent you. Mind how you speak of him here.", "publicStance": "a young man defending a friend", "privateIntent": "make clear the Imp has a sworn brother at the Wall now", "thinking": "He gave me back my pride by this fire. I'll not let a hired blade sneer at him.", "action": "accuse", "target": "sandor_clegane" },
+        { "speaker": "sandor_clegane", "speakerName": "Sandor Clegane", "dialogue": "Easy, bastard. I've no quarrel with the Imp. He's the only one in that whole nest who didn't lie to my face — told me to tell his sister he froze bravely and meant it as a joke and a truth both. I'll drink to a man like that before I'll drink to a king.", "publicStance": "a blunt sword setting the boy straight", "privateIntent": "acknowledge the rare honesty he found in Tyrion", "thinking": "The pup's got teeth, defending a Lannister. Stranger things. The dwarf earns it, I'll give him that.", "action": "speak", "target": "jon_snow" },
+        { "speaker": "jon_snow", "speakerName": "Jon Snow", "dialogue": "Then we agree on one man at least. Strange company, the two of us — a bastard and a dog, both keeping a Lannister's name clean. He has a way of doing that to people.", "publicStance": "a wary truce", "privateIntent": "find common ground with an unexpected ally", "thinking": "Tyrion said to judge a man by his deeds. The Hound is honest, if nothing else.", "action": "speak", "target": "sandor_clegane" }
+      ],
+      "driveDeltas": { "jon_snow": { "loyalty": 4, "honor": 3 }, "sandor_clegane": { "honor": 3, "loyalty": 3 } },
+      "emotion": { "jon_snow": "protective", "sandor_clegane": "grudging" }
+    },
+    {
+      "id": "thread-12",
+      "phase": 4,
+      "locationId": "winterfell",
+      "anchor": { "x": 0.62, "y": 0.46 },
+      "mood": "friendly",
+      "label": "Sworn and Doubting",
+      "topic": "After swearing to Robb, Theon lingers by the gate with him as the riders are sent south — bravado and unspoken doubt.",
+      "stakes": "Theon wants the oath he swore to mean he belongs; Robb wants to believe the man he is about to trust with war.",
+      "cast": [
+        { "key": "robb_stark", "name": "Robb Stark", "charset": "robb stark" },
+        { "key": "theon_greyjoy", "name": "Theon Greyjoy", "charset": "theon greyjoy" }
+      ],
+      "dependsOn": ["thread-9", "thread-4"],
+      "turns": [
+        { "speaker": "robb_stark", "speakerName": "Robb Stark", "dialogue": "The riders are away, Theon. If word turns ill, it is steel after this, not counsel. You swore you'd stand with me. I am about to find out what that oath is worth — and so are you.", "publicStance": "an heir testing the friend he is committing to", "privateIntent": "see whether Theon's bravado holds now it is real", "thinking": "He talked of striking first. Now the striking may come. A borrowed sword is about to be drawn.", "action": "speak", "target": "theon_greyjoy" },
+        { "speaker": "theon_greyjoy", "speakerName": "Theon Greyjoy", "dialogue": "I meant every word, Robb. When the banners ride, I ride at your right hand. This is the only home that ever wanted me — and a man fights hardest for the place that took him in. You'll not have to wonder about me.", "publicStance": "a foster-brother pledging himself again", "privateIntent": "be believed, finally and fully", "thinking": "I say it and I mean it. And still some cold part of me wonders whether they will ever truly call me a Stark.", "action": "speak", "target": "robb_stark" },
+        { "speaker": "robb_stark", "speakerName": "Robb Stark", "dialogue": "Good. Then I'll wonder no more. Whatever comes from the south, we meet it together. My mother trusts me with the North now — and I am choosing to trust you with my flank.", "publicStance": "an heir extending hard-won trust", "privateIntent": "bind Theon close before the test arrives", "thinking": "I will believe him until he gives me a reason not to. That is what my father would do.", "action": "ally", "target": "theon_greyjoy" }
+      ],
+      "driveDeltas": { "robb_stark": { "loyalty": 4, "power": 3 }, "theon_greyjoy": { "loyalty": 5, "honor": 3 } },
+      "emotion": { "robb_stark": "resolved", "theon_greyjoy": "earnest" }
+    },
+    {
+      "id": "thread-13",
+      "phase": 5,
+      "locationId": "throne-room",
+      "anchor": { "x": 0.50, "y": 0.50 },
+      "mood": "hostile",
+      "label": "The Spider and the Mockingbird",
+      "topic": "With the lions and the wolf having shown their hands, Varys draws Littlefinger aside — two whisperers weighing who will be left standing.",
+      "stakes": "Littlefinger boasts he has rented himself to every side; Varys reminds him that a man who serves everyone is trusted by no one.",
+      "cast": [
+        { "key": "littlefinger", "name": "Petyr Baelish", "charset": "littlefinger baelish" },
+        { "key": "lord_varys", "name": "Lord Varys", "charset": "varys" }
+      ],
+      "dependsOn": ["thread-6", "thread-3"],
+      "turns": [
+        { "speaker": "lord_varys", "speakerName": "Lord Varys", "dialogue": "Busy day for you, Lord Baelish. The queen's coin in one hand, Lord Tywin's favor in the other, and Lord Stark still believing you a friend. So many threads. Do be careful — a man who holds too many at once seldom notices the one tightening round his own throat.", "publicStance": "a fellow servant offering friendly warning", "privateIntent": "measure how far Baelish has overcommitted", "thinking": "He climbs and climbs and never once looks down. One day the ladder will not be there.", "action": "speak", "target": "littlefinger" },
+        { "speaker": "littlefinger", "speakerName": "Petyr Baelish", "dialogue": "Careful is for men with something to lose, Lord Varys. I have rented myself to the queen and survived Tywin Lannister's notice in a single afternoon — and the wolf still thinks me his honest friend. Chaos is a ladder. I have simply learned to climb faster than the rest of you.", "publicStance": "a frank rival trading barbs", "privateIntent": "show the Spider he cannot be cornered", "thinking": "Let the eunuch fret over loyalty. Loyalty is for men who cannot afford ambition.", "action": "speak", "target": "lord_varys" },
+        { "speaker": "lord_varys", "speakerName": "Lord Varys", "dialogue": "A ladder, yes. I have always wondered what waits at the top of yours, my friend — and what becomes of all the hands you stepped on to get there. We shall both live to see it, I think. Or one of us shall.", "publicStance": "a courteous farewell with a blade in it", "privateIntent": "let Baelish know he is watched", "thinking": "He serves chaos. I serve the realm. We were never going to be friends.", "action": "speak", "target": "littlefinger" }
+      ],
+      "driveDeltas": { "littlefinger": { "power": 4, "information": 4 }, "lord_varys": { "information": 5 } },
+      "emotion": { "littlefinger": "smug", "lord_varys": "watchful" }
+    },
+    {
+      "id": "thread-14",
+      "phase": 5,
+      "locationId": "wall",
+      "anchor": { "x": 0.50, "y": 0.46 },
+      "mood": "friendly",
+      "label": "A Friend Remembered",
+      "topic": "Before the cold drives them in, Tyrion finds Jon one last time, the lesson now flowing both ways.",
+      "stakes": "Tyrion wants to leave the boy with something to keep; Jon wants the man to know the gift was received.",
+      "cast": [
+        { "key": "tyrion_lannister", "name": "Tyrion Lannister", "charset": "tyrion lannister" },
+        { "key": "jon_snow", "name": "Jon Snow", "charset": "jon snow" }
+      ],
+      "dependsOn": ["thread-7", "thread-11"],
+      "turns": [
+        { "speaker": "tyrion_lannister", "speakerName": "Tyrion Lannister", "dialogue": "I hear you defended my honor to the Hound, of all people. A bastard and a dog, keeping a Lannister's name clean at the edge of the world. I am almost touched. You took my advice better than I ever did, Jon Snow.", "publicStance": "a man moved despite himself", "privateIntent": "tell the boy, plainly, what his loyalty meant", "thinking": "I gave him armor and he turned it into a shield for me. I did not expect that. I did not expect any of this.", "action": "speak", "target": "jon_snow" },
+        { "speaker": "jon_snow", "speakerName": "Jon Snow", "dialogue": "You told me to wear what I am as armor, and to judge a man by his deeds. Your deeds toward a bastard you owed nothing were kinder than my own father's silence on certain matters. I will not forget it, whatever your name is in the south.", "publicStance": "a young man repaying a debt of the heart", "privateIntent": "honor the friendship openly before they part", "thinking": "He gave me back my pride. Of all the people in the world, a Lannister. I will carry it for the rest of my life.", "action": "speak", "target": "tyrion_lannister" },
+        { "speaker": "tyrion_lannister", "speakerName": "Tyrion Lannister", "dialogue": "Then we are even, you and I — you gave a friendless dwarf a friend at the end of the world. Guard your Wall, Jon Snow. And if the south ever forgets what it owes men like us, remember that one little lion did not.", "publicStance": "a fond, final farewell", "privateIntent": "seal a friendship that outlasts the cold", "thinking": "I came here in disgrace and leave it richer than half my family. The world is a strange and occasionally merciful place.", "action": "swear_oath", "target": "jon_snow" }
+      ],
+      "driveDeltas": { "tyrion_lannister": { "loyalty": 5, "honor": 4 }, "jon_snow": { "loyalty": 5, "honor": 5 } },
+      "emotion": { "tyrion_lannister": "moved", "jon_snow": "grateful" }
+    }
+  ],
+  "learning": {
+    "driveTrajectory": {
+      "cersei": [
+        { "thread": "thread-0", "drives": { "survival": 55, "power": 96, "legitimacy": 62, "loyalty": 42, "honor": 18, "vengeance": 75, "wealth": 66, "information": 60 } },
+        { "thread": "thread-3", "drives": { "survival": 55, "power": 100, "legitimacy": 62, "loyalty": 42, "honor": 18, "vengeance": 75, "wealth": 66, "information": 64 } },
+        { "thread": "thread-6", "drives": { "survival": 55, "power": 100, "legitimacy": 62, "loyalty": 47, "honor": 18, "vengeance": 75, "wealth": 66, "information": 64 } },
+        { "thread": "thread-8", "drives": { "survival": 55, "power": 100, "legitimacy": 62, "loyalty": 47, "honor": 18, "vengeance": 82, "wealth": 66, "information": 64 } }
+      ],
+      "tywin_lannister": [
+        { "thread": "thread-6", "drives": { "survival": 60, "power": 100, "legitimacy": 70, "loyalty": 55, "honor": 40, "vengeance": 64, "wealth": 91, "information": 65 } },
+        { "thread": "thread-8", "drives": { "survival": 60, "power": 100, "legitimacy": 70, "loyalty": 55, "honor": 40, "vengeance": 69, "wealth": 91, "information": 65 } }
+      ],
+      "littlefinger": [
+        { "thread": "thread-3", "drives": { "survival": 70, "power": 82, "legitimacy": 20, "loyalty": 15, "honor": 10, "vengeance": 55, "wealth": 98, "information": 100 } },
+        { "thread": "thread-6", "drives": { "survival": 73, "power": 86, "legitimacy": 20, "loyalty": 15, "honor": 10, "vengeance": 55, "wealth": 100, "information": 100 } }
+      ],
+      "ned": [
+        { "thread": "thread-8", "drives": { "survival": 40, "power": 35, "legitimacy": 55, "loyalty": 72, "honor": 100, "vengeance": 20, "wealth": 24, "information": 42 } }
+      ],
+      "catelyn_stark": [
+        { "thread": "thread-1", "drives": { "survival": 63, "power": 40, "legitimacy": 55, "loyalty": 95, "honor": 70, "vengeance": 62, "wealth": 30, "information": 53 } },
+        { "thread": "thread-9", "drives": { "survival": 66, "power": 40, "legitimacy": 55, "loyalty": 100, "honor": 70, "vengeance": 68, "wealth": 30, "information": 53 } }
+      ],
+      "robb_stark": [
+        { "thread": "thread-1", "drives": { "survival": 52, "power": 46, "legitimacy": 56, "loyalty": 94, "honor": 86, "vengeance": 44, "wealth": 20, "information": 30 } },
+        { "thread": "thread-4", "drives": { "survival": 52, "power": 46, "legitimacy": 56, "loyalty": 97, "honor": 86, "vengeance": 44, "wealth": 20, "information": 34 } },
+        { "thread": "thread-9", "drives": { "survival": 52, "power": 52, "legitimacy": 56, "loyalty": 100, "honor": 90, "vengeance": 44, "wealth": 20, "information": 34 } }
+      ],
+      "theon_greyjoy": [
+        { "thread": "thread-4", "drives": { "survival": 65, "power": 55, "legitimacy": 30, "loyalty": 50, "honor": 43, "vengeance": 40, "wealth": 35, "information": 35 } }
+      ],
+      "tyrion_lannister": [
+        { "thread": "thread-2", "drives": { "survival": 80, "power": 55, "legitimacy": 28, "loyalty": 51, "honor": 42, "vengeance": 52, "wealth": 60, "information": 97 } },
+        { "thread": "thread-5", "drives": { "survival": 82, "power": 55, "legitimacy": 28, "loyalty": 51, "honor": 42, "vengeance": 52, "wealth": 60, "information": 100 } },
+        { "thread": "thread-7", "drives": { "survival": 82, "power": 55, "legitimacy": 28, "loyalty": 55, "honor": 45, "vengeance": 52, "wealth": 60, "information": 100 } }
+      ],
+      "jon_snow": [
+        { "thread": "thread-2", "drives": { "survival": 55, "power": 30, "legitimacy": 24, "loyalty": 91, "honor": 94, "vengeance": 36, "wealth": 14, "information": 46 } },
+        { "thread": "thread-7", "drives": { "survival": 55, "power": 30, "legitimacy": 28, "loyalty": 97, "honor": 100, "vengeance": 36, "wealth": 14, "information": 46 } }
+      ],
+      "sandor_clegane": [
+        { "thread": "thread-5", "drives": { "survival": 70, "power": 50, "legitimacy": 10, "loyalty": 58, "honor": 38, "vengeance": 65, "wealth": 30, "information": 25 } }
+      ]
+    },
+    "reflections": {
+      "Cersei Lannister": { "summary": "I bought Baelish, won my father's grudging notice, and put the wolf on open notice; Stark's honor will be the rope I hang him with.", "rules": ["Make every loss look like a weapon.", "An enemy's virtue is the lever that breaks him.", "Earn Father's respect, never his pity."], "relationships": { "Eddard Stark": "a dangerous, honorable fool — useful only as a target", "Jaime Lannister": "mine, so long as Tyrion is not the price", "Petyr Baelish": "a tool I have rented; never trust the edge of it", "Tywin Lannister": "the one whose approval I still chase" } },
+      "Tywin Lannister": { "summary": "My children turned a slight into chaos; I took the board in hand, bound the coin-master to us, and chose to bleed the wolf when we cannot lose rather than when we are merely angry.", "rules": ["Strike only when defeat is impossible.", "Sentiment is a luxury the family cannot afford.", "Bind useful men with gold, not trust."], "relationships": { "Cersei Lannister": "clever, ambitious, and still too ruled by her feelings", "Eddard Stark": "an honorable man, and therefore a predictable one to bury", "Petyr Baelish": "bought, for now — watch the price he names next" } },
+      "Petyr Baelish": { "summary": "I rented myself to the queen and survived Tywin Lannister's notice; both lions now believe they own me, which is exactly where a man without a house wishes to stand.", "rules": ["Be necessary to everyone, owned by no one.", "Chaos is a ladder; honor is the rung that breaks.", "Let them think they bought you."], "relationships": { "Cersei Lannister": "a frightened queen who overpays — useful", "Tywin Lannister": "the one man in the realm I must never underestimate", "Eddard Stark": "honest, trusting, and aimed at his own ruin" } },
+      "Eddard Stark": { "summary": "I stood beneath the Iron Throne against the whole pride of lions and would not bend the king's justice; they marked me for it, and I felt the cold of the trap closing even as I held my ground.", "rules": ["Answer schemes with law, never with haste.", "A Stark does not flinch, even surrounded.", "Honor is the only ground worth dying on."], "relationships": { "Tywin Lannister": "the true power, and the patient hand behind the throne", "Cersei Lannister": "the venom in the cup, smiling", "Robb Stark": "the son I must trust to hold the North without me" } },
+      "Catelyn Stark": { "summary": "My fears walked south on Lannister feet exactly as I dreaded; I armed Robb and the North against the blow I can feel coming, and prayed I am wrong even as I prepare to be right.", "rules": ["Prepare for the worst while praying for the best.", "The North remembers, and so must we.", "Trust your son with the weight he has earned."], "relationships": { "Robb Stark": "ready at last — I have handed him a sword and my heart", "Eddard Stark": "my husband, alone among lions, and beyond my reach", "Theon Greyjoy": "loyal in word; I pray it holds in deed" } },
+      "Robb Stark": { "summary": "I was kept behind walls while the realm turned, then handed the reins as the lions gathered around my father; I tested Theon's loyalty, swore to my mother, and stopped being only an heir.", "rules": ["A leader does not wait to be struck.", "Measure a borrowed sword before the battle.", "Earn the trust before you are forced to use it."], "relationships": { "Catelyn Stark": "she prepared me for this, and finally trusts me with it", "Theon Greyjoy": "loyal in his words — I will believe it when steel is drawn", "Eddard Stark": "my father, whom I will not lose the way we are losing the realm" } },
+      "Tyrion Lannister": { "summary": "At the end of the world I found an honest friend in Jon Snow and a grim, truthful one in the Hound; my family schemes a thousand leagues south while I gave a bastard boy back his pride. Exile, but not without worth.", "rules": ["Wear what you are as armor.", "Honesty buys loyalty that gold cannot.", "A friend at the edge of the world is still a friend."], "relationships": { "Jon Snow": "the rarest thing — a true friend, and a bastard who deserves far better", "Sandor Clegane": "blunt, honest, and no liar — rare in any hall", "Cersei Lannister": "my sister, who would not weep to hear I froze" } },
+      "Jon Snow": { "summary": "A Lannister of all people taught me to carry my birth as a shield, and I swore him my friendship by the Wall's fire; my vow to the Watch means something, and I will guard it knowing who told me so.", "rules": ["Never let them shame what you are.", "Judge a man by his deeds, not his name.", "Keep the friends who saw you as a man."], "relationships": { "Tyrion Lannister": "an unlikely friend who treated me as a man, not a stain" } },
+      "Theon Greyjoy": { "summary": "I gave Robb bold counsel and swore my loyalty to the only home I remember, and still I wonder whether the Starks will ever truly see me as one of their own.", "rules": ["Make yourself indispensable to belong.", "Boldness is how a borrowed son earns his place."], "relationships": { "Robb Stark": "my brother in all but blood — I pray he believes it" } },
+      "Sandor Clegane": { "summary": "I rode a long cold way to spy on a dwarf and found the one highborn who does not lie to a man's face; I will tell the queen what she wants and keep the truth for myself.", "rules": ["Trust the man who does not flatter you.", "Serve where you are kicked, owe loyalty to no throne."], "relationships": { "Tyrion Lannister": "honest to my face — rarer than gold in that nest of vipers" } }
+    }
+  },
+  "meta": {
+    "iteration": "handcrafted",
+    "handAuthored": true,
+    "purpose": "Demo: continuous multi-map episode with concurrency, staggered conversations, ambient extras, departures, and a memory/learning showcase.",
+    "locations": ["throne-room", "winterfell", "wall"],
+    "speakingCast": ["cersei", "jaime_lannister", "tywin_lannister", "littlefinger", "ned", "catelyn_stark", "robb_stark", "theon_greyjoy", "tyrion_lannister", "jon_snow", "sandor_clegane"],
+    "extras": ["joffrey", "varys", "sansa_stark", "arya_stark", "jorah_mormont"]
+  }
+}

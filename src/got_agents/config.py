@@ -26,6 +26,23 @@ class Settings:
     embedding_dim: int = int(os.environ.get("EMBEDDING_DIM", "1536"))
     data_dir: str = os.environ.get("GOT_DATA_DIR", os.path.join(_REPO_ROOT, "data"))
 
+    # LLM provider toggle. "openai" (default) uses the OpenAI API; "azure" uses
+    # Azure OpenAI. Flip with the single LLM_PROVIDER env var to switch back.
+    llm_provider: str = os.environ.get("LLM_PROVIDER", "openai").strip().lower()
+    azure_openai_api_key: str | None = os.environ.get("AZURE_OPENAI_API_KEY")
+    azure_openai_endpoint: str | None = os.environ.get("AZURE_OPENAI_ENDPOINT")
+    azure_openai_api_version: str = os.environ.get(
+        "AZURE_OPENAI_API_VERSION", "2024-12-01-preview"
+    )
+    # Azure deployment names (default to the matching model name, a common
+    # convention; override per-resource via env).
+    azure_openai_chat_deployment: str = os.environ.get(
+        "AZURE_OPENAI_CHAT_DEPLOYMENT", "gpt-5.5"
+    )
+    azure_openai_embed_deployment: str = os.environ.get(
+        "AZURE_OPENAI_EMBED_DEPLOYMENT", "text-embedding-3-small"
+    )
+
 
 @lru_cache(maxsize=1)
 def get_settings() -> Settings:

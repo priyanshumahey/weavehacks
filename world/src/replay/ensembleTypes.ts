@@ -21,6 +21,8 @@ export interface EnsembleTurn {
   dialogue: string;
   publicStance: string;
   privateIntent: string;
+  /** Short inner voice, surfaced in the debug overlay. */
+  thinking?: string;
   /** Typed-core action (drives the reaction emoji). */
   action: string;
   target: string | null;
@@ -50,10 +52,23 @@ export interface EnsembleEncounter {
   turns: EnsembleTurn[];
 }
 
+/** One act of a multi-act episode: its own set of concurrent groups, played as
+ *  a self-contained beat of the story. The world plays acts in order, re-staging
+ *  the cast between them (huddles merge, split, and re-form) so the episode reads
+ *  as a sequence of escalating scenes rather than one frozen tableau. */
+export interface EnsembleAct {
+  id: string;
+  title: string;
+  groups: EnsembleGroup[];
+}
+
 export interface EnsembleReplay {
   version: number;
   title: string;
   groups: EnsembleGroup[];
+  /** Ordered acts, when this replay is a multi-act episode. The world plays them
+   *  in sequence; ``groups`` mirrors the first act for single-act consumers. */
+  acts?: EnsembleAct[];
   /** Optional precomputed mingle meetings, played after the scenes settle. */
   encounters?: EnsembleEncounter[];
 }
