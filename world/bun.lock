@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "weavehacks-world",
+      "name": "storyboard",
       "dependencies": {
         "@copilotkit/react-core": "^1.59.5",
         "phaser": "^3.90.0",

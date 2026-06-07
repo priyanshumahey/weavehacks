@@ -31,7 +31,7 @@ _default_origins = ["http://localhost:5173", "http://localhost:3000", "http://lo
 _extra = os.getenv("CORS_ORIGINS", "")
 ALLOWED_ORIGINS = _default_origins + [o.strip() for o in _extra.split(",") if o.strip()]
 
-app = FastAPI(title="A Game of Agents — Chat API", version="0.1.0")
+app = FastAPI(title="Storyboard — Chat API", version="0.1.0")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=ALLOWED_ORIGINS,
@@ -54,7 +54,7 @@ def _startup() -> None:
 
 @app.get("/api/health")
 def health() -> dict:
-    return {"status": "ok", "service": "got-agents-chat"}
+    return {"status": "ok", "service": "storyboard-chat"}
 
 
 @app.get("/api/characters")

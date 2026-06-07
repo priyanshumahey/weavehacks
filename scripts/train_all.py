@@ -108,7 +108,7 @@ def _render_html(payload: dict) -> str:
     return """<!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>A Game of Agents — Fidelity Leaderboard</title>
+<title>Storyboard — Fidelity Leaderboard</title>
 <style>
   :root { --gold:#d4af37; --bg:#0f0d0a; --panel:#1a1611; --line:#33291a; --teal:#3fb6a8; }
   * { box-sizing:border-box; }
@@ -135,7 +135,7 @@ def _render_html(payload: dict) -> str:
   .foot { text-align:center; color:#6b6048; font-size:12px; margin-top:22px; }
   .medal { font-size:18px; }
 </style></head><body><div class="wrap">
-  <h1>A Game of Agents</h1>
+  <h1>Storyboard</h1>
   <p class="sub" id="metric"></p>
   <p class="split" id="split"></p>
   <table><thead><tr>

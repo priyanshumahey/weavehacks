@@ -1,7 +1,7 @@
 [project]
 name = "got-agents"
 version = "0.1.0"
-description = "A Game of Agents — generative political agents for Westeros (WeaveHacks)"
+description = "Storyboard — generative political agents for Westeros"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [

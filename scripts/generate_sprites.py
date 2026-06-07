@@ -80,7 +80,7 @@ class RateLimitError(Exception):
         self.retry_after = retry_after
 
 
-# Westeros MVP cast - sourced from Docs/Project - A Game of Agents/Cast & Houses.md,
+# Westeros MVP cast - sourced from Docs/Project - Storyboard/Cast & Houses.md,
 # plus Daenerys. Visual anchors describe stable identity cues only (palette + silhouette).
 CHARACTERS: list[CharacterSpec] = [
     CharacterSpec(

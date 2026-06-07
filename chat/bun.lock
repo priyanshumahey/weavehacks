@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "got-chat",
+      "name": "storyboard-chat",
       "dependencies": {
         "@ai-sdk/openai": "^3.0.68",
         "@copilotkit/react-core": "^1.59.5",
