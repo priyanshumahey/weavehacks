@@ -24,7 +24,7 @@ OUT_JSON = REPO_ROOT / "data" / "got_episodes.json"
 
 API = "https://en.wikipedia.org/w/api.php"
 WIKI_BASE = "https://en.wikipedia.org/wiki/"
-USER_AGENT = "weavehacks-got-agents/0.1 (research harness)"
+USER_AGENT = "storyboard/0.1 (research harness)"
 REQUEST_DELAY_S = 0.5
 
 # Titles that collide with songs/places/the show; resolved by exact article.

@@ -236,7 +236,7 @@ function Chamber({
             <div className="flex items-center gap-2">
               <Crown className="size-4 text-primary" />
               <span className="text-sm font-semibold tracking-tight">
-                A Game of Agents
+                Storyboard
               </span>
             </div>
             <p className="mt-0.5 pl-6 text-xs text-muted-foreground">

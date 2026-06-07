@@ -1,4 +1,4 @@
-# A Game of Agents — Agent, Orchestrator & Training Design
+# Storyboard — Agent, Orchestrator & Training Design
 
 > **Purpose.** A *design-and-understanding* document (not an implementation plan). It answers
 > three questions before we write any code:
@@ -12,7 +12,7 @@
 > - **The original paper** — *Generative Agents* (Park et al., 2023; arXiv 2304.03442):
 >   the **memory stream → retrieval → reflection → planning** architecture.
 >
-> **Scope guardrail.** Per `Docs/Project - A Game of Agents/Scope & Simplifications.md`, this is a
+> **Scope guardrail.** Per `Docs/Project - Storyboard/Scope & Simplifications.md`, this is a
 > **dialogue-first, scene-based** sim. We **drop ravens, the spatial map, the battle engine, and
 > spies**. Information asymmetry is **membership-based** (you know what you witnessed or were
 > told). When the maximalist vision docs and the scope doc disagree, **scope wins**.

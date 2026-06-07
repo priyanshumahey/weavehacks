@@ -1,11 +1,11 @@
 ---
 tags: [project, vision]
-aliases: [A Game of Agents]
+aliases: [Storyboard]
 ---
 # Vision & Thesis
 
 ## The pitch (2–3 sentences)
-**A Game of Agents** is a canon-seeded generative-agent simulation of Westeros: each great lord is an LLM agent with episodic memory, political drives, and a Theory of Mind, set loose in a world of councils, ravens, and secret pacts. Seed a crisis (the king dies) and watch alliances form, oaths break, and wars start — emergently, not scripted. Every decision is traced, scored, and replayable in **W&B Weave**, turning the simulation into a **research instrument for emergent deception, alliance, and betrayal** in multi-agent LLMs.
+**Storyboard** is a canon-seeded generative-agent simulation of Westeros: each great lord is an LLM agent with episodic memory, political drives, and a Theory of Mind, set loose in a world of councils, ravens, and secret pacts. Seed a crisis (the king dies) and watch alliances form, oaths break, and wars start — emergently, not scripted. Every decision is traced, scored, and replayable in **W&B Weave**, turning the simulation into a **research instrument for emergent deception, alliance, and betrayal** in multi-agent LLMs.
 
 ## Why Westeros (and why it is more research-focused than the Office)
 The reference Office sim is a brilliant architecture aimed at low-stakes drama — *belonging and esteem* in a static room. Westeros keeps the exact same cognitive machinery but moves it to the regime where the interesting science lives:

@@ -1,5 +1,5 @@
 ---
-title: A Game of Agents — Engineering Handoff
+title: Storyboard — Engineering Handoff
 tags: [handoff, agents, status]
 status: step-4-complete
 updated: 2026-06-06

@@ -1,6 +1,6 @@
-# A Game of Agents
+# Storyboard
 
-Generative political agents for Westeros — a WeaveHacks project. See [`Docs/`](Docs/Home.md) for the full design.
+Generative political agents for Westeros. See [`Docs/`](Docs/Home.md) for the full design.
 
 ## Layout
 
