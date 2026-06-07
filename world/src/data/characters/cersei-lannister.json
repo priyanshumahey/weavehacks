@@ -1,0 +1,32 @@
+{
+  "id": "cersei-lannister",
+  "name": "Cersei",
+  "kind": "npc",
+  "controller": "script",
+  "position": {
+    "x": 420,
+    "y": 180
+  },
+  "appearance": {
+    "color": "#c44d58",
+    "radius": 17,
+    "labelColor": "#f8d7da"
+  },
+  "sprite": {
+    "frameSourcePath": "charsets/sprites/cersei lannister",
+    "displayHeight": 80,
+    "origin": {
+      "x": 0.5,
+      "y": 1
+    },
+    "labelOffset": {
+      "x": 0,
+      "y": 0
+    }
+  },
+  "movement": {
+    "mode": "idle"
+  },
+  "dialogueId": "cersei_intro",
+  "traits": ["proud", "dangerous"]
+}

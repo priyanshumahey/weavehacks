@@ -6,7 +6,6 @@ import {
 import {
   resolveCharacterDisplayScale,
   resolveCharacterFrameIndex,
-  resolveCharacterSlotTopOffset,
   resolveSpritesheetFrameDimensions,
 } from "../rendering/characters/characterSpritesheet";
 import {
@@ -27,16 +26,6 @@ const SELECTION_STROKE_COLOR = 0xf6bd60;
 const SELECTION_STROKE_WIDTH = 3;
 const SIDE_VIEW_CANONICAL_FACING = CHARACTER_SPRITE_FACING.down;
 
-const LABEL_FONT_FAMILY = "Arial, sans-serif";
-const LABEL_FONT_SIZE = "11px";
-const LABEL_TEXT_COLOR = "#ffffff";
-const LABEL_BACKGROUND_COLOR = 0x000000;
-const LABEL_BACKGROUND_ALPHA = 0.88;
-const LABEL_PADDING_X = 8;
-const LABEL_PADDING_Y = 4;
-const LABEL_BORDER_RADIUS = 4;
-const LABEL_GAP_ABOVE_SPRITE = 10;
-
 interface AppliedBodyPresentation {
   textureKey: string;
   displayScale: number;
@@ -47,9 +36,6 @@ interface AppliedBodyPresentation {
 export class CharacterSprite extends Phaser.GameObjects.Container {
   private readonly bodySprite: Phaser.GameObjects.Sprite;
   private readonly selectionRing: Phaser.GameObjects.Arc;
-  private readonly labelBadge: Phaser.GameObjects.Container;
-  private readonly labelBackground: Phaser.GameObjects.Graphics;
-  private readonly labelText: Phaser.GameObjects.Text;
   private appliedBodyPresentation: AppliedBodyPresentation | null = null;
   readonly characterId: string;
 
@@ -73,22 +59,7 @@ export class CharacterSprite extends Phaser.GameObjects.Container {
       0,
     );
 
-    this.labelText = scene.add
-      .text(0, 0, character.name, {
-        fontFamily: LABEL_FONT_FAMILY,
-        fontSize: LABEL_FONT_SIZE,
-        color: LABEL_TEXT_COLOR,
-      })
-      .setOrigin(0.5, 0.5);
-    this.labelBackground = scene.add.graphics();
-    this.labelBadge = scene.add.container(0, 0, [
-      this.labelBackground,
-      this.labelText,
-    ]);
-    this.redrawLabelBadge();
-    this.updateLabelPosition(character);
-
-    this.add([this.bodySprite, this.selectionRing, this.labelBadge]);
+    this.add([this.bodySprite, this.selectionRing]);
     scene.add.existing(this);
   }
 
@@ -105,8 +76,6 @@ export class CharacterSprite extends Phaser.GameObjects.Container {
       SELECTION_STROKE_COLOR,
       showSelectionRing ? 1 : 0,
     );
-    this.updateLabelPosition(character);
-    this.labelBadge.setAlpha(isSelected ? 1 : 0.92);
   }
 
   private applyRenderDepth(character: CharacterState): void {
@@ -119,34 +88,6 @@ export class CharacterSprite extends Phaser.GameObjects.Container {
 
     this.setDepth(
       resolveWorldRenderDepth(sortY, RENDER_DEPTH_PRIORITY.character),
-    );
-  }
-
-  private updateLabelPosition(character: CharacterState): void {
-    const badgeHeight = this.labelText.height + LABEL_PADDING_Y * 2;
-    const slotTopOffset = resolveCharacterSlotTopOffset(
-      character.sprite.displayHeight,
-      character.sprite.origin.y,
-    );
-
-    this.labelBadge.setPosition(
-      character.sprite.labelOffset.x,
-      -slotTopOffset - LABEL_GAP_ABOVE_SPRITE - badgeHeight / 2,
-    );
-  }
-
-  private redrawLabelBadge(): void {
-    const badgeWidth = this.labelText.width + LABEL_PADDING_X * 2;
-    const badgeHeight = this.labelText.height + LABEL_PADDING_Y * 2;
-
-    this.labelBackground.clear();
-    this.labelBackground.fillStyle(LABEL_BACKGROUND_COLOR, LABEL_BACKGROUND_ALPHA);
-    this.labelBackground.fillRoundedRect(
-      -badgeWidth / 2,
-      -badgeHeight / 2,
-      badgeWidth,
-      badgeHeight,
-      LABEL_BORDER_RADIUS,
     );
   }
 

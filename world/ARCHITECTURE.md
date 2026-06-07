@@ -143,7 +143,7 @@ World presentation uses Phaser `setDepth()` with explicit layer bands and foot-b
 - `TerrainRenderer`: terrain tilemap layer at `RENDER_LAYERS.terrain` (always behind world objects)
 - `PropSprite`: depth from the sprite foot using authored `origin`, scaled texture height, and `RENDER_DEPTH_PRIORITY.prop`
 - `CharacterSprite`: depth from the sprite foot using resolved frame height and display scale, with `RENDER_DEPTH_PRIORITY.character` so characters draw above props at the same foot Y
-- `WorldUiRenderer`: HTML overlay (`#world-ui`) for prompt, dialogue, inspection, and player appearance selector panels, positioned above the Phaser canvas with CSS and `pointer-events: none` on the root so only interactive controls capture clicks
+- `WorldUiRenderer`: HTML overlay (`#world-ui`) for prompt, dialogue, inspection, and player appearance selector panels, positioned above the Phaser canvas with CSS and `pointer-events: none` on the root so only interactive controls capture clicks. Dialogue uses a Hades-inspired layout: full-screen backdrop dim, full-body character portrait from `world/sprites/Characters/` on the left, and a parchment panel for speaker name and dialogue text
 
 Depth rules:
 
@@ -205,7 +205,7 @@ Current state is split as follows:
 - `buildAgentObservation()`: filtered, character-scoped perception queries for future agent controllers
 - `src/world/systems/`: deterministic simulation passes for movement, bounds, collisions, and interactions
 - `WorldRenderer`: top-level Phaser-facing renderer for the world frame and character rendering passes
-- `WorldUiRenderer` and `buildWorldUiViewModel()`: player-facing prompt, dialogue, inspection, and bottom-of-screen character appearance selector rendered as an HTML overlay synced each frame from `WorldState.ui`
+- `WorldUiRenderer` and `buildWorldUiViewModel()`: player-facing prompt, dialogue, inspection, and bottom-of-screen character appearance selector rendered as an HTML overlay synced each frame from `WorldState.ui`. Dialogue portraits resolve from each character's `sprite.frameSourcePath` via `characterPortraitRegistry.ts`, which maps `charsets/sprites/<name>` to `sprites/Characters/<name>.png`
 - `CharacterRenderer` and `CharacterSprite`: sprite-backed visual representation for each character with labels and selection highlighting
 - `TerrainRenderer`, `createWorldFrame()`, and `getWorldBounds()`: terrain tilemap presentation, camera background, and playfield bounds derived from the main camera viewport
 - `worldState.ts`: serializable interfaces for world bounds, entities, characters, zones, UI, and time
