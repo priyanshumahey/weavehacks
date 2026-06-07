@@ -15,11 +15,11 @@
     { "key": "theon_greyjoy", "name": "Theon Greyjoy", "charset": "theon greyjoy", "title": "Ward of Winterfell", "drives": { "survival": 65, "power": 55, "legitimacy": 30, "loyalty": 45, "honor": 40, "vengeance": 40, "wealth": 35, "information": 35 } },
     { "key": "tyrion_lannister", "name": "Tyrion Lannister", "charset": "tyrion lannister", "title": "the Imp", "drives": { "survival": 78, "power": 55, "legitimacy": 28, "loyalty": 45, "honor": 42, "vengeance": 52, "wealth": 60, "information": 92 } },
     { "key": "jon_snow", "name": "Jon Snow", "charset": "jon snow", "title": "Man of the Night's Watch", "drives": { "survival": 55, "power": 30, "legitimacy": 24, "loyalty": 86, "honor": 90, "vengeance": 36, "wealth": 14, "information": 42 } },
-    { "key": "sandor_clegane", "name": "Sandor Clegane", "charset": "sandor clegane", "title": "the Hound", "drives": { "survival": 70, "power": 50, "legitimacy": 10, "loyalty": 55, "honor": 35, "vengeance": 65, "wealth": 30, "information": 25 } }
+    { "key": "sandor_clegane", "name": "Sandor Clegane", "charset": "sandor clegane", "title": "the Hound", "drives": { "survival": 70, "power": 50, "legitimacy": 10, "loyalty": 55, "honor": 35, "vengeance": 65, "wealth": 30, "information": 25 } },
+    { "key": "lord_varys", "name": "Lord Varys", "charset": "varys", "title": "Master of Whisperers", "drives": { "survival": 72, "power": 55, "legitimacy": 30, "loyalty": 35, "honor": 30, "vengeance": 20, "wealth": 45, "information": 98 } }
   ],
   "extras": [
     { "key": "joffrey", "name": "Joffrey Baratheon", "charset": "joffrey baratheon", "locationId": "throne-room", "behavior": "idle", "anchor": { "x": 0.5, "y": 0.18 } },
-    { "key": "varys", "name": "Lord Varys", "charset": "varys", "locationId": "throne-room", "behavior": "wander" },
     { "key": "sansa_stark", "name": "Sansa Stark", "charset": "sansa stark", "locationId": "winterfell", "behavior": "wander" },
     { "key": "arya_stark", "name": "Arya Stark", "charset": "arya stark", "locationId": "winterfell", "behavior": "wander" },
     { "key": "jorah_mormont", "name": "Ser Jorah Mormont", "charset": "jorah mormont", "locationId": "wall", "behavior": "wander" }
