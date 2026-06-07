@@ -11,6 +11,11 @@ export interface ReactionInput {
   privateIntent: string;
 }
 
+interface StancePair {
+  publicStance: string;
+  privateIntent: string;
+}
+
 // Preference lists per action — first available name wins.
 const ACTION_EMOJI: Record<string, string[]> = {
   accuse: ["angry", "exclamation", "frustrated"],
@@ -35,7 +40,7 @@ function firstAvailable(names: string[]): string | null {
   return null;
 }
 
-function isScheming(turn: ReactionInput): boolean {
+export function isScheming(turn: StancePair): boolean {
   const pub = turn.publicStance.trim().toLowerCase();
   const priv = turn.privateIntent.trim().toLowerCase();
   if (!pub || !priv) {

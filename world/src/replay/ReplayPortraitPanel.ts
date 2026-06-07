@@ -5,6 +5,7 @@
 // deception split. Clicking the panel advances to the next line; Escape exits.
 
 import { getCharacterPortraitUrl } from "../assets/characterPortraitRegistry";
+import { isScheming } from "./reactionEmoji";
 
 /** The minimal line shape the panel renders (satisfied by ActiveLine and EnsembleTurn). */
 export interface PortraitLine {
@@ -25,7 +26,12 @@ export class ReplayPortraitPanel {
   private readonly portrait: HTMLImageElement;
   private readonly portraitFrame: HTMLDivElement;
   private readonly nameEl: HTMLHeadingElement;
-  private readonly bodyEl: HTMLParagraphElement;
+  private readonly quoteEl: HTMLQuoteElement;
+  private readonly motivesEl: HTMLDivElement;
+  private readonly publicMotiveEl: HTMLDivElement;
+  private readonly publicMotiveTextEl: HTMLParagraphElement;
+  private readonly privateMotiveEl: HTMLDivElement;
+  private readonly privateMotiveTextEl: HTMLParagraphElement;
   private onAdvance: (() => void) | null = null;
 
   constructor(parent: HTMLElement = document.getElementById("app") ?? document.body) {
@@ -55,11 +61,36 @@ export class ReplayPortraitPanel {
 
     this.nameEl = document.createElement("h2");
     this.nameEl.className = "world-ui__dialogue-name";
-    this.bodyEl = document.createElement("p");
-    this.bodyEl.className = "world-ui__dialogue-body";
-    this.bodyEl.style.whiteSpace = "pre-line";
 
-    panel.append(this.nameEl, this.bodyEl);
+    this.quoteEl = document.createElement("blockquote");
+    this.quoteEl.className = "world-ui__dialogue-quote";
+
+    this.motivesEl = document.createElement("div");
+    this.motivesEl.className = "world-ui__dialogue-motives";
+
+    this.publicMotiveEl = document.createElement("div");
+    this.publicMotiveEl.className = "world-ui__dialogue-motive world-ui__dialogue-motive--public";
+    const publicLabel = document.createElement("span");
+    publicLabel.className = "world-ui__dialogue-motive-label";
+    publicLabel.textContent = "Public stance";
+    this.publicMotiveTextEl = document.createElement("p");
+    this.publicMotiveTextEl.className = "world-ui__dialogue-motive-text";
+    this.publicMotiveEl.append(publicLabel, this.publicMotiveTextEl);
+    this.publicMotiveEl.setAttribute("aria-label", "Public stance");
+
+    this.privateMotiveEl = document.createElement("div");
+    this.privateMotiveEl.className = "world-ui__dialogue-motive world-ui__dialogue-motive--private";
+    const privateLabel = document.createElement("span");
+    privateLabel.className = "world-ui__dialogue-motive-label";
+    privateLabel.textContent = "Private intent";
+    this.privateMotiveTextEl = document.createElement("p");
+    this.privateMotiveTextEl.className = "world-ui__dialogue-motive-text";
+    this.privateMotiveEl.append(privateLabel, this.privateMotiveTextEl);
+    this.privateMotiveEl.setAttribute("aria-label", "Private intent");
+
+    this.motivesEl.append(this.publicMotiveEl, this.privateMotiveEl);
+
+    panel.append(this.nameEl, this.quoteEl, this.motivesEl);
 
     const layout = document.createElement("div");
     layout.className = "world-ui__dialogue-layout";
@@ -95,14 +126,30 @@ export class ReplayPortraitPanel {
     this.nameEl.textContent = focus.name;
 
     const line = focus.line;
-    let body = `“${line.dialogue}”`;
-    if (line.publicStance) {
-      body += `\n\nPublicly: ${line.publicStance}`;
+    this.quoteEl.textContent = `“${line.dialogue}”`;
+
+    const hasPublic = Boolean(line.publicStance.trim());
+    const hasPrivate = Boolean(line.privateIntent.trim());
+    const hasMotives = hasPublic || hasPrivate;
+
+    this.motivesEl.hidden = !hasMotives;
+    this.motivesEl.classList.toggle("world-ui__dialogue-motives--single", hasMotives && hasPublic !== hasPrivate);
+
+    this.publicMotiveEl.hidden = !hasPublic;
+    if (hasPublic) {
+      this.publicMotiveTextEl.textContent = line.publicStance;
     }
-    if (line.privateIntent) {
-      body += `\n\nPrivately: ${line.privateIntent}`;
+
+    this.privateMotiveEl.hidden = !hasPrivate;
+    if (hasPrivate) {
+      this.privateMotiveTextEl.textContent = line.privateIntent;
+      this.privateMotiveEl.classList.toggle(
+        "world-ui__dialogue-motive--deceptive",
+        isScheming(line),
+      );
+    } else {
+      this.privateMotiveEl.classList.remove("world-ui__dialogue-motive--deceptive");
     }
-    this.bodyEl.textContent = body;
   }
 
   hide(): void {
