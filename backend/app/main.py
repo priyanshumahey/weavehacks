@@ -23,7 +23,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
-from app import chat_service
+from app import chat_service, saved_scenes, scene_service
 
 load_dotenv()
 
@@ -123,3 +123,95 @@ def inner_state(session_id: str) -> dict:
 def reset(session_id: str) -> dict:
     chat_service.reset_session(session_id)
     return {"status": "reset", "session_id": session_id}
+
+
+@app.get("/api/scene/roster")
+def scene_roster() -> dict:
+    """Characters that can be staged in a scene (core + world sprite)."""
+    return {"roster": scene_service.roster(), "options": scene_service.options()}
+
+
+class SceneRequest(BaseModel):
+    cast: list[str] = Field(..., min_length=scene_service.MIN_CAST)
+    setting: str = Field("", description="where/when the scene happens")
+    stakes: str = Field("", description="what each party wants from it")
+    episode: str = Field(scene_service.DEFAULT_EPISODE)
+    location: str = Field(scene_service.DEFAULT_LOCATION)
+    max_rounds: int = Field(scene_service.DEFAULT_MAX_ROUNDS, ge=1, le=4)
+
+
+@app.post("/api/scene")
+def scene(body: SceneRequest) -> dict:
+    """Run a one-off council scene; return the world-facing ensemble JSON."""
+    try:
+        ensemble = scene_service.build_scene(
+            body.cast,
+            setting=body.setting,
+            stakes=body.stakes,
+            episode=body.episode,
+            location=body.location,
+            max_rounds=body.max_rounds,
+        )
+    except KeyError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    meta = saved_scenes.save(
+        ensemble,
+        premise=body.setting,
+        episode=body.episode,
+        location=body.location,
+        kind="scene",
+    )
+    return {"ensemble": ensemble, "scene": meta}
+
+
+class EpisodeRequest(BaseModel):
+    premise: str = Field(..., min_length=1, description="one dramatic premise to direct")
+    cast_pool: list[str] = Field(
+        default_factory=list,
+        description="optional keys to restrict the director's casting",
+    )
+    episode: str = Field(scene_service.DEFAULT_EPISODE)
+    location: str = Field(scene_service.DEFAULT_LOCATION)
+    max_groups: int = Field(scene_service.DEFAULT_MAX_GROUPS, ge=1, le=5)
+    max_rounds: int = Field(scene_service.DEFAULT_MAX_ROUNDS, ge=1, le=4)
+
+
+@app.post("/api/episode")
+def episode_scene(body: EpisodeRequest) -> dict:
+    """Direct a whole moment from one premise into concurrent conversations."""
+    try:
+        ensemble = scene_service.build_episode(
+            body.premise,
+            cast_pool=body.cast_pool or None,
+            episode=body.episode,
+            location=body.location,
+            max_groups=body.max_groups,
+            max_rounds=body.max_rounds,
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    meta = saved_scenes.save(
+        ensemble,
+        premise=body.premise,
+        episode=body.episode,
+        location=body.location,
+        kind="episode",
+    )
+    return {"ensemble": ensemble, "scene": meta}
+
+
+@app.get("/api/scenes")
+def scenes_library() -> dict:
+    """List previously saved scenes (newest first) for replay."""
+    return {"scenes": saved_scenes.list_saved()}
+
+
+@app.get("/api/scenes/{name}")
+def saved_scene(name: str) -> dict:
+    """Load a saved scene's ensemble by name."""
+    ensemble = saved_scenes.load(name)
+    if ensemble is None:
+        raise HTTPException(status_code=404, detail=f"no saved scene {name!r}")
+    return {"ensemble": ensemble}

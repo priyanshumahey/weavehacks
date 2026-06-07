@@ -47,6 +47,8 @@ export class ReplayScene extends Phaser.Scene {
   private slider: TimeSlider | null = null;
   private focusedGroupId: string | null = null;
   private manualMode = false;
+  /** Injected ensemble (a freshly staged scene), if the scene was started with one. */
+  private injectedReplay: EnsembleReplay | null = null;
   /** Character key -> charset (portrait) name. */
   private readonly charsetByKey = new Map<string, string>();
 
@@ -54,8 +56,15 @@ export class ReplayScene extends Phaser.Scene {
     super(REPLAY_SCENE_KEY);
   }
 
+  init(data?: { replay?: EnsembleReplay }): void {
+    this.injectedReplay = data?.replay ?? null;
+    this.focusedGroupId = null;
+    this.manualMode = false;
+    this.charsetByKey.clear();
+  }
+
   preload(): void {
-    this.replay = loadDefaultEnsemble();
+    this.replay = this.injectedReplay ?? loadDefaultEnsemble();
     this.staging = buildEnsembleStaging(this.replay);
     for (const group of this.replay.groups) {
       for (const member of group.cast) {
@@ -113,6 +122,13 @@ export class ReplayScene extends Phaser.Scene {
 
     this.frameStart();
     this.bindInput();
+
+    // DOM overlays do not belong to the Phaser display list, so remove them
+    // explicitly when the scene shuts down (e.g. restarting with a new scene).
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      this.slider?.destroy();
+      this.panel?.destroy();
+    });
   }
 
   update(_time: number, delta: number): void {
@@ -243,10 +259,39 @@ export class ReplayScene extends Phaser.Scene {
 
   private frameOverview(): void {
     this.slider?.setDocked("bottom");
-    const bounds = getWorldBounds();
-    const cx = (bounds.minX + bounds.maxX) / 2;
-    const cy = (bounds.minY + bounds.maxY) / 2;
-    this.observer?.frameOn(cx, cy, OVERVIEW_ZOOM, 520);
+    const content = this.contentBounds();
+    const cx = (content.minX + content.maxX) / 2;
+    const cy = (content.minY + content.maxY) / 2;
+
+    // Fit the staged content (not the whole two-map world) to the viewport, so
+    // there is no dead space above/around a scene that uses only one corner.
+    const cam = this.cameras.main;
+    const pad = 160;
+    const w = content.maxX - content.minX + pad * 2;
+    const h = content.maxY - content.minY + pad * 2;
+    const fit = Math.min(cam.width / w, cam.height / h);
+    const zoom = Math.max(OVERVIEW_ZOOM, Math.min(fit, 1));
+    this.observer?.frameOn(cx, cy, zoom, 520);
+  }
+
+  /** Bounding box of all group huddles (falls back to the whole world). */
+  private contentBounds(): { minX: number; minY: number; maxX: number; maxY: number } {
+    const layouts = [...this.staging.layouts.values()];
+    if (layouts.length === 0) {
+      return getWorldBounds();
+    }
+    let minX = Infinity;
+    let minY = Infinity;
+    let maxX = -Infinity;
+    let maxY = -Infinity;
+    for (const layout of layouts) {
+      const r = layout.radius + 80;
+      minX = Math.min(minX, layout.centre.x - r);
+      minY = Math.min(minY, layout.centre.y - r);
+      maxX = Math.max(maxX, layout.centre.x + r);
+      maxY = Math.max(maxY, layout.centre.y + r);
+    }
+    return { minX, minY, maxX, maxY };
   }
 
   private characterAt(worldX: number, worldY: number): string | null {

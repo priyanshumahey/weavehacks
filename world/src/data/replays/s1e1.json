@@ -1,405 +1,233 @@
 {
   "version": 1,
-  "episode": "s1e1",
   "title": "Winter Is Coming — the lions come to Winterfell",
-  "cast": [
+  "groups": [
     {
-      "key": "ned",
-      "name": "Eddard Stark",
-      "charset": "ned stark"
-    },
-    {
-      "key": "cersei",
-      "name": "Cersei Lannister",
-      "charset": "cersei lannister"
-    },
-    {
-      "key": "littlefinger",
-      "name": "Petyr Baelish",
-      "charset": "littlefinger baelish"
-    }
-  ],
-  "scenes": [
-    {
-      "index": 0,
-      "setting": "the Winterfell feast hall the night the royal court arrives",
-      "stakes": "King Robert means to name Eddard Stark his Hand. Cersei watches the Starks and weighs how far northern honor can be bent before it breaks.",
+      "id": "scene-0",
+      "label": "The Winterfell feast hall the night the royal co",
+      "mood": "friendly",
+      "anchor": {
+        "x": 0.5,
+        "y": 0.28
+      },
       "cast": [
-        "ned",
-        "cersei"
+        {
+          "key": "ned",
+          "name": "Eddard Stark",
+          "charset": "ned stark"
+        },
+        {
+          "key": "cersei",
+          "name": "Cersei Lannister",
+          "charset": "cersei lannister"
+        }
       ],
       "turns": [
         {
           "speaker": "ned",
           "speakerName": "Eddard Stark",
-          "round": 1,
-          "action": "speak",
-          "target": "cersei",
-          "targetName": "Cersei Lannister",
           "dialogue": "Your Grace, Winterfell is honored by your presence. My halls are yours while you remain beneath my roof.",
           "publicStance": "I offer the queen the honor due her station beneath my roof, with the courtesy of Winterfell before all assembled.",
           "privateIntent": "I would show no slight the court can twist into insult, and I would learn what lies behind the queen's smile before Robert places his burden on my shoulders.",
-          "thinking": "A wolf need not bare his teeth at every lion that crosses his threshold. Courtesy costs little, and silence will tell me more than anger ever could."
+          "action": "speak",
+          "target": "cersei"
         },
         {
           "speaker": "cersei",
           "speakerName": "Cersei Lannister",
-          "round": 1,
-          "action": "speak",
-          "target": "ned",
-          "targetName": "Eddard Stark",
           "dialogue": "Your courtesy does you credit, Lord Stark. I trust Winterfell keeps its oaths as fiercely as it keeps out the cold.",
           "publicStance": "A gracious queen accepts Northern hospitality and honors Lord Stark before his bannermen.",
           "privateIntent": "I will measure this solemn wolf before Robert binds him to the crown, and learn whether his honor is a chain I may pull or a blade I must dull.",
-          "thinking": "He looks carved from the same frozen stone as his halls. Men who worship honor can be useful, if one learns which promise they would rather die than break."
+          "action": "speak",
+          "target": "ned"
         },
         {
           "speaker": "ned",
           "speakerName": "Eddard Stark",
-          "round": 2,
-          "action": "speak",
-          "target": "cersei",
-          "targetName": "Cersei Lannister",
           "dialogue": "Oaths are not kept by stone walls, Your Grace, but by the men and women within them. In Winterfell, we remember what is sworn.",
           "publicStance": "I answer the queen's courtesy with northern plainness, affirming Winterfell's honor before the gathered court.",
           "privateIntent": "I mean to let her know that oaths are not words to me, and to watch whether the mention of them makes her flinch.",
-          "thinking": "A Lannister weighs every word for gold or weakness. Let her hear that the North does not bend easily."
+          "action": "speak",
+          "target": "cersei"
         },
         {
           "speaker": "cersei",
           "speakerName": "Cersei Lannister",
-          "round": 2,
-          "action": "speak",
-          "target": "ned",
-          "targetName": "Eddard Stark",
           "dialogue": "Then the realm is fortunate, Lord Stark. A king has need of men who remember what they have sworn—especially when the weight of the realm asks more of them than comfort ever did.",
           "publicStance": "I offer gracious admiration for Northern honor and the loyalty Winterfell owes the crown.",
           "privateIntent": "I want to measure how tightly Stark binds himself to oaths, and whether duty to Robert can be turned into a chain around his neck before he becomes Hand.",
-          "thinking": "He wears honor like armor, this Stark. Armor has gaps, and I mean to find them before Robert places the Hand’s chain around his neck."
+          "action": "speak",
+          "target": "ned"
         },
         {
           "speaker": "ned",
           "speakerName": "Eddard Stark",
-          "round": 3,
-          "action": "speak",
-          "target": "cersei",
-          "targetName": "Cersei Lannister",
           "dialogue": "Comfort has little to do with duty, Your Grace. A man does what he must for his king, his house, and the realm, and leaves comfort for softer days.",
           "publicStance": "I answer the queen's courtesy with northern plainness, affirming that duty is no burden a loyal man may set down.",
           "privateIntent": "I will let her hear that Winterfell does not bend easily, and I will watch what my words stir behind her eyes.",
-          "thinking": "The queen weighs every word as if it were coin. Let her learn that northern oaths are not bought so easily."
+          "action": "speak",
+          "target": "cersei"
         }
-      ],
-      "effects": []
+      ]
     },
     {
-      "index": 1,
-      "setting": "a shadowed alcove off the Winterfell guest wing, away from the feast",
-      "stakes": "With the old Hand dead and a new one rising, Littlefinger feels out the queen: each offers the other use, and each means to keep the upper hand.",
+      "id": "scene-1",
+      "label": "A shadowed alcove off the Winterfell guest wing",
+      "mood": "tense",
+      "anchor": {
+        "x": 0.3,
+        "y": 0.55
+      },
       "cast": [
-        "cersei",
-        "littlefinger"
+        {
+          "key": "cersei",
+          "name": "Cersei Lannister",
+          "charset": "cersei lannister"
+        },
+        {
+          "key": "littlefinger",
+          "name": "Petyr Baelish",
+          "charset": "littlefinger baelish"
+        }
       ],
       "turns": [
         {
           "speaker": "cersei",
           "speakerName": "Cersei Lannister",
-          "round": 1,
-          "action": "speak",
-          "target": "littlefinger",
-          "targetName": "Petyr Baelish",
           "dialogue": "Lord Baelish, you linger in shadows as if they were made for you. Tell me—do you come bearing counsel for your queen, or merely the scent of another man's secrets?",
           "publicStance": "I acknowledge his usefulness while reminding him he stands before the queen and must tread carefully.",
           "privateIntent": "I mean to learn what he knows of Jon Arryn's death and the new Hand, then decide whether he is a tool to be used or a snake to be crushed.",
-          "thinking": "Littlefinger smiles too easily, and men who smile too easily are usually hiding knives. Still, knives have their uses when held by the proper hand."
+          "action": "speak",
+          "target": "littlefinger"
         },
         {
           "speaker": "littlefinger",
           "speakerName": "Petyr Baelish",
-          "round": 1,
-          "action": "speak",
-          "target": "cersei",
-          "targetName": "Cersei Lannister",
           "dialogue": "Your Grace, shadows are merely places where careless men leave their truths unattended. I come with counsel, if you wish it: a new Hand will arrive with old loyalties, northern honor, and a dangerous appetite for answers. Such men are best guided gently—or given a mystery so large they mistake it for the truth.",
           "publicStance": "I offer the queen courteous counsel and the promise that my talents remain available to her.",
           "privateIntent": "I mean to learn how much she fears the new Hand and whether Jon Arryn's death has left any loose thread I might pull for profit.",
-          "thinking": "Cersei hears an offer; I hear the clink of a lock waiting for the right key. If she flinches at Arryn's ghost or Stark's name, I shall know where to press."
+          "action": "speak",
+          "target": "cersei"
         },
         {
           "speaker": "cersei",
           "speakerName": "Cersei Lannister",
-          "round": 2,
-          "action": "speak",
-          "target": "littlefinger",
-          "targetName": "Petyr Baelish",
           "dialogue": "Then place this mystery before him, Lord Baelish, and let us see whether northern honor is as easy to lead by the nose as southern greed. But remember—men who trade in secrets often forget that queens can buy silence as easily as they can command it.",
           "publicStance": "I receive his counsel with cool amusement, as a queen indulging a clever servant who knows his place.",
           "privateIntent": "I will see what bait he offers and whether it can be turned against Stark before Stark turns his honor toward my children.",
-          "thinking": "Littlefinger smiles too much for a man with so little blood to protect him. If he means to use me, he will learn that lions do not wear another man's leash."
+          "action": "speak",
+          "target": "littlefinger"
         },
         {
           "speaker": "littlefinger",
           "speakerName": "Petyr Baelish",
-          "round": 2,
-          "action": "share_secret",
-          "target": "cersei",
-          "targetName": "Cersei Lannister",
           "dialogue": "Your Grace, silence is a lovely thing, but it rarely survives a frightened woman with ink and ravens. A dear friend told me Lady Stark has heard whispers about Lord Arryn's death—poison, perhaps, and lions prowling rather near the corpse. Give Lord Stark pawprints too plain to miss, and his honor will drag him exactly where we wish him to go.",
           "publicStance": "I offer the queen a useful warning and a path to mislead the new Hand before his honor becomes dangerous.",
           "privateIntent": "I mean to frighten her just enough to make her dependent on my whispers, while keeping the true source of the accusation safely hidden in my own purse.",
-          "thinking": "Let her taste the danger without seeing my hand upon the cup. If lion and wolf begin circling one another, I need only stand between them and sell each the other's fear."
+          "action": "share_secret",
+          "target": "cersei"
         },
         {
           "speaker": "cersei",
           "speakerName": "Cersei Lannister",
-          "round": 3,
-          "action": "speak",
-          "target": "littlefinger",
-          "targetName": "Petyr Baelish",
           "dialogue": "If Lady Stark is frightened, let her clutch her ravens and her suspicions. But take care, Lord Baelish: pawprints too plain can look planted, and I have no taste for clumsy hunts. Give Lord Stark something noble to chase, something that flatters his honor, and keep his eyes far from what is mine.",
           "publicStance": "I entertain his counsel, but remind him that any tale he plants must serve the crown and not his own amusement.",
           "privateIntent": "I will let Stark be lured toward a safer falsehood, while watching Baelish closely enough to cut out his tongue if he reaches for my children's true secret.",
-          "thinking": "Littlefinger smiles as if the world is a purse to be cut. Useful men are often the first who must be destroyed."
-        }
-      ],
-      "effects": [
-        {
-          "op": "secret",
-          "secret": "pact:petyr-baelish-cersei-lannister",
-          "fact": "I mean to frighten her just enough to make her dependent on my whispers, while keeping the true source of the accusation safely hidden in my own purse.",
-          "known_to": [
-            "petyr baelish",
-            "cersei lannister"
-          ]
+          "action": "speak",
+          "target": "littlefinger"
         }
       ]
     },
     {
-      "index": 2,
-      "setting": "the lord's solar at Winterfell, the morning after the feast",
-      "stakes": "Before the court rides south, the powers in the room test one another: who will hold the king's ear, who his gold, and who his trust.",
+      "id": "scene-2",
+      "label": "The lord's solar at Winterfell",
+      "mood": "friendly",
+      "anchor": {
+        "x": 0.7,
+        "y": 0.62
+      },
       "cast": [
-        "ned",
-        "cersei",
-        "littlefinger"
+        {
+          "key": "ned",
+          "name": "Eddard Stark",
+          "charset": "ned stark"
+        },
+        {
+          "key": "cersei",
+          "name": "Cersei Lannister",
+          "charset": "cersei lannister"
+        },
+        {
+          "key": "littlefinger",
+          "name": "Petyr Baelish",
+          "charset": "littlefinger baelish"
+        }
       ],
       "turns": [
         {
           "speaker": "ned",
           "speakerName": "Eddard Stark",
-          "round": 1,
-          "action": "speak",
-          "target": null,
-          "targetName": null,
           "dialogue": "Lady Cersei. Lord Baelish. In Winterfell, words are weighed as steel is weighed; speak them plainly, and I will answer in kind.",
           "publicStance": "I receive them as the king's Hand-to-be, offering courtesy while making plain that the king's business will be conducted under my roof with order and honor.",
           "privateIntent": "I mean to see which of them reaches first for Robert's ear, his coin, or his secrets. A snake shows itself when the ground grows cold.",
-          "thinking": "Jon Arryn is dead, and sudden sickness is often a softer name for murder. If I must go south into their games, I will know the players before I leave my own hall."
+          "action": "speak",
+          "target": null
         },
         {
           "speaker": "cersei",
           "speakerName": "Cersei Lannister",
-          "round": 1,
-          "action": "speak",
-          "target": "ned",
-          "targetName": "Eddard Stark",
           "dialogue": "Then plainly, Lord Stark: the king has named you Hand because he trusts your honor. I trust you will not mistake northern bluntness for leave to set yourself against the crown.",
           "publicStance": "I answer Lord Stark's challenge with royal courtesy and remind the room that the king's business must be served without northern suspicion or delay.",
           "privateIntent": "I will see whether Stark can be flattered into obedience or whether his precious honor makes him dangerous. Baelish is listening like a rat in the walls; let him hear that I expect loyalty and will remember any slight.",
-          "thinking": "Stark wears honor like armor, but armor has joints. Find the gap, press the blade, and learn whether he bleeds pride or loyalty."
+          "action": "speak",
+          "target": "ned"
         },
         {
           "speaker": "littlefinger",
           "speakerName": "Petyr Baelish",
-          "round": 1,
-          "action": "speak",
-          "target": "ned",
-          "targetName": "Eddard Stark",
           "dialogue": "Plain words are admirable, Lord Stark, though in King's Landing they are often the first to die. Her Grace only means that the king's trust is a costly thing to keep; fortunately, I have some small talent for counting costs.",
           "publicStance": "I present myself as a courteous servant of the realm, easing the sharp edge between Stark honor and Lannister pride while offering my usefulness in matters of the crown's purse.",
           "privateIntent": "I mean to make Lord Stark lean on me for coin and counsel, while reminding Cersei that I can be a bridge or a blade, depending on who pays the dearer price.",
-          "thinking": "Let the wolf think me a ledger with legs, harmless and necessary. Let the lioness hear the warning beneath the courtesy: I know where the debts are buried, and who may be buried with them."
+          "action": "speak",
+          "target": "ned"
         },
         {
           "speaker": "ned",
           "speakerName": "Eddard Stark",
-          "round": 2,
-          "action": "speak",
-          "target": "cersei",
-          "targetName": "Cersei Lannister and Petyr Baelish",
           "dialogue": "The king's trust is not a coin to be counted, Lord Baelish, nor a cloak for any man or woman to wear. Robert named me Hand, and I will serve him plainly: with open ledgers, clean counsel, and no whisper placed above the realm.",
           "publicStance": "I will serve as Hand by the king's command, not as a creature of court factions, and I expect honest accounts and honest counsel.",
           "privateIntent": "I mean to learn what Baelish knows of the crown's gold and whether Cersei fears a Hand who will not bend; let them show me where the rot begins.",
-          "thinking": "Southron words slide like knives in silk. I must hear what they offer, and what they fear, before I choose where to set my blade."
+          "action": "speak",
+          "target": "cersei"
         },
         {
           "speaker": "cersei",
           "speakerName": "Cersei Lannister",
-          "round": 2,
-          "action": "speak",
-          "target": "ned",
-          "targetName": "Eddard Stark",
           "dialogue": "Open ledgers and clean counsel sound very fine in a northern hall, Lord Stark. In King's Landing, a Hand must also know when silence serves the king better than truth shouted for every hungry ear. Serve Robert well, and you will find the crown grateful. Mistake suspicion for duty, and you will find court a colder place than Winterfell.",
           "publicStance": "I accept Lord Stark's service as Hand while reminding him that the crown requires loyalty as much as honesty.",
           "privateIntent": "I will learn whether Stark can be bent before he ever reaches King's Landing, and whether his precious honor can be made to serve my children instead of endangering them.",
-          "thinking": "He wears honor like armor; armor has joints. I must find them before he finds anything of mine."
+          "action": "speak",
+          "target": "ned"
         },
         {
           "speaker": "littlefinger",
           "speakerName": "Petyr Baelish",
-          "round": 2,
-          "action": "speak",
-          "target": "ned",
-          "targetName": "Eddard Stark",
           "dialogue": "A colder place, perhaps, but less honest cold than this. Lord Stark, open ledgers are a noble beginning; I would be delighted to show you where the crown's gold goes, where it lingers, and where it vanishes with such delicate feet. Her Grace is right about one thing: in King's Landing, truth is safest when carried by a man who knows which doors are locked.",
           "publicStance": "I present myself as a useful servant of the king, offering Lord Stark the practical guidance he will need in the south while appearing to soften the edge between him and the queen.",
           "privateIntent": "I mean to make Stark see me as necessary, let Cersei hear that I will not openly defy her, and place myself between honor and power where every secret must pass through my hands.",
-          "thinking": "Stark wants clean hands; Cersei wants hidden knives. I shall offer him a ledger and her a smile, and both will wonder which one I mean to betray first."
+          "action": "speak",
+          "target": "ned"
         },
         {
           "speaker": "ned",
           "speakerName": "Eddard Stark",
-          "round": 3,
-          "action": "speak",
-          "target": "littlefinger",
-          "targetName": "Petyr Baelish",
           "dialogue": "Then you shall show me, Lord Baelish. Not in whispers, and not through locked doors opened only for favor, but with books set before me and warrants bearing the Hand's seal. Her Grace speaks truly that silence has its place; but I will not call rot a shadow merely because it grows where men prefer not to look.",
           "publicStance": "I accept the need to learn the crown's accounts, but only under my lawful authority as Hand and in the open, with no secret master save the king.",
           "privateIntent": "I mean to put Baelish to work while letting him know he is watched, and to show Cersei that I will not be frightened from Robert's service by courtly threats.",
-          "thinking": "I trust neither the lion nor the little man who smiles at ledgers. But a blade need not be trusted to be useful, so long as I keep my hand upon the hilt."
+          "action": "speak",
+          "target": "littlefinger"
         }
-      ],
-      "effects": []
-    }
-  ],
-  "worldStart": {
-    "point": "s1e1",
-    "dead": [
-      "jon arryn"
-    ],
-    "titles": {
-      "eddard stark": "Hand of the King"
-    },
-    "oaths": [
-      {
-        "by": "eddard stark",
-        "to": "robert baratheon",
-        "terms": "serve as Hand of the King"
-      }
-    ],
-    "alliances": [],
-    "marriages": [
-      [
-        "daenerys targaryen",
-        "khal drogo"
       ]
-    ],
-    "secrets": {
-      "arryn-murder-suspicion": {
-        "fact": "Lysa accuses the Lannisters of poisoning Jon Arryn.",
-        "known_to": [
-          "catelyn stark",
-          "lysa arryn"
-        ]
-      },
-      "royal-parentage": {
-        "fact": "Cersei's children are Jaime's, not Robert's; if known it means death for them all.",
-        "known_to": [
-          "bran stark",
-          "cersei lannister",
-          "jaime lannister",
-          "jon arryn"
-        ]
-      }
     }
-  },
-  "worldEnd": {
-    "point": "s1e1",
-    "dead": [
-      "jon arryn"
-    ],
-    "titles": {
-      "eddard stark": "Hand of the King"
-    },
-    "oaths": [
-      {
-        "by": "eddard stark",
-        "to": "robert baratheon",
-        "terms": "serve as Hand of the King"
-      }
-    ],
-    "alliances": [],
-    "marriages": [
-      [
-        "daenerys targaryen",
-        "khal drogo"
-      ]
-    ],
-    "secrets": {
-      "arryn-murder-suspicion": {
-        "fact": "Lysa accuses the Lannisters of poisoning Jon Arryn.",
-        "known_to": [
-          "catelyn stark",
-          "lysa arryn"
-        ]
-      },
-      "pact:petyr-baelish-cersei-lannister": {
-        "fact": "I mean to frighten her just enough to make her dependent on my whispers, while keeping the true source of the accusation safely hidden in my own purse.",
-        "known_to": [
-          "cersei lannister",
-          "petyr baelish"
-        ]
-      },
-      "royal-parentage": {
-        "fact": "Cersei's children are Jaime's, not Robert's; if known it means death for them all.",
-        "known_to": [
-          "bran stark",
-          "cersei lannister",
-          "jaime lannister",
-          "jon arryn"
-        ]
-      }
-    }
-  },
-  "reflections": {
-    "Eddard Stark": {
-      "summary": "The king came to Winterfell and named me Hand, placing the weight of the realm upon my shoulders. Cersei warned me with courtesies sharpened like knives, and Baelish offered help that smelled of shadows; I leave for King's Landing knowing duty will not be clean or simple.",
-      "rules": [
-        "Serve Robert plainly, but do not mistake the crown's words for the realm's good.",
-        "Demand ledgers, warrants, and proof; whispers must not rule me.",
-        "Honor is a strength, but in King's Landing it will be used to lead me if I let it."
-      ],
-      "relationships": {
-        "Cersei Lannister": "She speaks graciously, but every word seeks to measure and warn me.",
-        "Petyr Baelish": "He may be useful with coin and secrets, but I do not trust a man so comfortable in shadows.",
-        "Robert Baratheon": "He is my king and old friend, and I owe him service even where it costs me comfort."
-      }
-    },
-    "Cersei Lannister": {
-      "summary": "At Winterfell I measured Ned Stark's honor and found it hard, cold, and dangerously sincere; he will serve Robert, but not blindly. Baelish offered shadows and planted paths for Stark to follow, useful so long as I remember that a man who sells secrets is never truly bought.",
-      "rules": [
-        "Guide honorable men with causes that flatter their virtue, not threats that stiffen their spines.",
-        "Use Baelish, but never trust the shadow he stands in.",
-        "Keep Stark's eyes fixed on noble rot elsewhere, and far from what is mine."
-      ],
-      "relationships": {
-        "Eddard Stark": "He is now Robert's Hand, a blunt northern blade that may cut where I cannot allow it.",
-        "Petyr Baelish": "He is useful, clever, and for sale only until a dearer price appears.",
-        "Robert Baratheon": "His trust in Stark has brought danger into my path, as his appetites so often do."
-      }
-    },
-    "Petyr Baelish": {
-      "summary": "At Winterfell I watched Stark honor present itself like an unguarded throat, while Cersei understood enough to fear where it might turn. I helped set Lord Arryn's death and Lannister shadows before Ned as a noble quarry, knowing his virtue will pull him south faster than any chain.",
-      "rules": [
-        "Give honorable men a righteous path and they will mistake it for their own choosing.",
-        "Secrets are safest when carried as half-truths that flatter the listener.",
-        "Queens command silence, but frightened women and grieving friends can make ravens sing."
-      ],
-      "relationships": {
-        "Eddard Stark": "He sees me as useful but unclean, which is useful enough so long as his honor needs directions.",
-        "Cersei Lannister": "She is wary, proud, and dangerous, but for now our interests touch in the dark.",
-        "Catelyn Stark": "Her fear and trust remain doors I may open, provided I never let her see the key in my hand."
-      }
-    }
-  }
+  ]
 }

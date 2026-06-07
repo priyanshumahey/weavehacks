@@ -19,6 +19,7 @@ export interface PortraitFocus {
 }
 
 export class ReplayPortraitPanel {
+  private readonly root: HTMLDivElement;
   private readonly stage: HTMLDivElement;
   private readonly portrait: HTMLImageElement;
   private readonly portraitFrame: HTMLDivElement;
@@ -29,6 +30,7 @@ export class ReplayPortraitPanel {
   constructor(parent: HTMLElement = document.getElementById("app") ?? document.body) {
     const root = document.createElement("div");
     root.className = "world-ui world-ui--dialogue-open";
+    this.root = root;
 
     this.stage = document.createElement("div");
     this.stage.className = "world-ui__dialogue-stage";
@@ -102,5 +104,10 @@ export class ReplayPortraitPanel {
 
   isOpen(): boolean {
     return !this.stage.hidden;
+  }
+
+  /** Remove the panel from the DOM (called on scene shutdown). */
+  destroy(): void {
+    this.root.remove();
   }
 }

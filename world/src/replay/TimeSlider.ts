@@ -86,6 +86,11 @@ export class TimeSlider {
   setDocked(position: "top" | "bottom"): void {
     this.root.classList.toggle("replay-timebar--top", position === "top");
   }
+
+  /** Remove the bar from the DOM (called on scene shutdown). */
+  destroy(): void {
+    this.root.remove();
+  }
 }
 
 function clamp(value: number, min: number, max: number): number {

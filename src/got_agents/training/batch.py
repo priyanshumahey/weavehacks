@@ -121,6 +121,9 @@ def train_many(
     ``char_workers`` characters train at once. Each also fans its probes out
     internally, so the effective LLM concurrency is roughly
     ``char_workers * GOT_REACTION_WORKERS`` — keep it within your rate limit.
+
+    A single character failing (e.g. a transient network drop) is logged and
+    skipped rather than aborting the whole batch, so partial progress survives.
     """
     results: list[CharacterResult] = []
     workers = max(1, min(char_workers, len(csv_names)))
@@ -133,6 +136,10 @@ def train_many(
             for name in csv_names
         }
         for future in as_completed(futures):
-            results.append(future.result())
+            name = futures[future]
+            try:
+                results.append(future.result())
+            except Exception as exc:  # one character's failure must not kill the batch
+                print(f"  ! {name} failed: {type(exc).__name__}: {exc}")
     results.sort(key=lambda r: r.final_test, reverse=True)
     return results

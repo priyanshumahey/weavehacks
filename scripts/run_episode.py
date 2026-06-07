@@ -22,6 +22,7 @@ from got_agents.outputs import (
     render_episode,
     replay_chronicle,
     score_episode_fidelity,
+    write_ensemble,
     write_episode,
     write_replay,
 )
@@ -49,6 +50,13 @@ def _run(point: str, *, score: bool) -> None:
     world_path = write_replay(record, root=_WORLD_REPLAY_DIR)
     print(f"replay    -> {replay_path}")
     print(f"             {world_path}")
+
+    # Ensemble contract — the *living world* shape ReplayScene plays (one group
+    # per scene, pinned to the map). Written to the same world data dir.
+    ensemble_path = write_ensemble(record)
+    world_ensemble = write_ensemble(record, root=_WORLD_REPLAY_DIR)
+    print(f"ensemble  -> {ensemble_path}")
+    print(f"             {world_ensemble}")
 
     if score:
         fidelity = score_episode_fidelity(record)

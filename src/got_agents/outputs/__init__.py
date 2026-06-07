@@ -1,4 +1,5 @@
 from got_agents.outputs.chronicle import write_run
+from got_agents.outputs.ensemble_contract import to_ensemble, write_ensemble
 from got_agents.outputs.episode_chronicle import (
     render_text as render_episode,
     to_dict as episode_to_dict,
@@ -28,7 +29,9 @@ __all__ = [
     "replay_chronicle",
     "score_deception_scene",
     "score_episode_fidelity",
+    "to_ensemble",
     "to_replay",
+    "write_ensemble",
     "write_episode",
     "write_replay",
     "write_run",
