@@ -18,6 +18,7 @@ import {
   type SceneOptions,
 } from "./sceneApi";
 import type { EnsembleReplay } from "./ensembleTypes";
+import { setStagedEpisode } from "./sceneContext";
 
 type SetupMode = "direct" | "manual" | "library";
 
@@ -60,6 +61,7 @@ export class SceneSetupPanel {
 
   /** Dialogue/cast document before the viewer's map choice is applied. */
   private baseEnsemble: EnsembleReplay | null = null;
+  private savedScenes: SavedScene[] = [];
 
   private onStage: ((ensemble: EnsembleReplay) => void) | null = null;
   private onBusyChange: ((busy: boolean) => void) | null = null;
@@ -323,6 +325,7 @@ export class SceneSetupPanel {
   }
 
   private renderLibrary(scenes: SavedScene[]): void {
+    this.savedScenes = scenes;
     if (scenes.length === 0) {
       this.libraryList.replaceChildren(
         this.note("No saved scenes yet. Direct or build one and it lands here."),
@@ -448,6 +451,10 @@ export class SceneSetupPanel {
     this.setBusy(true);
     this.setStatus("Restaging…", "info");
     try {
+      const saved = this.savedScenes.find((scene) => scene.name === name);
+      if (saved?.episode) {
+        setStagedEpisode(saved.episode);
+      }
       const ensemble = await loadSavedScene(name);
       this.finishStage(ensemble, true);
     } catch (error) {
@@ -458,6 +465,7 @@ export class SceneSetupPanel {
   }
 
   private finishStage(ensemble: EnsembleReplay, applyLocation: boolean): void {
+    setStagedEpisode(this.episodeSelect.value);
     this.baseEnsemble = ensemble;
     this.emitStaged(ensemble, applyLocation);
     this.setStatus("", "info");

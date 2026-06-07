@@ -30,6 +30,9 @@ import { AmbientWander } from "../replay/AmbientWander";
 import { EncounterDirector } from "../replay/EncounterDirector";
 import { ReplayCamera } from "../replay/ReplayCamera";
 import { ReplayPortraitPanel } from "../replay/ReplayPortraitPanel";
+import { CharacterChatOverlay } from "../chat/CharacterChatOverlay";
+import type { CharacterChatTarget } from "../chat/CharacterChatOverlay";
+import { wireCharacterChat } from "../chat/wireCharacterChat";
 import { DebugOverlay, type DebugFrame } from "../replay/DebugOverlay";
 import { TimeSlider } from "../replay/TimeSlider";
 import { reactionEmojiFor } from "../replay/reactionEmoji";
@@ -78,9 +81,12 @@ export class ReplayScene extends Phaser.Scene {
   private dialogue: DialogueLayer | null = null;
   private observer: ReplayCamera | null = null;
   private panel: ReplayPortraitPanel | null = null;
+  private chat: CharacterChatOverlay | null = null;
   private debug: DebugOverlay | null = null;
   private slider: TimeSlider | null = null;
   private focusedGroupId: string | null = null;
+  /** Character key from the most recent sprite click (for free chat). */
+  private focusedCharacterKey: string | null = null;
   private manualMode = false;
   private playbackSpeed: number = SPEEDS[0];
   /** Injected ensemble (a freshly staged scene), if the scene was started with one. */
@@ -182,6 +188,9 @@ export class ReplayScene extends Phaser.Scene {
     this.observer = new ReplayCamera(this);
     this.panel = new ReplayPortraitPanel();
     this.panel.setOnAdvance(() => this.stepManual());
+    this.chat = wireCharacterChat(this.panel, (characterKey) =>
+      this.resolveChatTarget(characterKey),
+    );
     // The debug overlay is a persistent, boot-level singleton (installed in
     // main.ts before the game boots). Grab it and bind its in-world tags to
     // this scene; there is exactly one overlay + toggle button for the app.
@@ -218,6 +227,7 @@ export class ReplayScene extends Phaser.Scene {
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       this.slider?.destroy();
       this.panel?.destroy();
+      this.chat?.destroy();
       this.replayRenderer?.destroy();
     });
   }
@@ -523,6 +533,7 @@ export class ReplayScene extends Phaser.Scene {
       }
       const hit = this.characterAt(pointer.worldX, pointer.worldY);
       if (hit) {
+        this.focusedCharacterKey = hit;
         const groupId = this.staging.groupIdByCharacter.get(hit) ?? null;
         if (groupId) {
           this.focusGroup(groupId);
@@ -654,9 +665,25 @@ export class ReplayScene extends Phaser.Scene {
     }
     this.panel.show({
       name: turn.speakerName,
+      characterKey: this.focusedCharacterKey ?? turn.speaker,
       portraitName: this.charsetByKey.get(turn.speaker) ?? turn.speaker,
       line: turn,
     });
+  }
+
+  private resolveChatTarget(characterKey: string): CharacterChatTarget | null {
+    const member = this.castByKey.get(characterKey);
+    const stateChar = this.runtime?.getState().characters[characterKey];
+    if (!member && !stateChar) {
+      return null;
+    }
+    const portraitName =
+      member?.charset ?? this.charsetByKey.get(characterKey) ?? characterKey;
+    return {
+      characterKey,
+      characterName: member?.name ?? stateChar?.name ?? characterKey,
+      portraitName,
+    };
   }
 
   private anchorFor(state: WorldState, key: string): SpriteAnchor | null {

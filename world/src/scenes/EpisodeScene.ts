@@ -28,6 +28,9 @@ import { ReplayPortraitPanel } from "../replay/ReplayPortraitPanel";
 import { TimeSlider } from "../replay/TimeSlider";
 import { Minimap, type MinimapThreadPhase } from "../replay/Minimap";
 import { DebugOverlay } from "../replay/DebugOverlay";
+import { setStagedEpisode } from "../replay/sceneContext";
+import type { CharacterChatTarget } from "../chat/CharacterChatOverlay";
+import { wireCharacterChat } from "../chat/wireCharacterChat";
 import { reactionEmojiFor } from "../replay/reactionEmoji";
 import {
   buildEpisodeScriptStaging,
@@ -53,6 +56,7 @@ export class EpisodeScene extends Phaser.Scene {
   private debug: DebugOverlay | null = null;
   private panel: ReplayPortraitPanel | null = null;
   private minimap: Minimap | null = null;
+  private chat: ReturnType<typeof wireCharacterChat> | null = null;
   /** The conversation thread whose portrait is currently open, if any. */
   private focusedThreadId: string | null = null;
   /** The last speaker shown in the panel, so we only re-render on a change. */
@@ -75,6 +79,7 @@ export class EpisodeScene extends Phaser.Scene {
   }
 
   private resolveState(): void {
+    setStagedEpisode(this.script.episode);
     this.staging = buildEpisodeScriptStaging(this.script);
     this.worldBounds = unionOf(this.staging.locationBounds);
     this.castByKey.clear();
@@ -178,6 +183,9 @@ export class EpisodeScene extends Phaser.Scene {
     this.debug = DebugOverlay.shared();
     this.debug?.bindScene(this);
     this.panel = new ReplayPortraitPanel();
+    this.chat = wireCharacterChat(this.panel, (characterKey) =>
+      this.resolveChatTarget(characterKey),
+    );
 
     this.bindClicks();
 
@@ -195,6 +203,13 @@ export class EpisodeScene extends Phaser.Scene {
 
     // Open framed on the whole world so both maps are visible.
     this.frameWorld();
+
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      this.slider?.destroy();
+      this.panel?.destroy();
+      this.chat?.destroy();
+      this.replayRenderer?.destroy();
+    });
   }
 
   update(_time: number, _delta: number): void {
@@ -282,6 +297,7 @@ export class EpisodeScene extends Phaser.Scene {
     this.minimap?.setDocked("top");
     this.panel.show({
       name: member.name,
+      characterKey: speech.speaker,
       portraitName: member.charset,
       line: { dialogue: speech.turn.dialogue },
     });
@@ -394,6 +410,7 @@ export class EpisodeScene extends Phaser.Scene {
           this.minimap?.setDocked("top");
           this.panel?.show({
             name: member.name,
+            characterKey: hit,
             portraitName: member.charset,
             line: { dialogue: member.title ?? "" },
           });
@@ -472,6 +489,19 @@ export class EpisodeScene extends Phaser.Scene {
     const zoom = Math.min(cam.width / worldW, cam.height / worldH) * 0.95;
     cam.centerOn(cx, cy);
     cam.setZoom(Phaser.Math.Clamp(zoom, 0.12, 1));
+  }
+
+  private resolveChatTarget(characterKey: string): CharacterChatTarget | null {
+    const member = this.castByKey.get(characterKey);
+    const stateChar = this.runtime?.getState().characters[characterKey];
+    if (!member && !stateChar) {
+      return null;
+    }
+    return {
+      characterKey,
+      characterName: member?.name ?? stateChar?.name ?? characterKey,
+      portraitName: member?.charset ?? characterKey,
+    };
   }
 
   private buildDebugFrame() {

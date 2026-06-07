@@ -13,6 +13,8 @@ export interface PortraitLine {
 
 export interface PortraitFocus {
   name: string;
+  /** got_agents character key (e.g. "cersei"). */
+  characterKey: string;
   /** Portrait lookup name (charset directory name, e.g. "cersei lannister"). */
   portraitName: string;
   line: PortraitLine;
@@ -39,7 +41,10 @@ export class ReplayPortraitPanel {
   private readonly portraitFrame: HTMLDivElement;
   private readonly nameEl: HTMLHeadingElement;
   private readonly quoteEl: HTMLQuoteElement;
+  private readonly chatButton: HTMLButtonElement;
   private onAdvance: (() => void) | null = null;
+  private onChat: ((characterKey: string) => void) | null = null;
+  private chatCharacterKey: string | null = null;
 
   constructor(parent: HTMLElement = document.getElementById("app") ?? document.body) {
     const root = document.createElement("div");
@@ -83,12 +88,41 @@ export class ReplayPortraitPanel {
     root.append(this.stage);
     parent.append(root);
 
+    this.chatButton = document.createElement("button");
+    this.chatButton.type = "button";
+    this.chatButton.className = "dbg-toggle-btn world-ui__dialogue-chat";
+    this.chatButton.textContent = "💬 chat freely";
+    this.chatButton.title = "Open free-form character chat";
+    this.chatButton.hidden = true;
+    this.chatButton.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      const key = this.chatCharacterKey;
+      if (!key) {
+        return;
+      }
+      if (!this.onChat) {
+        console.warn("[chat] Chat freely clicked but no handler is wired");
+        return;
+      }
+      this.onChat(key);
+    });
+    parent.append(this.chatButton);
+
     // Click anywhere on the open dialogue to advance the conversation.
     this.stage.addEventListener("click", () => this.onAdvance?.());
   }
 
   setOnAdvance(callback: () => void): void {
     this.onAdvance = callback;
+  }
+
+  setOnChat(callback: (characterKey: string) => void): void {
+    this.onChat = callback;
+  }
+
+  setChatActive(active: boolean): void {
+    this.chatButton.classList.toggle("dbg-toggle-btn--on", active);
   }
 
   /** Show or update the focus panel for the current speaker's line. */
@@ -109,10 +143,14 @@ export class ReplayPortraitPanel {
     this.nameEl.textContent = focus.name;
 
     this.quoteEl.textContent = `“${stripWrappingQuotes(focus.line.dialogue)}”`;
+
+    this.chatCharacterKey = focus.characterKey;
+    this.chatButton.hidden = !focus.characterKey;
   }
 
   hide(): void {
     this.stage.hidden = true;
+    this.chatButton.hidden = true;
     this.portrait.removeAttribute("src");
   }
 
@@ -123,5 +161,6 @@ export class ReplayPortraitPanel {
   /** Remove the panel from the DOM (called on scene shutdown). */
   destroy(): void {
     this.root.remove();
+    this.chatButton.remove();
   }
 }
