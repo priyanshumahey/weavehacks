@@ -13,6 +13,13 @@ import { CHARACTER_CONTROLLER_TYPES } from "../world/worldState";
 import { WORLD_ACTION_TYPES } from "../world/worldActions";
 import type { GroupLayout } from "./EnsembleStaging";
 import type { GroupMood } from "./ensembleTypes";
+import {
+  advanceStuckMovement,
+  createStuckMovementTracker,
+  pickEscapePoint,
+  resetStuckMovementTracker,
+  type StuckMovementTracker,
+} from "../world/systems/stuckMovementGuard";
 
 // Close enough to the slot to stop walking and just hold + face.
 const ARRIVE_EPSILON = 4;
@@ -35,6 +42,9 @@ interface CharState {
   centre: { x: number; y: number };
   phase: number; // sway phase offset so groupmates don't bob in lockstep
   clock: number; // accumulated ms for the sway oscillation
+  stuck: StuckMovementTracker;
+  /** Short reroute when collision or bounds block the primary goal. */
+  detour: { x: number; y: number } | null;
 }
 
 export interface GroupSpeech {
@@ -59,6 +69,8 @@ export class GroupMovement {
           centre: { ...layout.centre },
           phase: (index / Math.max(1, layout.group.cast.length)) * Math.PI * 2,
           clock: 0,
+          stuck: createStuckMovementTracker(home),
+          detour: null,
         });
       });
     }
@@ -85,11 +97,18 @@ export class GroupMovement {
 
       // Entrance: walk to the slot, then turn to the group and wait.
       if (entering) {
-        const arrived = this.driveTowardPoint(runtime, character.id, character.position, cs.home);
+        this.maybeReroute(cs, character, deltaMs);
+        const goal = cs.detour ?? cs.home;
+        const arrived = this.driveTowardPoint(runtime, character.id, character.position, goal);
         if (arrived) {
-          const faceKey = this.otherInGroup(character.id, cs, state);
-          if (faceKey && state.characters[faceKey]) {
-            this.face(runtime, character.id, faceKey);
+          if (cs.detour) {
+            cs.detour = null;
+            resetStuckMovementTracker(cs.stuck, character.position);
+          } else {
+            const faceKey = this.otherInGroup(character.id, cs, state);
+            if (faceKey && state.characters[faceKey]) {
+              this.face(runtime, character.id, faceKey);
+            }
           }
         }
         continue;
@@ -101,8 +120,16 @@ export class GroupMovement {
       const slot = this.swayTarget(cs);
       const dist = distance(character.position, slot);
       if (dist > RESETTLE_EPSILON) {
-        this.driveTowardPoint(runtime, character.id, character.position, slot);
+        this.maybeReroute(cs, character, deltaMs);
+        const goal = cs.detour ?? slot;
+        this.driveTowardPoint(runtime, character.id, character.position, goal);
+        if (cs.detour && distance(character.position, cs.detour) <= ARRIVE_EPSILON) {
+          cs.detour = null;
+          resetStuckMovementTracker(cs.stuck, character.position);
+        }
       } else {
+        cs.detour = null;
+        resetStuckMovementTracker(cs.stuck, character.position);
         this.halt(runtime, character.id);
       }
 
@@ -129,6 +156,41 @@ export class GroupMovement {
       return speech.speaker;
     }
     return this.otherInGroup(id, cs, state);
+  }
+
+  private maybeReroute(
+    cs: CharState,
+    character: { position: { x: number; y: number }; moveIntent: { x: number; y: number } },
+    deltaMs: number,
+  ): void {
+    if (
+      !advanceStuckMovement(cs.stuck, character.position, character.moveIntent, deltaMs)
+    ) {
+      return;
+    }
+
+    cs.detour = pickEscapePoint(
+      character.position,
+      { x: cs.stuck.blockedHeadingX, y: cs.stuck.blockedHeadingY },
+      this.localBounds(cs),
+      70,
+    );
+    resetStuckMovementTracker(cs.stuck, character.position);
+  }
+
+  private localBounds(cs: CharState): {
+    minX: number;
+    minY: number;
+    maxX: number;
+    maxY: number;
+  } {
+    const pad = 220;
+    return {
+      minX: cs.centre.x - pad,
+      minY: cs.centre.y - pad,
+      maxX: cs.centre.x + pad,
+      maxY: cs.centre.y + pad,
+    };
   }
 
   /** The slot plus a small mood-flavoured oscillation (never near a neighbour). */

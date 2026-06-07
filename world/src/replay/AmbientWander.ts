@@ -20,6 +20,13 @@ import {
 } from "../data/locations/winterfellWorldLayout";
 import { LOCATION_IDS } from "../types/location";
 import type { EnsembleStaging } from "./EnsembleStaging";
+import {
+  advanceStuckMovement,
+  createStuckMovementTracker,
+  pickEscapePoint,
+  resetStuckMovementTracker,
+  type StuckMovementTracker,
+} from "../world/systems/stuckMovementGuard";
 
 const ARRIVE_EPSILON = 6;
 const MIN_PAUSE_MS = 2200;
@@ -51,6 +58,7 @@ interface Roamer {
   locationId: string;
   target: { x: number; y: number } | null;
   pauseMs: number;
+  stuck: StuckMovementTracker;
 }
 
 export class AmbientWander {
@@ -70,6 +78,7 @@ export class AmbientWander {
           target: null,
           // Stagger the first stroll so they don't all leave at once.
           pauseMs: rand(0, MAX_PAUSE_MS),
+          stuck: createStuckMovementTracker({ x: 0, y: 0 }),
         });
       }
     }
@@ -84,12 +93,27 @@ export class AmbientWander {
       }
 
       if (roamer.target) {
+        if (
+          advanceStuckMovement(
+            roamer.stuck,
+            character.position,
+            character.moveIntent,
+            deltaMs,
+          )
+        ) {
+          roamer.target = this.pickEscapeTarget(roamer, character.position);
+          resetStuckMovementTracker(roamer.stuck, character.position);
+        }
+
         if (this.driveTowardPoint(runtime, character.id, character.position, roamer.target)) {
           roamer.target = null;
           roamer.pauseMs = rand(MIN_PAUSE_MS, MAX_PAUSE_MS);
+          resetStuckMovementTracker(roamer.stuck, character.position);
         }
         continue;
       }
+
+      resetStuckMovementTracker(roamer.stuck, character.position);
 
       roamer.pauseMs -= deltaMs;
       if (roamer.pauseMs > 0) {
@@ -97,6 +121,7 @@ export class AmbientWander {
         continue;
       }
       roamer.target = this.pickTarget(roamer.locationId, character.position);
+      resetStuckMovementTracker(roamer.stuck, character.position);
     }
   }
 
@@ -133,6 +158,21 @@ export class AmbientWander {
       x: clamp(base.x + jitter(), bounds.minX, bounds.maxX),
       y: clamp(base.y + jitter(), bounds.minY, bounds.maxY),
     };
+  }
+
+  /** Steer away from a blocked heading before picking another landmark. */
+  private pickEscapeTarget(roamer: Roamer, from: { x: number; y: number }): { x: number; y: number } {
+    const bounds = this.boundsFor(roamer.locationId);
+    const blockedHeading = {
+      x: roamer.stuck.blockedHeadingX,
+      y: roamer.stuck.blockedHeadingY,
+    };
+
+    if (Math.hypot(blockedHeading.x, blockedHeading.y) > 0.01) {
+      return pickEscapePoint(from, blockedHeading, bounds, MIN_TRAVEL * 0.65);
+    }
+
+    return this.pickTarget(roamer.locationId, from);
   }
 
   private boundsFor(locationId: string): WorldBounds {
