@@ -1,4 +1,5 @@
 import type Phaser from "phaser";
+import type { CharacterSprite } from "../../entities/CharacterSprite";
 import { CharacterRenderer } from "../characters/CharacterRenderer";
 import { PropRenderer } from "../props/PropRenderer";
 import { TerrainRenderer } from "../terrain/TerrainRenderer";
@@ -45,5 +46,9 @@ export class WorldRenderer {
 
   setOnPlayerAppearanceSelect(callback: (appearanceId: string) => void): void {
     this.uiRenderer.setOnPlayerAppearanceSelect(callback);
+  }
+
+  getCharacterSprite(characterId: string): CharacterSprite | undefined {
+    return this.characterRenderer.getSprite(characterId);
   }
 }

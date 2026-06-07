@@ -14,6 +14,7 @@ import {
 } from "../rendering/characters/preloadPlayerAppearances";
 import { WorldInputController } from "../input/WorldInputController";
 import { WorldRenderer } from "../rendering/world/WorldRenderer";
+import { setupWorldCamera } from "../rendering/world/createWorldFrame";
 import { getWorldBounds } from "../rendering/world/getWorldBounds";
 import { createWorld } from "../world/createWorld";
 import { WorldRuntime } from "../world/WorldRuntime";
@@ -29,6 +30,7 @@ export class WorldScene extends Phaser.Scene {
   private worldRenderer: WorldRenderer | null = null;
   private inputController: WorldInputController | null = null;
   private agentOrchestrator: AgentOrchestrator | null = null;
+  private hasSetupCamera = false;
 
   constructor() {
     super(SCENE_KEYS.world);
@@ -49,7 +51,7 @@ export class WorldScene extends Phaser.Scene {
     const world = createWorld({
       definitions: characterDefinitions,
       propDefinitions,
-      bounds: getWorldBounds(this),
+      bounds: getWorldBounds(),
     });
 
     this.worldRuntime = new WorldRuntime(world);
@@ -97,5 +99,27 @@ export class WorldScene extends Phaser.Scene {
 
     this.worldRuntime.step(delta);
     this.worldRenderer.render(this.worldRuntime.getState());
+    this.ensureCameraFollow();
+  }
+
+  private ensureCameraFollow(): void {
+    if (this.hasSetupCamera || !this.worldRuntime || !this.worldRenderer) {
+      return;
+    }
+
+    const player = this.worldRuntime.getPlayer();
+
+    if (!player) {
+      return;
+    }
+
+    const playerSprite = this.worldRenderer.getCharacterSprite(player.id);
+
+    if (!playerSprite) {
+      return;
+    }
+
+    setupWorldCamera(this, playerSprite);
+    this.hasSetupCamera = true;
   }
 }

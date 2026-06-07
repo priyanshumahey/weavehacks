@@ -7,6 +7,10 @@ export class CharacterRenderer {
 
   constructor(private readonly scene: Phaser.Scene) {}
 
+  getSprite(characterId: string): CharacterSprite | undefined {
+    return this.sprites.get(characterId);
+  }
+
   render(state: WorldState): void {
     const activeCharacterIds = new Set(Object.keys(state.characters));
 
