@@ -97,7 +97,7 @@ The playfield background is composed of one or more pre-rendered map images plac
 
 - `src/types/terrain.ts`: map texture source paths and `MapBackgroundDefinition` contract
 - `src/types/location.ts`: `LocationDefinition` and `WorldLayoutDefinition` contracts
-- `src/data/locations/winterfellWorldLayout.ts`: active world layout — throne room at `(0, 0)`, Winterfell courtyard to its right
+- `src/data/locations/winterfellWorldLayout.ts`: active world layout — throne room, Winterfell, the Wall, Vaes Dothrak, and Dragonstone placed side by side
 - `src/data/terrain/defaultMapBackground.ts`: re-exports the primary location map for legacy callers
 - `src/rendering/terrain/TerrainRenderer.ts`: renders every location map at its authored offset with `scene.add.image()` at `RENDER_LAYERS.terrain`
 - `src/rendering/world/locationBounds.ts`: per-location playfield bounds and world-size derivation from the layout
@@ -105,7 +105,7 @@ The playfield background is composed of one or more pre-rendered map images plac
 
 Map background rules:
 
-- World size is the bounding box of all placed locations (`2278×1536` for throne room + Winterfell courtyard)
+- World size is the bounding box of all placed locations (`6604×1536` with Dragonstone at the eastern end)
 - Each location image uses origin `(0, 0)` at its layout offset and spans its authored map rectangle
 - `WorldBounds` remain simulation-authoritative with a playfield margin that keeps characters off walls and furniture baked into the image
 - Ensemble groups may declare `locationId` so normalized anchors resolve within that location's bounds
