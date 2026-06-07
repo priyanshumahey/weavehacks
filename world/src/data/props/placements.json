@@ -4,8 +4,8 @@
     "name": "Village Inn",
     "category": "building",
     "position": {
-      "x": 210,
-      "y": 170
+      "x": 1650,
+      "y": 980
     },
     "sprite": {
       "textureSourcePath": "Buildings/Blue Buildings/House2.png",
@@ -20,8 +20,8 @@
     "name": "Market House",
     "category": "building",
     "position": {
-      "x": 560,
-      "y": 150
+      "x": 2000,
+      "y": 960
     },
     "sprite": {
       "textureSourcePath": "Buildings/Blue Buildings/House1.png",
@@ -36,8 +36,8 @@
     "name": "Watch Tower",
     "category": "building",
     "position": {
-      "x": 820,
-      "y": 190
+      "x": 2260,
+      "y": 1000
     },
     "sprite": {
       "textureSourcePath": "Buildings/Blue Buildings/Tower.png",
@@ -52,8 +52,8 @@
     "name": "Gold Deposit",
     "category": "resource",
     "position": {
-      "x": 640,
-      "y": 420
+      "x": 2080,
+      "y": 1230
     },
     "sprite": {
       "textureSourcePath": "Terrain/Resources/Gold/Gold Resource/Gold_Resource.png",
@@ -72,8 +72,8 @@
     "name": "Oak Tree",
     "category": "resource",
     "position": {
-      "x": 130,
-      "y": 430
+      "x": 1570,
+      "y": 1240
     },
     "sprite": {
       "textureSourcePath": "Terrain/Resources/Wood/Trees/Tree1.png",
@@ -88,8 +88,8 @@
     "name": "Pine Tree",
     "category": "resource",
     "position": {
-      "x": 870,
-      "y": 450
+      "x": 2310,
+      "y": 1260
     },
     "sprite": {
       "textureSourcePath": "Terrain/Resources/Wood/Trees/Tree2.png",
@@ -104,8 +104,8 @@
     "name": "Trail Bush",
     "category": "decoration",
     "position": {
-      "x": 360,
-      "y": 390
+      "x": 1800,
+      "y": 1200
     },
     "sprite": {
       "textureSourcePath": "Terrain/Decorations/Bushes/Bushe1.png",
@@ -123,8 +123,8 @@
     "name": "Trail Rock",
     "category": "decoration",
     "position": {
-      "x": 500,
-      "y": 460
+      "x": 1940,
+      "y": 1270
     },
     "sprite": {
       "textureSourcePath": "Terrain/Decorations/Rocks/Rock2.png",

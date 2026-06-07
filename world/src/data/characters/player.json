@@ -4,8 +4,8 @@
   "kind": "player",
   "controller": "player",
   "position": {
-    "x": 480,
-    "y": 270
+    "x": 1920,
+    "y": 1080
   },
   "appearance": {
     "color": "#ffc857",
