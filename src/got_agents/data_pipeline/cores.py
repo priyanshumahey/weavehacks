@@ -42,11 +42,16 @@ class SeedMemory:
     point: str = "backstory"  # canon story point when learned
 
     def to_memory(self, key: str, index: int) -> Memory:
-        ts = (
-            canon_time.backstory_timestamp()
-            if self.point == "backstory"
-            else canon_time.to_timestamp(self.point)
-        )
+        # The authoring model occasionally emits a non-canon point (e.g.
+        # "unknown"); treat anything unparseable as backstory rather than crash.
+        try:
+            ts = (
+                canon_time.backstory_timestamp()
+                if self.point == "backstory"
+                else canon_time.to_timestamp(self.point)
+            )
+        except ValueError:
+            ts = canon_time.backstory_timestamp()
         return Memory(
             id=f"{key}:seed-{index}",
             text=self.text,

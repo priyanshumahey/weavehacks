@@ -52,10 +52,15 @@ class Lord:
         )
 
     @weave.op
-    def chat(self, message: str) -> str:
+    def chat(self, message: str, history: list[tuple[str, str]] | None = None) -> str:
         memories = self.recall(message)
         messages = prompts.chat_messages(
-            self.identity, self.drives, memories, message
+            self.identity,
+            self.drives,
+            memories,
+            message,
+            history=history,
+            at_time=self.at_time,
         )
         reply = llm.complete(messages)
         self._remember_exchange(message, reply)

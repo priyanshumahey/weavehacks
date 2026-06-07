@@ -29,3 +29,7 @@ marimo-config.toml
 logs/
 
 debug*
+
+
+node_modules/
+dist/

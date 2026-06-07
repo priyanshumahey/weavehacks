@@ -18,6 +18,10 @@ dev = [
     "pytest>=8.3",
     "ruff>=0.6",
 ]
+backend = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.30",
+]
 
 [build-system]
 requires = ["hatchling"]

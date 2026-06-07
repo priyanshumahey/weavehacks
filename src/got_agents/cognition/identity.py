@@ -18,3 +18,7 @@ class Identity:
     life_motive: str
     voice_anchors: tuple[str, ...] = ()
     fixed_bag: tuple[str, ...] = ()
+    # Evolved guidance (Part C). Authored gen-0 leaves these empty; the training
+    # loop fills them: behavioral rules and few-shot exemplar lines.
+    reflection_rules: tuple[str, ...] = ()
+    canon_exemplars: tuple[str, ...] = ()
