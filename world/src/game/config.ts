@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { ReplayScene } from "../scenes/ReplayScene";
 import { WorldScene } from "../scenes/WorldScene";
 
 export function createGameConfig(): Phaser.Types.Core.GameConfig {
@@ -14,6 +15,8 @@ export function createGameConfig(): Phaser.Types.Core.GameConfig {
       autoCenter: Phaser.Scale.CENTER_BOTH,
       zoom: Phaser.Scale.MAX_ZOOM,
     },
-    scene: [WorldScene],
+    // ReplayScene boots first (the chronicle-playback experiment); WorldScene
+    // remains registered for the interactive sandbox.
+    scene: [ReplayScene, WorldScene],
   };
 }

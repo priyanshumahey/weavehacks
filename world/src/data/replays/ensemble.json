@@ -1,0 +1,145 @@
+{
+  "version": 1,
+  "title": "Winterfell — the court at rest",
+  "groups": [
+    {
+      "id": "small-council",
+      "label": "The Small Council",
+      "mood": "tense",
+      "anchor": { "x": 0.5, "y": 0.3 },
+      "cast": [
+        { "key": "cersei", "name": "Cersei Lannister", "charset": "cersei lannister" },
+        { "key": "ned", "name": "Eddard Stark", "charset": "ned stark" },
+        { "key": "littlefinger", "name": "Petyr Baelish", "charset": "littlefinger baelish" }
+      ],
+      "turns": [
+        {
+          "speaker": "cersei", "speakerName": "Cersei Lannister", "action": "speak", "target": "ned",
+          "dialogue": "Lord Stark, the king's breath grows weaker by the hour. When Robert is gone, my son Joffrey succeeds him — and I expect this council to remember its duty.",
+          "publicStance": "the grieving queen, calmly insisting the succession is settled",
+          "privateIntent": "force Stark to declare himself before Baelish and learn how far his honor will carry him into treason"
+        },
+        {
+          "speaker": "ned", "speakerName": "Eddard Stark", "action": "speak", "target": "cersei",
+          "dialogue": "The realm's duty is to the king while he yet draws breath, and to his last lawful command when he is gone. I will honor Robert's will. No more, and no less.",
+          "publicStance": "upholding Robert's authority and his final written command",
+          "privateIntent": "place Robert's will between Cersei and the throne, and make Baelish see my right rests on the king's seal"
+        },
+        {
+          "speaker": "littlefinger", "speakerName": "Petyr Baelish", "action": "share_secret", "target": "cersei",
+          "dialogue": "Parchment is a frail shield unless men with spears are paid to stand behind it. See the city paid and loyal, Your Grace, and the king's will means whatever you wish it to mean.",
+          "publicStance": "the prudent councillor urging lawful order and a paid, loyal watch",
+          "privateIntent": "set wolf and lion watching each other, and make myself the man both must pay to know what the other has learned"
+        },
+        {
+          "speaker": "cersei", "speakerName": "Cersei Lannister", "action": "ally", "target": "littlefinger",
+          "dialogue": "Lord Baelish is right. A dead king's words will not quiet a hungry mob. See that the city is loyal — to the crown, and to the boy who will soon wear it.",
+          "publicStance": "the steady hand keeping the city obedient through the king's final hours",
+          "privateIntent": "draw Baelish and his gold cloaks close before Stark can wrap himself in Robert's will"
+        },
+        {
+          "speaker": "ned", "speakerName": "Eddard Stark", "action": "accuse", "target": "cersei",
+          "dialogue": "Then look to the city if it comforts you. But do not mistake the burden Robert laid on me for a crown upon your son's head.",
+          "publicStance": "refusing to let courtesy be mistaken for surrender",
+          "privateIntent": "I know the truth of her children now, and she will not bury it beneath the weight of law while I hold the king's seal"
+        }
+      ]
+    },
+    {
+      "id": "brothers-rock",
+      "label": "Brothers of the Rock",
+      "mood": "friendly",
+      "anchor": { "x": 0.31, "y": 0.54 },
+      "cast": [
+        { "key": "tyrion", "name": "Tyrion Lannister", "charset": "tyrion lannister" },
+        { "key": "jaime", "name": "Jaime Lannister", "charset": "jaime lannister" }
+      ],
+      "turns": [
+        {
+          "speaker": "tyrion", "speakerName": "Tyrion Lannister", "action": "speak", "target": "jaime",
+          "dialogue": "You wear that white cloak like a man who's never had to think about what's under it. How fares our dear sister's mood today, brother?",
+          "publicStance": "idle, wine-warmed banter with his brother",
+          "privateIntent": "gauge how much Jaime knows of what passed in that tower before the boy fell"
+        },
+        {
+          "speaker": "jaime", "speakerName": "Jaime Lannister", "action": "speak", "target": "tyrion",
+          "dialogue": "Her mood is the realm's weather, little brother. Best carry a cloak. You ask a great many questions for a man who claims only to drink.",
+          "publicStance": "easy, teasing deflection",
+          "privateIntent": "say nothing of the boy at the window; the Imp misses nothing and forgives less"
+        },
+        {
+          "speaker": "tyrion", "speakerName": "Tyrion Lannister", "action": "speak", "target": "jaime",
+          "dialogue": "I drink, and I know things. The two are not unrelated. Whatever you and Cersei have done, do try not to let it cost us Casterly Rock.",
+          "publicStance": "a fond warning between brothers",
+          "privateIntent": "let Jaime know I see more than I say, so he remembers which Lannister actually thinks"
+        }
+      ]
+    },
+    {
+      "id": "lion-and-hound",
+      "label": "The Prince and the Hound",
+      "mood": "hostile",
+      "anchor": { "x": 0.7, "y": 0.52 },
+      "cast": [
+        { "key": "joffrey", "name": "Joffrey Baratheon", "charset": "joffrey baratheon" },
+        { "key": "sandor", "name": "Sandor Clegane", "charset": "sandor clegane" }
+      ],
+      "turns": [
+        {
+          "speaker": "joffrey", "speakerName": "Joffrey Baratheon", "action": "speak", "target": "sandor",
+          "dialogue": "You'll stand where I tell you to stand, dog, and you'll kill who I tell you to kill. That is all a hound is good for.",
+          "publicStance": "the prince asserting command over his sworn shield",
+          "privateIntent": "remind the brute he is owned, because something in his silence frightens me"
+        },
+        {
+          "speaker": "sandor", "speakerName": "Sandor Clegane", "action": "pass", "target": "joffrey",
+          "dialogue": "...",
+          "publicStance": "silent obedience, eyes on the middle distance",
+          "privateIntent": "a boy who has never bled playing at being a king; I have buried better men than him"
+        },
+        {
+          "speaker": "joffrey", "speakerName": "Joffrey Baratheon", "action": "accuse", "target": "sandor",
+          "dialogue": "Look at me when I speak to you. One day you'll learn what it costs to sulk in a prince's presence.",
+          "publicStance": "demanding deference, voice rising",
+          "privateIntent": "make him flinch, just once, so I know the dog can be made to fear me"
+        },
+        {
+          "speaker": "sandor", "speakerName": "Sandor Clegane", "action": "speak", "target": "joffrey",
+          "dialogue": "As you say. Your Grace.",
+          "publicStance": "flat, minimal compliance",
+          "privateIntent": "I answer to the title, never the boy; let him mistake the difference for loyalty"
+        }
+      ]
+    },
+    {
+      "id": "winterfell-sons",
+      "label": "Sons of Winterfell",
+      "mood": "friendly",
+      "anchor": { "x": 0.5, "y": 0.72 },
+      "cast": [
+        { "key": "jon", "name": "Jon Snow", "charset": "jon snow" },
+        { "key": "robb", "name": "Robb Stark", "charset": "robb stark" }
+      ],
+      "turns": [
+        {
+          "speaker": "robb", "speakerName": "Robb Stark", "action": "speak", "target": "jon",
+          "dialogue": "So you mean to take the black. The Wall is the end of the world, Jon. You don't have to go.",
+          "publicStance": "a brother trying to talk him out of it",
+          "privateIntent": "I will be lord here one day and I do not want to do it without him"
+        },
+        {
+          "speaker": "jon", "speakerName": "Jon Snow", "action": "speak", "target": "robb",
+          "dialogue": "There's no place for a bastard in Winterfell, Robb. Not when your mother looks at me like that. The Watch takes men of no name. That can be mine.",
+          "publicStance": "calm acceptance of his place",
+          "privateIntent": "say it lightly so he doesn't see how much leaving this house costs me"
+        },
+        {
+          "speaker": "robb", "speakerName": "Robb Stark", "action": "swear_oath", "target": "jon",
+          "dialogue": "Then you'll always be my brother, name or no name. Stark or Snow. Don't forget it up there in the cold.",
+          "publicStance": "a vow of kinship",
+          "privateIntent": "bind him to home with the only thing I can give that Father's name cannot"
+        }
+      ]
+    }
+  ]
+}

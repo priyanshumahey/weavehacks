@@ -20,6 +20,22 @@ _REGISTRY: dict[str, CharacterSpec] = {
     "littlefinger": CharacterSpec(littlefinger.GENOME, littlefinger.SEED_MEMORIES),
 }
 
+# Sprite hint for the Phaser replay body — maps a registry key to the charset
+# frame directory under ``world/charsets/sprites/<name>``. Names differ from the
+# genome name where the show uses a nickname (Eddard->ned stark, Petyr->
+# littlefinger baelish). The body may override; this is only a default.
+_CHARSET: dict[str, str] = {
+    "cersei": "cersei lannister",
+    "ned": "ned stark",
+    "stannis": "stannis baratheon",
+    "littlefinger": "littlefinger baelish",
+}
+
+
+def charset_for(key: str) -> str | None:
+    """The charset sprite directory name for a character key, if known."""
+    return _CHARSET.get(key)
+
 
 def get_character(key: str) -> CharacterSpec:
     if key in _REGISTRY:

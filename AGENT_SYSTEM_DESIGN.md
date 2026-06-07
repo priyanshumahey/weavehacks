@@ -8,10 +8,7 @@
 > 3. **How do we train the agents** so they grow more in-character over time?
 > 4. **Can we actually run a full episode end-to-end, and what's missing?** — see **PART D**.
 >
-> Everything here is learned from two sources and re-skinned for Westeros:
-> - **The DMI reference system** — the working code under `temp/dmi-notion/server/src/`
->   (`agents/orchestrator.ts`, `agents/ContextBuilder.ts`, `agents/ConversationFlow.ts`,
->   `agents/GroupConversationFlow.ts`, `simulation/*`).
+> Everything here is grounded in prior work on generative agents and re-skinned for Westeros:
 > - **The original paper** — *Generative Agents* (Park et al., 2023; arXiv 2304.03442):
 >   the **memory stream → retrieval → reflection → planning** architecture.
 >
@@ -33,21 +30,21 @@
 
 ## 0. First principles (the seven ideas everything rests on)
 
-1. **Mind / body split** (DMI's defining decision). The **body/world** does all the cheap,
+1. **Mind / body split.** The **body/world** does all the cheap,
    deterministic work (state, scheduling, affordances, resolution); the **mind** (per-lord LLM
    cognition) is invoked *only to choose*. "The backend is the bridge, not the brain."
 
 2. **An agent is a stateless function, not a process.** A lord does not "run" continuously. The
    orchestrator **invokes** it for one turn, handing it a perception payload; the lord returns a
    decision. All durable state (memory, drives, relationships, identity) lives in **Redis**, not
-   in the agent object and not in the prompt. (DMI: `agent.chatStream({message})` per tick.)
+   in the agent object and not in the prompt.
 
-3. **Two-tier cost control** (Park §"architecture", DMI cognitive loop). The engine **pre-scores**
+3. **Two-tier cost control** (Park §"architecture"). The engine **pre-scores**
    a shortlist of candidate actions cheaply; the **LLM only selects**. Target: **~one LLM call per
    agent per turn**. Without this, the bill explodes with many agents.
 
 4. **Numbers become felt desire before the LLM sees them** (the D2A bridge). The agent never sees
-   `power: 0.2`; it sees *"my grip on power is slipping."* This is what made DMI characters feel
+   `power: 0.2`; it sees *"my grip on power is slipping."* This is what makes the characters feel
    human. Same trick, political content.
 
 5. **The orchestrator schedules and frames; it never authors.** It decides *"convene the small
@@ -181,15 +178,15 @@ at any timeline point T**, and lets the genome **evolve** independently of live 
 | State | Where | What it holds | Learned from |
 |---|---|---|---|
 | **Genome** | Redis + W&B artifact, versioned as `weave.Model` | `persona_prompt`, `canon_exemplars`, `reflection_rules`, `reflection_memory`, `drive_params`, `generation` | `Agent Evolution.md` |
-| **Drive vector** | Redis hash | 8 political drives + grounding floor, each ∈ [0,100], each with an urgency curve | DMI `simulation/needsDecay.ts`, `Needs & Drives (Political).md` |
-| **PAD affect** | Redis hash | Pleasure / Arousal / Dominance; drifts on events; weights memory retrieval | DMI psychology, `Memory & Psychology.md` |
-| **Memory stream** | RedisVL HNSW index | episodic rows w/ dense titles + vector embedding + concept tags | Park memory stream + DMI Fixed-Bag |
-| **Relationships ledger** | Redis JSON (per pair) | oaths / debts / grudges, trust, **`my_model_of_their_goal`** (ToM) | DMI ToM, `Memory & Psychology Adaptation.md` |
-| **Goal hierarchy** | genome / identity | Life Motive → Long-term Goal → Short-term Task | DMI psychology |
-| **Identity** | genome | `self_persona`, `stated_goal` vs `private_intent`, **Fixed Bag** (8–12 concepts) | DMI identity model |
+| **Drive vector** | Redis hash | 8 political drives + grounding floor, each ∈ [0,100], each with an urgency curve | `Needs & Drives (Political).md` |
+| **PAD affect** | Redis hash | Pleasure / Arousal / Dominance; drifts on events; weights memory retrieval | psychology model, `Memory & Psychology.md` |
+| **Memory stream** | RedisVL HNSW index | episodic rows w/ dense titles + vector embedding + concept tags | Park memory stream + Fixed-Bag |
+| **Relationships ledger** | Redis JSON (per pair) | oaths / debts / grudges, trust, **`my_model_of_their_goal`** (ToM) | ToM, `Memory & Psychology Adaptation.md` |
+| **Goal hierarchy** | genome / identity | Life Motive → Long-term Goal → Short-term Task | psychology model |
+| **Identity** | genome | `self_persona`, `stated_goal` vs `private_intent`, **Fixed Bag** (8–12 concepts) | identity model |
 
 ### A.3 The cognitive tick — one invocation per turn
-This is DMI's `Cognitive Loop`, re-skinned. **Each numbered step is its own `@weave.op`** so a
+This is a re-skinned cognitive loop. **Each numbered step is its own `@weave.op`** so a
 single betrayal decision becomes an inspectable trace tree.
 
 ```
@@ -209,17 +206,17 @@ single betrayal decision becomes an inspectable trace tree.
                           reflect  -> (periodic) rules + relationship summaries
 ```
 
-| # | Step (`@weave.op`) | Input → Output | DMI / Park origin |
+| # | Step (`@weave.op`) | Input → Output | Origin |
 |---|---|---|---|
-| 1 | `perceive` | scene + entitled events → membership-filtered snapshot (no omniscience) | DMI `buildTickContext`; Park observation |
-| 2 | `update_drives` | prior drives + new events → interpolated values, urgency curves, Vengeance accrual | DMI `needsDecay.ts` |
-| 3 | `drives_to_desires` | drive vector → first-person *felt desire* string (D2A bridge) | DMI `needsToNaturalLanguage` |
-| 4 | `retrieve_memory` | scene cue + 2–3 Fixed-Bag concepts → top-k via `importance·0.4 + recency·0.3 + state_match(PAD)·0.3` | Park retrieval + DMI affect/Fixed-Bag |
-| 5 | `score_candidates` | typed action vocab + drives → cheap shortlist (the tier-1 filter) | DMI affordance scoring |
-| 6 | `select_action` | persona + desires + memories + relationships + scene → **LLM picks one** | DMI `tickCharacter`; Park planning |
-| 7 | `emit` | → `Decision` handed to orchestrator | DMI `applyDecisions` |
-| 8 | `appraise` | post-resolution outcome → OCC emotion, PAD delta, drive deltas, **memory to encode**, possible ToM flip | DMI `runAppraisal` |
-| 9 | `reflect` | trigger (scene/episode end) → higher-level rules + relationship summary; episode-end **consolidation** | Park reflection + DMI narrative compression |
+| 1 | `perceive` | scene + entitled events → membership-filtered snapshot (no omniscience) | Park observation |
+| 2 | `update_drives` | prior drives + new events → interpolated values, urgency curves, Vengeance accrual | drive decay curves |
+| 3 | `drives_to_desires` | drive vector → first-person *felt desire* string (D2A bridge) | drive→desire bridge |
+| 4 | `retrieve_memory` | scene cue + 2–3 Fixed-Bag concepts → top-k via `importance·0.4 + recency·0.3 + state_match(PAD)·0.3` | Park retrieval + affect/Fixed-Bag |
+| 5 | `score_candidates` | typed action vocab + drives → cheap shortlist (the tier-1 filter) | affordance scoring |
+| 6 | `select_action` | persona + desires + memories + relationships + scene → **LLM picks one** | Park planning |
+| 7 | `emit` | → `Decision` handed to orchestrator | decision emit |
+| 8 | `appraise` | post-resolution outcome → OCC emotion, PAD delta, drive deltas, **memory to encode**, possible ToM flip | appraisal |
+| 9 | `reflect` | trigger (scene/episode end) → higher-level rules + relationship summary; episode-end **consolidation** | Park reflection + narrative compression |
 
 **Decision schema (every action emits the same shape — this is the deception substrate):**
 ```json
@@ -232,7 +229,7 @@ single betrayal decision becomes an inspectable trace tree.
   "thinking": "1–2 sentence inner voice (logged for interpretability)" }
 ```
 
-### A.4 The memory system (the most transferable DMI asset)
+### A.4 The memory system (the most transferable asset)
 - **Dense titles** so semantic search gets affect + relation *for free*:
   `"[event] | [emotion], [concept], [relationship delta]"`.
 - **RedisVL hybrid query**: vector similarity **AND** a `concepts` TAG filter. The **Fixed Bag**
@@ -283,8 +280,8 @@ Only `drive_params` + reflection text live *in* the genome and evolve; memory/re
 Redis services the lord reads and writes.
 
 ### A.8 The planning pillar (per-episode intention) — Park's 3rd mechanism
-Park's three mechanisms are memory, **planning**, and reflection; DMI does explicit **morning
-planning** (a Level-1 daily intention decomposed into actions). Our 9-step tick has memory (step 4)
+Park's three mechanisms are memory, **planning**, and reflection — the latter realized as explicit
+**morning planning** (a daily intention decomposed into actions). Our 9-step tick has memory (step 4)
 and reflection (step 9) but **collapsed planning** — a gap for *episode coherence* (a sequence of
 scenes should feel like one character pursuing something, not independent reactions).
 
@@ -307,15 +304,14 @@ Fix — a lightweight per-episode intention:
 ### B.1 Build it ourselves (not CrewAI / AutoGen)
 The core is a **ticked world simulation with a shared environment, affordances, and information
 asymmetry** — not a goal-directed agent *crew* handing off subtasks. CrewAI/AutoGen assume the
-latter and fight a world-clock sim, hiding the loop we need to trace. **DMI hand-rolled exactly
-this** (Phaser world + per-agent agents + thin bridge); follow the proven pattern. *(A graph
+latter and fight a world-clock sim, hiding the loop we need to trace. **We hand-roll exactly
+this** (a world layer + per-agent agents + a thin bridge); the pattern is proven. *(A graph
 framework like LangGraph may model a single lord's internal loop later; the world/scene layer stays
 custom regardless.)*
 
 The orchestrator splits into **three mechanical roles**. None authors behavior.
 
 ### B.2 Stage Manager — body, world, and clock
-*(DMI's Phaser + the event bus.)*
 - Owns the **turn clock** and the discrete tick loop ("turns of the moon").
 - Holds **world state** in Redis: alive/dead, titles, the **oath/relationship ledger**, the
   **secrets registry** (who-knows-what), war flags.
@@ -332,18 +328,18 @@ The orchestrator splits into **three mechanical roles**. None authors behavior.
 - Writes **per-tick snapshots** → the replayable **chronicle** (= the Weave dataset, for free).
 
 ### B.3 Director — the scene & dialog coordinator (the piece you're reaching for)
-*(DMI's orchestrator/router, **extended with scene framing**.)* This is the coordination layer you
+*(An orchestrator/router, **extended with scene framing**.)* This is the coordination layer you
 emphasized — managing the agents' "movement," turn-taking, and dialog.
 
 - **Scenes replace locations.** A `Scene = {setting, cast, stakes, turn_order, max_rounds}`.
   "Setting" (small council, godswood, throne room) is **flavor + which actions read as natural**,
   not a place you walk to. **"Movement" = the Director convening/dissolving scene membership** —
-  this *replaces* DMI's pathfinding/proximity entirely (a scope cut).
+  this *replaces* pathfinding/proximity entirely (a scope cut).
 - **Membership is the information boundary**: you know what was said in scenes you attended and
   secrets told to you. Off-stage lords still exist as world state on-stage lords reason about.
-- **Turn-taking + dialog flow** — two patterns ported almost verbatim from DMI:
+- **Turn-taking + dialog flow** — two patterns:
 
-  **(1) Group scene — the public council** ← `GroupConversationFlow.ts`
+  **(1) Group scene — the public council**
   - Round-robin; each participant gets one turn per round; `MAX_ROUNDS ≈ 3`.
   - An **initiator opens and closes**; interjects between rounds.
   - **Silence is a valid move** — a participant may pass with `"..."` (tone `flat`). Critical for
@@ -352,20 +348,20 @@ emphasized — managing the agents' "movement," turn-taking, and dialog.
     memory) and calls `lord.act()`; the lord returns a `speak`/typed action carrying
     `public_stance` / `private_intent`.
 
-  **(2) 1:1 / private pact — the secret channel** ← `ConversationFlow.ts` + **A2A**
+  **(2) 1:1 / private pact — the secret channel** ← **A2A**
   - Alternating turns; **each agent keeps its own thread** (per-conversation memory); `MAX_TURNS ≈ 8`;
     either party may `end`.
   - **Invisible to non-participants** — the secret-pact / betrayal substrate. The Director mediates
     and logs *both* sides' public-vs-private. A lord can hold a public oath in council while running
     a contradictory private pact, and a third lord simply does not know.
 
-- **Post-scene appraisal** ← DMI `runAppraisal`: one structured call summarizes the scene and emits
+- **Post-scene appraisal**: one structured call summarizes the scene and emits
   **PAD / drive / relationship deltas** to each participant, plus a memory each encodes. This is how
   a conversation actually *changes* the agents.
 - **Iron rule**: the Director frames *who/where/stakes/turn-order*; the **agents decide** what to
   say and do.
 
-### B.4 Showrunner — the season / training driver (new vs DMI)
+### B.4 Showrunner — the season / training driver
 - **Episode reset**: `fold(ledger, T)` instantiates the world at a chosen timeline point. **T is a
   parameter, not a constant** — the ledger spans S1→S7, so any moment (Robert's death, the Purple
   Wedding, post-S7, …) is a valid seed. A demo may *feature* one T; the system supports all of them.
@@ -396,7 +392,7 @@ for generation in range(N):
 ```
 
 ### B.6 Episode lifecycle: scene scheduling, arc & termination (the runtime spine)
-This is what turns *"a tick loop"* into *"an episode."* DMI got scene structure for free from
+This is what turns *"a tick loop"* into *"an episode."* A movement-based sim gets scene structure for free from
 **proximity + needs + a daily-plan skeleton**; we dropped movement, so the Director needs an
 **explicit** policy. Three sub-problems — all mechanical, none authorial:
 
@@ -533,7 +529,7 @@ and the **breadth data pipeline** — not the agent or dialog design. Walking th
 | Event fan-out / membership | yes (who knows what) | ✅ designed | B.2 |
 | Inter-scene propagation (appraisal/memory) | yes (scenes *matter*) | ✅ designed | A.3 §8 |
 | Episode termination | yes (it has to end) | ✅ *now added* | B.6(3) |
-| Chronicle write (per-tick snapshots) | yes (replay/data) | ✅ designed | DMI `StepWriter` |
+| Chronicle write (per-tick snapshots) | yes (replay/data) | ✅ designed | B.2 |
 | Chronicle → replay | demo only | ✅ designed | `Episode Renderer` |
 | Scoring (fidelity, deception, ToM) | eval only | ✅ designed | Part C |
 | Training loop (gen-0 → gen-1) | growth only | ✅ designed | Part C |
@@ -600,27 +596,27 @@ Ingest **S1E1 → smoke test → S1E2 → … → S7**. Each episode's smoke tes
 3. a **1-scene micro-episode** convenes, ticks once per cast member, and **traces in Weave**.
 
 The harness = a `pytest` suite + a `fold` sanity check + a single-tick trace. Catching data drift
-per episode (before it compounds) is exactly DMI's "build incrementally, smoke-test per episode"
-lesson — and it directly satisfies your "as long as we can, with smoke tests" requirement.
+per episode (before it compounds) is exactly the "build incrementally, smoke-test per episode"
+discipline — and it directly satisfies your "as long as we can, with smoke tests" requirement.
 
 ---
 
-## PART F — Provenance: exactly what we steal from DMI & Park
+## PART F — Provenance: what we adapt from the *Generative Agents* architecture
 
-| Our component | Source file / paper | What we take |
+| Our component | Origin | What we take |
 |---|---|---|
-| Cognitive tick (9 steps) | `agents/orchestrator.ts` `tickCharacter`; Park §planning/memory | sequential steps in one invocation |
-| Perception payload | `agents/ContextBuilder.ts` `buildTickContext` | structured JSON context, re-skinned to scenes |
-| Council dialog flow | `agents/GroupConversationFlow.ts` | round-robin, initiator open/close, silent-pass |
-| Private pact flow | `agents/ConversationFlow.ts` | alternating turns, per-agent threads, A2A |
-| Post-scene appraisal | `agents/orchestrator.ts` `runAppraisal` | structured deltas + memory write |
-| Reflection / talking head | `agents/orchestrator.ts` `runReflectionRound` | end-of-period reflection → memory |
-| Drive curves | `simulation/needsDecay.ts`, `needs_config.json` | curve shapes, personality tuning |
-| Memory retrieval | Park retrieval eqn + DMI Fixed-Bag/PAD | `importance·0.4 + recency·0.3 + state_match·0.3` |
-| Two-tier control | Park architecture + DMI affordances | engine scores, LLM selects |
-| Replay/DVR | `simulation/StepWriter.ts`, `scripts/buildReplay.ts` | per-step snapshots → chronicle |
+| Cognitive tick (9 steps) | Park §planning/memory | sequential steps in one invocation |
+| Perception payload | own design | structured JSON context, scene-scoped |
+| Council dialog flow | own design | round-robin, initiator open/close, silent-pass |
+| Private pact flow | A2A | alternating turns, per-agent threads |
+| Post-scene appraisal | own design | structured deltas + memory write |
+| Reflection / talking head | Park reflection | end-of-period reflection → memory |
+| Drive curves | own design | curve shapes, personality tuning |
+| Memory retrieval | Park retrieval eqn | `importance·0.4 + recency·0.3 + state_match·0.3` |
+| Two-tier control | Park architecture | engine scores, LLM selects |
+| Replay/DVR | own design | per-step snapshots → chronicle |
 
-**The only content changes vs DMI** (the loop itself is reused verbatim):
+**The only content changes vs the reference architecture** (the loop itself is reused verbatim):
 1. "spontaneous action" → **"scheme"** (covert action with `private_intent ≠ public_stance`);
 2. appraisal adds **political deltas** (honor / legitimacy / loyalty / vengeance);
 3. new interrupts (**a betrayal discovered, war declared, the king dies**).

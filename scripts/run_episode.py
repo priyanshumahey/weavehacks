@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import argparse
 import sys
+from pathlib import Path
 
 from got_agents.infra import init_weave
 from got_agents.orchestration import load_skeleton, run_episode
@@ -22,7 +23,11 @@ from got_agents.outputs import (
     replay_chronicle,
     score_episode_fidelity,
     write_episode,
+    write_replay,
 )
+
+# The Phaser world imports replay JSON from here (Vite resolves the import).
+_WORLD_REPLAY_DIR = Path(__file__).resolve().parents[1] / "world" / "src" / "data" / "replays"
 
 
 def _run(point: str, *, score: bool) -> None:
@@ -38,6 +43,12 @@ def _run(point: str, *, score: bool) -> None:
     print(render_episode(record))
     print(f"chronicle -> {txt_path}")
     print(f"             {json_path}")
+
+    # Replay contract for the Phaser world (both logs/ and the world data dir).
+    replay_path = write_replay(record)
+    world_path = write_replay(record, root=_WORLD_REPLAY_DIR)
+    print(f"replay    -> {replay_path}")
+    print(f"             {world_path}")
 
     if score:
         fidelity = score_episode_fidelity(record)

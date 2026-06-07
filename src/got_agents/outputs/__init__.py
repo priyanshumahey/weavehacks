@@ -10,6 +10,7 @@ from got_agents.outputs.fidelity import (
     score_episode_fidelity,
 )
 from got_agents.outputs.replay import load_chronicle, replay_chronicle
+from got_agents.outputs.replay_contract import to_replay, write_replay
 from got_agents.outputs.scorers import (
     SceneDeception,
     TurnDeception,
@@ -27,6 +28,8 @@ __all__ = [
     "replay_chronicle",
     "score_deception_scene",
     "score_episode_fidelity",
+    "to_replay",
     "write_episode",
+    "write_replay",
     "write_run",
 ]
