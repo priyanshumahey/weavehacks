@@ -4,8 +4,8 @@
   "kind": "npc",
   "controller": "agent",
   "position": {
-    "x": 2140,
-    "y": 1130
+    "x": 720,
+    "y": 700
   },
   "appearance": {
     "color": "#8fa6c8",

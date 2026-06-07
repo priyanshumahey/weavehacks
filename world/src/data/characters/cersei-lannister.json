@@ -4,8 +4,8 @@
   "kind": "npc",
   "controller": "script",
   "position": {
-    "x": 1860,
-    "y": 990
+    "x": 627,
+    "y": 400
   },
   "appearance": {
     "color": "#c44d58",

@@ -91,20 +91,20 @@ The player can swap between authored charset sprites without changing entity ide
 - `applyPlayerAppearanceSystem()` in `src/domain/characters/applyPlayerAppearance.ts`: applies normalized sprite metadata to the player and updates `UiState.playerAppearanceId`
 - `WORLD_ACTION_TYPES.setPlayerAppearance`: player-controller action dispatched from the bottom selector bar in `WorldUiRenderer`
 
-### Terrain Base Layer
+### Map Background Layer
 
-The playfield background is now a Phaser tilemap layer instead of a solid rectangle:
+The playfield background is a single pre-rendered map image instead of a tilemap fill:
 
-- `src/types/terrain.ts`: shared terrain constants, tileset/layer ids, and authored layer definition contracts
-- `src/data/terrain/defaultTerrain.ts`: default grass fill tile and registry texture key for `Tilemap_color1.png`
-- `src/rendering/terrain/TerrainRenderer.ts`: builds a blank `Phaser.Tilemaps.Tilemap` sized to `WorldBounds`, registers the tileset via `addTilesetImage()`, creates a `TilemapLayer` with `createBlankLayer()`, fills it with `layer.fill()`, and clips overflow with a `GeometryMask` aligned to the playfield
+- `src/types/terrain.ts`: map texture source paths and `MapBackgroundDefinition` contract
+- `src/data/terrain/defaultMapBackground.ts`: default background texture key and dimensions for `maps/red_keep.png`
+- `src/rendering/terrain/TerrainRenderer.ts`: renders the map image at world origin with `scene.add.image()` at `RENDER_LAYERS.terrain`
+- `src/assets/worldAssetRegistry.ts`: discovers and preloads PNG assets under `world/maps/`
 
-Terrain rendering rules:
+Map background rules:
 
-- Tile size is the native 32×32 px grid from the tileset image (576×384 → 18 columns)
-- Layer origin is the top-left playfield corner at `(bounds.minX, bounds.minY)`
-- Tile columns and rows are `ceil(boundsWidth / tileSize)` and `ceil(boundsHeight / tileSize)`
-- `WorldBounds` remain simulation-authoritative; terrain is presentation-only and masked to the same rectangle used by `boundsSystem`
+- World size matches the authored map image (`1254×1254` for Red Keep)
+- Image origin is `(0, 0)` and spans the full world rectangle
+- `WorldBounds` remain simulation-authoritative with a playfield margin that keeps characters off walls and furniture baked into the image
 - `createWorldFrame()` sets the camera background color
 - `setupWorldCamera()` constrains the main camera to the fixed world size and follows the player sprite
 
@@ -112,7 +112,7 @@ Terrain rendering rules:
 
 The world is larger than the Phaser viewport and scrolls as the player moves:
 
-- `src/rendering/world/worldDimensions.ts`: fixed world size constants (`WORLD_WIDTH` 3840, `WORLD_HEIGHT` 2160 — 4× the 960×540 viewport) and playfield margin
+- `src/rendering/world/worldDimensions.ts`: fixed world size constants (`WORLD_WIDTH` 1254, `WORLD_HEIGHT` 1254 — sized to the Red Keep map) and playfield margin
 - `getWorldBounds()`: returns simulation bounds from fixed world dimensions, not from the camera viewport
 - `setupWorldCamera()`: calls `camera.setBounds(0, 0, WORLD_WIDTH, WORLD_HEIGHT)` and `camera.startFollow(playerSprite, true)` with pixel rounding for crisp pixel art
 - `WorldScene.ensureCameraFollow()`: defers camera setup until the player `CharacterSprite` exists after the first render pass
@@ -152,7 +152,7 @@ Rendered character positions always come from runtime state. The renderer does n
 World presentation uses Phaser `setDepth()` with explicit layer bands and foot-based Y-sorting:
 
 - `src/rendering/renderDepth.ts`: shared layer constants (`RENDER_LAYERS`), tie-break priorities (`RENDER_DEPTH_PRIORITY`), and helpers that convert authored sprite origins into sort-Y values
-- `TerrainRenderer`: terrain tilemap layer at `RENDER_LAYERS.terrain` (always behind world objects)
+- `TerrainRenderer`: map background image at `RENDER_LAYERS.terrain` (always behind world objects)
 - `PropSprite`: depth from the sprite foot using authored `origin`, scaled texture height, and `RENDER_DEPTH_PRIORITY.prop`
 - `CharacterSprite`: depth from the sprite foot using resolved frame height and display scale, with `RENDER_DEPTH_PRIORITY.character` so characters draw above props at the same foot Y
 - `WorldUiRenderer`: HTML overlay (`#world-ui`) for prompt, dialogue, inspection, and player appearance selector panels, positioned above the Phaser canvas with CSS and `pointer-events: none` on the root so only interactive controls capture clicks. Dialogue uses a Hades-inspired layout: full-screen backdrop dim, full-body character portrait from `world/sprites/Characters/` on the left, and a parchment panel for speaker name and dialogue text
@@ -189,8 +189,8 @@ The scene does not treat Phaser game objects as the source of truth for characte
 
 The current world is a minimal prototype scene composed of:
 
-- A scrollable 3840×2160 playfield with camera follow on the player
-- A Phaser tilemap grass base layer clipped to the playfield bounds
+- A scrollable 1254×1254 Red Keep chamber with camera follow on the player
+- A pre-rendered map background image spanning the full world
 - Sprite-backed buildings, resources, and decorations loaded from authored prop placements
 - A set of sprite-backed character markers rendered from JSON definitions
 - Selection highlighting derived from UI state
@@ -219,7 +219,7 @@ Current state is split as follows:
 - `WorldRenderer`: top-level Phaser-facing renderer for the world frame and character rendering passes
 - `WorldUiRenderer` and `buildWorldUiViewModel()`: player-facing prompt, dialogue, inspection, and bottom-of-screen character appearance selector rendered as an HTML overlay synced each frame from `WorldState.ui`. Dialogue portraits resolve from each character's `sprite.frameSourcePath` via `characterPortraitRegistry.ts`, which maps `charsets/sprites/<name>` to `sprites/Characters/<name>.png`
 - `CharacterRenderer` and `CharacterSprite`: sprite-backed visual representation for each character with labels and selection highlighting
-- `TerrainRenderer`, `createWorldFrame()`, `setupWorldCamera()`, and `getWorldBounds()`: terrain tilemap presentation, camera background, fixed world bounds, and player camera follow
+- `TerrainRenderer`, `createWorldFrame()`, `setupWorldCamera()`, and `getWorldBounds()`: map background presentation, camera background, fixed world bounds, and player camera follow
 - `worldState.ts`: serializable interfaces for world bounds, entities, characters, zones, UI, and time
 
 The only scene-local mutable state required is references to its collaborators.

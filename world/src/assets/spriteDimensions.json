@@ -2838,5 +2838,9 @@
   "charsets/sprites/varys/up_2.png": {
     "width": 128,
     "height": 225
+  },
+  "maps/red_keep.png": {
+    "width": 1254,
+    "height": 1254
   }
 }

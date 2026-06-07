@@ -21,6 +21,10 @@ const WORLD_TEXTURE_MODULES = {
     eager: true,
     import: "default",
   }),
+  ...import.meta.glob("../../maps/**/*.png", {
+    eager: true,
+    import: "default",
+  }),
 };
 
 export interface WorldTextureAsset {
@@ -34,6 +38,10 @@ export interface WorldTextureAsset {
 function toSourcePath(modulePath: string): string {
   if (modulePath.startsWith("../../charsets/")) {
     return modulePath.replace(/^..\/..\/charsets\//, "charsets/");
+  }
+
+  if (modulePath.startsWith("../../maps/")) {
+    return modulePath.replace(/^..\/..\/maps\//, "maps/");
   }
 
   return modulePath.replace(/^..\/..\/sprites\//, "");
