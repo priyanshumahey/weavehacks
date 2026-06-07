@@ -29,6 +29,7 @@ marimo-config.toml
 logs/
 
 debug*
+!world/src/replay/DebugOverlay.ts
 
 
 node_modules/
