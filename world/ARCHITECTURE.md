@@ -121,7 +121,7 @@ The world is larger than the Phaser viewport and scrolls as the player moves:
 - `getWorldBounds()`: returns simulation bounds from fixed world dimensions, not from the camera viewport
 - `setupWorldCamera()`: calls `camera.setBounds(0, 0, WORLD_WIDTH, WORLD_HEIGHT)` and `camera.startFollow(playerSprite, true)` with pixel rounding for crisp pixel art
 - `WorldScene.ensureCameraFollow()`: defers camera setup until the player `CharacterSprite` exists after the first render pass
-- `worldToAppPoint()` and `CharacterLabelRenderer`: already subtract `camera.scrollX/Y` and cull against `camera.worldView`, so HTML overlays stay aligned during scroll
+- `CharacterLabelRenderer`: shared Phaser `DOMElement` name labels for both `WorldRenderer` (above sprite) and `ReplayRenderer` (below feet); Phaser applies the camera matrix so labels stay locked to characters while text remains crisp HTML
 - `game.scale` letterboxing in `config.ts` is separate from camera scroll; the internal canvas stays 960×540 while the camera moves within the larger world
 
 ### Props and Building Placement

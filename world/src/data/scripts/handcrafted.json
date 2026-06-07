@@ -19,7 +19,7 @@
     { "key": "lord_varys", "name": "Lord Varys", "charset": "varys", "title": "Master of Whisperers", "drives": { "survival": 72, "power": 55, "legitimacy": 30, "loyalty": 35, "honor": 30, "vengeance": 20, "wealth": 45, "information": 98 } }
   ],
   "extras": [
-    { "key": "joffrey", "name": "Joffrey Baratheon", "charset": "joffrey baratheon", "locationId": "throne-room", "behavior": "idle", "anchor": { "x": 0.5, "y": 0.18 } },
+    { "key": "joffrey", "name": "Joffrey Baratheon", "charset": "joffrey baratheon", "locationId": "throne-room", "behavior": "idle", "anchor": { "x": 0.5, "y": 0.26 } },
     { "key": "sansa_stark", "name": "Sansa Stark", "charset": "sansa stark", "locationId": "winterfell", "behavior": "wander" },
     { "key": "arya_stark", "name": "Arya Stark", "charset": "arya stark", "locationId": "winterfell", "behavior": "wander" },
     { "key": "jorah_mormont", "name": "Ser Jorah Mormont", "charset": "jorah mormont", "locationId": "wall", "behavior": "wander" }

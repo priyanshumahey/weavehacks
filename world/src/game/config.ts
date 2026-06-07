@@ -11,6 +11,9 @@ export function createGameConfig(): Phaser.Types.Core.GameConfig {
     height: 540,
     backgroundColor: "#000000",
     pixelArt: true,
+    dom: {
+      createContainer: true,
+    },
     scale: {
       mode: Phaser.Scale.ENVELOP,
       autoCenter: Phaser.Scale.CENTER_BOTH,

@@ -32,31 +32,27 @@ canvas {
   display: block;
 }
 
-.world-character-labels {
-  position: absolute;
-  inset: 0;
-  z-index: 5;
-  pointer-events: none;
-  overflow: hidden;
-}
-
 .world-character-label {
-  position: absolute;
-  transform: translate(-50%, -50%);
-  padding: 4px 8px;
+  display: inline-block;
+  padding: 3px 7px;
   border-radius: 4px;
-  background: rgb(0 0 0 / 88%);
-  font-family: Arial, sans-serif;
-  font-size: 11px;
-  line-height: 1;
-  color: #fff;
+  background: rgb(26 21 16 / 92%);
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: #f4f1de;
   white-space: nowrap;
+  letter-spacing: 0.01em;
+  pointer-events: none;
+  text-shadow: 0 1px 1px rgb(0 0 0 / 45%);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-.world-character-label:not(.world-character-label--selected) {
-  opacity: 0.92;
+.world-character-label--selected {
+  color: #f6bd60;
+  background: rgb(61 48 32 / 94%);
 }
 
 .world-ui {

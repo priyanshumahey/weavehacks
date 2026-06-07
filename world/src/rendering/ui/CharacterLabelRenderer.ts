@@ -1,27 +1,42 @@
-import type Phaser from "phaser";
-import { resolveCharacterSortY } from "../renderDepth";
-import { worldToAppPoint } from "../world/worldToAppPoint";
+import Phaser from "phaser";
+import {
+  RENDER_DEPTH_PRIORITY,
+  resolveCharacterSortY,
+  resolveWorldRenderDepth,
+} from "../renderDepth";
 import type { WorldState } from "../../world/worldState";
-import { resolveCharacterLabelWorldPosition } from "./resolveCharacterLabelWorldPosition";
+import {
+  type CharacterLabelPlacement,
+  resolveCharacterLabelWorldPosition,
+} from "./resolveCharacterLabelWorldPosition";
 
-const LABEL_HEIGHT = 19;
+const LABEL_DEPTH_OFFSET = 0.0002;
+const UNSELECTED_LABEL_ALPHA = 0.92;
 
 interface CharacterLabelElement {
-  element: HTMLSpanElement;
-  sortY: number;
+  label: Phaser.GameObjects.DOMElement;
+}
+
+export interface CharacterLabelRendererOptions {
+  placement?: CharacterLabelPlacement;
 }
 
 export class CharacterLabelRenderer {
-  private readonly root: HTMLDivElement;
   private readonly labels = new Map<string, CharacterLabelElement>();
+  private readonly placement: CharacterLabelPlacement;
+  private readonly originY: number;
+  private readonly placementClass: string;
 
   constructor(
     private readonly scene: Phaser.Scene,
-    parent: HTMLElement = document.getElementById("app") ?? document.body,
+    options: CharacterLabelRendererOptions = {},
   ) {
-    this.root = document.createElement("div");
-    this.root.className = "world-character-labels";
-    parent.append(this.root);
+    this.placement = options.placement ?? "above";
+    this.originY = this.placement === "below" ? 0 : 1;
+    this.placementClass =
+      this.placement === "below"
+        ? "world-character-label--below"
+        : "world-character-label--above";
   }
 
   render(state: WorldState): void {
@@ -29,41 +44,31 @@ export class CharacterLabelRenderer {
     const camera = this.scene.cameras.main;
     const worldView = camera.worldView;
 
-    for (const [characterId, label] of this.labels) {
+    for (const [characterId, entry] of this.labels) {
       if (activeCharacterIds.has(characterId)) {
         continue;
       }
 
-      label.element.remove();
+      entry.label.destroy();
       this.labels.delete(characterId);
     }
 
     for (const character of Object.values(state.characters)) {
-      let label = this.labels.get(character.id);
+      let entry = this.labels.get(character.id);
 
-      if (!label) {
-        const element = document.createElement("span");
-        element.className = "world-character-label";
-        element.textContent = character.name;
-        this.root.append(element);
-        label = {
-          element,
-          sortY: 0,
-        };
-        this.labels.set(character.id, label);
+      if (!entry) {
+        const label = this.scene.add
+          .dom(0, 0, "span")
+          .setClassName(`world-character-label ${this.placementClass}`)
+          .setOrigin(0.5, this.originY);
+        entry = { label };
+        this.labels.set(character.id, entry);
       }
 
-      const worldPosition = resolveCharacterLabelWorldPosition(character, LABEL_HEIGHT);
-
-      if (!worldView.contains(worldPosition.x, worldPosition.y)) {
-        label.element.hidden = true;
-        continue;
-      }
-
-      const appPosition = worldToAppPoint(
-        this.scene,
-        worldPosition.x,
-        worldPosition.y,
+      const { label } = entry;
+      const worldPosition = resolveCharacterLabelWorldPosition(
+        character,
+        this.placement,
       );
       const sortY = resolveCharacterSortY(
         character.position.y,
@@ -71,13 +76,31 @@ export class CharacterLabelRenderer {
         character.sprite.origin.y,
       );
       const isSelected = state.ui.selectedEntityId === character.id;
+      const inView = worldView.contains(worldPosition.x, worldPosition.y);
 
-      label.sortY = sortY;
-      label.element.hidden = false;
-      label.element.style.left = `${appPosition.x}px`;
-      label.element.style.top = `${appPosition.y}px`;
-      label.element.style.zIndex = String(Math.round(sortY));
-      label.element.classList.toggle("world-character-label--selected", isSelected);
+      if (label.node.textContent !== character.name) {
+        label.setText(character.name);
+      }
+
+      label
+        .setPosition(worldPosition.x, worldPosition.y)
+        .setDepth(
+          resolveWorldRenderDepth(
+            sortY,
+            RENDER_DEPTH_PRIORITY.character + LABEL_DEPTH_OFFSET,
+          ),
+        )
+        .setVisible(inView)
+        .setAlpha(isSelected ? 1 : UNSELECTED_LABEL_ALPHA);
+
+      label.node.classList.toggle("world-character-label--selected", isSelected);
     }
+  }
+
+  destroy(): void {
+    for (const entry of this.labels.values()) {
+      entry.label.destroy();
+    }
+    this.labels.clear();
   }
 }
