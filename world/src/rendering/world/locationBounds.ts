@@ -1,3 +1,4 @@
+import { resolvePlayfieldBounds } from "../../data/locations/locationPlayfields";
 import {
   getLocationById,
   winterfellWorldLayout,
@@ -11,6 +12,11 @@ export function getLocalLocationBounds(
   location: LocationDefinition,
   margin = WORLD_PLAYFIELD_MARGIN,
 ): WorldBounds {
+  const traced = resolvePlayfieldBounds(location.map, location.id, margin);
+  if (traced) {
+    return traced;
+  }
+
   return {
     minX: margin,
     minY: margin,
@@ -34,11 +40,13 @@ export function getLocationBounds(
   location: LocationDefinition,
   margin = WORLD_PLAYFIELD_MARGIN,
 ): WorldBounds {
+  const local = getLocalLocationBounds(location, margin);
+
   return {
-    minX: location.offset.x + margin,
-    minY: location.offset.y + margin,
-    maxX: location.offset.x + location.map.width - margin,
-    maxY: location.offset.y + location.map.height - margin,
+    minX: location.offset.x + local.minX,
+    minY: location.offset.y + local.minY,
+    maxX: location.offset.x + local.maxX,
+    maxY: location.offset.y + local.maxY,
   };
 }
 

@@ -13,7 +13,7 @@ import type { WorldRuntime } from "../world/WorldRuntime";
 import type { WorldBounds, WorldState } from "../world/worldState";
 import { CHARACTER_CONTROLLER_TYPES } from "../world/worldState";
 import { WORLD_ACTION_TYPES } from "../world/worldActions";
-import { getLocationBounds } from "../rendering/world/locationBounds";
+import { getLocalLocationBounds } from "../rendering/world/locationBounds";
 import {
   getLocationById,
   winterfellWorldLayout,
@@ -110,7 +110,7 @@ export class AmbientWander {
       this.poisByLocation.set(locationId, []);
       return;
     }
-    const bounds = getLocationBounds(location, ROAM_INSET);
+    const bounds = getLocalLocationBounds(location, ROAM_INSET);
     const pois = POI_ANCHORS.map((a) => ({
       x: bounds.minX + a.x * (bounds.maxX - bounds.minX),
       y: bounds.minY + a.y * (bounds.maxY - bounds.minY),
@@ -139,7 +139,7 @@ export class AmbientWander {
     const location =
       getLocationById(locationId) ?? getLocationById(LOCATION_IDS.throneRoom);
     return location
-      ? getLocationBounds(location, ROAM_INSET)
+      ? getLocalLocationBounds(location, ROAM_INSET)
       : { minX: 0, minY: 0, maxX: 0, maxY: 0 };
   }
 
