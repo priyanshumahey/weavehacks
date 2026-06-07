@@ -56,7 +56,7 @@ export class ReplayScene extends Phaser.Scene {
 
   preload(): void {
     this.replay = loadDefaultEnsemble();
-    this.staging = buildEnsembleStaging(this.replay, getWorldBounds());
+    this.staging = buildEnsembleStaging(this.replay);
     for (const group of this.replay.groups) {
       for (const member of group.cast) {
         this.charsetByKey.set(member.key, member.charset);

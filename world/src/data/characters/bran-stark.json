@@ -1,0 +1,32 @@
+{
+  "id": "bran-stark",
+  "name": "Bran",
+  "kind": "npc",
+  "controller": "script",
+  "position": {
+    "x": 1740,
+    "y": 780
+  },
+  "appearance": {
+    "color": "#8fa6c8",
+    "radius": 14,
+    "labelColor": "#dce7ff"
+  },
+  "sprite": {
+    "frameSourcePath": "charsets/sprites/arya stark",
+    "displayHeight": 65,
+    "origin": {
+      "x": 0.5,
+      "y": 1
+    },
+    "labelOffset": {
+      "x": 0,
+      "y": 0
+    }
+  },
+  "movement": {
+    "mode": "idle"
+  },
+  "dialogueId": "bran_intro",
+  "traits": ["curious", "climbing"]
+}

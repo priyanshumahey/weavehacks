@@ -1,0 +1,32 @@
+{
+  "id": "catelyn-stark",
+  "name": "Catelyn",
+  "kind": "npc",
+  "controller": "script",
+  "position": {
+    "x": 1540,
+    "y": 650
+  },
+  "appearance": {
+    "color": "#7a8fa8",
+    "radius": 17,
+    "labelColor": "#dce7f5"
+  },
+  "sprite": {
+    "frameSourcePath": "charsets/sprites/catelyn stark",
+    "displayHeight": 80,
+    "origin": {
+      "x": 0.5,
+      "y": 1
+    },
+    "labelOffset": {
+      "x": 0,
+      "y": 0
+    }
+  },
+  "movement": {
+    "mode": "idle"
+  },
+  "dialogueId": "catelyn_intro",
+  "traits": ["fierce", "devoted"]
+}

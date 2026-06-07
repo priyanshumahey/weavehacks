@@ -31,6 +31,8 @@ export interface EnsembleGroup {
   label: string;
   mood: GroupMood;
   cast: ReplayCastMember[];
+  /** Optional location id — anchor is normalized within that location's bounds. */
+  locationId?: string;
   /** Huddle anchor in normalized playfield coords (0..1, 0..1). */
   anchor: { x: number; y: number };
   turns: EnsembleTurn[];

@@ -3,6 +3,11 @@
 // the world CharacterDefinitions plus the lookup tables the scene needs (which
 // group a character belongs to, and each group's world centre).
 
+import {
+  getLocationById,
+  winterfellWorldLayout,
+} from "../data/locations/winterfellWorldLayout";
+import { getLocationBounds } from "../rendering/world/locationBounds";
 import type { CharacterDefinition, WorldBounds } from "../types/character";
 import {
   CHARACTER_CONTROLLER_TYPES,
@@ -36,7 +41,20 @@ export interface EnsembleStaging {
   groupIdByCharacter: Map<string, string>;
 }
 
-function groupCentre(group: EnsembleGroup, bounds: WorldBounds): { x: number; y: number } {
+function resolveGroupBounds(group: EnsembleGroup): WorldBounds {
+  const locationId = group.locationId ?? winterfellWorldLayout.defaultLocationId;
+  const location = getLocationById(locationId);
+
+  if (!location) {
+    throw new Error(`Unknown ensemble group location: ${locationId}`);
+  }
+
+  return getLocationBounds(location);
+}
+
+function groupCentre(group: EnsembleGroup): { x: number; y: number } {
+  const bounds = resolveGroupBounds(group);
+
   return {
     x: bounds.minX + group.anchor.x * (bounds.maxX - bounds.minX),
     y: bounds.minY + group.anchor.y * (bounds.maxY - bounds.minY),
@@ -59,16 +77,13 @@ function ringHome(
   };
 }
 
-export function buildEnsembleStaging(
-  replay: EnsembleReplay,
-  bounds: WorldBounds,
-): EnsembleStaging {
+export function buildEnsembleStaging(replay: EnsembleReplay): EnsembleStaging {
   const definitions: CharacterDefinition[] = [];
   const layouts = new Map<string, GroupLayout>();
   const groupIdByCharacter = new Map<string, string>();
 
   for (const group of replay.groups) {
-    const centre = groupCentre(group, bounds);
+    const centre = groupCentre(group);
     const radius = MOOD_RADIUS[group.mood];
     const homes = new Map<string, { x: number; y: number }>();
 

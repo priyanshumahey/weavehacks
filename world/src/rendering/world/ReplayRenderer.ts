@@ -25,7 +25,7 @@ export class ReplayRenderer {
 
   create(state: WorldState): void {
     if (!this.hasCreatedFrame) {
-      this.terrainRenderer.create(state.bounds);
+      this.terrainRenderer.create();
       createWorldFrame(this.scene);
       this.hasCreatedFrame = true;
     }
