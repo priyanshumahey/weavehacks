@@ -8,7 +8,7 @@ export function createGameConfig(): Phaser.Types.Core.GameConfig {
     parent: "app",
     width: 960,
     height: 540,
-    backgroundColor: "#10212b",
+    backgroundColor: "#000000",
     pixelArt: true,
     scale: {
       mode: Phaser.Scale.ENVELOP,
