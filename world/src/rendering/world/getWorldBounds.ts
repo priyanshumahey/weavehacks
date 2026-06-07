@@ -1,16 +1,17 @@
-import type Phaser from "phaser";
 import type { WorldBounds } from "../../world/worldState";
+import {
+  WORLD_HEIGHT,
+  WORLD_PLAYFIELD_MARGIN,
+  WORLD_WIDTH,
+} from "./worldDimensions";
 
-const WORLD_PLAYFIELD_MARGIN = 40;
-
-export function getWorldBounds(scene: Phaser.Scene): WorldBounds {
-  const camera = scene.cameras.main;
+export function getWorldBounds(): WorldBounds {
   const margin = WORLD_PLAYFIELD_MARGIN;
 
   return {
     minX: margin,
     minY: margin,
-    maxX: camera.width - margin,
-    maxY: camera.height - margin,
+    maxX: WORLD_WIDTH - margin,
+    maxY: WORLD_HEIGHT - margin,
   };
 }

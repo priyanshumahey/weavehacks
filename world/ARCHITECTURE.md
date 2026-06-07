@@ -35,8 +35,8 @@ This keeps boot concerns separate from scene logic and world behavior.
 `WorldScene` is now an orchestration scene. It wires dedicated collaborators for bounds/layout, input, runtime state, and rendering:
 
 - `preload()`: registers `world/sprites` PNG assets through the shared asset registry
-- `create()`: derives world bounds, creates the initial world state, instantiates the runtime and renderer, and binds input
-- `update()`: reads input intent, dispatches actions into the runtime, advances simulation, and asks the renderer to reflect current state
+- `create()`: derives fixed world bounds, creates the initial world state, instantiates the runtime and renderer, and binds input
+- `update()`: reads input intent, dispatches actions into the runtime, advances simulation, asks the renderer to reflect current state, and initializes camera follow once the player sprite exists
 
 ### Asset Loading
 
@@ -105,7 +105,19 @@ Terrain rendering rules:
 - Layer origin is the top-left playfield corner at `(bounds.minX, bounds.minY)`
 - Tile columns and rows are `ceil(boundsWidth / tileSize)` and `ceil(boundsHeight / tileSize)`
 - `WorldBounds` remain simulation-authoritative; terrain is presentation-only and masked to the same rectangle used by `boundsSystem`
-- `createWorldFrame()` now owns only the camera background color
+- `createWorldFrame()` sets the camera background color
+- `setupWorldCamera()` constrains the main camera to the fixed world size and follows the player sprite
+
+### Scrollable World and Camera
+
+The world is larger than the Phaser viewport and scrolls as the player moves:
+
+- `src/rendering/world/worldDimensions.ts`: fixed world size constants (`WORLD_WIDTH` 3840, `WORLD_HEIGHT` 2160 — 4× the 960×540 viewport) and playfield margin
+- `getWorldBounds()`: returns simulation bounds from fixed world dimensions, not from the camera viewport
+- `setupWorldCamera()`: calls `camera.setBounds(0, 0, WORLD_WIDTH, WORLD_HEIGHT)` and `camera.startFollow(playerSprite, true)` with pixel rounding for crisp pixel art
+- `WorldScene.ensureCameraFollow()`: defers camera setup until the player `CharacterSprite` exists after the first render pass
+- `worldToAppPoint()` and `CharacterLabelRenderer`: already subtract `camera.scrollX/Y` and cull against `camera.worldView`, so HTML overlays stay aligned during scroll
+- `game.scale` letterboxing in `config.ts` is separate from camera scroll; the internal canvas stays 960×540 while the camera moves within the larger world
 
 ### Props and Building Placement
 
@@ -177,7 +189,7 @@ The scene does not treat Phaser game objects as the source of truth for characte
 
 The current world is a minimal prototype scene composed of:
 
-- A solid background color
+- A scrollable 3840×2160 playfield with camera follow on the player
 - A Phaser tilemap grass base layer clipped to the playfield bounds
 - Sprite-backed buildings, resources, and decorations loaded from authored prop placements
 - A set of sprite-backed character markers rendered from JSON definitions
@@ -207,7 +219,7 @@ Current state is split as follows:
 - `WorldRenderer`: top-level Phaser-facing renderer for the world frame and character rendering passes
 - `WorldUiRenderer` and `buildWorldUiViewModel()`: player-facing prompt, dialogue, inspection, and bottom-of-screen character appearance selector rendered as an HTML overlay synced each frame from `WorldState.ui`. Dialogue portraits resolve from each character's `sprite.frameSourcePath` via `characterPortraitRegistry.ts`, which maps `charsets/sprites/<name>` to `sprites/Characters/<name>.png`
 - `CharacterRenderer` and `CharacterSprite`: sprite-backed visual representation for each character with labels and selection highlighting
-- `TerrainRenderer`, `createWorldFrame()`, and `getWorldBounds()`: terrain tilemap presentation, camera background, and playfield bounds derived from the main camera viewport
+- `TerrainRenderer`, `createWorldFrame()`, `setupWorldCamera()`, and `getWorldBounds()`: terrain tilemap presentation, camera background, fixed world bounds, and player camera follow
 - `worldState.ts`: serializable interfaces for world bounds, entities, characters, zones, UI, and time
 
 The only scene-local mutable state required is references to its collaborators.
