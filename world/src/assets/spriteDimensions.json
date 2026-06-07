@@ -2842,5 +2842,9 @@
   "maps/red_keep.png": {
     "width": 1254,
     "height": 1254
+  },
+  "maps/throne_room.png": {
+    "width": 1024,
+    "height": 1536
   }
 }

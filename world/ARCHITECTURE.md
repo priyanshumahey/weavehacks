@@ -96,13 +96,13 @@ The player can swap between authored charset sprites without changing entity ide
 The playfield background is a single pre-rendered map image instead of a tilemap fill:
 
 - `src/types/terrain.ts`: map texture source paths and `MapBackgroundDefinition` contract
-- `src/data/terrain/defaultMapBackground.ts`: default background texture key and dimensions for `maps/red_keep.png`
+- `src/data/terrain/defaultMapBackground.ts`: default background texture key and dimensions for `maps/throne_room.png`
 - `src/rendering/terrain/TerrainRenderer.ts`: renders the map image at world origin with `scene.add.image()` at `RENDER_LAYERS.terrain`
 - `src/assets/worldAssetRegistry.ts`: discovers and preloads PNG assets under `world/maps/`
 
 Map background rules:
 
-- World size matches the authored map image (`1254×1254` for Red Keep)
+- World size matches the authored map image (`1024×1536` for the throne room)
 - Image origin is `(0, 0)` and spans the full world rectangle
 - `WorldBounds` remain simulation-authoritative with a playfield margin that keeps characters off walls and furniture baked into the image
 - `createWorldFrame()` sets the camera background color
@@ -112,7 +112,7 @@ Map background rules:
 
 The world is larger than the Phaser viewport and scrolls as the player moves:
 
-- `src/rendering/world/worldDimensions.ts`: fixed world size constants (`WORLD_WIDTH` 1254, `WORLD_HEIGHT` 1254 — sized to the Red Keep map) and playfield margin
+- `src/rendering/world/worldDimensions.ts`: fixed world size constants (`WORLD_WIDTH` 1024, `WORLD_HEIGHT` 1536 — sized to the throne room map) and playfield margin
 - `getWorldBounds()`: returns simulation bounds from fixed world dimensions, not from the camera viewport
 - `setupWorldCamera()`: calls `camera.setBounds(0, 0, WORLD_WIDTH, WORLD_HEIGHT)` and `camera.startFollow(playerSprite, true)` with pixel rounding for crisp pixel art
 - `WorldScene.ensureCameraFollow()`: defers camera setup until the player `CharacterSprite` exists after the first render pass
@@ -189,7 +189,7 @@ The scene does not treat Phaser game objects as the source of truth for characte
 
 The current world is a minimal prototype scene composed of:
 
-- A scrollable 1254×1254 Red Keep chamber with camera follow on the player
+- A scrollable 1024×1536 throne room with camera follow on the player
 - A pre-rendered map background image spanning the full world
 - Sprite-backed buildings, resources, and decorations loaded from authored prop placements
 - A set of sprite-backed character markers rendered from JSON definitions

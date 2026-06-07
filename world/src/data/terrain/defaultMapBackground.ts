@@ -5,8 +5,8 @@ import {
 } from "../../types/terrain";
 
 export const defaultMapBackground: MapBackgroundDefinition = {
-  textureSourcePath: MAP_TEXTURE_SOURCE_PATHS.redKeep,
-  textureKey: deriveWorldTextureKey(MAP_TEXTURE_SOURCE_PATHS.redKeep),
-  width: 1254,
-  height: 1254,
+  textureSourcePath: MAP_TEXTURE_SOURCE_PATHS.throneRoom,
+  textureKey: deriveWorldTextureKey(MAP_TEXTURE_SOURCE_PATHS.throneRoom),
+  width: 1024,
+  height: 1536,
 };
