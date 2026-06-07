@@ -1,27 +1,52 @@
 // EnsembleTimeline — one global clock that drives every conversation group at
-// once. Time is measured in "beats" (one spoken turn per beat). All groups
-// advance on the same beat, so the observer can scrub a single slider and watch
-// the whole world move together. Shorter conversations hold their final line
-// while longer ones keep talking, then the world settles.
+// once. A scene plays in three phases on a single ms clock:
+//   1. ENTERING — characters walk in from the edges; no dialogue yet.
+//   2. TALKING  — beats advance, one spoken turn per beat across all groups.
+//   3. SETTLING — a short breath after the last line before the world rests.
+// The observer scrubs one slider across all three; shorter conversations hold
+// their final line while longer ones keep talking, then everyone settles.
 
 import type { EnsembleGroup, EnsembleReplay, EnsembleTurn } from "./ensembleTypes";
 
-const BEAT_MS = 7000; // wall-clock duration of one turn during auto-play
+const BEAT_MS = 8500; // wall-clock duration of one spoken turn during auto-play
+const ENTRANCE_MS = 5200; // walking-in period before anyone speaks
+const SETTLE_MS = 3000; // quiet beat after the final line
+
+export type TimelinePhase = "entering" | "talking" | "settling";
 
 export class EnsembleTimeline {
   private readonly groups: EnsembleGroup[];
   private readonly totalBeats: number;
-  private beat = 0; // float playhead in [0, totalBeats]
+  private readonly talkMs: number;
+  private readonly totalMs: number;
+  private elapsed = 0; // ms playhead in [0, totalMs]
   private playing = true;
 
   constructor(replay: EnsembleReplay) {
     this.groups = replay.groups;
     this.totalBeats = Math.max(1, ...replay.groups.map((g) => g.turns.length));
+    this.talkMs = this.totalBeats * BEAT_MS;
+    this.totalMs = ENTRANCE_MS + this.talkMs + SETTLE_MS;
+  }
+
+  get phase(): TimelinePhase {
+    if (this.elapsed < ENTRANCE_MS) {
+      return "entering";
+    }
+    if (this.elapsed < ENTRANCE_MS + this.talkMs) {
+      return "talking";
+    }
+    return "settling";
+  }
+
+  /** True while characters are still walking into the scene. */
+  get isEntering(): boolean {
+    return this.elapsed < ENTRANCE_MS;
   }
 
   /** Playhead as a fraction in [0, 1] — what the slider shows. */
   get progress(): number {
-    return this.totalBeats > 0 ? this.beat / this.totalBeats : 0;
+    return this.totalMs > 0 ? this.elapsed / this.totalMs : 0;
   }
 
   get isPlaying(): boolean {
@@ -29,17 +54,22 @@ export class EnsembleTimeline {
   }
 
   get atEnd(): boolean {
-    return this.beat >= this.totalBeats;
+    return this.elapsed >= this.totalMs;
+  }
+
+  /** Continuous beat playhead within the talking phase (>= 0). */
+  private get beat(): number {
+    return Math.max(0, (this.elapsed - ENTRANCE_MS) / BEAT_MS);
   }
 
   setProgress(fraction: number): void {
-    this.beat = clamp(fraction, 0, 1) * this.totalBeats;
+    this.elapsed = clamp(fraction, 0, 1) * this.totalMs;
   }
 
   setPlaying(playing: boolean): void {
     // Resuming from the end restarts the world.
     if (playing && this.atEnd) {
-      this.beat = 0;
+      this.elapsed = 0;
     }
     this.playing = playing;
   }
@@ -48,16 +78,21 @@ export class EnsembleTimeline {
     this.setPlaying(!this.playing);
   }
 
-  /** Step the global beat forward by one (viewer "click to continue"). */
+  /** Step forward (viewer "click to continue"): skip the walk-in, else +1 beat. */
   stepForward(): void {
-    this.beat = Math.min(Math.floor(this.beat) + 1, this.totalBeats);
+    if (this.isEntering) {
+      this.elapsed = ENTRANCE_MS;
+      return;
+    }
+    const nextBeat = Math.floor(this.beat) + 1;
+    this.elapsed = Math.min(ENTRANCE_MS + nextBeat * BEAT_MS, this.totalMs);
   }
 
   update(deltaMs: number): void {
     if (!this.playing) {
       return;
     }
-    this.beat = Math.min(this.beat + deltaMs / BEAT_MS, this.totalBeats);
+    this.elapsed = Math.min(this.elapsed + deltaMs, this.totalMs);
   }
 
   /** Active turn index within a group at the current beat. */
@@ -69,6 +104,10 @@ export class EnsembleTimeline {
   }
 
   activeTurn(group: EnsembleGroup): EnsembleTurn | null {
+    // No dialogue while walking in.
+    if (this.isEntering) {
+      return null;
+    }
     const index = this.turnIndexFor(group);
     return index >= 0 ? group.turns[index] : null;
   }
@@ -82,6 +121,12 @@ export class EnsembleTimeline {
   }
 
   progressLabel(): string {
+    if (this.phase === "entering") {
+      return "entering…";
+    }
+    if (this.phase === "settling") {
+      return "settling…";
+    }
     const current = Math.min(Math.floor(this.beat) + 1, this.totalBeats);
     return `beat ${current} / ${this.totalBeats}`;
   }

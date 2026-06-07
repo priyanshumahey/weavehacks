@@ -138,8 +138,9 @@ export class ReplayScene extends Phaser.Scene {
 
     this.timeline.update(delta);
 
+    const entering = this.timeline.isEntering;
     const speech = this.speechByGroup();
-    this.movement.update(this.runtime, this.runtime.getState(), delta, speech);
+    this.movement.update(this.runtime, this.runtime.getState(), delta, speech, entering);
     this.runtime.step(delta);
 
     const state = this.runtime.getState();

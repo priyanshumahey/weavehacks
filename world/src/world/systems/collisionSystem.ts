@@ -48,6 +48,30 @@ function separatePair(
     const mobileEntity = firstCanDrive ? first : second;
     mobileEntity.position.x += firstCanDrive ? normalX * overlap : -normalX * overlap;
     mobileEntity.position.y += firstCanDrive ? normalY * overlap : -normalY * overlap;
+    return;
+  }
+
+  // Neither is player-driven (e.g. two script/replay characters): split the
+  // overlap so both ease apart symmetrically. Props (no `movement`) stay put,
+  // so a character is pushed the full overlap out of a static prop.
+  const firstIsCharacter = "movement" in first;
+  const secondIsCharacter = "movement" in second;
+  if (firstIsCharacter && secondIsCharacter) {
+    const half = overlap / 2;
+    first.position.x += normalX * half;
+    first.position.y += normalY * half;
+    second.position.x -= normalX * half;
+    second.position.y -= normalY * half;
+    return;
+  }
+  if (firstIsCharacter) {
+    first.position.x += normalX * overlap;
+    first.position.y += normalY * overlap;
+    return;
+  }
+  if (secondIsCharacter) {
+    second.position.x -= normalX * overlap;
+    second.position.y -= normalY * overlap;
   }
 }
 

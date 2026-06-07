@@ -135,7 +135,7 @@ Placed world props and buildings are now file-backed entities in authoritative s
 - `src/entities/PropSprite.ts`: creates a `Phaser.GameObjects.Image` inside a `Container` (static props do not need Sprite animation overhead), applies authored origin/scale via Phaser APIs, and Y-sorts with `setDepth()`
 - `src/rendering/props/PropRenderer.ts`: mirrors authoritative prop entities from `WorldState.entities` each frame
 - `createWorld()`: loads normalized props into `WorldState.entities`
-- `collisionSystem`: separates player-driven characters from blocking props using circle overlap, same as character-character separation
+- `collisionSystem`: separates overlapping blocking bodies via circle overlap. A player-driven character is pushed fully out of a static body; two script/replay characters split the overlap and ease apart symmetrically; a character is pushed the full overlap out of a static prop.
 
 Prop rendering rules:
 

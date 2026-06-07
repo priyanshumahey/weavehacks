@@ -186,7 +186,23 @@ def build_scene(
         "title": setting,
         "scenes": [scene],
     }
-    return to_ensemble(chronicle, location_overrides={0: location})
+    return _with_sprite_charsets(to_ensemble(chronicle, location_overrides={0: location}))
+
+
+def _with_sprite_charsets(ensemble: dict) -> dict:
+    """Rewrite every cast member's charset to a sprite the world can load.
+
+    ``to_ensemble`` derives charsets from ``charset_for`` (which may keep an
+    honorific, e.g. "lord varys"), but the world's sprite directory is the bare
+    name ("varys"). Reuse the roster's sprite-verified resolver so no character
+    renders as a missing-texture box.
+    """
+    for group in ensemble.get("groups", []):
+        for member in group.get("cast", []):
+            resolved = _resolve_charset(member.get("key", ""))
+            if resolved:
+                member["charset"] = resolved
+    return ensemble
 
 
 def _run_one_council(
@@ -292,10 +308,12 @@ def build_episode(
     }
     mood_overrides = {i: plan.mood for i, plan in enumerate(plans)}
     location_overrides = {i: location for i in range(len(plans))}
-    return to_ensemble(
-        chronicle,
-        mood_overrides=mood_overrides,
-        location_overrides=location_overrides,
+    return _with_sprite_charsets(
+        to_ensemble(
+            chronicle,
+            mood_overrides=mood_overrides,
+            location_overrides=location_overrides,
+        )
     )
 
 

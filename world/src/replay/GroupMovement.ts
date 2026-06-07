@@ -1,10 +1,11 @@
-// GroupMovement — gives each conversation group its own physical character. The
-// mood authored in the ensemble becomes motion:
-//   • friendly — a tight, gently swaying huddle, all turned to the speaker.
-//   • tense    — a wary ring that holds its ground and faces whoever speaks.
-//   • hostile  — restless pacing: the two orbit the centre and drift toward and
-//                away from each other, never quite settling.
-// It only dispatches world move/face actions; the runtime integrates them.
+// GroupMovement — drives each conversation character to and around its fixed
+// slot in the huddle. Inspired by DMI's seat/sit-point model: every character
+// owns one slot in the ring (computed in EnsembleStaging), walks to it on
+// entrance, and holds it during the conversation, only turning to face whoever
+// speaks. No free wander — that was the source of overlap and drifting spacing.
+// A tiny per-character sway keeps them from looking frozen without ever
+// approaching a neighbour. It only dispatches world move/face actions; the
+// runtime integrates them (and the collision system keeps bodies apart).
 
 import type { WorldRuntime } from "../world/WorldRuntime";
 import type { WorldState } from "../world/worldState";
@@ -13,27 +14,27 @@ import { WORLD_ACTION_TYPES } from "../world/worldActions";
 import type { GroupLayout } from "./EnsembleStaging";
 import type { GroupMood } from "./ensembleTypes";
 
-const ARRIVE_EPSILON = 5;
+// Close enough to the slot to stop walking and just hold + face.
+const ARRIVE_EPSILON = 4;
+// Past this from the slot a character walks back (e.g. nudged by separation).
+const RESETTLE_EPSILON = 10;
 
-// Per-mood wander: how far a character roams from its home, and how long it
-// pauses between strolls. Listeners mostly stand and face the speaker; the long
-// pauses keep them from spinning between random targets.
-const MOOD_WANDER: Record<GroupMood, { radius: number; minPause: number; maxPause: number }> = {
-  friendly: { radius: 6, minPause: 4500, maxPause: 9000 },
-  tense: { radius: 5, minPause: 5500, maxPause: 11000 },
-  hostile: { radius: 18, minPause: 1800, maxPause: 3600 },
+// Gentle idle sway around the slot, per mood — amplitude stays far below the
+// body separation so it never causes overlap. Friendly bobs softly, tense is
+// near-still, hostile shifts its weight a touch more.
+const MOOD_SWAY: Record<GroupMood, { amp: number; speed: number }> = {
+  friendly: { amp: 3.0, speed: 0.0016 },
+  tense: { amp: 2.0, speed: 0.0012 },
+  hostile: { amp: 4.0, speed: 0.0022 },
 };
-
-const HOSTILE_ORBIT_SPEED = 0.00011; // radians per ms (slow, wary circling)
 
 interface CharState {
   groupId: string;
   mood: GroupMood;
   home: { x: number; y: number };
   centre: { x: number; y: number };
-  target: { x: number; y: number } | null;
-  pauseMs: number;
-  orbit: number; // current angle around the centre (hostile)
+  phase: number; // sway phase offset so groupmates don't bob in lockstep
+  clock: number; // accumulated ms for the sway oscillation
 }
 
 export interface GroupSpeech {
@@ -51,16 +52,13 @@ export class GroupMovement {
       const mood = layout.group.mood;
       layout.group.cast.forEach((member, index) => {
         const home = layout.homes.get(member.key) ?? layout.centre;
-        const orbit =
-          -Math.PI / 2 + (index / Math.max(1, layout.group.cast.length)) * Math.PI * 2;
         this.chars.set(member.key, {
           groupId: layout.group.id,
           mood,
           home: { ...home },
           centre: { ...layout.centre },
-          target: null,
-          pauseMs: rand(MOOD_WANDER[mood].minPause, MOOD_WANDER[mood].maxPause),
-          orbit,
+          phase: (index / Math.max(1, layout.group.cast.length)) * Math.PI * 2,
+          clock: 0,
         });
       });
     }
@@ -68,119 +66,99 @@ export class GroupMovement {
 
   /**
    * Advance every character one frame. `speechByGroup` gives the current speaker
-   * and target per group so the speaker can stop and face its listener.
+   * and target per group so the speaker can face its listener. While `entering`
+   * is true, everyone walks from their spawn to their slot and no one speaks.
    */
   update(
     runtime: WorldRuntime,
     state: WorldState,
     deltaMs: number,
     speechByGroup: Map<string, GroupSpeech>,
+    entering = false,
   ): void {
     for (const character of Object.values(state.characters)) {
       const cs = this.chars.get(character.id);
       if (!cs) {
         continue;
       }
-      const speech = speechByGroup.get(cs.groupId);
-      const isSpeaker = speech?.speaker === character.id;
+      cs.clock += deltaMs;
 
-      if (isSpeaker) {
-        this.halt(runtime, character.id);
-        const faceKey = speech?.target ?? this.otherInGroup(character.id, cs, state);
-        if (faceKey && state.characters[faceKey]) {
-          this.face(runtime, character.id, faceKey);
+      // Entrance: walk to the slot, then turn to the group and wait.
+      if (entering) {
+        const arrived = this.driveTowardPoint(runtime, character.id, character.position, cs.home);
+        if (arrived) {
+          const faceKey = this.otherInGroup(character.id, cs, state);
+          if (faceKey && state.characters[faceKey]) {
+            this.face(runtime, character.id, faceKey);
+          }
         }
-        cs.target = null;
         continue;
       }
 
-      // Someone in this group is speaking: a listener stands still and watches.
-      // (No wander while being talked to — that is what caused the spinning.)
-      if (speech?.speaker && state.characters[speech.speaker]) {
+      // Conversation: hold the slot (return to it if nudged), gently swaying,
+      // and face whoever is speaking — or a groupmate when nobody speaks.
+      const speech = speechByGroup.get(cs.groupId);
+      const slot = this.swayTarget(cs);
+      const dist = distance(character.position, slot);
+      if (dist > RESETTLE_EPSILON) {
+        this.driveTowardPoint(runtime, character.id, character.position, slot);
+      } else {
         this.halt(runtime, character.id);
-        this.face(runtime, character.id, speech.speaker);
-        cs.target = null;
-        continue;
       }
 
-      // Nobody is speaking in this group right now: gentle idle drift.
-      if (cs.mood === "hostile") {
-        this.paceStep(runtime, character.id, character.position, cs, deltaMs);
-      } else {
-        this.strollStep(runtime, character.id, character.position, cs, deltaMs);
+      const faceKey = this.faceTarget(character.id, cs, speech, state);
+      if (faceKey && state.characters[faceKey]) {
+        this.face(runtime, character.id, faceKey);
       }
     }
   }
 
-  private strollStep(
-    runtime: WorldRuntime,
+  /** Who a character should look at: the speaker, their target, or a neighbour. */
+  private faceTarget(
     id: string,
-    pos: { x: number; y: number },
     cs: CharState,
-    deltaMs: number,
-  ): void {
-    if (!cs.target) {
-      cs.pauseMs -= deltaMs;
-      if (cs.pauseMs > 0) {
-        this.halt(runtime, id);
-        return;
-      }
-      cs.target = wanderTarget(cs.home, MOOD_WANDER[cs.mood].radius);
+    speech: GroupSpeech | undefined,
+    state: WorldState,
+  ): string | null {
+    if (speech?.speaker === id) {
+      return speech.target && state.characters[speech.target]
+        ? speech.target
+        : this.otherInGroup(id, cs, state);
     }
-    this.driveToward(runtime, id, pos, cs);
+    if (speech?.speaker && state.characters[speech.speaker]) {
+      return speech.speaker;
+    }
+    return this.otherInGroup(id, cs, state);
   }
 
-  private paceStep(
-    runtime: WorldRuntime,
-    id: string,
-    pos: { x: number; y: number },
-    cs: CharState,
-    deltaMs: number,
-  ): void {
-    // Orbit the centre, occasionally lunging toward or away from it.
-    cs.orbit += HOSTILE_ORBIT_SPEED * deltaMs;
-    if (!cs.target) {
-      cs.pauseMs -= deltaMs;
-      if (cs.pauseMs > 0) {
-        // Keep edging along the orbit even while "paused".
-        const r = MOOD_WANDER.hostile.radius;
-        cs.target = {
-          x: cs.centre.x + Math.cos(cs.orbit) * (r + 30),
-          y: cs.centre.y + Math.sin(cs.orbit) * (r + 30),
-        };
-      } else {
-        const lunge = Math.random() < 0.5 ? 12 : 54;
-        cs.target = {
-          x: cs.centre.x + Math.cos(cs.orbit) * lunge,
-          y: cs.centre.y + Math.sin(cs.orbit) * lunge,
-        };
-        cs.pauseMs = rand(MOOD_WANDER.hostile.minPause, MOOD_WANDER.hostile.maxPause);
-      }
-    }
-    this.driveToward(runtime, id, pos, cs);
+  /** The slot plus a small mood-flavoured oscillation (never near a neighbour). */
+  private swayTarget(cs: CharState): { x: number; y: number } {
+    const sway = MOOD_SWAY[cs.mood];
+    const t = cs.clock * sway.speed + cs.phase;
+    return {
+      x: cs.home.x + Math.cos(t) * sway.amp,
+      y: cs.home.y + Math.sin(t * 0.8) * sway.amp,
+    };
   }
 
-  private driveToward(
+  /** Drive an entity toward a point; returns true (and halts) once arrived. */
+  private driveTowardPoint(
     runtime: WorldRuntime,
     id: string,
     pos: { x: number; y: number },
-    cs: CharState,
-  ): void {
-    if (!cs.target) {
-      this.halt(runtime, id);
-      return;
-    }
-    const dx = cs.target.x - pos.x;
-    const dy = cs.target.y - pos.y;
+    point: { x: number; y: number },
+  ): boolean {
+    const dx = point.x - pos.x;
+    const dy = point.y - pos.y;
     if (Math.hypot(dx, dy) <= ARRIVE_EPSILON) {
-      cs.target = null;
       this.halt(runtime, id);
-      return;
+      return true;
     }
     runtime.dispatch(
       { type: WORLD_ACTION_TYPES.move, entityId: id, intent: { x: dx, y: dy } },
       CHARACTER_CONTROLLER_TYPES.script,
     );
+    return false;
   }
 
   private halt(runtime: WorldRuntime, id: string): void {
@@ -221,15 +199,6 @@ export class GroupMovement {
   }
 }
 
-function wanderTarget(
-  home: { x: number; y: number },
-  radius: number,
-): { x: number; y: number } {
-  const angle = Math.random() * Math.PI * 2;
-  const r = Math.random() * radius;
-  return { x: home.x + Math.cos(angle) * r, y: home.y + Math.sin(angle) * r };
-}
-
-function rand(min: number, max: number): number {
-  return min + Math.random() * (max - min);
+function distance(a: { x: number; y: number }, b: { x: number; y: number }): number {
+  return Math.hypot(a.x - b.x, a.y - b.y);
 }
