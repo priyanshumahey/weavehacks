@@ -435,6 +435,37 @@ canvas {
   cursor: grab;
 }
 
+/* Display-only progress bar (the continuous episode has no rewind/seek): hide
+   the draggable thumb and disable interaction so it reads as a progress fill.
+   The gold fill tracks how far into the episode we are via --progress. */
+.replay-timebar__range--readonly {
+  cursor: default;
+  pointer-events: none;
+  background: linear-gradient(
+    to right,
+    #c9a227 0%,
+    #8a6d1a var(--progress, 0%),
+    rgb(27 39 51 / 85%) var(--progress, 0%),
+    rgb(27 39 51 / 85%) 100%
+  );
+}
+
+.replay-timebar__range--readonly::-webkit-slider-thumb {
+  width: 0;
+  height: 0;
+  border: none;
+  background: transparent;
+  cursor: default;
+}
+
+.replay-timebar__range--readonly::-moz-range-thumb {
+  width: 0;
+  height: 0;
+  border: none;
+  background: transparent;
+  cursor: default;
+}
+
 .replay-timebar__label {
   flex-shrink: 0;
   min-width: 84px;

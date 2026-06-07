@@ -26,12 +26,16 @@ export class TimeSlider {
 
     this.range = document.createElement("input");
     this.range.type = "range";
-    this.range.className = "replay-timebar__range";
+    this.range.className = "replay-timebar__range replay-timebar__range--readonly";
     this.range.min = "0";
     this.range.max = "1000";
     this.range.value = "0";
     this.range.step = "1";
-    this.range.setAttribute("aria-label", "Scrub time");
+    // Display-only by default: a progress bar, not a scrubber. Seeking is only
+    // enabled for scenes that register an onSeek handler (a recorded replay you
+    // can scrub); the continuous episode has no rewind/fast-forward, so its bar
+    // stays non-interactive (the readonly class blocks pointer events).
+    this.range.setAttribute("aria-label", "Playback progress");
 
     const emitSeek = () => {
       const fraction = Number(this.range.value) / 1000;
@@ -66,6 +70,9 @@ export class TimeSlider {
 
   setOnSeek(cb: (fraction: number) => void): void {
     this.onSeek = cb;
+    // A seek handler means this scene supports scrubbing: enable the control.
+    this.range.classList.remove("replay-timebar__range--readonly");
+    this.range.setAttribute("aria-label", "Scrub time");
   }
 
   setOnTogglePlay(cb: () => void): void {
@@ -86,7 +93,11 @@ export class TimeSlider {
     if (this.seeking) {
       return;
     }
-    this.range.value = String(Math.round(clamp(fraction, 0, 1) * 1000));
+    const clamped = clamp(fraction, 0, 1);
+    this.range.value = String(Math.round(clamped * 1000));
+    // Drive the filled-track gradient so the display-only bar still shows how
+    // far into the episode we are (the native thumb is hidden in readonly mode).
+    this.range.style.setProperty("--progress", `${clamped * 100}%`);
   }
 
   setPlaying(playing: boolean): void {
