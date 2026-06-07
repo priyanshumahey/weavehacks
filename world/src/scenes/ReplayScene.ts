@@ -21,6 +21,7 @@ import {
   type EnsembleStaging,
 } from "../replay/EnsembleStaging";
 import { GroupMovement, type GroupSpeech } from "../replay/GroupMovement";
+import { AmbientWander } from "../replay/AmbientWander";
 import { ReplayCamera } from "../replay/ReplayCamera";
 import { ReplayPortraitPanel } from "../replay/ReplayPortraitPanel";
 import { TimeSlider } from "../replay/TimeSlider";
@@ -41,6 +42,7 @@ export class ReplayScene extends Phaser.Scene {
   private replayRenderer: ReplayRenderer | null = null;
   private timeline: EnsembleTimeline | null = null;
   private movement: GroupMovement | null = null;
+  private ambient: AmbientWander | null = null;
   private dialogue: DialogueLayer | null = null;
   private observer: ReplayCamera | null = null;
   private panel: ReplayPortraitPanel | null = null;
@@ -99,6 +101,8 @@ export class ReplayScene extends Phaser.Scene {
     this.timeline = new EnsembleTimeline(this.replay);
     this.movement = new GroupMovement();
     this.movement.initFrom(this.staging.layouts);
+    this.ambient = new AmbientWander();
+    this.ambient.initFrom(this.staging);
     this.dialogue = new DialogueLayer(this);
     this.observer = new ReplayCamera(this);
     this.panel = new ReplayPortraitPanel();
@@ -138,15 +142,22 @@ export class ReplayScene extends Phaser.Scene {
 
     this.timeline.update(delta);
 
-    const entering = this.timeline.isEntering;
-    const speech = this.speechByGroup();
-    this.movement.update(this.runtime, this.runtime.getState(), delta, speech, entering);
+    // Once the conversation has fully played out, the world goes ambient: the
+    // cast disperses from their huddles and roams the room with purpose.
+    const idle = this.timeline.atEnd;
+    if (idle && this.ambient) {
+      this.ambient.update(this.runtime, this.runtime.getState(), delta);
+    } else {
+      const entering = this.timeline.isEntering;
+      const speech = this.speechByGroup();
+      this.movement.update(this.runtime, this.runtime.getState(), delta, speech, entering);
+    }
     this.runtime.step(delta);
 
     const state = this.runtime.getState();
     this.replayRenderer.render(state);
 
-    const speakers = this.currentSpeakers();
+    const speakers = idle ? new Map<string, string>() : this.currentSpeakers();
     this.dialogue.render(
       speakers.keys(),
       (key) => this.anchorFor(state, key),
@@ -157,7 +168,7 @@ export class ReplayScene extends Phaser.Scene {
 
     this.slider?.setProgress(this.timeline.progress);
     this.slider?.setPlaying(this.timeline.isPlaying);
-    this.slider?.setLabel(this.timeline.progressLabel());
+    this.slider?.setLabel(idle ? "the court mingles…" : this.timeline.progressLabel());
   }
 
   // --- timeline helpers --------------------------------------------------
